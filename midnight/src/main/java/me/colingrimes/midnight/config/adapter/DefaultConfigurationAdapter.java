@@ -1,7 +1,6 @@
 package me.colingrimes.midnight.config.adapter;
 
 import me.colingrimes.midnight.plugin.Midnight;
-import org.bukkit.configuration.file.FileConfiguration;
 
 import javax.annotation.Nonnull;
 

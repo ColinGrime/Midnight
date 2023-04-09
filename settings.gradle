@@ -1,2 +1,3 @@
 rootProject.name = 'Midnight'
-
+include 'midnight'
+include 'midnight-example'
