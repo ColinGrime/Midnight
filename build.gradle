@@ -1,0 +1,39 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id 'java'
+}
+
+java {
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+}
+
+group 'me.colingrimes.midnight'
+version '1.0.0-alpha'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url 'https://repo.papermc.io/repository/maven-public/' }
+}
+
+dependencies {
+    // Spigot and Minecraft plugin dependencies
+    implementation 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT'
+
+    // Reflections
+    implementation 'org.reflections:reflections:0.10.2'
+
+    // Unit testing
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testImplementation 'org.mockito:mockito-core:5.2.0'
+    testImplementation 'com.github.seeseemelk:MockBukkit-v1.19:2.145.0'
+}
+
+// Allows ${version} placeholders.
+processResources {
+    filter ReplaceTokens, beginToken: '${', endToken: '}', tokens: ['version': version]
+}

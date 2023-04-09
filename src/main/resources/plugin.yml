@@ -1,0 +1,6 @@
+name: Domains
+main: com.github.colingrime.Domains
+version: ${version}
+
+authors: [Scill]
+api-version: 1.19
