@@ -4,28 +4,34 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Optional;
 
 abstract class BaseConfigurationAdapter implements ConfigurationAdapter {
 
 	FileConfiguration config;
 
+	@Nonnull
 	@Override
-	public String getString(@Nonnull String path) {
-		return config.getString(path);
+	public Optional<String> getString(@Nonnull String path) {
+		return Optional.ofNullable(config.getString(path));
 	}
 
+	@Nonnull
 	@Override
-	public int getInteger(@Nonnull String path) {
-		return config.getInt(path);
+	public Optional<Integer> getInteger(@Nonnull String path) {
+		return Optional.ofNullable(config.getObject(path, Integer.class));
 	}
 
+	@Nonnull
 	@Override
-	public boolean getBoolean(@Nonnull String path) {
-		return config.getBoolean(path);
+	public Optional<Boolean> getBoolean(@Nonnull String path) {
+		return Optional.ofNullable(config.getObject(path, Boolean.class));
 	}
 
+	@Nonnull
 	@Override
-	public List<String> getStringList(@Nonnull String path) {
-		return config.getStringList(path);
+	public Optional<List<String>> getStringList(@Nonnull String path) {
+		List<String> list = config.getStringList(path);
+		return list.isEmpty() ? Optional.empty() : Optional.of(list);
 	}
 }
