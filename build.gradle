@@ -6,9 +6,6 @@ subprojects {
         targetCompatibility JavaVersion.VERSION_17
     }
 
-    group 'me.colingrimes.midnight'
-    version '1.0.0-alpha'
-
     repositories {
         mavenCentral()
         maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
