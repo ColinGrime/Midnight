@@ -3,6 +3,7 @@ package me.colingrimes.midnight.config.option;
 import me.colingrimes.midnight.config.adapter.ConfigurationAdapter;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -31,10 +32,10 @@ public interface Option<T> {
 	 * Reloads the option from the given configuration adapter.
 	 * @param adapter the adapter
 	 */
-	void reload(@Nonnull ConfigurationAdapter adapter);
+	void reload(@Nullable ConfigurationAdapter adapter);
 
 	/**
-	 * Initialises all static fields of the given class that are of type {@link Option}.
+	 * Initializes all static fields of the given class that are of type {@link Option}.
 	 * @param optionClass the class
 	 * @return the list of options
 	 */
