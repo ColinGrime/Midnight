@@ -3,11 +3,16 @@ package me.colingrimes.midnight.plugin;
 import me.colingrimes.midnight.annotation.AnnotationRegistry;
 import me.colingrimes.midnight.config.ConfigurationManager;
 import me.colingrimes.midnight.config.annotation.processor.ConfigurationProcessor;
+import me.colingrimes.midnight.util.Common;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
+import javax.annotation.Nonnull;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Midnight extends JavaPlugin {
 
@@ -22,9 +27,11 @@ public abstract class Midnight extends JavaPlugin {
 		super(loader, description, dataFolder, file);
 	}
 
-	abstract void load();
-	abstract void enable();
-	abstract void disable();
+	// Override these methods to add functionality to your plugin.
+	protected void load() {}
+	protected void enable() {}
+	protected void disable() {}
+	protected void registerListeners(@Nonnull List<? super Listener> listeners) {}
 
 	@Override
 	public void onLoad() {
@@ -36,6 +43,7 @@ public abstract class Midnight extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		loadAnnotations();
+		registerListeners();
 		enable();
 	}
 
@@ -51,10 +59,27 @@ public abstract class Midnight extends JavaPlugin {
 		annotationRegistry.process();
 	}
 
+	private void registerListeners() {
+		List<Listener> listeners = new ArrayList<>();
+		registerListeners(listeners);
+
+		for (Listener listener : listeners) {
+			Common.registerEvents(listener);
+		}
+	}
+
+	/**
+	 * Get the instance of the plugin.
+	 * @return instance of the plugin
+	 */
 	public static Midnight getInstance() {
 		return instance;
 	}
 
+	/**
+	 * Get the configuration manager.
+	 * @return configuration manager
+	 */
 	public ConfigurationManager getConfigurationManager() {
 		return configurationManager;
 	}
