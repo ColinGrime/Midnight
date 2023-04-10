@@ -3,6 +3,7 @@ package me.colingrimes.midnight.config.option;
 import me.colingrimes.midnight.config.adapter.ConfigurationAdapter;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.function.Function;
 
 public class SimpleOption<T> implements Option<T> {
@@ -12,7 +13,7 @@ public class SimpleOption<T> implements Option<T> {
 
 	public SimpleOption(@Nonnull Function<ConfigurationAdapter, ? extends T> function) {
 		this.function = function;
-		this.value = function.apply(null);
+		this.reload(null);
 	}
 
 	@Nonnull
@@ -22,7 +23,7 @@ public class SimpleOption<T> implements Option<T> {
 	}
 
 	@Override
-	public void reload(@Nonnull ConfigurationAdapter adapter) {
+	public void reload(@Nullable ConfigurationAdapter adapter) {
 		this.value = function.apply(adapter);
 	}
 }
