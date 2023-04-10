@@ -3,6 +3,7 @@ package me.colingrimes.midnight.config.option;
 import me.colingrimes.midnight.config.adapter.ConfigurationAdapter;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -16,23 +17,33 @@ public interface OptionFactory<T> {
 	OptionFactory<Boolean> BOOL = ConfigurationAdapter::getBoolean;
 
 	@Nonnull
-	static Option<String> string(String path, String def) {
+	static Option<String> option(@Nonnull String path, @Nonnull String def) {
 		return Option.of(new Bound<>(STRING, path, def));
 	}
 
 	@Nonnull
-	static Option<List<String>> stringList(String path, List<String> def) {
+	static Option<List<String>> option(@Nonnull String path, @Nonnull List<String> def) {
 		return Option.of(new Bound<>(STRING_LIST, path, def));
 	}
 
 	@Nonnull
-	static Option<Integer> integer(String path, int def) {
+	static Option<Integer> option(@Nonnull String path, int def) {
 		return Option.of(new Bound<>(INTEGER, path, def));
 	}
 
 	@Nonnull
-	static Option<Boolean> bool(String path, boolean def) {
+	static Option<Boolean> option(@Nonnull String path, boolean def) {
 		return Option.of(new Bound<>(BOOL, path, def));
+	}
+
+	@Nonnull
+	static Message<String> message(@Nonnull String path, @Nonnull String def) {
+		return new Message<>(new Bound<>(STRING, path, def));
+	}
+
+	@Nonnull
+	static Message<List<String>> message(@Nonnull String path, @Nonnull List<String> def) {
+		return new Message<>(new Bound<>(STRING_LIST, path, def));
 	}
 
 	/**
@@ -42,7 +53,7 @@ public interface OptionFactory<T> {
 	 * @return the value
 	 */
 	@Nonnull
-	Optional<T> getValue(ConfigurationAdapter adapter, String path);
+	Optional<T> getValue(@Nonnull ConfigurationAdapter adapter, @Nonnull String path);
 
 	/**
 	 * Bounds an option to a specific path.
@@ -54,14 +65,15 @@ public interface OptionFactory<T> {
 		private final String path;
 		private final T def;
 
-		Bound(OptionFactory<T> factory, String path, T def) {
+		Bound(@Nonnull OptionFactory<T> factory, @Nonnull String path, @Nonnull T def) {
 			this.factory = factory;
 			this.path = path;
 			this.def = def;
 		}
 
+		@Nonnull
 		@Override
-		public T apply(ConfigurationAdapter configurationAdapter) {
+		public T apply(@Nullable ConfigurationAdapter configurationAdapter) {
 			if (configurationAdapter == null) {
 				return def;
 			}
