@@ -8,6 +8,6 @@ import static me.colingrimes.midnight.config.option.OptionFactory.*;
 @Configuration("other.yml")
 public interface OtherSettings {
 
-	Option<Integer> exampleNumber = integer("exampleNumber", 5);
-	Option<Boolean> exampleBoolean = bool("exampleBoolean", true);
+	Option<Integer> exampleNumber = option("exampleNumber", 5);
+	Option<Boolean> exampleBoolean = option("exampleBoolean", true);
 }

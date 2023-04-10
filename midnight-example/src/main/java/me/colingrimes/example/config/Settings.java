@@ -7,5 +7,6 @@ import static me.colingrimes.midnight.config.option.OptionFactory.*;
 
 @Configuration
 public interface Settings {
-	Option<String> example = string("example", "Hello World!");
+
+	Option<String> example = option("example", "Hello World!");
 }
