@@ -4,6 +4,7 @@ import me.colingrimes.midnight.plugin.Midnight;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Responsible for providing a simple interface for accessing configuration values.
@@ -17,17 +18,21 @@ public interface ConfigurationAdapter {
 		if (fileName.equals("config.yml")) {
 			return new DefaultConfigurationAdapter(plugin);
 		} else {
-			return new CustomConfigurationAdapter(plugin, name);
+			return new CustomConfigurationAdapter(plugin, fileName);
 		}
 	}
 
 	void reload();
 
-	String getString(@Nonnull String path);
+	@Nonnull
+	Optional<String> getString(@Nonnull String path);
 
-	int getInteger(@Nonnull String path);
+	@Nonnull
+	Optional<Integer> getInteger(@Nonnull String path);
 
-	boolean getBoolean(@Nonnull String path);
+	@Nonnull
+	Optional<Boolean> getBoolean(@Nonnull String path);
 
-	List<String> getStringList(@Nonnull String path);
+	@Nonnull
+	Optional<List<String>> getStringList(@Nonnull String path);
 }

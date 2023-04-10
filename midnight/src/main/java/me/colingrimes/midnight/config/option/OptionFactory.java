@@ -4,7 +4,7 @@ import me.colingrimes.midnight.config.adapter.ConfigurationAdapter;
 
 import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 
 @FunctionalInterface
@@ -41,7 +41,8 @@ public interface OptionFactory<T> {
 	 * @param path the path
 	 * @return the value
 	 */
-	T getValue(ConfigurationAdapter adapter, String path);
+	@Nonnull
+	Optional<T> getValue(ConfigurationAdapter adapter, String path);
 
 	/**
 	 * Bounds an option to a specific path.
@@ -65,8 +66,7 @@ public interface OptionFactory<T> {
 				return def;
 			}
 
-			T value = factory.getValue(configurationAdapter, path);
-			return Objects.requireNonNullElse(value, def);
+			return factory.getValue(configurationAdapter, path).orElse(def);
 		}
 	}
 }
