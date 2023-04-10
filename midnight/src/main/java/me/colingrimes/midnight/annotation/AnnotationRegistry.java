@@ -1,14 +1,13 @@
 package me.colingrimes.midnight.annotation;
 
+import me.colingrimes.midnight.annotation.util.ClassFinder;
 import me.colingrimes.midnight.plugin.Midnight;
-import org.reflections.Reflections;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public final class AnnotationRegistry {
 
@@ -24,6 +23,7 @@ public final class AnnotationRegistry {
 	 * @param clazz the class
 	 * @return the top level package
 	 */
+	@Nonnull
 	private String getTopLevelPackage(Class<?> clazz) {
 		String currentPackageName = clazz.getPackage().getName();
 		while (currentPackageName.contains(".")) {
@@ -37,7 +37,7 @@ public final class AnnotationRegistry {
 	 * Registers an annotation processor.
 	 * @param processor the processor to register
 	 */
-	public void register(AnnotationProcessor processor) {
+	public void register(@Nonnull AnnotationProcessor processor) {
 		processors.add(processor);
 	}
 
@@ -45,11 +45,7 @@ public final class AnnotationRegistry {
 	 * Processes all registered annotation processors.
 	 */
 	public void process() {
-		Reflections reflections = new Reflections(packageName);
-		Set<Class<?>> classes = reflections.getSubTypesOf(Object.class);
-
-		// For every class, perform all necessary annotation actions.
-		for (Class<?> clazz : classes) {
+		for (Class<?> clazz : ClassFinder.getClasses(packageName)) {
 			for (AnnotationProcessor processor : processors) {
 				Class<?> taggerClass = processor.getTaggerClass();
 				if (taggerClass != null && clazz.isAssignableFrom(taggerClass)) {
