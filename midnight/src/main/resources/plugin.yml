@@ -1,0 +1,6 @@
+name: Midnight
+main: me.colingrimes.plugin.Midnight
+version: ${version}
+
+authors: [Scill]
+api-version: 1.19
