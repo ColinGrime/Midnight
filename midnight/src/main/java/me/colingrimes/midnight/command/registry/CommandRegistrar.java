@@ -12,10 +12,9 @@ public final class CommandRegistrar {
     /**
      * Dynamically registers the specified command.
      * @param plugin the plugin
-     * @param name the name
      * @param command the command to register
      */
-    public static void registerCommand(@Nonnull Plugin plugin, @Nonnull String name, @Nonnull CustomCommand command) {
+    public static void registerCommand(@Nonnull Plugin plugin, @Nonnull CustomCommand command) {
         try {
             Field commandMapField = Bukkit.getServer().getClass().getDeclaredField("commandMap");
             commandMapField.setAccessible(true);

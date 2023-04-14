@@ -38,7 +38,7 @@ public final class CommandNode implements CommandExecutor, TabExecutor {
      */
     public CommandNode(@Nonnull MidnightPlugin plugin, @Nonnull String name, @Nullable CommandHandler commandHandler) {
         CustomCommand customCommand = new CustomCommand(name, this, this);
-        CommandRegistrar.registerCommand(plugin, name, customCommand);
+        CommandRegistrar.registerCommand(plugin, customCommand);
         this.commandHandler = commandHandler;
     }
 
