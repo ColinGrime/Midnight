@@ -47,7 +47,6 @@ public class AnnotationCommandHandler implements CommandHandler {
         try {
             method.invoke(instance, convertedArgs);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
             return false;
         }
 
