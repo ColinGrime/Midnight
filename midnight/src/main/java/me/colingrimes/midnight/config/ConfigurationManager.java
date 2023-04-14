@@ -1,5 +1,6 @@
 package me.colingrimes.midnight.config;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +13,7 @@ public class ConfigurationManager {
 	 * @param name the name of the configuration
 	 * @param state the state of the configuration
 	 */
-	public void addConfiguration(String name, ConfigurationState state) {
+	public void addConfiguration(@Nonnull String name, @Nonnull ConfigurationState state) {
 		configurations.put(name, state);
 	}
 
@@ -27,7 +28,7 @@ public class ConfigurationManager {
 	 * Reloads a specific configuration.
 	 * @param name the name of the configuration
 	 */
-	public void reload(String name) {
+	public void reload(@Nonnull String name) {
 		configurations.get(name).reload();
 	}
 }
