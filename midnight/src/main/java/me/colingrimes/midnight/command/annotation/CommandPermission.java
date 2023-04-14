@@ -1,5 +1,6 @@
 package me.colingrimes.midnight.command.annotation;
 
+import javax.annotation.Nonnull;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -13,5 +14,6 @@ public @interface CommandPermission {
      * Gets the permission of the command.
      * @return the permission of the command
      */
+    @Nonnull
     String value();
 }
