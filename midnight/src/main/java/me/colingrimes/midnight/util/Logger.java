@@ -1,6 +1,5 @@
 package me.colingrimes.midnight.util;
 
-import me.colingrimes.midnight.plugin.Midnight;
 import org.bukkit.Bukkit;
 
 import javax.annotation.Nonnull;
@@ -18,7 +17,7 @@ public final class Logger {
 	 */
 	public static void log(@Nonnull String msg) {
 		Objects.requireNonNull(msg);
-		Bukkit.getLogger().log(Level.INFO, getPrefix() + msg);
+		Bukkit.getLogger().log(Level.INFO, msg);
 	}
 
 	/**
@@ -27,7 +26,7 @@ public final class Logger {
 	 */
 	public static void warn(@Nonnull String msg) {
 		Objects.requireNonNull(msg);
-		Bukkit.getLogger().log(Level.WARNING, getPrefix() + msg);
+		Bukkit.getLogger().log(Level.WARNING, msg);
 	}
 
 	/**
@@ -36,14 +35,7 @@ public final class Logger {
 	 */
 	public static void severe(@Nonnull String msg) {
 		Objects.requireNonNull(msg);
-		Bukkit.getLogger().log(Level.SEVERE, getPrefix() + msg);
-	}
-
-	/**
-	 * @return the prefix of the plugin
-	 */
-	private static @Nonnull String getPrefix() {
-		return "[" + Midnight.getInstance().getName() + "] ";
+		Bukkit.getLogger().log(Level.SEVERE, msg);
 	}
 
 	private Logger() {
