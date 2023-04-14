@@ -17,7 +17,6 @@ public class CustomConfigurationAdapter extends BaseConfigurationAdapter {
 		this.file = new File(plugin.getDataFolder(), configName);
 		if (!file.exists()) {
 			file.getParentFile().mkdirs();
-			// TODO FIX
 			plugin.saveResource(configName, false);
 		}
 	}
