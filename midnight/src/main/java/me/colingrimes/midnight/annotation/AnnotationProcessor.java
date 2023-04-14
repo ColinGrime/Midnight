@@ -1,7 +1,6 @@
 package me.colingrimes.midnight.annotation;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -14,15 +13,6 @@ public interface AnnotationProcessor {
 	 */
 	@Nonnull
 	Class<? extends Annotation> getAnnotation();
-
-	/**
-	 * Gets the optional tagger class that must be extended for the actions to be performed.
-	 * @return the tagger class
-	 */
-	@Nullable
-	default Class<?> getTaggerClass() {
-		return null;
-	}
 
 	/**
 	 * Process annotations on the class level.
