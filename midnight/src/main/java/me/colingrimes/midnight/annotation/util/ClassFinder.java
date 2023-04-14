@@ -1,5 +1,7 @@
 package me.colingrimes.midnight.annotation.util;
 
+import me.colingrimes.midnight.plugin.MidnightPlugin;
+
 import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
@@ -19,12 +21,12 @@ public final class ClassFinder {
 	 * @return the list of classes
 	 */
 	@Nonnull
-	public static List<Class<?>> getClasses(@Nonnull String packageName) {
+	public static List<Class<?>> getClasses(@Nonnull MidnightPlugin plugin, @Nonnull String packageName) {
 		List<Class<?>> classes = new ArrayList<>();
 		String path = packageName.replace('.', '/');
 
 		try {
-			URI uri = getUri(path);
+			URI uri = getUri(plugin.getClass().getClassLoader(), path);
 
 			// If the URI is not a JAR, walk the directory.
 			if (!uri.getScheme().equals("jar")) {
@@ -52,13 +54,13 @@ public final class ClassFinder {
 	 * @throws URISyntaxException if the URI is invalid
 	 */
 	@Nonnull
-	private static URI getUri(@Nonnull String path) throws URISyntaxException {
+	private static URI getUri(@Nonnull ClassLoader classLoader, @Nonnull String path) throws URISyntaxException {
 		URI uri;
 
 		try {
-			uri = Thread.currentThread().getContextClassLoader().getResource(path).toURI();
+			uri = classLoader.getResource(path).toURI();
 		} catch (NullPointerException | URISyntaxException e) {
-			uri = ClassFinder.class.getClassLoader().getResource(path).toURI();
+			throw new RuntimeException("Failed to get the URI for the path: " + path);
 		}
 
 		return uri;
