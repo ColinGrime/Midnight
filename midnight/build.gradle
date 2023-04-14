@@ -1,3 +1,5 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 group 'me.colingrimes.midnight'
 version '1.0.0'
 
@@ -6,4 +8,9 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testImplementation 'org.mockito:mockito-core:5.2.0'
     testImplementation 'com.github.seeseemelk:MockBukkit-v1.19:2.145.0'
+}
+
+// ${version} placeholders.
+processResources {
+    filter ReplaceTokens, beginToken: '${', endToken: '}', tokens: ['version': version]
 }
