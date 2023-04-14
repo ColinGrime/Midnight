@@ -4,8 +4,11 @@ import me.colingrimes.midnight.annotation.AnnotationProcessor;
 import me.colingrimes.midnight.command.annotation.Command;
 import me.colingrimes.midnight.command.annotation.CommandPermission;
 import me.colingrimes.midnight.command.annotation.CommandUsage;
+import me.colingrimes.midnight.command.node.CommandHandler;
+import me.colingrimes.midnight.plugin.MidnightPlugin;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -13,6 +16,12 @@ import java.util.List;
 import java.util.Objects;
 
 public class CommandProcessor implements AnnotationProcessor {
+
+	private final MidnightPlugin plugin;
+
+	public CommandProcessor(@Nonnull MidnightPlugin plugin) {
+		this.plugin = plugin;
+	}
 
 	@Nonnull
 	@Override
@@ -22,9 +31,17 @@ public class CommandProcessor implements AnnotationProcessor {
 
 	@Override
 	public void process(@Nonnull Method method) {
+		CommandPermission commandPermission = method.getAnnotation(CommandPermission.class);
+		CommandUsage commandUsage = method.getAnnotation(CommandUsage.class);
+
 		String command = method.getAnnotation(Command.class).value();
-		String permission = nonNull(method.getAnnotation(CommandPermission.class).value());
-		String usage = nonNull(method.getAnnotation(CommandUsage.class).value());
+		String permission = nonNull(commandPermission == null ? null : commandPermission.value());
+		String usage = nonNull(commandUsage == null ? null : commandUsage.value());
+
+		for (String commandAlias : parseCommandAliases(command)) {
+			CommandHandler handler = CommandHandler.of(method, permission, usage);
+			plugin.getCommandManager().register(commandAlias, handler);
+		}
 	}
 
 	/**
@@ -32,7 +49,8 @@ public class CommandProcessor implements AnnotationProcessor {
 	 * @param str the string to check
 	 * @return the non-null string
 	 */
-	private String nonNull(String str) {
+	@Nonnull
+	private String nonNull(@Nullable String str) {
 		return Objects.requireNonNullElse(str, "");
 	}
 
@@ -41,6 +59,7 @@ public class CommandProcessor implements AnnotationProcessor {
 	 * @param commandInput the command input to parse
 	 * @return a list of all command aliases
 	 */
+	@Nonnull
 	private List<String> parseCommandAliases(String commandInput) {
 		List<String> commands = List.of("");
 
