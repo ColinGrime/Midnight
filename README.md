@@ -9,6 +9,25 @@ Midnight is a powerful library for Spigot plugins that simplifies the creation a
 It focuses on providing a more declarative way to configure and develop your plugins. 
 The library currently offers a command management system and a configuration management system using annotations. 
 
+## Installation
+To include the Midnight library in your Bukkit plugin project using Gradle, add the below into your `build.gradle`:
+
+```groovy
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    compile 'com.github.ColinGrime:Midnight:LATEST_VERSION'
+}
+```
+
+The Midnight library will now be available for use in your project.  
+To run your Gradle project, execute the following command in your project root directory:
+```bash
+./gradlew run
+```
+
 ## Command Framework
 The command framework simplifies the creation and registration of custom commands, handling command arguments, aliases, permissions, and autocompletion. 
 It utilizes annotations such as @Command, @CommandUsage, and @CommandPermission to declare the necessary command information.
