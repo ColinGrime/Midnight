@@ -43,7 +43,7 @@ public class CircleParticle extends CustomParticle {
         private double radius;
         private int points;
 
-        protected Builder(@Nonnull Particle particle, @Nonnull Location location, int count) {
+        public Builder(@Nonnull Particle particle, @Nonnull Location location, int count) {
             super(particle, location, count);
         }
 
