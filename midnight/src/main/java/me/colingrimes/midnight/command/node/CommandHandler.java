@@ -1,6 +1,7 @@
 package me.colingrimes.midnight.command.node;
 
 import me.colingrimes.midnight.command.node.util.ArgumentParser;
+import me.colingrimes.midnight.util.Text;
 import me.colingrimes.plugin.config.Settings;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -52,22 +53,29 @@ public class CommandHandler {
      * @param sender the command sender
      * @param args the command arguments
      */
-    public void invoke(@Nonnull CommandSender sender, @Nonnull String[] args) {
+    public boolean invoke(@Nonnull CommandSender sender, @Nonnull String[] args) {
         if (!sender.hasPermission(permission)) {
             Settings.PERMISSION_DENIED.sendTo(sender);
-            return;
+            return true;
         }
 
         Object[] convertedArgs = parseArguments(sender, args);
         if (convertedArgs == null) {
-            return;
+            if (!usageMessage.isEmpty()) {
+                sender.sendMessage(Text.color(usageMessage));
+                return true;
+            }
+            return false;
         }
 
         try {
             method.invoke(instance, convertedArgs);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
+            return false;
         }
+
+        return true;
     }
 
     /**
@@ -87,7 +95,6 @@ public class CommandHandler {
 
         // Check if sender argument is valid.
         if (parameters[0].getType() == Player.class && !(sender instanceof Player)) {
-            Settings.INVALID_SENDER.sendTo(sender);
             return null;
         }
 

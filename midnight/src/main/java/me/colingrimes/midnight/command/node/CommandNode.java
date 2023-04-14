@@ -62,11 +62,10 @@ public final class CommandNode implements CommandExecutor, TabExecutor {
             child = children.get(args[0].toLowerCase());
         }
 
-        // Invoke the current command handler if there are no more possible children.
-        if (child == null && commandHandler != null) {
-            commandHandler.invoke(sender, args);
-        } else if (child != null) {
+        if (child != null) {
             child.onCommand(sender, command, label, Arrays.copyOfRange(args, 1, args.length));
+        } else if (commandHandler == null || !commandHandler.invoke(sender, args)) {
+            sender.sendMessage("Unknown command. Type \"/help\" for help.");
         }
 
         return true;
