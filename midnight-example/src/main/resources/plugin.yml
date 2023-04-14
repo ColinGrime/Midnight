@@ -1,6 +1,7 @@
 name: ExamplePlugin
 main: me.colingrimes.example.ExamplePlugin
 version: ${version}
+depend: [Midnight]
 
 authors: [Scill]
 api-version: 1.19
