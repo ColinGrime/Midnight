@@ -1,0 +1,109 @@
+package me.colingrimes.midnight.command.node;
+
+import me.colingrimes.midnight.command.node.util.ArgumentParser;
+import me.colingrimes.plugin.config.Settings;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import javax.annotation.Nonnull;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.Optional;
+
+public class CommandHandler {
+
+    private final Method method;
+    private final Parameter[] parameters;
+    private final Object instance;
+    private final String permission;
+    private final String usageMessage;
+
+    private CommandHandler(@Nonnull Method method, @Nonnull Object instance, @Nonnull String permission, @Nonnull String usageMessage) {
+        this.method = method;
+        this.parameters = method.getParameters();
+        this.instance = instance;
+        this.permission = permission;
+        this.usageMessage = usageMessage;
+    }
+
+    /**
+     * Creates a new command method.
+     * @param method the method
+     * @param permission the permission
+     * @param usageMessage the usage message
+     * @return the command method
+     */
+    @Nonnull
+    public static CommandHandler of(@Nonnull Method method, @Nonnull String permission, @Nonnull String usageMessage) {
+        Object instance;
+
+        try {
+            instance = method.getDeclaringClass().getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            throw new RuntimeException("Unable to create an instance of the class containing the command method.", e);
+        }
+
+        return new CommandHandler(method, instance, permission, usageMessage);
+    }
+
+    /**
+     * Invokes the command method.
+     * @param sender the command sender
+     * @param args the command arguments
+     */
+    public void invoke(@Nonnull CommandSender sender, @Nonnull String[] args) {
+        if (!sender.hasPermission(permission)) {
+            Settings.PERMISSION_DENIED.sendTo(sender);
+            return;
+        }
+
+        Object[] convertedArgs = parseArguments(sender, args);
+        if (convertedArgs == null) {
+            return;
+        }
+
+        try {
+            method.invoke(instance, convertedArgs);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Parses the command arguments into the correct types.
+     * @param sender the command sender
+     * @param args the command arguments
+     * @return the parsed arguments, or null if the arguments could not be parsed
+     */
+    private Object[] parseArguments(@Nonnull CommandSender sender, @Nonnull String[] args) {
+        // Arguments do not match the method parameters, return null.
+        if (parameters.length != args.length + 1) {
+            return null;
+        }
+
+        Object[] convertedArgs = new Object[parameters.length];
+        convertedArgs[0] = sender;
+
+        // Check if sender argument is valid.
+        if (parameters[0].getType() == Player.class && !(sender instanceof Player)) {
+            Settings.INVALID_SENDER.sendTo(sender);
+            return null;
+        }
+
+        // Parse the remaining arguments.
+        for (int i=1; i<parameters.length; i++) {
+            Class<?> type = parameters[i].getType();
+            Optional<Object> parsedArg = ArgumentParser.parse(type, args[i - 1]);
+
+            // Argument cannot be parsed, return null.
+            if (parsedArg.isEmpty()) {
+                return null;
+            } else {
+                convertedArgs[i] = parsedArg.get();
+            }
+        }
+
+        return convertedArgs;
+    }
+}
