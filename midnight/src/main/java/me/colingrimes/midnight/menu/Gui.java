@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.menu;
 
 import com.google.common.base.Preconditions;
-import me.colingrimes.midnight.plugin.Midnight;
+import me.colingrimes.midnight.plugin.MidnightPlugin;
 import me.colingrimes.midnight.util.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -71,7 +71,7 @@ public interface Gui extends Listener {
 		draw();
 
 		// Delay the opening by 1 tick to ensure inventory is ready.
-		Bukkit.getScheduler().runTask(Midnight.getInstance(), () -> {
+		Bukkit.getScheduler().runTask(MidnightPlugin.getInstance(), () -> {
 			getPlayer().openInventory(getHandle());
 			players.put(getPlayer(), this);
 			Common.registerEvents(this);
