@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.annotation;
 
 import me.colingrimes.midnight.annotation.util.ClassFinder;
-import me.colingrimes.midnight.plugin.Midnight;
+import me.colingrimes.midnight.plugin.MidnightPlugin;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
@@ -11,10 +11,12 @@ import java.util.List;
 
 public final class AnnotationRegistry {
 
+	private final MidnightPlugin plugin;
 	private final String packageName;
 	private final List<AnnotationProcessor> processors = new ArrayList<>();
 
-	public AnnotationRegistry(@Nonnull Midnight plugin) {
+	public AnnotationRegistry(@Nonnull MidnightPlugin plugin) {
+		this.plugin = plugin;
 		this.packageName = getTopLevelPackage(plugin.getClass());
 	}
 
@@ -45,13 +47,8 @@ public final class AnnotationRegistry {
 	 * Processes all registered annotation processors.
 	 */
 	public void process() {
-		for (Class<?> clazz : ClassFinder.getClasses(packageName)) {
+		for (Class<?> clazz : ClassFinder.getClasses(plugin, packageName)) {
 			for (AnnotationProcessor processor : processors) {
-				Class<?> taggerClass = processor.getTaggerClass();
-				if (taggerClass != null && clazz.isAssignableFrom(taggerClass)) {
-					break;
-				}
-
 				// Perform all actions for this processor.
 				processClass(processor, clazz);
 				processMethods(processor, clazz);
@@ -70,13 +67,17 @@ public final class AnnotationRegistry {
 
 	private void processMethods(@Nonnull AnnotationProcessor processor, @Nonnull Class<?> clazz) {
 		for (Method method : clazz.getDeclaredMethods()) {
-			processor.process(method);
+			if (method.isAnnotationPresent(processor.getAnnotation())) {
+				processor.process(method);
+			}
 		}
 	}
 
 	private void processFields(@Nonnull AnnotationProcessor processor, @Nonnull Class<?> clazz) {
 		for (Field field : clazz.getDeclaredFields()) {
-			processor.process(field);
+			if (field.isAnnotationPresent(processor.getAnnotation())) {
+				processor.process(field);
+			}
 		}
 	}
 }
