@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.util.item;
 
-import me.colingrimes.midnight.plugin.Midnight;
+import me.colingrimes.midnight.plugin.MidnightPlugin;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -28,7 +28,7 @@ public final class NBT {
 		}
 
 		ItemMeta meta = item.getItemMeta();
-		NamespacedKey namespacedKey = new NamespacedKey(Midnight.getInstance(), key);
+		NamespacedKey namespacedKey = new NamespacedKey(MidnightPlugin.getInstance(), key);
 		return Optional.ofNullable(meta.getPersistentDataContainer().get(namespacedKey, PersistentDataType.STRING));
 	}
 
@@ -45,7 +45,7 @@ public final class NBT {
 		Objects.requireNonNull(value, "Value is null.");
 
 		ItemMeta meta = item.getItemMeta();
-		NamespacedKey namespacedKey = new NamespacedKey(Midnight.getInstance(), key);
+		NamespacedKey namespacedKey = new NamespacedKey(MidnightPlugin.getInstance(), key);
 		meta.getPersistentDataContainer().set(namespacedKey, PersistentDataType.STRING, value);
 		item.setItemMeta(meta);
 	}

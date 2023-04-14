@@ -2,7 +2,7 @@ package me.colingrimes.midnight.util.item;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.inventory.meta.ItemMetaMock;
-import me.colingrimes.midnight.plugin.Midnight;
+import me.colingrimes.midnight.plugin.MidnightPlugin;
 import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,7 +19,7 @@ class NBTTest {
 	@BeforeAll
 	public static void load() {
 		MockBukkit.mock();
-		MockBukkit.load(Midnight.class);
+		MockBukkit.load(MidnightPlugin.class);
 	}
 
 	@AfterAll

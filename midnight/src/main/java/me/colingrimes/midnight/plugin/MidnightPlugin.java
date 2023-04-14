@@ -1,10 +1,13 @@
 package me.colingrimes.midnight.plugin;
 
 import me.colingrimes.midnight.annotation.AnnotationRegistry;
+import me.colingrimes.midnight.command.CommandManager;
+import me.colingrimes.midnight.command.annotation.processor.CommandProcessor;
 import me.colingrimes.midnight.config.ConfigurationManager;
 import me.colingrimes.midnight.config.annotation.processor.ConfigurationProcessor;
 import me.colingrimes.midnight.util.Common;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
@@ -14,16 +17,17 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Midnight extends JavaPlugin {
+public abstract class MidnightPlugin extends JavaPlugin {
 
-	private static Midnight instance;
+	private static Plugin instance;
 	private ConfigurationManager configurationManager;
+	private CommandManager commandManager;
 
-	public Midnight() {
+	public MidnightPlugin() {
 		super();
 	}
 
-	protected Midnight(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+	protected MidnightPlugin(@Nonnull JavaPluginLoader loader, @Nonnull PluginDescriptionFile description, @Nonnull File dataFolder, @Nonnull File file) {
 		super(loader, description, dataFolder, file);
 	}
 
@@ -37,6 +41,7 @@ public abstract class Midnight extends JavaPlugin {
 	public void onLoad() {
 		instance = this;
 		configurationManager = new ConfigurationManager();
+		commandManager = new CommandManager(this);
 		load();
 	}
 
@@ -55,7 +60,7 @@ public abstract class Midnight extends JavaPlugin {
 	private void loadAnnotations() {
 		AnnotationRegistry annotationRegistry = new AnnotationRegistry(this);
 		annotationRegistry.register(new ConfigurationProcessor(this));
-//		annotationRegistry.register(new CommandProcessor(this));
+		annotationRegistry.register(new CommandProcessor(this));
 		annotationRegistry.process();
 	}
 
@@ -72,7 +77,8 @@ public abstract class Midnight extends JavaPlugin {
 	 * Get the instance of the plugin.
 	 * @return instance of the plugin
 	 */
-	public static Midnight getInstance() {
+	@Nonnull
+	public static Plugin getInstance() {
 		return instance;
 	}
 
@@ -80,7 +86,17 @@ public abstract class Midnight extends JavaPlugin {
 	 * Get the configuration manager.
 	 * @return configuration manager
 	 */
+	@Nonnull
 	public ConfigurationManager getConfigurationManager() {
 		return configurationManager;
+	}
+
+	/**
+	 * Get the command manager.
+	 * @return command manager
+	 */
+	@Nonnull
+	public CommandManager getCommandManager() {
+		return commandManager;
 	}
 }

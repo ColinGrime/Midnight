@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.util.item;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
-import me.colingrimes.midnight.plugin.Midnight;
+import me.colingrimes.midnight.plugin.MidnightPlugin;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -16,12 +16,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ItemBuilderTest {
 
-	private static Midnight plugin;
+	private static MidnightPlugin plugin;
 
 	@BeforeAll
 	public static void load() {
 		MockBukkit.mock();
-		plugin = MockBukkit.load(Midnight.class);
+		plugin = MockBukkit.load(MidnightPlugin.class);
 	}
 
 	@AfterAll
