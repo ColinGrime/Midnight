@@ -1,5 +1,6 @@
 package me.colingrimes.midnight.command.node;
 
+import me.colingrimes.midnight.command.handler.CommandHandler;
 import me.colingrimes.midnight.command.registry.CommandRegistrar;
 import me.colingrimes.midnight.command.registry.CustomCommand;
 import me.colingrimes.midnight.plugin.MidnightPlugin;

@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.command.node.util;
+package me.colingrimes.midnight.command.handler.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

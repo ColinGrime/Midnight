@@ -1,12 +1,10 @@
 package me.colingrimes.midnight.command;
 
-import me.colingrimes.midnight.command.node.CommandHandler;
+import me.colingrimes.midnight.command.handler.CommandHandler;
 import me.colingrimes.midnight.command.node.CommandNode;
 import me.colingrimes.midnight.plugin.MidnightPlugin;
-import me.colingrimes.midnight.util.Logger;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 

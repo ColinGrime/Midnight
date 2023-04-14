@@ -1,6 +1,6 @@
-package me.colingrimes.midnight.command.node;
+package me.colingrimes.midnight.command.handler;
 
-import me.colingrimes.midnight.command.node.util.ArgumentParser;
+import me.colingrimes.midnight.command.handler.util.ArgumentParser;
 import me.colingrimes.midnight.util.Text;
 import me.colingrimes.plugin.config.Settings;
 import org.bukkit.command.CommandSender;
@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 
-public class CommandHandler {
+public class AnnotationCommandHandler implements CommandHandler {
 
     private final Method method;
     private final Parameter[] parameters;
@@ -20,7 +20,7 @@ public class CommandHandler {
     private final String permission;
     private final String usageMessage;
 
-    private CommandHandler(@Nonnull Method method, @Nonnull Object instance, @Nonnull String permission, @Nonnull String usageMessage) {
+    public AnnotationCommandHandler(@Nonnull Method method, @Nonnull Object instance, @Nonnull String permission, @Nonnull String usageMessage) {
         this.method = method;
         this.parameters = method.getParameters();
         this.instance = instance;
@@ -28,31 +28,7 @@ public class CommandHandler {
         this.usageMessage = usageMessage;
     }
 
-    /**
-     * Creates a new command method.
-     * @param method the method
-     * @param permission the permission
-     * @param usageMessage the usage message
-     * @return the command method
-     */
-    @Nonnull
-    public static CommandHandler of(@Nonnull Method method, @Nonnull String permission, @Nonnull String usageMessage) {
-        Object instance;
-
-        try {
-            instance = method.getDeclaringClass().getDeclaredConstructor().newInstance();
-        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-            throw new RuntimeException("Unable to create an instance of the class containing the command method.", e);
-        }
-
-        return new CommandHandler(method, instance, permission, usageMessage);
-    }
-
-    /**
-     * Invokes the command method.
-     * @param sender the command sender
-     * @param args the command arguments
-     */
+    @Override
     public boolean invoke(@Nonnull CommandSender sender, @Nonnull String[] args) {
         if (!sender.hasPermission(permission)) {
             Settings.PERMISSION_DENIED.sendTo(sender);

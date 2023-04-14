@@ -4,12 +4,14 @@ import me.colingrimes.midnight.annotation.AnnotationProcessor;
 import me.colingrimes.midnight.command.annotation.Command;
 import me.colingrimes.midnight.command.annotation.CommandPermission;
 import me.colingrimes.midnight.command.annotation.CommandUsage;
-import me.colingrimes.midnight.command.node.CommandHandler;
+import me.colingrimes.midnight.command.handler.CommandHandler;
+import me.colingrimes.midnight.command.handler.factory.CommandHandlerFactory;
 import me.colingrimes.midnight.plugin.MidnightPlugin;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +41,12 @@ public class CommandProcessor implements AnnotationProcessor {
 		String usage = nonNull(commandUsage == null ? null : commandUsage.value());
 
 		for (String commandAlias : parseCommandAliases(command)) {
-			CommandHandler handler = CommandHandler.of(method, permission, usage);
-			plugin.getCommandManager().register(commandAlias, handler);
+			try {
+				CommandHandler handler = CommandHandlerFactory.create(method, permission, usage);
+				plugin.getCommandManager().register(commandAlias, handler);
+			} catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
