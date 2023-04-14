@@ -12,27 +12,10 @@ import java.util.List;
 public final class AnnotationRegistry {
 
 	private final MidnightPlugin plugin;
-	private final String packageName;
 	private final List<AnnotationProcessor> processors = new ArrayList<>();
 
 	public AnnotationRegistry(@Nonnull MidnightPlugin plugin) {
 		this.plugin = plugin;
-		this.packageName = getTopLevelPackage(plugin.getClass());
-	}
-
-	/**
-	 * Gets the top level package of the given class.
-	 * @param clazz the class
-	 * @return the top level package
-	 */
-	@Nonnull
-	private String getTopLevelPackage(Class<?> clazz) {
-		String currentPackageName = clazz.getPackage().getName();
-		while (currentPackageName.contains(".")) {
-			int lastDotIndex = currentPackageName.indexOf('.');
-			currentPackageName = currentPackageName.substring(0, lastDotIndex);
-		}
-		return currentPackageName;
 	}
 
 	/**
@@ -47,7 +30,7 @@ public final class AnnotationRegistry {
 	 * Processes all registered annotation processors.
 	 */
 	public void process() {
-		for (Class<?> clazz : ClassFinder.getClasses(plugin, packageName)) {
+		for (Class<?> clazz : ClassFinder.getClasses(plugin, plugin.getRootPackage())) {
 			for (AnnotationProcessor processor : processors) {
 				// Perform all actions for this processor.
 				processClass(processor, clazz);

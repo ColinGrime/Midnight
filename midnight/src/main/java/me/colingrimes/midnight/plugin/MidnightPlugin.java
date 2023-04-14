@@ -74,6 +74,16 @@ public abstract class MidnightPlugin extends JavaPlugin {
 	}
 
 	/**
+	 * Gets the root package of the plugin.
+	 * Override this package if you put the plugin in a subpackage.
+	 * @return root package
+	 */
+	@Nonnull
+	public String getRootPackage() {
+		return getClass().getPackage().getName();
+	}
+
+	/**
 	 * Get the instance of the plugin.
 	 * @return instance of the plugin
 	 */
