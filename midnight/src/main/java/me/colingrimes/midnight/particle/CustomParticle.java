@@ -38,9 +38,9 @@ public abstract class CustomParticle {
         private final Particle particle;
         private final Location location;
         private final int count;
-        private Vector offset;
-        private double speed;
-        private Object data;
+        private Vector offset = new Vector(0, 0, 0);
+        private double speed = 0;
+        private Object data = null;
 
         protected Builder(@Nonnull Particle particle, @Nonnull Location location, int count) {
             this.particle = Objects.requireNonNull(particle, "Particle is null.");
