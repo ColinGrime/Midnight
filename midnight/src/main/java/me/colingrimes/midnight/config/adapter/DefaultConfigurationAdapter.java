@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.config.adapter;
 
-import me.colingrimes.midnight.plugin.Midnight;
+import me.colingrimes.midnight.plugin.MidnightPlugin;
 
 import javax.annotation.Nonnull;
 
@@ -9,9 +9,9 @@ import javax.annotation.Nonnull;
  */
 public class DefaultConfigurationAdapter extends BaseConfigurationAdapter {
 
-	private final Midnight plugin;
+	private final MidnightPlugin plugin;
 
-	public DefaultConfigurationAdapter(@Nonnull Midnight plugin) {
+	public DefaultConfigurationAdapter(@Nonnull MidnightPlugin plugin) {
 		this.plugin = plugin;
 		this.plugin.saveDefaultConfig();
 	}

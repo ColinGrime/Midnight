@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.config.adapter;
 
-import me.colingrimes.midnight.plugin.Midnight;
+import me.colingrimes.midnight.plugin.MidnightPlugin;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import javax.annotation.Nonnull;
@@ -13,10 +13,11 @@ public class CustomConfigurationAdapter extends BaseConfigurationAdapter {
 
 	private final File file;
 
-	public CustomConfigurationAdapter(@Nonnull Midnight plugin, @Nonnull String configName) {
+	public CustomConfigurationAdapter(@Nonnull MidnightPlugin plugin, @Nonnull String configName) {
 		this.file = new File(plugin.getDataFolder(), configName);
 		if (!file.exists()) {
 			file.getParentFile().mkdirs();
+			// TODO FIX
 			plugin.saveResource(configName, false);
 		}
 	}
