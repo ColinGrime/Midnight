@@ -1,11 +1,7 @@
 package me.colingrimes.midnight.command.node;
 
 import me.colingrimes.midnight.command.handler.CommandHandler;
-import me.colingrimes.midnight.command.registry.CommandRegistrar;
-import me.colingrimes.midnight.command.registry.CustomCommand;
-import me.colingrimes.midnight.plugin.MidnightPlugin;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 
@@ -17,31 +13,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public final class CommandNode implements CommandExecutor, TabExecutor {
+/**
+ * Represents a node in a tree-like structure for managing command hierarchies.
+ * Responsible for handling command execution and tab completion.
+ */
+public final class CommandNode implements TabExecutor {
 
     private final Map<String, CommandNode> children = new HashMap<>();
     private CommandHandler commandHandler;
-
-    /**
-     * Creates a new root command node.
-     * @param plugin the plugin
-     * @param name the command name
-     */
-    public CommandNode(@Nonnull MidnightPlugin plugin, @Nonnull String name) {
-        this(plugin, name, null);
-    }
-
-    /**
-     * Creates a new root command node.
-     * @param plugin the plugin
-     * @param name the command name
-     * @param commandHandler the command handler
-     */
-    public CommandNode(@Nonnull MidnightPlugin plugin, @Nonnull String name, @Nullable CommandHandler commandHandler) {
-        CustomCommand customCommand = new CustomCommand(name, this, this);
-        CommandRegistrar.registerCommand(plugin, customCommand);
-        this.commandHandler = commandHandler;
-    }
 
     /**
      * Creates a new child command node.
@@ -57,15 +36,15 @@ public final class CommandNode implements CommandExecutor, TabExecutor {
     }
 
     @Override
-    public boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command command, @Nonnull String label, @Nonnull String[] args) {
+    public boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command cmd, @Nonnull String label, @Nonnull String[] args) {
         CommandNode child = null;
         if (args.length > 0) {
             child = children.get(args[0].toLowerCase());
         }
 
         if (child != null) {
-            child.onCommand(sender, command, label, Arrays.copyOfRange(args, 1, args.length));
-        } else if (commandHandler == null || !commandHandler.invoke(sender, args)) {
+            child.onCommand(sender, cmd, label, Arrays.copyOfRange(args, 1, args.length));
+        } else if (commandHandler == null || !commandHandler.onCommand(sender, cmd, label, args)) {
             sender.sendMessage("Unknown command. Type \"/help\" for help.");
         }
 
@@ -73,7 +52,12 @@ public final class CommandNode implements CommandExecutor, TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(@Nonnull CommandSender sender, @Nonnull Command command, @Nonnull String label, @Nonnull String[] args) {
+    public List<String> onTabComplete(@Nonnull CommandSender sender, @Nonnull Command cmd, @Nonnull String label, @Nonnull String[] args) {
+        List<String> completions = commandHandler == null ? null : commandHandler.onTabComplete(sender, cmd, label, args);
+        if (completions != null) {
+            return completions;
+        }
+
         if (args.length == 1) {
             return children.keySet().stream()
                     .filter(child -> child.startsWith(args[0].toLowerCase()))
@@ -83,7 +67,7 @@ public final class CommandNode implements CommandExecutor, TabExecutor {
         if (args.length > 1) {
             CommandNode child = children.get(args[0].toLowerCase());
             if (child != null) {
-                return child.onTabComplete(sender, command, label, Arrays.copyOfRange(args, 1, args.length));
+                return child.onTabComplete(sender, cmd, label, Arrays.copyOfRange(args, 1, args.length));
             }
         }
 
