@@ -1,8 +1,9 @@
 package me.colingrimes.midnight.plugin;
 
 import me.colingrimes.midnight.annotation.AnnotationRegistry;
-import me.colingrimes.midnight.command.CommandManager;
+import me.colingrimes.midnight.command.registry.CommandRegistry;
 import me.colingrimes.midnight.command.annotation.processor.CommandProcessor;
+import me.colingrimes.midnight.command.registry.util.CommandPackageScanner;
 import me.colingrimes.midnight.config.ConfigurationManager;
 import me.colingrimes.midnight.config.annotation.processor.ConfigurationProcessor;
 import me.colingrimes.midnight.util.Common;
@@ -21,7 +22,7 @@ public abstract class MidnightPlugin extends JavaPlugin {
 
 	private static Plugin instance;
 	private ConfigurationManager configurationManager;
-	private CommandManager commandManager;
+	private CommandRegistry commandRegistry;
 
 	public MidnightPlugin() {
 		super();
@@ -41,12 +42,13 @@ public abstract class MidnightPlugin extends JavaPlugin {
 	public void onLoad() {
 		instance = this;
 		configurationManager = new ConfigurationManager();
-		commandManager = new CommandManager(this);
+		commandRegistry = new CommandRegistry(this);
 		load();
 	}
 
 	@Override
 	public void onEnable() {
+		loadCommands();
 		loadAnnotations();
 		registerListeners();
 		enable();
@@ -55,6 +57,10 @@ public abstract class MidnightPlugin extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		disable();
+	}
+
+	private void loadCommands() {
+		CommandPackageScanner.scanAndRegister(this);
 	}
 
 	private void loadAnnotations() {
@@ -102,11 +108,11 @@ public abstract class MidnightPlugin extends JavaPlugin {
 	}
 
 	/**
-	 * Get the command manager.
-	 * @return command manager
+	 * Get the command registry.
+	 * @return command registry
 	 */
 	@Nonnull
-	public CommandManager getCommandManager() {
-		return commandManager;
+	public CommandRegistry getCommandRegistry() {
+		return commandRegistry;
 	}
 }
