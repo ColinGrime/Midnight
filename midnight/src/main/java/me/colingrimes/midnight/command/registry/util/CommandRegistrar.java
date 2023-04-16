@@ -1,5 +1,6 @@
-package me.colingrimes.midnight.command.registry;
+package me.colingrimes.midnight.command.registry.util;
 
+import me.colingrimes.midnight.command.registry.CustomCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.Plugin;

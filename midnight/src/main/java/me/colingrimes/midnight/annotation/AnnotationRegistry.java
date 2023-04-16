@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.annotation;
 
-import me.colingrimes.midnight.annotation.util.ClassFinder;
+import me.colingrimes.midnight.util.clazz.ClassFinder;
 import me.colingrimes.midnight.plugin.MidnightPlugin;
 
 import javax.annotation.Nonnull;
