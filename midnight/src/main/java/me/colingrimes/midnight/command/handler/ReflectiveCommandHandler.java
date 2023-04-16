@@ -1,12 +1,14 @@
 package me.colingrimes.midnight.command.handler;
 
 import me.colingrimes.midnight.command.handler.util.ArgumentParser;
-import me.colingrimes.midnight.util.Text;
+import me.colingrimes.midnight.locale.Messageable;
+import me.colingrimes.midnight.locale.SimpleMessage;
 import me.colingrimes.plugin.config.Settings;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -22,14 +24,14 @@ public class ReflectiveCommandHandler implements CommandHandler {
     private final Parameter[] parameters;
     private final Object instance;
     private final String permission;
-    private final String usageMessage;
+    private final Messageable usageMessage;
 
-    public ReflectiveCommandHandler(@Nonnull Method method, @Nonnull Object instance, @Nonnull String permission, @Nonnull String usageMessage) {
+    public ReflectiveCommandHandler(@Nonnull Method method, @Nonnull Object instance, @Nullable String permission, @Nullable String usageMessage) {
         this.method = method;
         this.parameters = method.getParameters();
         this.instance = instance;
         this.permission = permission;
-        this.usageMessage = usageMessage;
+        this.usageMessage = usageMessage == null ? null : new SimpleMessage(usageMessage);
     }
 
     @Override
@@ -41,8 +43,8 @@ public class ReflectiveCommandHandler implements CommandHandler {
 
         Object[] convertedArgs = parseArguments(sender, args);
         if (convertedArgs == null) {
-            if (!usageMessage.isEmpty()) {
-                sender.sendMessage(Text.color(usageMessage));
+            if (getUsage() != null) {
+                getUsage().sendTo(sender);
                 return true;
             }
             return false;
@@ -55,6 +57,12 @@ public class ReflectiveCommandHandler implements CommandHandler {
         }
 
         return true;
+    }
+
+    @Nullable
+    @Override
+    public Messageable getUsage() {
+        return usageMessage;
     }
 
     /**

@@ -2,6 +2,7 @@ package me.colingrimes.midnight.command.handler;
 
 import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.argument.ArgumentList;
+import me.colingrimes.midnight.locale.Messageable;
 import me.colingrimes.midnight.plugin.MidnightPlugin;
 import me.colingrimes.plugin.config.Settings;
 import org.bukkit.command.CommandSender;
@@ -41,13 +42,20 @@ public class StandardCommandHandler<T extends MidnightPlugin> implements Command
 			Settings.PERMISSION_DENIED.sendTo(sender);
 			return true;
 		} else if (args.length < command.getArgumentsRequired()) {
-			command.getUsage().sendTo(sender);
-			return true;
+			if (getUsage() != null) {
+				getUsage().sendTo(sender);
+				return true;
+			}
+			return false;
 		}
 
 		ArgumentList argumentList = new ArgumentList(args);
 		if (!command.execute(plugin, sender, argumentList)) {
-			command.getUsage().sendTo(sender);
+			if (getUsage() != null) {
+				getUsage().sendTo(sender);
+				return true;
+			}
+			return false;
 		}
 
 		return true;
@@ -57,5 +65,11 @@ public class StandardCommandHandler<T extends MidnightPlugin> implements Command
 	@Override
 	public List<String> onTabComplete(@Nonnull CommandSender sender, @Nonnull org.bukkit.command.Command cmd, @Nonnull String label, @Nonnull String[] args) {
 		return command.tabComplete(plugin, sender, new ArgumentList(args));
+	}
+
+	@Nullable
+	@Override
+	public Messageable getUsage() {
+		return command.getUsage();
 	}
 }

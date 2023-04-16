@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.command;
 
 import me.colingrimes.midnight.command.argument.ArgumentList;
-import me.colingrimes.midnight.config.option.Message;
+import me.colingrimes.midnight.locale.Messageable;
 import me.colingrimes.midnight.plugin.MidnightPlugin;
 import org.bukkit.command.CommandSender;
 
@@ -44,7 +44,7 @@ public interface Command<T extends MidnightPlugin> {
 	 * @return usage message
 	 */
 	@Nullable
-	default Message<?> getUsage() {
+	default Messageable getUsage() {
 		return null;
 	}
 
