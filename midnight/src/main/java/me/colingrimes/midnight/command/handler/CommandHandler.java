@@ -1,15 +1,19 @@
 package me.colingrimes.midnight.command.handler;
 
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
-public interface CommandHandler {
+/**
+ * Represents a command handler responsible for executing and tab completing custom commands.
+ */
+public interface CommandHandler extends TabExecutor {
 
-	/**
-	 * Invokes the command handler.
-	 * @param sender the command sender
-	 * @param args the command arguments
-	 */
-	boolean invoke(@Nonnull CommandSender sender, @Nonnull String[] args);
+	@Override
+	default List<String> onTabComplete(@Nonnull CommandSender sender, @Nonnull Command command, @Nonnull String label, @Nonnull String[] args) {
+		return null;
+	}
 }

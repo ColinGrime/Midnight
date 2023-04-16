@@ -12,7 +12,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 
-public class AnnotationCommandHandler implements CommandHandler {
+/**
+ * A command handler that uses reflection to execute annotated command methods.
+ * Handles permission checking, argument parsing, and command execution.
+ */
+public class ReflectiveCommandHandler implements CommandHandler {
 
     private final Method method;
     private final Parameter[] parameters;
@@ -20,7 +24,7 @@ public class AnnotationCommandHandler implements CommandHandler {
     private final String permission;
     private final String usageMessage;
 
-    public AnnotationCommandHandler(@Nonnull Method method, @Nonnull Object instance, @Nonnull String permission, @Nonnull String usageMessage) {
+    public ReflectiveCommandHandler(@Nonnull Method method, @Nonnull Object instance, @Nonnull String permission, @Nonnull String usageMessage) {
         this.method = method;
         this.parameters = method.getParameters();
         this.instance = instance;
@@ -29,7 +33,7 @@ public class AnnotationCommandHandler implements CommandHandler {
     }
 
     @Override
-    public boolean invoke(@Nonnull CommandSender sender, @Nonnull String[] args) {
+    public boolean onCommand(@Nonnull CommandSender sender, @Nonnull org.bukkit.command.Command cmd, @Nonnull String label, @Nonnull String[] args) {
         if (!sender.hasPermission(permission)) {
             Settings.PERMISSION_DENIED.sendTo(sender);
             return true;
