@@ -7,6 +7,7 @@ import me.colingrimes.midnight.command.handler.StandardCommandHandler;
 import me.colingrimes.midnight.plugin.MidnightPlugin;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -43,7 +44,7 @@ public interface CommandHandlerFactory {
 	 * @return the command method
 	 */
 	@Nonnull
-	static CommandHandler create(@Nonnull Method method, @Nonnull String permission, @Nonnull String usageMessage) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+	static CommandHandler create(@Nonnull Method method, @Nullable String permission, @Nullable String usageMessage) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 		Object instance = method.getDeclaringClass().getDeclaredConstructor().newInstance();
 		return new ReflectiveCommandHandler(method, instance, permission, usageMessage);
 	}

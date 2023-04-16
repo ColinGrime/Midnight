@@ -37,8 +37,8 @@ public class CommandProcessor implements AnnotationProcessor {
 		CommandUsage commandUsage = method.getAnnotation(CommandUsage.class);
 
 		String command = method.getAnnotation(Command.class).value();
-		String permission = nonNull(commandPermission == null ? null : commandPermission.value());
-		String usage = nonNull(commandUsage == null ? null : commandUsage.value());
+		String permission = commandPermission == null ? null : commandPermission.value();
+		String usage = commandUsage == null ? null : commandUsage.value();
 
 		for (String commandAlias : parseCommandAliases(command)) {
 			try {
@@ -48,16 +48,6 @@ public class CommandProcessor implements AnnotationProcessor {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	/**
-	 * Returns the string if it's not null, otherwise returns an empty string.
-	 * @param str the string to check
-	 * @return the non-null string
-	 */
-	@Nonnull
-	private String nonNull(@Nullable String str) {
-		return Objects.requireNonNullElse(str, "");
 	}
 
 	/**
