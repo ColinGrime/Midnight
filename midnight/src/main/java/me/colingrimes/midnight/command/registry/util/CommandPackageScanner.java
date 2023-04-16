@@ -51,7 +51,7 @@ public final class CommandPackageScanner {
         if (commandPath.isEmpty()) {
             commandPath = clazz.getSimpleName().toLowerCase();
         } else {
-            commandPath += clazz.getSimpleName().replaceAll(".*[A-Z]", "").toLowerCase();
+            commandPath += " " + clazz.getSimpleName().replaceAll("^.*?([A-Z][a-z]+)$", "$1").toLowerCase();
         }
 
         plugin.getCommandRegistry().register(commandPath.split(" "), CommandHandlerFactory.create(plugin, command));
