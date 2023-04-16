@@ -1,16 +1,14 @@
 package me.colingrimes.midnight.command.node;
 
 import me.colingrimes.midnight.command.handler.CommandHandler;
+import me.colingrimes.midnight.locale.Messageable;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -19,19 +17,25 @@ import java.util.stream.Collectors;
  */
 public final class CommandNode implements TabExecutor {
 
+    private final CommandNode parent;
     private final Map<String, CommandNode> children = new HashMap<>();
-    private CommandHandler commandHandler;
+    private final CommandHandler commandHandler;
 
     /**
      * Creates a new child command node.
+     * @param parent the parent node
      */
-    public CommandNode() {}
+    public CommandNode(@Nullable CommandNode parent) {
+        this(parent, null);
+    }
 
     /**
      * Creates a new child command node.
+     * @param parent the parent node
      * @param commandHandler the command handler
      */
-    public CommandNode(@Nullable CommandHandler commandHandler) {
+    public CommandNode(@Nullable CommandNode parent, @Nullable CommandHandler commandHandler) {
+        this.parent = parent;
         this.commandHandler = commandHandler;
     }
 
@@ -45,7 +49,12 @@ public final class CommandNode implements TabExecutor {
         if (child != null) {
             child.onCommand(sender, cmd, label, Arrays.copyOfRange(args, 1, args.length));
         } else if (commandHandler == null || !commandHandler.onCommand(sender, cmd, label, args)) {
-            sender.sendMessage("Unknown command. Type \"/help\" for help.");
+            Optional<Messageable> usageMessage = findUsageMessage();
+            if (usageMessage.isPresent()) {
+                usageMessage.get().sendTo(sender);
+            } else {
+                sender.sendMessage("Unknown command. Type \"/help\" for help.");
+            }
         }
 
         return true;
@@ -81,5 +90,21 @@ public final class CommandNode implements TabExecutor {
     @Nonnull
     public Map<String, CommandNode> getChildren() {
         return children;
+    }
+
+    /**
+     * Recursively searches for the first non-null usage message in the command node's hierarchy.
+     * @return the first non-null usage message or null if none is found
+     */
+    @Nonnull
+    private Optional<Messageable> findUsageMessage() {
+        if (commandHandler != null) {
+            Messageable usageMessage = commandHandler.getUsage();
+            if (usageMessage != null) {
+                return Optional.of(usageMessage);
+            }
+        }
+
+        return parent != null ? parent.findUsageMessage() : Optional.empty();
     }
 }

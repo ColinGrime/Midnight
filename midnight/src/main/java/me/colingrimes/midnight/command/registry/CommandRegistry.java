@@ -28,9 +28,9 @@ public class CommandRegistry {
 		if (current == null) {
 			// If there is only one word, then we need to set the command handler.
 			if (args.length == 1) {
-				current = commandNodes.computeIfAbsent(args[0], name -> new CommandNode(handler));
+				current = commandNodes.computeIfAbsent(args[0], name -> new CommandNode(null, handler));
 			} else {
-				current = commandNodes.computeIfAbsent(args[0], name -> new CommandNode());
+				current = commandNodes.computeIfAbsent(args[0], name -> new CommandNode(null));
 			}
 
 			// Register the new command.
@@ -39,12 +39,13 @@ public class CommandRegistry {
 
 		for (int i=1; i<args.length; i++) {
 			String word = args[i];
+			CommandNode finalCurrent = current;
 
 			// If this is the last word, then we need to set the command handler.
 			if (i == args.length - 1) {
-				current = current.getChildren().computeIfAbsent(word, name -> new CommandNode(handler));
+				current = current.getChildren().computeIfAbsent(word, name -> new CommandNode(finalCurrent, handler));
 			} else {
-				current = current.getChildren().computeIfAbsent(word, name -> new CommandNode());
+				current = current.getChildren().computeIfAbsent(word, name -> new CommandNode(finalCurrent));
 			}
 		}
 	}
