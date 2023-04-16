@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.annotation.util;
+package me.colingrimes.midnight.util.clazz;
 
 import me.colingrimes.midnight.plugin.MidnightPlugin;
 
@@ -12,18 +12,31 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public final class ClassFinder {
 
 	/**
-	 * Gets all classes in the given package.
+	 * Gets all classes in the given package, recursively.
 	 * @param packageName the package name
 	 * @return the list of classes
 	 */
 	@Nonnull
 	public static List<Class<?>> getClasses(@Nonnull MidnightPlugin plugin, @Nonnull String packageName) {
+		return getClasses(plugin, packageName, true);
+	}
+
+	/**
+	 * Gets all classes in the given package.
+	 * @param packageName the package name
+	 * @param recursive whether to recursively search sub-packages
+	 * @return the list of classes
+	 */
+	@Nonnull
+	public static List<Class<?>> getClasses(@Nonnull MidnightPlugin plugin, @Nonnull String packageName, boolean recursive) {
 		List<Class<?>> classes = new ArrayList<>();
 		String path = packageName.replace('.', '/');
+		int maxDepth = recursive ? Integer.MAX_VALUE : 1;
 
 		try {
 			URI uri = getUri(plugin.getClass().getClassLoader(), path);
@@ -31,20 +44,58 @@ public final class ClassFinder {
 			// If the URI is not a JAR, walk the directory.
 			if (!uri.getScheme().equals("jar")) {
 				Path packagePath = Paths.get(uri);
-				Files.walkFileTree(packagePath, new CustomFileVisitor(plugin, packageName, packagePath, classes));
+				Files.walkFileTree(packagePath, Set.of(FileVisitOption.FOLLOW_LINKS), maxDepth, new CustomFileVisitor(plugin, packageName, packagePath, classes));
 				return classes;
 			}
 
 			// If the URI is a JAR, walk the JAR.
 			try (FileSystem fileSystem = FileSystems.newFileSystem(uri, new HashMap<>())) {
 				Path packagePath = fileSystem.getPath(path);
-				Files.walkFileTree(packagePath, new CustomFileVisitor(plugin, packageName, packagePath, classes));
+				Files.walkFileTree(packagePath, Set.of(FileVisitOption.FOLLOW_LINKS), maxDepth, new CustomFileVisitor(plugin, packageName, packagePath, classes));
 			}
 		} catch (IOException | URISyntaxException e) {
 			e.printStackTrace();
 		}
 
 		return classes;
+	}
+
+	@Nonnull
+	public static List<String> getSubPackages(@Nonnull MidnightPlugin plugin, @Nonnull String packageName) {
+		List<String> subPackages = new ArrayList<>();
+		String path = packageName.replace('.', '/');
+
+		try {
+			URI uri = getUri(plugin.getClass().getClassLoader(), path);
+
+			// If the URI is not a JAR, walk the directory.
+			if (!uri.getScheme().equals("jar")) {
+				try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(uri))) {
+					for (Path subPath : stream) {
+						if (Files.isDirectory(subPath)) {
+							subPackages.add(subPath.getFileName().toString());
+						}
+					}
+				}
+				return subPackages;
+			}
+
+			// If the URI is a JAR, walk the JAR.
+			try (FileSystem fileSystem = FileSystems.newFileSystem(uri, new HashMap<>())) {
+				Path packagePath = fileSystem.getPath(path);
+				try (DirectoryStream<Path> stream = Files.newDirectoryStream(packagePath)) {
+					for (Path subPath : stream) {
+						if (Files.isDirectory(subPath)) {
+							subPackages.add(subPath.getFileName().toString());
+						}
+					}
+				}
+			}
+		} catch (IOException | URISyntaxException e) {
+			e.printStackTrace();
+		}
+
+		return subPackages;
 	}
 
 	/**
