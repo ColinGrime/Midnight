@@ -43,7 +43,7 @@ public class CommandProcessor implements AnnotationProcessor {
 		for (String commandAlias : parseCommandAliases(command)) {
 			try {
 				CommandHandler handler = CommandHandlerFactory.create(method, permission, usage);
-				plugin.getCommandManager().register(commandAlias, handler);
+				plugin.getCommandRegistry().register(commandAlias.split(" "), handler);
 			} catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
