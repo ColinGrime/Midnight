@@ -1,9 +1,9 @@
 package me.colingrimes.midnight.command;
 
-import me.colingrimes.midnight.command.argument.ArgumentList;
+import me.colingrimes.midnight.command.util.ArgumentList;
+import me.colingrimes.midnight.command.util.Sender;
 import me.colingrimes.midnight.locale.Messageable;
 import me.colingrimes.midnight.plugin.MidnightPlugin;
-import org.bukkit.command.CommandSender;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -21,11 +21,8 @@ public interface Command<T extends MidnightPlugin> {
 	 * @param plugin the plugin instance
 	 * @param sender the sender of the command
 	 * @param args the arguments of the command
-	 * @return true if the command was executed successfully
 	 */
-	default boolean execute(@Nonnull T plugin, @Nonnull CommandSender sender, @Nonnull ArgumentList args) {
-		return false;
-	}
+	default void execute(@Nonnull T plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {}
 
 	/**
 	 * Tab completes the command.
@@ -35,7 +32,7 @@ public interface Command<T extends MidnightPlugin> {
 	 * @return list of tab completions
 	 */
 	@Nullable
-	default List<String> tabComplete(@Nonnull T plugin, @Nonnull CommandSender sender, @Nonnull ArgumentList args) {
+	default List<String> tabComplete(@Nonnull T plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
 		return null;
 	}
 
