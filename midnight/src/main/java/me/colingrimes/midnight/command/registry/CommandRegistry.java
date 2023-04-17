@@ -6,6 +6,7 @@ import me.colingrimes.midnight.command.registry.util.CommandRegistrar;
 import me.colingrimes.midnight.plugin.MidnightPlugin;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ public class CommandRegistry {
 	 * @param args the command arguments
 	 * @param handler the command handler
 	 */
-	public void register(@Nonnull String[] args, @Nonnull CommandHandler handler) {
+	public void register(@Nonnull String[] args, @Nullable CommandHandler handler) {
 		CommandNode current = commandNodes.get(args[0]);
 		if (current == null) {
 			// If there is only one word, then we need to set the command handler.
