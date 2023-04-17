@@ -46,6 +46,11 @@ public interface OptionFactory<T> {
 		return new Message<>(new Bound<>(STRING_LIST, path, def));
 	}
 
+	@Nonnull
+	static Message<List<String>> message(@Nonnull String path, @Nonnull String...def) {
+		return new Message<>(new Bound<>(STRING_LIST, path, List.of(def)));
+	}
+
 	/**
 	 * Gets the value of the option.
 	 * @param adapter the configuration adapter
