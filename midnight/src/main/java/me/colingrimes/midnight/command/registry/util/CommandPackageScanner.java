@@ -16,13 +16,13 @@ public final class CommandPackageScanner {
         scanAndRegister(plugin, plugin.getRootPackage() + ".command", "");
     }
 
-    private static <T extends MidnightPlugin> void scanAndRegister(@Nonnull T plugin, @Nonnull String packageName, @Nonnull String commandPath) {
-        List<Class<?>> classes = ClassFinder.getClasses(plugin, packageName, false);
+    private static <T extends MidnightPlugin> void scanAndRegister(@Nonnull T plugin, @Nonnull String packagePath, @Nonnull String commandPath) {
+        List<Class<?>> classes = ClassFinder.getClasses(plugin, packagePath, false);
         classes = classes.stream().filter(Command.class::isAssignableFrom).toList();
 
         // Only 1 command class per package.
         if (classes.size() > 1) {
-            Logger.severe("More than one command class found in package: " + packageName);
+            Logger.severe("More than one command class found in package: " + packagePath);
             return;
         }
 
@@ -34,11 +34,15 @@ public final class CommandPackageScanner {
                 Logger.severe("Failed to register command: " + classes.get(0).getSimpleName());
                 e.printStackTrace();
             }
+        } else if (!packagePath.equals(plugin.getRootPackage() + ".command")) {
+            String[] packages = packagePath.split("\\.");
+            commandPath += " " + packages[packages.length - 1];
+            plugin.getCommandRegistry().register(commandPath.split(" "), null);
         }
 
         // Recursively check the sub-packages for sub-commands.
-        for (String subPackage : ClassFinder.getSubPackages(plugin, packageName)) {
-            scanAndRegister(plugin, packageName + "." + subPackage, commandPath);
+        for (String subPackage : ClassFinder.getSubPackages(plugin, packagePath)) {
+            scanAndRegister(plugin, packagePath + "." + subPackage, commandPath);
         }
     }
 
