@@ -1,0 +1,44 @@
+usage:
+  particle:
+    - "&7&m------------- &e&lParticle &aCommands &7&m-------------"
+    - "&7- &a/particle create &e: &7Create a particle shape."
+    - "&7- &a/particle select &e: &7Select a saved particle."
+    - "&7- &a/particle modify &e: &7Modify particle properties."
+    - "&7- &a/particle preview &e: &7Preview particle location."
+    - "&7- &a/particle attach &e: &7Attach particle to a player."
+    - "&7- &a/particle detach &e: &7Detach particle from a player."
+    - "&7- &a/particle save &e: &7Save particle configuration."
+    - "&7- &a/particle load &e: &7Load a saved particle."
+    - "&7- &a/particle remove &e: &7Remove a saved particle."
+    - "&7- &a/particle clear &e: &7Clear all particles."
+    - "&7&m--------------------------------------------"
+  particle-create:
+    - "&eUsage: &a/particle create <shape> [target]"
+    - "&a► &7Create a particle shape with an optional target."
+  particle-select:
+    - "&eUsage: &a/particle select <name>"
+    - "&a► &7Select a saved particle by name."
+  particle-modify:
+    - "&eUsage: &a/particle modify <prop> <value>"
+    - "&a► &7Modify a particle property."
+  particle-preview:
+    - "&eUsage: &a/particle preview"
+    - "&a► &7Toggle particle location preview."
+  particle-attach:
+    - "&eUsage: &a/particle attach <player>"
+    - "&a► &7Attach a particle to a player."
+  particle-detach:
+    - "&eUsage: &a/particle detach"
+    - "&a► &7Detach a particle from a player."
+  particle-save:
+    - "&eUsage: &a/particle save <name>"
+    - "&a► &7Save a particle configuration."
+  particle-load:
+    - "&eUsage: &a/particle load <name> [target]"
+    - "&a► &7Load a saved particle with an optional target."
+  particle-remove:
+    - "&eUsage: &a/particle remove <name>"
+    - "&a► &7Remove a saved particle."
+  particle-clear:
+    - "&eUsage: &a/particle clear"
+    - "&a► &7Clear all particles."
