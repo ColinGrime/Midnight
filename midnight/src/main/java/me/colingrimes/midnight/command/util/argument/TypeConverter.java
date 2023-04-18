@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.command.util;
+package me.colingrimes.midnight.command.util.argument;
 
 import org.bukkit.entity.Player;
 
