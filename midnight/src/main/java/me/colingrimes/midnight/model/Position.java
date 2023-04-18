@@ -1,5 +1,6 @@
 package me.colingrimes.midnight.model;
 
+import org.bukkit.Location;
 import org.bukkit.World;
 
 import javax.annotation.Nonnull;
@@ -35,27 +36,12 @@ public class Position {
     }
 
     /**
-     * Gets the x coordinate.
-     * @return the x coordinate
+     * Converts this Position into a Bukkit Location.
+     * @return a new Location object representing this Position
      */
-    public double getX() {
-        return x;
-    }
-
-    /**
-     * Gets the y coordinate.
-     * @return the y coordinate
-     */
-    public double getY() {
-        return y;
-    }
-
-    /**
-     * Gets the z coordinate.
-     * @return the z coordinate
-     */
-    public double getZ() {
-        return z;
+    @Nonnull
+    public Location toLocation() {
+        return new Location(world, x, y, z);
     }
 
     /**
@@ -80,6 +66,30 @@ public class Position {
     @Nonnull
     public Position subtract(double x, double y, double z) {
         return new Position(this.world, this.x - x, this.y - y, this.z - z);
+    }
+
+    /**
+     * Gets the x coordinate.
+     * @return the x coordinate
+     */
+    public double getX() {
+        return x;
+    }
+
+    /**
+     * Gets the y coordinate.
+     * @return the y coordinate
+     */
+    public double getY() {
+        return y;
+    }
+
+    /**
+     * Gets the z coordinate.
+     * @return the z coordinate
+     */
+    public double getZ() {
+        return z;
     }
 
     @Override
