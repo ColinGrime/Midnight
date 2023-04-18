@@ -3,7 +3,7 @@ package me.colingrimes.midnight.command.handler;
 import me.colingrimes.midnight.command.handler.util.ArgumentParser;
 import me.colingrimes.midnight.locale.Messageable;
 import me.colingrimes.midnight.locale.SimpleMessage;
-import me.colingrimes.plugin.config.Settings;
+import me.colingrimes.plugin.config.Messages;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -37,7 +37,7 @@ public class ReflectiveCommandHandler implements CommandHandler {
     @Override
     public boolean onCommand(@Nonnull CommandSender sender, @Nonnull org.bukkit.command.Command cmd, @Nonnull String label, @Nonnull String[] args) {
         if (!sender.hasPermission(permission)) {
-            Settings.PERMISSION_DENIED.sendTo(sender);
+            Messages.PERMISSION_DENIED.sendTo(sender);
             return true;
         }
 
