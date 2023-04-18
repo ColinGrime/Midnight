@@ -7,6 +7,7 @@ import me.colingrimes.midnight.command.registry.util.CommandPackageScanner;
 import me.colingrimes.midnight.config.ConfigurationManager;
 import me.colingrimes.midnight.config.annotation.processor.ConfigurationProcessor;
 import me.colingrimes.midnight.util.Common;
+import me.colingrimes.midnight.util.Timer;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -60,14 +61,18 @@ public abstract class MidnightPlugin extends JavaPlugin {
 	}
 
 	private void loadCommands() {
-		CommandPackageScanner.scanAndRegister(this);
+		Timer.time(this, "Command Registration", () -> {
+			CommandPackageScanner.scanAndRegister(this);
+		});
 	}
 
 	private void loadAnnotations() {
-		AnnotationRegistry annotationRegistry = new AnnotationRegistry(this);
-		annotationRegistry.register(new ConfigurationProcessor(this));
-		annotationRegistry.register(new CommandProcessor(this));
-		annotationRegistry.process();
+		Timer.time(this, "Annotation Registration", () -> {
+			AnnotationRegistry annotationRegistry = new AnnotationRegistry(this);
+			annotationRegistry.register(new ConfigurationProcessor(this));
+			annotationRegistry.register(new CommandProcessor(this));
+			annotationRegistry.process();
+		});
 	}
 
 	private void registerListeners() {
