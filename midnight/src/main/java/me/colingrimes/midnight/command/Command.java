@@ -1,8 +1,9 @@
 package me.colingrimes.midnight.command;
 
-import me.colingrimes.midnight.command.util.ArgumentList;
+import me.colingrimes.midnight.command.util.CommandProperties;
+import me.colingrimes.midnight.command.util.argument.ArgumentList;
 import me.colingrimes.midnight.command.util.Sender;
-import me.colingrimes.midnight.locale.Messageable;
+import me.colingrimes.midnight.command.util.exception.CommandNotImplementedException;
 import me.colingrimes.midnight.plugin.MidnightPlugin;
 
 import javax.annotation.Nonnull;
@@ -22,7 +23,9 @@ public interface Command<T extends MidnightPlugin> {
 	 * @param sender the sender of the command
 	 * @param args the arguments of the command
 	 */
-	default void execute(@Nonnull T plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {}
+	default void execute(@Nonnull T plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
+		throw new CommandNotImplementedException();
+	}
 
 	/**
 	 * Tab completes the command.
@@ -37,51 +40,10 @@ public interface Command<T extends MidnightPlugin> {
 	}
 
 	/**
-	 * Gets the usage message of the command.
-	 * @return usage message
+	 * Configures the command properties using a {@link CommandProperties} object.
+	 * This method allows users to specify properties such as usage message, permission,
+	 * aliases, arguments required, and player requirement for a command.
+	 * @param properties {@link CommandProperties} object containing the command properties
 	 */
-	@Nullable
-	default Messageable getUsage() {
-		return null;
-	}
-
-	/**
-	 * Gets the permission required to run the command.
-	 * @return permission required to run the command
-	 */
-	@Nullable
-	default String getPermission() {
-		return null;
-	}
-
-	/**
-	 * Gets the aliases of the command.
-	 * @return aliases of the command
-	 */
-	@Nonnull
-	default String[] getAliases() {
-		return new String[]{};
-	}
-
-	/**
-	 * If arguments are required, the usage of the
-	 * command will be displayed if there are
-	 * not enough arguments inputted.
-	 *
-	 * @return amount of arguments required
-	 */
-	default int getArgumentsRequired() {
-		return 0;
-	}
-
-	/**
-	 * If player senders are required, the console
-	 * will be sent an invalid sender message if
-	 * they attempt to run the command.
-	 *
-	 * @return true if player sender should be required
-	 */
-	default boolean isPlayerRequired() {
-		return false;
-	}
+	default void configureProperties(@Nonnull CommandProperties properties) {}
 }
