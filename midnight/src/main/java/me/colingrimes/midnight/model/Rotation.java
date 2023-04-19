@@ -5,24 +5,24 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 
 /**
- * Represents a 3D direction in the form of pitch, yaw, and roll angles.
+ * Represents a 3D direction in the form of yaw, pitch, and roll angles.
  */
 public class Rotation extends Direction {
 
     private final double roll;
 
     /**
-     * Constructs a new Rotation with the given pitch, yaw, and roll angles.
-     * @param pitch the pitch angle
+     * Constructs a new Rotation with the given yaw, pitch, and roll angles.
      * @param yaw the yaw angle
+     * @param pitch the pitch angle
      * @param roll the roll angle
      */
-    public static Rotation of(double pitch, double yaw, double roll) {
-        return new Rotation(pitch, yaw, roll);
+    public static Rotation of(double yaw, double pitch, double roll) {
+        return new Rotation(yaw, pitch, roll);
     }
 
-    private Rotation(double pitch, double yaw, double roll) {
-        super(pitch, yaw);
+    private Rotation(double yaw, double pitch, double roll) {
+        super(yaw, pitch);
         this.roll = roll;
     }
 
@@ -51,8 +51,8 @@ public class Rotation extends Direction {
     @Override
     public String toString() {
         return "Direction{" +
-                "pitch=" + getPitch() +
-                ", yaw=" + getYaw() +
+                "yaw=" + getYaw() +
+                ", pitch=" + getPitch() +
                 ", roll=" + getRoll() +
                 '}';
     }
