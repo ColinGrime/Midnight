@@ -25,7 +25,7 @@ public class CircleParticleEffect extends BaseParticleEffect {
     }
 
     @Override
-    public void spawn() {
+    public void spawnParticle() {
         double increment = 2 * Math.PI / points;
 
         for (int i = 0; i < points; i++) {
