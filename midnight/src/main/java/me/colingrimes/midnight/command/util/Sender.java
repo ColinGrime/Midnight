@@ -29,6 +29,14 @@ public class Sender {
 	}
 
 	/**
+	 * Checks if the sender is a player.
+	 * @return true if the sender is a player
+	 */
+	public boolean isPlayer() {
+		return sender instanceof Player;
+	}
+
+	/**
 	 * Gets the player instance of the sender.
 	 * @return the player instance of the sender
 	 */
@@ -56,5 +64,29 @@ public class Sender {
 	@Nonnull
 	public World world() {
 		return Objects.requireNonNull(location().getWorld(), "World is null.");
+	}
+
+	/**
+	 * Gets the x coordinate of the sender.
+	 * @return the x coordinate of the sender
+	 */
+	public double x() {
+		return location().getX();
+	}
+
+	/**
+	 * Gets the y coordinate of the sender.
+	 * @return the y coordinate of the sender
+	 */
+	public double y() {
+		return location().getY();
+	}
+
+	/**
+	 * Gets the z coordinate of the sender.
+	 * @return the z coordinate of the sender
+	 */
+	public double z() {
+		return location().getZ();
 	}
 }
