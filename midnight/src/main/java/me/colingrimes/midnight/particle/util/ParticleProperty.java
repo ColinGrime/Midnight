@@ -1,15 +1,15 @@
 package me.colingrimes.midnight.particle.util;
 
 import me.colingrimes.midnight.util.ParsingUtil;
-import org.bukkit.Particle;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.function.Function;
 
 public enum ParticleProperty {
 
-	PARTICLE_TYPE(s -> Particle.valueOf(s.toUpperCase())),
+	TYPE(ParsingUtil::parseParticle),
 	COUNT(Integer::parseInt),
 	OFFSET(ParsingUtil::parseVector),
 	SPEED(Double::parseDouble),
@@ -23,7 +23,7 @@ public enum ParticleProperty {
 		this.valueParser = valueParser;
 	}
 
-	@Nonnull
+	@Nullable
 	public Object parseValue(@Nonnull String value) {
 		return valueParser.apply(value);
 	}
@@ -32,19 +32,19 @@ public enum ParticleProperty {
 	 * Parses the provided string to the corresponding ParticleProperty.
 	 * @param value the string value to parse
 	 * @return the ParticleProperty matching the provided string
-	 * @throws IllegalArgumentException if the string does not match any ParticleProperty
 	 */
-	public static ParticleProperty fromString(@Nullable String value) {
+	@Nonnull
+	public static Optional<ParticleProperty> fromString(@Nullable String value) {
 		if (value == null || value.isEmpty()) {
-			throw new IllegalArgumentException("Value cannot be null or empty");
+			return Optional.empty();
 		}
 
 		for (ParticleProperty type : values()) {
 			if (type.name().equalsIgnoreCase(value)) {
-				return type;
+				return Optional.of(type);
 			}
 		}
 
-		throw new IllegalArgumentException("No matching ParticleProperty found for value: " + value);
+		return Optional.empty();
 	}
 }
