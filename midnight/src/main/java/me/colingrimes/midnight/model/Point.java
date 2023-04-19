@@ -81,12 +81,32 @@ public class Point<T extends Direction> {
 	}
 
 	/**
+	 * Sets the position of the point.
+	 * @param position the new position
+	 * @return the point
+	 */
+	@Nonnull
+	public Point<T> setPosition(@Nonnull Position position) {
+		return Point.of(position, direction);
+	}
+
+	/**
 	 * Gets the direction of the point.
 	 * @return the direction of the point
 	 */
 	@Nonnull
 	public T getDirection() {
 		return direction;
+	}
+
+	/**
+	 * Sets the direction of the point.
+	 * @param direction the new direction
+	 * @return the point
+	 */
+	@Nonnull
+	public Point<T> setDirection(@Nonnull T direction) {
+		return Point.of(position, direction);
 	}
 
 	/**

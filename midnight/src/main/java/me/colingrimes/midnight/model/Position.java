@@ -16,6 +16,16 @@ public class Position {
     private final double x;
     private final double y;
     private final double z;
+    private Location location;
+
+    /**
+     * Constructs a new Position with the given location.
+     * @param location the location
+     */
+    public static Position of(@Nonnull Location location) {
+        World world = Objects.requireNonNull(location.getWorld());
+        return new Position(world, location.getX(), location.getY(), location.getZ());
+    }
 
     /**
      * Constructs a new Position with the given x, y, and z coordinates.
@@ -41,7 +51,10 @@ public class Position {
      */
     @Nonnull
     public Location toLocation() {
-        return new Location(world, x, y, z);
+        if (location == null) {
+            location = new Location(world, x, y, z);
+        }
+        return location;
     }
 
     /**
