@@ -8,6 +8,7 @@ import me.colingrimes.midnight.particle.ParticleEffect;
 import me.colingrimes.midnight.particle.util.ParticleProperty;
 import me.colingrimes.plugin.Midnight;
 import me.colingrimes.plugin.config.Messages;
+import org.bukkit.Particle;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -21,12 +22,11 @@ public class ParticleModify implements Command<Midnight> {
 	@Override
 	public void execute(@Nonnull Midnight plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
 		Optional<ParticleEffect> effect = plugin.getParticleManager().getSelectedParticle(sender.player());
-		if (effect.isEmpty()) {
-			return;
-		}
+		Optional<ParticleProperty> property = ParticleProperty.fromString(args.get(0));
 
-		ParticleProperty property = ParticleProperty.fromString(args.get(0));
-		effect.get().updateProperty(property, args.get(1));
+		if (effect.isPresent() && property.isPresent()) {
+			effect.get().updateProperty(property.get(), args.get(1));
+		}
 	}
 
 	@Nullable
@@ -34,9 +34,14 @@ public class ParticleModify implements Command<Midnight> {
 	public List<String> tabComplete(@Nonnull Midnight plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
 		if (args.size() == 1) {
 			return Arrays.stream(ParticleProperty.values()).map(p -> p.name().toLowerCase()).collect(Collectors.toList());
-		} else {
-			return null;
 		}
+
+		Optional<ParticleProperty> property = ParticleProperty.fromString(args.get(0));
+		if (property.isPresent() && property.get() == ParticleProperty.TYPE) {
+			return Arrays.stream(Particle.values()).map(p -> p.name().toLowerCase()).collect(Collectors.toList());
+		}
+
+		return null;
 	}
 
 	@Override
