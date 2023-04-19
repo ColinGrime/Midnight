@@ -21,6 +21,12 @@ public class ArgumentList extends ArrayList<String> implements TypeConverter {
 
 	@Nonnull
 	@Override
+	public String getLowercase(int index) {
+		return get(index).toLowerCase();
+	}
+
+	@Nonnull
+	@Override
 	public Optional<Integer> getInt(int index) {
 		if (isIndexOutOfBounds(index)) {
 			return Optional.empty();
