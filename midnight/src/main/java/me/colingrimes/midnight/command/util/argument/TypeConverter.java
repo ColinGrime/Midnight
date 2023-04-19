@@ -13,6 +13,14 @@ import java.util.Optional;
 public interface TypeConverter {
 
 	/**
+	 * Gets the lowercase version of the argument at the specified index.
+	 * @param index index of the argument
+	 * @return the argument in lowercase
+	 */
+	@Nonnull
+	String getLowercase(int index);
+
+	/**
 	 * Gets the integer argument at the specified index.
 	 * @param index index of the argument
 	 * @return the argument as an integer
