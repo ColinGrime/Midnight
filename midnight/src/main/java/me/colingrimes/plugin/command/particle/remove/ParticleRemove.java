@@ -9,6 +9,8 @@ import javax.annotation.Nonnull;
 
 public class ParticleRemove implements Command<Midnight> {
 
+
+
 	@Override
 	public void configureProperties(@Nonnull CommandProperties properties) {
 		properties.setUsage(Messages.PARTICLE_REMOVE_USAGE);
