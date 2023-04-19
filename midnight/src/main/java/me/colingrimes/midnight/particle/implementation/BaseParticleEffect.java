@@ -8,6 +8,7 @@ import me.colingrimes.midnight.particle.util.ParticleProperties;
 import me.colingrimes.midnight.particle.util.ParticleProperty;
 import me.colingrimes.midnight.plugin.MidnightPlugin;
 import org.bukkit.*;
+import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
@@ -17,14 +18,28 @@ public abstract class BaseParticleEffect implements ParticleEffect {
 
     private final ParticleProperties properties = new ParticleProperties();
     private Point<Rotation> point;
+    private Entity entity;
     private BukkitTask task;
 
     public BaseParticleEffect(@Nonnull Point<Rotation> point) {
         this.point = point;
     }
 
+    /**
+     * Spawns a particle at the effect's point.
+     */
+    protected abstract void spawnParticle();
+
     @Override
-    public abstract void spawn();
+    public void spawn() {
+        // If the entity has moved, update the point's position.
+        if (entity != null && !point.getPosition().toLocation().equals(entity.getLocation())) {
+            setPoint(point.setPosition(Position.of(entity.getLocation())));
+        }
+
+        // Spawn the particle.
+        spawnParticle();
+    }
 
     @Override
     public void startSpawning() {
@@ -43,6 +58,16 @@ public abstract class BaseParticleEffect implements ParticleEffect {
             task.cancel();
             task = null;
         }
+    }
+
+    @Override
+    public void attach(@Nonnull Entity entity) {
+        this.entity = entity;
+    }
+
+    @Override
+    public void detach() {
+        this.entity = null;
     }
 
     @Nonnull
@@ -65,9 +90,12 @@ public abstract class BaseParticleEffect implements ParticleEffect {
     @Override
     public void updateProperty(@Nonnull ParticleProperty property, @Nonnull String value) {
         Object parsedValue = property.parseValue(value);
+        if (parsedValue == null) {
+            return;
+        }
 
         switch (property) {
-            case PARTICLE_TYPE -> properties.setParticle((Particle) parsedValue);
+            case TYPE -> properties.setParticle((Particle) parsedValue);
             case COUNT -> properties.setCount((int) parsedValue);
             case OFFSET -> properties.setOffset((Vector) parsedValue);
             case SPEED -> properties.setSpeed((double) parsedValue);
@@ -80,7 +108,7 @@ public abstract class BaseParticleEffect implements ParticleEffect {
     @Override
     public Object getProperty(@Nonnull ParticleProperty property) {
         return switch (property) {
-            case PARTICLE_TYPE -> properties.getParticle();
+            case TYPE -> properties.getParticle();
             case COUNT -> properties.getCount();
             case OFFSET -> properties.getOffset();
             case SPEED -> properties.getSpeed();

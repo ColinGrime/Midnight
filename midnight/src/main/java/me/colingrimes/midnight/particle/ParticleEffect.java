@@ -4,6 +4,7 @@ import me.colingrimes.midnight.model.Point;
 import me.colingrimes.midnight.model.Rotation;
 import me.colingrimes.midnight.particle.util.ParticleProperties;
 import me.colingrimes.midnight.particle.util.ParticleProperty;
+import org.bukkit.entity.Entity;
 
 import javax.annotation.Nonnull;
 
@@ -23,6 +24,17 @@ public interface ParticleEffect {
      * Stops spawning particles.
      */
     void stopSpawning();
+
+    /**
+     * Attaches the particle effect to the specified entity.
+     * @param entity the entity to attach to
+     */
+    void attach(@Nonnull Entity entity);
+
+    /**
+     * Detaches the particle effect from the entity it is attached to.
+     */
+    void detach();
 
     /**
      * Gets the point where the particle effect is located.
