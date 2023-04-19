@@ -69,6 +69,83 @@ public class Position {
     }
 
     /**
+     * Rotates the position using the specified rotation's pitch, yaw, and roll angles.
+     * @param rotation the rotation to use
+     * @return a new position rotated by the pitch, yaw, and roll angles
+     */
+    @Nonnull
+    public Position rotate(@Nonnull Rotation rotation) {
+        // Convert angles to radians.
+        double pitchRadians = Math.toRadians(rotation.getPitch());
+        double yawRadians = Math.toRadians(rotation.getYaw());
+        double rollRadians = Math.toRadians(rotation.getRoll());
+
+        // Calculate sin and cos values for each angle.
+        double sinPitch = Math.sin(pitchRadians);
+        double cosPitch = Math.cos(pitchRadians);
+        double sinYaw = Math.sin(yawRadians);
+        double cosYaw = Math.cos(yawRadians);
+        double sinRoll = Math.sin(rollRadians);
+        double cosRoll = Math.cos(rollRadians);
+
+        // Calculate the rotation matrices for pitch, yaw, and roll.
+        double[][] pitchMatrix = {
+                {1, 0, 0},
+                {0, cosPitch, -sinPitch},
+                {0, sinPitch, cosPitch}
+        };
+
+        double[][] yawMatrix = {
+                {cosYaw, 0, sinYaw},
+                {0, 1, 0},
+                {-sinYaw, 0, cosYaw}
+        };
+
+        double[][] rollMatrix = {
+                {cosRoll, -sinRoll, 0},
+                {sinRoll, cosRoll, 0},
+                {0, 0, 1}
+        };
+
+        // Multiply pitch, yaw, and roll matrices to get the final rotation matrix.
+        double[][] combinedMatrix = multiplyMatrices(multiplyMatrices(pitchMatrix, yawMatrix), rollMatrix);
+
+        // Apply the rotation matrix to the input position vector.
+        double newX = combinedMatrix[0][0] * x + combinedMatrix[0][1] * y + combinedMatrix[0][2] * z;
+        double newY = combinedMatrix[1][0] * x + combinedMatrix[1][1] * y + combinedMatrix[1][2] * z;
+        double newZ = combinedMatrix[2][0] * x + combinedMatrix[2][1] * y + combinedMatrix[2][2] * z;
+
+        return Position.of(world, newX, newY, newZ);
+    }
+
+    /**
+     * Multiplies two 3x3 matrices.
+     * @param matrix1 the first matrix
+     * @param matrix2 the second matrix
+     * @return the product of the two matrices
+     */
+    private double[][] multiplyMatrices(@Nonnull double[][] matrix1, @Nonnull double[][] matrix2) {
+        double[][] result = new double[3][3];
+        for (int i=0; i<3; i++) {
+            for (int j=0; j<3; j++) {
+                for (int k=0; k<3; k++) {
+                    result[i][j] += matrix1[i][k] * matrix2[k][j];
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Gets the world of this position.
+     * @return the world
+     */
+    @Nonnull
+    public World getWorld() {
+        return world;
+    }
+
+    /**
      * Gets the x coordinate.
      * @return the x coordinate
      */
