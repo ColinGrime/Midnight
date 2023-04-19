@@ -6,6 +6,7 @@ import me.colingrimes.midnight.command.annotation.processor.CommandProcessor;
 import me.colingrimes.midnight.command.registry.util.CommandPackageScanner;
 import me.colingrimes.midnight.config.ConfigurationManager;
 import me.colingrimes.midnight.config.annotation.processor.ConfigurationProcessor;
+import me.colingrimes.midnight.particle.ParticleManager;
 import me.colingrimes.midnight.util.Common;
 import me.colingrimes.midnight.util.Timer;
 import org.bukkit.event.Listener;
@@ -22,8 +23,9 @@ import java.util.List;
 public abstract class MidnightPlugin extends JavaPlugin {
 
 	private static Plugin instance;
-	private ConfigurationManager configurationManager;
 	private CommandRegistry commandRegistry;
+	private ConfigurationManager configurationManager;
+	private ParticleManager particleManager;
 
 	public MidnightPlugin() {
 		super();
@@ -42,8 +44,9 @@ public abstract class MidnightPlugin extends JavaPlugin {
 	@Override
 	public void onLoad() {
 		instance = this;
-		configurationManager = new ConfigurationManager();
 		commandRegistry = new CommandRegistry(this);
+		configurationManager = new ConfigurationManager();
+		particleManager = new ParticleManager();
 		load();
 	}
 
@@ -95,7 +98,7 @@ public abstract class MidnightPlugin extends JavaPlugin {
 	}
 
 	/**
-	 * Get the instance of the plugin.
+	 * Gets the instance of the plugin.
 	 * @return instance of the plugin
 	 */
 	@Nonnull
@@ -104,7 +107,16 @@ public abstract class MidnightPlugin extends JavaPlugin {
 	}
 
 	/**
-	 * Get the configuration manager.
+	 * Gets the command registry.
+	 * @return command registry
+	 */
+	@Nonnull
+	public CommandRegistry getCommandRegistry() {
+		return commandRegistry;
+	}
+
+	/**
+	 * Gets the configuration manager.
 	 * @return configuration manager
 	 */
 	@Nonnull
@@ -113,11 +125,11 @@ public abstract class MidnightPlugin extends JavaPlugin {
 	}
 
 	/**
-	 * Get the command registry.
-	 * @return command registry
+	 * Gets the particle manager.
+	 * @return particle manager
 	 */
 	@Nonnull
-	public CommandRegistry getCommandRegistry() {
-		return commandRegistry;
+	public ParticleManager getParticleManager() {
+		return particleManager;
 	}
 }
