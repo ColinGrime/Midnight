@@ -2,7 +2,7 @@ package me.colingrimes.midnight.util.item;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.inventory.meta.ItemMetaMock;
-import me.colingrimes.midnight.plugin.MidnightPlugin;
+import me.colingrimes.midnight.MidnightPlugin;
 import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;

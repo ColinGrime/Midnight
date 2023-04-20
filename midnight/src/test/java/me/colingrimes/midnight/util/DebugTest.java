@@ -3,7 +3,7 @@ package me.colingrimes.midnight.util;
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import me.colingrimes.midnight.plugin.MidnightPlugin;
+import me.colingrimes.midnight.MidnightPlugin;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;

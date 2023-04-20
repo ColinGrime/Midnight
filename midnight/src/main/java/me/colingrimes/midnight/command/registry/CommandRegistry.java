@@ -3,7 +3,7 @@ package me.colingrimes.midnight.command.registry;
 import me.colingrimes.midnight.command.handler.CommandHandler;
 import me.colingrimes.midnight.command.node.CommandNode;
 import me.colingrimes.midnight.command.registry.util.CommandRegistrar;
-import me.colingrimes.midnight.plugin.MidnightPlugin;
+import me.colingrimes.midnight.MidnightPlugin;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

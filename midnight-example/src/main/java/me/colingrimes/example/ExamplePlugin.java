@@ -1,7 +1,7 @@
 package me.colingrimes.example;
 
 import me.colingrimes.example.listener.PlayerListeners;
-import me.colingrimes.midnight.plugin.MidnightPlugin;
+import me.colingrimes.midnight.MidnightPlugin;
 import org.bukkit.event.Listener;
 
 import javax.annotation.Nonnull;

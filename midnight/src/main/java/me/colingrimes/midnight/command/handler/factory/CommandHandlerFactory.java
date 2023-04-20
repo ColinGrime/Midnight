@@ -4,7 +4,7 @@ import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.handler.CommandHandler;
 import me.colingrimes.midnight.command.handler.ReflectiveCommandHandler;
 import me.colingrimes.midnight.command.handler.StandardCommandHandler;
-import me.colingrimes.midnight.plugin.MidnightPlugin;
+import me.colingrimes.midnight.MidnightPlugin;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

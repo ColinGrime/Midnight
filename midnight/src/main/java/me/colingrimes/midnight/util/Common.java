@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.util;
 
-import me.colingrimes.midnight.plugin.MidnightPlugin;
+import me.colingrimes.midnight.MidnightPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 

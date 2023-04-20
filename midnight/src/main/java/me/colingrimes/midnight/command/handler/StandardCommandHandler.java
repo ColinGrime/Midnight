@@ -6,7 +6,7 @@ import me.colingrimes.midnight.command.util.argument.ArgumentList;
 import me.colingrimes.midnight.command.util.Sender;
 import me.colingrimes.midnight.command.util.exception.CommandNotImplementedException;
 import me.colingrimes.midnight.locale.Messageable;
-import me.colingrimes.midnight.plugin.MidnightPlugin;
+import me.colingrimes.midnight.MidnightPlugin;
 import me.colingrimes.plugin.config.Messages;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

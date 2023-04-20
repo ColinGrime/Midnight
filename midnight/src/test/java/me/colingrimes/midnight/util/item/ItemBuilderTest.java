@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.util.item;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
-import me.colingrimes.midnight.plugin.MidnightPlugin;
+import me.colingrimes.midnight.MidnightPlugin;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;

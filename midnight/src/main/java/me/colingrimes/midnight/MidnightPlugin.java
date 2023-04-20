@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.plugin;
+package me.colingrimes.midnight;
 
 import me.colingrimes.midnight.annotation.AnnotationRegistry;
 import me.colingrimes.midnight.command.registry.CommandRegistry;

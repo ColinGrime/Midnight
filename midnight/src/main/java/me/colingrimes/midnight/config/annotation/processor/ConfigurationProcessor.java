@@ -5,7 +5,7 @@ import me.colingrimes.midnight.config.ConfigurationState;
 import me.colingrimes.midnight.config.adapter.ConfigurationAdapter;
 import me.colingrimes.midnight.config.annotation.Configuration;
 import me.colingrimes.midnight.config.option.Option;
-import me.colingrimes.midnight.plugin.MidnightPlugin;
+import me.colingrimes.midnight.MidnightPlugin;
 
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;

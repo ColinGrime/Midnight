@@ -6,16 +6,14 @@ import me.colingrimes.midnight.command.annotation.CommandPermission;
 import me.colingrimes.midnight.command.annotation.CommandUsage;
 import me.colingrimes.midnight.command.handler.CommandHandler;
 import me.colingrimes.midnight.command.handler.factory.CommandHandlerFactory;
-import me.colingrimes.midnight.plugin.MidnightPlugin;
+import me.colingrimes.midnight.MidnightPlugin;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class CommandProcessor implements AnnotationProcessor {
 

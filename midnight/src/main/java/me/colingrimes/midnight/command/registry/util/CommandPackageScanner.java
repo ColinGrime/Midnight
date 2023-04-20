@@ -2,7 +2,7 @@ package me.colingrimes.midnight.command.registry.util;
 
 import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.handler.factory.CommandHandlerFactory;
-import me.colingrimes.midnight.plugin.MidnightPlugin;
+import me.colingrimes.midnight.MidnightPlugin;
 import me.colingrimes.midnight.util.Logger;
 import me.colingrimes.midnight.util.clazz.ClassFinder;
 

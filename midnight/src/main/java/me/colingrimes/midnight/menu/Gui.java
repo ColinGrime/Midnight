@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.menu;
 
 import com.google.common.base.Preconditions;
-import me.colingrimes.midnight.plugin.MidnightPlugin;
+import me.colingrimes.midnight.MidnightPlugin;
 import me.colingrimes.midnight.util.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
