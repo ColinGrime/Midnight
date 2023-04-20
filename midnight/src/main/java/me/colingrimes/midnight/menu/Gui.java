@@ -74,7 +74,7 @@ public interface Gui extends Listener {
 		Bukkit.getScheduler().runTask(MidnightPlugin.getInstance(), () -> {
 			getPlayer().openInventory(getHandle());
 			players.put(getPlayer(), this);
-			Common.registerEvents(this);
+			Common.register(this);
 		});
 	}
 

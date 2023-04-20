@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.util;
+package me.colingrimes.midnight.util.text;
 
 import org.bukkit.ChatColor;
 

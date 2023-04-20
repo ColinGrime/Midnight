@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.locale;
 
-import me.colingrimes.midnight.util.Text;
+import me.colingrimes.midnight.util.text.Text;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

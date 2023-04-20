@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import me.colingrimes.midnight.menu.Gui;
 import me.colingrimes.midnight.menu.Slot;
 import me.colingrimes.midnight.menu.slot.SimpleSlot;
-import me.colingrimes.midnight.util.Text;
+import me.colingrimes.midnight.util.text.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

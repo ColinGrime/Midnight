@@ -1,5 +1,6 @@
 package me.colingrimes.midnight.util;
 
+import me.colingrimes.midnight.util.text.Text;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;

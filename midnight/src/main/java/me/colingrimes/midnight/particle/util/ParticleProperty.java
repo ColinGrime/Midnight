@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.particle.util;
 
-import me.colingrimes.midnight.util.ParsingUtil;
+import me.colingrimes.midnight.util.text.Parser;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -9,11 +9,11 @@ import java.util.function.Function;
 
 public enum ParticleProperty {
 
-	TYPE(ParsingUtil::parseParticle),
+	TYPE(Parser::parseParticle),
 	COUNT(Integer::parseInt),
-	OFFSET(ParsingUtil::parseVector),
+	OFFSET(Parser::parseVector),
 	SPEED(Double::parseDouble),
-	COLOR(ParsingUtil::parseColor),
+	COLOR(Parser::parseColor),
 	RADIUS(Double::parseDouble), // Specific to CircleParticleEffect
 	POINTS(Integer::parseInt); // Specific to CircleParticleEffect
 

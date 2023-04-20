@@ -4,7 +4,7 @@ import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.handler.factory.CommandHandlerFactory;
 import me.colingrimes.midnight.MidnightPlugin;
 import me.colingrimes.midnight.util.Logger;
-import me.colingrimes.midnight.util.clazz.ClassFinder;
+import me.colingrimes.midnight.util.ClassFinder;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.InvocationTargetException;

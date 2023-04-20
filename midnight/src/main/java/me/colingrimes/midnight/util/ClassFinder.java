@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.util.clazz;
+package me.colingrimes.midnight.util;
 
 import me.colingrimes.midnight.MidnightPlugin;
 
@@ -9,10 +9,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public final class ClassFinder {
 
@@ -109,7 +106,7 @@ public final class ClassFinder {
 		URI uri;
 
 		try {
-			uri = classLoader.getResource(path).toURI();
+			uri = Objects.requireNonNull(classLoader.getResource(path)).toURI();
 		} catch (NullPointerException | URISyntaxException e) {
 			throw new RuntimeException("Failed to get the URI for the path: " + path);
 		}

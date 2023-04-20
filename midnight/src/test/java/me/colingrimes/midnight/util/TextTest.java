@@ -1,5 +1,6 @@
 package me.colingrimes.midnight.util;
 
+import me.colingrimes.midnight.util.text.Text;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

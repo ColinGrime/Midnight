@@ -33,7 +33,7 @@ class ItemBuilderTest {
 	@DisplayName("Verify that the item builder works.")
 	void testBuilder() {
 		// Test Justingo input.
-		ItemStack justingoItem = new ItemBuilder(Material.END_CRYSTAL)
+		ItemStack justingoItem = new Items.ItemBuilder(Material.END_CRYSTAL)
 				.name("Justingo")
 				.lore(List.of("Justingo's Milk", "&f&lMILK"))
 				.glow(true).build();
@@ -45,7 +45,7 @@ class ItemBuilderTest {
 		assertTrue(justingoItem.getItemMeta().hasItemFlag(ItemFlag.HIDE_ENCHANTS));
 
 		// Test config input.
-		ItemStack configItem = new ItemBuilder(Material.BARRIER)
+		ItemStack configItem = new Items.ItemBuilder(Material.BARRIER)
 				.config(plugin.getConfig().getConfigurationSection("items.claimer"))
 				.placeholder("%markers%", 1)
 				.placeholder("%max_markers%", 10)
@@ -60,7 +60,7 @@ class ItemBuilderTest {
 		assertTrue(justingoItem.getItemMeta().hasItemFlag(ItemFlag.HIDE_ENCHANTS));
 
 		// Test another input.
-		ItemStack testItem = new ItemBuilder(Material.SOUL_SAND)
+		ItemStack testItem = new Items.ItemBuilder(Material.SOUL_SAND)
 				.material(Material.BASALT)
 				.material((String) null)
 				.build();

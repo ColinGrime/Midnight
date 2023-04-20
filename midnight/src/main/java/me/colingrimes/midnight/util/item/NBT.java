@@ -22,6 +22,7 @@ public final class NBT {
 	 * @param key the key to get the value from
 	 * @return the item's tag corresponding to the key
 	 */
+	@Nonnull
 	public static Optional<String> getTag(@Nullable ItemStack item, @Nullable String key) {
 		if (item == null || item.getItemMeta() == null || key == null || key.isEmpty()) {
 			return Optional.empty();

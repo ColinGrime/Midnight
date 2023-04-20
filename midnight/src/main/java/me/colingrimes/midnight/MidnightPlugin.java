@@ -83,7 +83,7 @@ public abstract class MidnightPlugin extends JavaPlugin {
 		registerListeners(listeners);
 
 		for (Listener listener : listeners) {
-			Common.registerEvents(listener);
+			Common.register(listener);
 		}
 	}
 

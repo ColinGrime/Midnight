@@ -3,7 +3,7 @@ package me.colingrimes.midnight.config.option;
 import me.colingrimes.midnight.config.adapter.ConfigurationAdapter;
 import me.colingrimes.midnight.locale.Messageable;
 import me.colingrimes.midnight.locale.Placeholders;
-import me.colingrimes.midnight.util.Text;
+import me.colingrimes.midnight.util.text.Text;
 import org.bukkit.command.CommandSender;
 
 import javax.annotation.Nonnull;

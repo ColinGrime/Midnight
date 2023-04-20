@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.util;
+package me.colingrimes.midnight.util.text;
 
 import org.bukkit.Color;
 import org.bukkit.Particle;
@@ -7,7 +7,7 @@ import org.bukkit.util.Vector;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class ParsingUtil {
+public final class Parser {
 
     /**
      * Parses a vector from a string.
@@ -69,5 +69,9 @@ public class ParsingUtil {
         } catch (NumberFormatException ignored) {}
 
         return null;
+    }
+
+    private Parser() {
+        throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
 }
