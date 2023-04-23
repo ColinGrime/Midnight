@@ -81,10 +81,7 @@ public abstract class MidnightPlugin extends JavaPlugin {
 	private void registerListeners() {
 		List<Listener> listeners = new ArrayList<>();
 		registerListeners(listeners);
-
-		for (Listener listener : listeners) {
-			Common.register(listener);
-		}
+		listeners.forEach(Common::register);
 	}
 
 	/**
