@@ -1,9 +1,12 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 group 'me.colingrimes.midnight'
-version '1.4.0'
+version '1.5.0'
 
 dependencies {
+    implementation 'com.zaxxer:HikariCP:5.0.1'
+
+    // Used for testing.
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testImplementation 'org.mockito:mockito-core:5.2.0'
