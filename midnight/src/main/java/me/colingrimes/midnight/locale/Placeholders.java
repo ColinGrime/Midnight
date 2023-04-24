@@ -1,6 +1,8 @@
 package me.colingrimes.midnight.locale;
 
 import me.colingrimes.midnight.util.text.Text;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -65,5 +67,36 @@ public final class Placeholders {
 		}
 
 		return strList.stream().map(this::replace).collect(Collectors.toList());
+	}
+
+	/**
+	 * Replaces all placeholders in a component with the replacement value.
+	 * @param component the component to replace placeholders with
+	 * @return the new component with replaced placeholders
+	 */
+	public @Nonnull TextComponent replace(@Nullable TextComponent component) {
+		if (component == null) {
+			return new TextComponent();
+		}
+
+		// Replace the placeholders in the main component.
+		TextComponent mainComponent = new TextComponent(replace(component.getText()));
+		mainComponent.setClickEvent(component.getClickEvent());
+		mainComponent.setHoverEvent(component.getHoverEvent());
+
+		for (BaseComponent base : component.getExtra()) {
+			if (!(base instanceof TextComponent extraComponent)) {
+				mainComponent.addExtra(base);
+				continue;
+			}
+
+			// Replace the placeholders in the extra component.
+			TextComponent newTextComponent = new TextComponent(replace(extraComponent.getText()));
+			newTextComponent.setClickEvent(extraComponent.getClickEvent());
+			newTextComponent.setHoverEvent(extraComponent.getHoverEvent());
+			mainComponent.addExtra(newTextComponent);
+		}
+
+		return mainComponent;
 	}
 }
