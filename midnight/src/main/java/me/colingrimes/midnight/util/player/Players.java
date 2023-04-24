@@ -1,5 +1,6 @@
-package me.colingrimes.midnight.util;
+package me.colingrimes.midnight.util.player;
 
+import me.colingrimes.midnight.util.Common;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;

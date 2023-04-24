@@ -1,5 +1,7 @@
-package me.colingrimes.midnight.locale;
+package me.colingrimes.midnight.locale.implementation;
 
+import me.colingrimes.midnight.locale.Messageable;
+import me.colingrimes.midnight.locale.Placeholders;
 import org.bukkit.command.CommandSender;
 
 import javax.annotation.Nonnull;
