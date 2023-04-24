@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  */
 public final class Text {
 
-	private static final Pattern specialChars = Pattern.compile("\\s+|:+|-+|_+");
+	private static final Pattern SPECIAL_CHARACTERS = Pattern.compile("\\s+|:+|-+|_+");
 
 	/**
 	 * Turns the string into a color-coded string.
@@ -41,9 +41,11 @@ public final class Text {
 	/**
 	 * Formats a String object.
 	 *
-	 * In doing so, the following actions are performed:
-	 * - Replaces all colons, dashes, and underscores with spaces.
-	 * - Capitalizes the first letter of each word.
+	 * <p>In doing so, the following actions are performed:</p>
+	 * <ul>
+	 *   <li>Replaces all colons, dashes, and underscores with spaces.</li>
+	 *   <li>Capitalizes the first letter of each word.</li>
+	 * </ul>
 	 *
 	 * @param str the string to be formatted
 	 * @return formatted string
@@ -55,7 +57,7 @@ public final class Text {
 		}
 
 		// Replaces all colons, dashes, and underscores with spaces.
-		str = replaceSpecialCharacters(str, " ");
+		str = SPECIAL_CHARACTERS.matcher(str).replaceAll(" ");
 
 		StringBuilder builder = new StringBuilder(str.substring(0, 1).toUpperCase());
 		for (int i=1; i<str.length(); i++) {
@@ -93,19 +95,6 @@ public final class Text {
 		}
 
 		return builder.toString();
-	}
-
-	/**
-	 * Replaces special characters (spaces, colons, dashes, underscores) with a new character.
-	 *
-	 * @param str String to be replaced
-	 * @param replacement String to replace special chars to
-	 * @return replaced String
-	 */
-	@Nonnull
-	private static String replaceSpecialCharacters(@Nullable String str, @Nonnull String replacement) {
-		if (str == null) return "";
-		return specialChars.matcher(str).replaceAll(replacement);
 	}
 
 	private Text() {
