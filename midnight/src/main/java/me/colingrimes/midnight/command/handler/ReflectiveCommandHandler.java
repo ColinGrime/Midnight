@@ -2,7 +2,7 @@ package me.colingrimes.midnight.command.handler;
 
 import me.colingrimes.midnight.command.handler.util.ArgumentParser;
 import me.colingrimes.midnight.locale.Messageable;
-import me.colingrimes.midnight.locale.SimpleMessage;
+import me.colingrimes.midnight.locale.implementation.SimpleMessage;
 import me.colingrimes.plugin.config.Messages;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
