@@ -1,11 +1,13 @@
 package me.colingrimes.midnight;
 
 import me.colingrimes.midnight.annotation.AnnotationRegistry;
-import me.colingrimes.midnight.command.registry.CommandRegistry;
 import me.colingrimes.midnight.command.annotation.processor.CommandProcessor;
+import me.colingrimes.midnight.command.registry.CommandRegistry;
 import me.colingrimes.midnight.command.registry.util.CommandPackageScanner;
 import me.colingrimes.midnight.config.ConfigurationManager;
 import me.colingrimes.midnight.config.annotation.processor.ConfigurationProcessor;
+import me.colingrimes.midnight.display.DisplayFactory;
+import me.colingrimes.midnight.display.manager.DisplayManager;
 import me.colingrimes.midnight.particle.ParticleManager;
 import me.colingrimes.midnight.util.Common;
 import me.colingrimes.midnight.util.Timer;
@@ -24,8 +26,11 @@ public abstract class MidnightPlugin extends JavaPlugin {
 
 	private static Plugin instance;
 	private CommandRegistry commandRegistry;
+
 	private ConfigurationManager configurationManager;
 	private ParticleManager particleManager;
+	private DisplayManager displayManager;
+	private DisplayFactory displayFactory;
 
 	public MidnightPlugin() {
 		super();
@@ -47,6 +52,8 @@ public abstract class MidnightPlugin extends JavaPlugin {
 		commandRegistry = new CommandRegistry(this);
 		configurationManager = new ConfigurationManager();
 		particleManager = new ParticleManager();
+		displayManager = new DisplayManager();
+		displayFactory = new DisplayFactory(this);
 		load();
 	}
 
@@ -128,5 +135,23 @@ public abstract class MidnightPlugin extends JavaPlugin {
 	@Nonnull
 	public ParticleManager getParticleManager() {
 		return particleManager;
+	}
+
+	/**
+	 * Gets the display manager.
+	 * @return display manager
+	 */
+	@Nonnull
+	public DisplayManager getDisplayManager() {
+		return displayManager;
+	}
+
+	/**
+	 * Gets the display factory.
+	 * @return display factory
+	 */
+	@Nonnull
+	public DisplayFactory display() {
+		return displayFactory;
 	}
 }
