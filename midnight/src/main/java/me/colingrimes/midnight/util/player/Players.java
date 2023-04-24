@@ -1,6 +1,9 @@
 package me.colingrimes.midnight.util.player;
 
 import me.colingrimes.midnight.util.Common;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -67,6 +70,24 @@ public final class Players {
 	 */
 	public static void forEach(@Nonnull Consumer<? super Player> action) {
 		all().forEach(action);
+	}
+
+	/**
+	 * Sends the given message as an action bar to the given player.
+	 * @param player the player
+	 * @param message the message
+	 */
+	public static void sendActionBar(@Nonnull Player player, @Nonnull String message) {
+		player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
+	}
+
+	/**
+	 * Plays the given sound to the given player.
+	 * @param player the player
+	 * @param sound the sound
+	 */
+	public static void playSound(@Nonnull Player player, @Nonnull Sound sound) {
+		player.playSound(player.getLocation(), sound, 1F, 1F);
 	}
 
 	private Players() {
