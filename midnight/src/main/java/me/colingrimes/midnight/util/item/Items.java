@@ -71,11 +71,7 @@ public final class Items {
 	 * @return true if the two items are of the same type
 	 */
 	public static boolean isSameType(@Nullable ItemStack item1, @Nullable ItemStack item2) {
-		if (item1 == null || item2 == null) {
-			return false;
-		}
-
-		return item1.getType().equals(item2.getType());
+		return item1 != null && item2 != null && item1.getType().equals(item2.getType());
 	}
 
 	/**
@@ -86,7 +82,7 @@ public final class Items {
 	 * - A "glowing" key for whether the item should be glowing or not.
 	 *
 	 * @param sec the section of the configuration file
-	 * @return the itembuilder object
+	 * @return the item stack
 	 */
 	@Nonnull
 	public static ItemStack config(@Nullable ConfigurationSection sec) {
@@ -120,7 +116,6 @@ public final class Items {
 
 		/**
 		 * Sets the {@link Material} of the item.
-		 *
 		 * @param material the material you want the item to be
 		 * @return the itembuilder object
 		 */
@@ -132,7 +127,6 @@ public final class Items {
 
 		/**
 		 * Sets the {@link Material} of the item.
-		 *
 		 * @param str the string containing the material name
 		 * @return the itembuilder object
 		 */
@@ -148,7 +142,6 @@ public final class Items {
 
 		/**
 		 * Sets the name of the item.
-		 *
 		 * @param name the name you want the item to be
 		 * @return the itembuilder object
 		 */
@@ -160,7 +153,6 @@ public final class Items {
 
 		/**
 		 * Sets the lore of the item.
-		 *
 		 * @param lore the lore you want the item to have
 		 * @return the itembuilder object
 		 */
@@ -172,7 +164,6 @@ public final class Items {
 
 		/**
 		 * Hides the attributes of the item.
-		 *
 		 * @return the itembuilder object
 		 */
 		@Nonnull
@@ -183,7 +174,6 @@ public final class Items {
 
 		/**
 		 * Makes the item glow.
-		 *
 		 * @return the itembuilder object
 		 */
 		@Nonnull
@@ -218,7 +208,6 @@ public final class Items {
 
 		/**
 		 * Adds a placeholder to the list of placeholders.
-		 *
 		 * @param placeholder the placeholder you want to add
 		 * @param replacement the value you want to replace the placeholder with
 		 * @param <T>         any type
