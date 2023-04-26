@@ -4,6 +4,7 @@ import me.colingrimes.midnight.MidnightPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.World;
+import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
 
 import javax.annotation.Nonnull;
@@ -29,6 +30,15 @@ public final class Common {
 	 */
 	public static <T extends Listener> void register(@Nonnull T listener) {
 		Bukkit.getPluginManager().registerEvents(listener, MidnightPlugin.getInstance());
+	}
+
+	/**
+	 * Calls the specified event.
+	 * @param event the event class
+	 * @param <T> any type that extends event
+	 */
+	public static <T extends Event> void call(@Nonnull T event) {
+		Bukkit.getPluginManager().callEvent(event);
 	}
 
 	/**
