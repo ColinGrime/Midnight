@@ -1,8 +1,10 @@
 package me.colingrimes.midnight.util.player;
 
 import me.colingrimes.midnight.util.Common;
+import me.colingrimes.midnight.util.Locations;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
@@ -73,6 +75,15 @@ public final class Players {
 	}
 
 	/**
+	 * Plays the given sound to the given player.
+	 * @param player the player
+	 * @param sound the sound
+	 */
+	public static void playSound(@Nonnull Player player, @Nonnull Sound sound) {
+		player.playSound(player.getLocation(), sound, 1F, 1F);
+	}
+
+	/**
 	 * Sends the given message as an action bar to the given player.
 	 * @param player the player
 	 * @param message the message
@@ -82,12 +93,24 @@ public final class Players {
 	}
 
 	/**
-	 * Plays the given sound to the given player.
-	 * @param player the player
-	 * @param sound the sound
+	 * Finds the closest player to the given location within 100 blocks.
+	 * @param location the location
+	 * @return the closest player
 	 */
-	public static void playSound(@Nonnull Player player, @Nonnull Sound sound) {
-		player.playSound(player.getLocation(), sound, 1F, 1F);
+	@Nonnull
+	public static Optional<Player> findClosest(@Nullable Location location) {
+		return findClosest(location, 100);
+	}
+
+	/**
+	 * Finds the closest player to the given location within the given number of blocks.
+	 * @param location the location
+	 * @param blocks the number of blocks
+	 * @return the closest player
+	 */
+	@Nonnull
+	public static Optional<Player> findClosest(@Nullable Location location, int blocks) {
+		return Locations.findClosest(Player.class, location, blocks);
 	}
 
 	private Players() {
