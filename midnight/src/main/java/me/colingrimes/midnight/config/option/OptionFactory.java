@@ -1,6 +1,8 @@
 package me.colingrimes.midnight.config.option;
 
 import me.colingrimes.midnight.config.adapter.ConfigurationAdapter;
+import me.colingrimes.midnight.config.util.ConfigurableInventory;
+import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -15,6 +17,8 @@ public interface OptionFactory<T> {
 	OptionFactory<List<String>> STRING_LIST = ConfigurationAdapter::getStringList;
 	OptionFactory<Integer> INTEGER = ConfigurationAdapter::getInteger;
 	OptionFactory<Boolean> BOOL = ConfigurationAdapter::getBoolean;
+	OptionFactory<ItemStack> ITEM_STACK = ConfigurationAdapter::getItemStack;
+	OptionFactory<ConfigurableInventory> INVENTORY = ConfigurationAdapter::getInventory;
 
 	@Nonnull
 	static Option<String> option(@Nonnull String path, @Nonnull String def) {
@@ -34,6 +38,16 @@ public interface OptionFactory<T> {
 	@Nonnull
 	static Option<Boolean> option(@Nonnull String path, boolean def) {
 		return Option.of(new Bound<>(BOOL, path, def));
+	}
+
+	@Nonnull
+	static Option<ItemStack> option(@Nonnull String path, @Nonnull ItemStack def) {
+		return Option.of(new Bound<>(ITEM_STACK, path, def));
+	}
+
+	@Nonnull
+	static Option<ConfigurableInventory> option(@Nonnull String path, @Nonnull ConfigurableInventory def) {
+		return Option.of(new Bound<>(INVENTORY, path, def));
 	}
 
 	@Nonnull

@@ -1,6 +1,9 @@
 package me.colingrimes.midnight.config.adapter;
 
+import me.colingrimes.midnight.config.util.ConfigurableInventory;
+import me.colingrimes.midnight.util.item.Items;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -18,6 +21,13 @@ abstract class BaseConfigurationAdapter implements ConfigurationAdapter {
 
 	@Nonnull
 	@Override
+	public Optional<List<String>> getStringList(@Nonnull String path) {
+		List<String> list = config.getStringList(path);
+		return list.isEmpty() ? Optional.empty() : Optional.of(list);
+	}
+
+	@Nonnull
+	@Override
 	public Optional<Integer> getInteger(@Nonnull String path) {
 		return Optional.ofNullable(config.getObject(path, Integer.class));
 	}
@@ -30,8 +40,13 @@ abstract class BaseConfigurationAdapter implements ConfigurationAdapter {
 
 	@Nonnull
 	@Override
-	public Optional<List<String>> getStringList(@Nonnull String path) {
-		List<String> list = config.getStringList(path);
-		return list.isEmpty() ? Optional.empty() : Optional.of(list);
+	public Optional<ItemStack> getItemStack(@Nonnull String path) {
+		return Optional.of(Items.config(config.getConfigurationSection(path)));
+	}
+
+	@Nonnull
+	@Override
+	public Optional<ConfigurableInventory> getInventory(@Nonnull String path) {
+		return ConfigurableInventory.of(config.getConfigurationSection(path));
 	}
 }
