@@ -29,8 +29,10 @@ public interface Slot {
 	/**
 	 * Gets the ID number of the slot.
 	 *
+	 * <p>
 	 * This is the slot number that corresponds to its
 	 * placement in the {@link Gui} that it is associated with.
+	 * </p>
 	 *
 	 * @return the id of the slot
 	 */
