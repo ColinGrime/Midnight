@@ -2,7 +2,6 @@ package me.colingrimes.midnight.menu.listener;
 
 import me.colingrimes.midnight.MidnightPlugin;
 import me.colingrimes.midnight.menu.Gui;
-import me.colingrimes.midnight.util.Common;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,7 +23,6 @@ public class MenuListener implements Listener {
 
     public MenuListener(@Nonnull MidnightPlugin plugin) {
         this.plugin = plugin;
-        Common.register(this);
     }
 
     @EventHandler
