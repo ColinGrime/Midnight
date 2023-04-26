@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.event.inventory.util;
+package me.colingrimes.midnight.event.util;
 
 import org.bukkit.event.inventory.InventoryAction;
 

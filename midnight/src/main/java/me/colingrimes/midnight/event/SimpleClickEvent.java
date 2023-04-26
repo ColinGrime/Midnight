@@ -1,6 +1,6 @@
-package me.colingrimes.midnight.event.inventory;
+package me.colingrimes.midnight.event;
 
-import me.colingrimes.midnight.event.inventory.util.SimpleAction;
+import me.colingrimes.midnight.event.util.SimpleAction;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
