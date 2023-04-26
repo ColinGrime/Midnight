@@ -1,11 +1,8 @@
 package me.colingrimes.midnight.menu;
 
 import com.google.common.base.Preconditions;
-import me.colingrimes.midnight.MidnightPlugin;
-import me.colingrimes.midnight.util.Common;
-import org.bukkit.Bukkit;
+import me.colingrimes.midnight.scheduler.Scheduler;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 
 import javax.annotation.Nonnull;
@@ -15,7 +12,7 @@ import java.util.Map;
 /**
  * Represents a {@link Gui} menu in the game.
  */
-public interface Gui extends Listener {
+public interface Gui {
 
 	/**
 	 * Players currently viewing a {@link Gui} instance.
@@ -70,11 +67,15 @@ public interface Gui extends Listener {
 		Preconditions.checkArgument(isValid(), "Gui has already been opened.");
 		draw();
 
+		// Close any other menus the player has open.
+		if (Gui.players.containsKey(getPlayer())) {
+			Gui.players.get(getPlayer()).close();
+		}
+
 		// Delay the opening by 1 tick to ensure inventory is ready.
-		Bukkit.getScheduler().runTask(MidnightPlugin.getInstance(), () -> {
-			getPlayer().openInventory(getHandle());
+		Scheduler.SYNC.run(() -> {
 			players.put(getPlayer(), this);
-			Common.register(this);
+			getPlayer().openInventory(getHandle());
 		});
 	}
 
