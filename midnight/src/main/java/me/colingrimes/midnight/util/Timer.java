@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.util;
 
-import me.colingrimes.midnight.MidnightPlugin;
+import org.bukkit.plugin.Plugin;
 
 import javax.annotation.Nonnull;
 import java.util.concurrent.TimeUnit;
@@ -12,7 +12,7 @@ public final class Timer {
      * @param method the method to time
      * @param message the message to log
      */
-    public static void time(@Nonnull MidnightPlugin plugin,  @Nonnull String message, @Nonnull Runnable method) {
+    public static <T extends Plugin> void time(@Nonnull T plugin, @Nonnull String message, @Nonnull Runnable method) {
         long startTime = System.nanoTime();
         method.run();
         long endTime = System.nanoTime();
