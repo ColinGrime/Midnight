@@ -90,7 +90,7 @@ public class Markdown {
 	 */
 	private static void handleUrlEvent(@Nonnull TextComponent eventComponent, @Nonnull String eventValue) {
 		int spaceIndex = eventValue.indexOf(' ');
-		if (spaceIndex == 0) {
+		if (spaceIndex == -1) {
 			eventComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, eventValue));
 			return;
 		}
