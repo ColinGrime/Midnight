@@ -35,14 +35,6 @@ public abstract class MidnightPlugin extends JavaPlugin {
 	private DisplayManager displayManager;
 	private DisplayFactory displayFactory;
 
-	public MidnightPlugin() {
-		super();
-	}
-
-	protected MidnightPlugin(@Nonnull JavaPluginLoader loader, @Nonnull PluginDescriptionFile description, @Nonnull File dataFolder, @Nonnull File file) {
-		super(loader, description, dataFolder, file);
-	}
-
 	// Override these methods to add functionality to your plugin.
 	protected void load() {}
 	protected void enable() {}
