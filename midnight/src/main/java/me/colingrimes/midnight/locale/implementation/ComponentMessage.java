@@ -22,4 +22,13 @@ public class ComponentMessage implements Messageable {
 		placeholders = Objects.requireNonNullElseGet(placeholders, Placeholders::new);
 		sender.spigot().sendMessage(placeholders.replace(component));
 	}
+
+	/**
+	 * Gets the underlying {@link TextComponent} for this message.
+	 * @return the text component
+	 */
+	@Nonnull
+	public TextComponent getComponent() {
+		return component;
+	}
 }
