@@ -8,12 +8,8 @@ import java.util.Objects;
 
 /**
  * Provides a quick way to debug on the server.
- * {@link Debug#DEBUG} must be true for debug messages to appear.
  */
 public final class Debug {
-
-	// Toggles debug messages on/off.
-	private static boolean DEBUG = false;
 
 	/**
 	 * Sends a debug message to the specified player.
@@ -23,10 +19,7 @@ public final class Debug {
 	public static void send(@Nonnull Player player, @Nonnull String msg) {
 		Objects.requireNonNull(player, "Player is null.");
 		Objects.requireNonNull(msg, "Message is null.");
-
-		if (DEBUG) {
-			player.sendMessage(Text.color("&c[Debug] &e" + msg));
-		}
+		player.sendMessage(Text.color("&c[Debug] &e" + msg));
 	}
 
 	/**
@@ -40,10 +33,8 @@ public final class Debug {
 		Objects.requireNonNull(key, "Key is null.");
 		Objects.requireNonNull(value, "Value is null.");
 
-		if (DEBUG) {
-			String valueStr = value instanceof String ? Text.format((String) value) : String.valueOf(value);
-			player.sendMessage(Text.color(String.format("&c[Debug] &e%s: &a%s", key, valueStr)));
-		}
+		String valueStr = value instanceof String ? (String) value : Text.format(String.valueOf(value));
+		player.sendMessage(Text.color(String.format("&c[Debug] &e%s: &a%s", key, valueStr)));
 	}
 
 	private Debug() {
