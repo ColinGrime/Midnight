@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 /**
  * Provides quick and efficient replacement of multiple placeholders within a string or list of strings.
  */
-public final class Placeholders {
+public class Placeholders {
 
 	private final Map<String, String> placeholders = new HashMap<>();
 
@@ -84,13 +84,17 @@ public final class Placeholders {
 		mainComponent.setClickEvent(component.getClickEvent());
 		mainComponent.setHoverEvent(component.getHoverEvent());
 
+		if (component.getExtra() == null) {
+			return mainComponent;
+		}
+
+		// Replace the placeholders in the extra components.
 		for (BaseComponent base : component.getExtra()) {
 			if (!(base instanceof TextComponent extraComponent)) {
 				mainComponent.addExtra(base);
 				continue;
 			}
 
-			// Replace the placeholders in the extra component.
 			TextComponent newTextComponent = new TextComponent(replace(extraComponent.getText()));
 			newTextComponent.setClickEvent(extraComponent.getClickEvent());
 			newTextComponent.setHoverEvent(extraComponent.getHoverEvent());
