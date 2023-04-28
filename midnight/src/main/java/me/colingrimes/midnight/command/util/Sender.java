@@ -21,6 +21,15 @@ public class Sender {
 	}
 
 	/**
+	 * Gets the underlying {@link CommandSender} instance.
+	 * @return the command sender
+	 */
+	@Nonnull
+	public CommandSender handle() {
+		return sender;
+	}
+
+	/**
 	 * Sends a message to the sender.
 	 * @param message the message to send to the sender
 	 */
