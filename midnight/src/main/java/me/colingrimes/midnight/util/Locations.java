@@ -11,6 +11,15 @@ import java.util.Optional;
 public final class Locations {
 
 	/**
+	 * Converts a location to a very readable string.
+	 * @param location the location
+	 * @return the string
+	 */
+	public static String toString(Location location) {
+		return "X=" + location.getBlockX() + " Y=" + location.getBlockY() + " Z=" + location.getBlockZ();
+	}
+
+	/**
 	 * Finds the closest entity of the specified type to the given location within the given number of blocks.
 	 * @param entityType the class of the desired entity type
 	 * @param location the location
