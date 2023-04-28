@@ -6,6 +6,7 @@ import me.colingrimes.midnight.display.manager.DisplayType;
 import me.colingrimes.midnight.scheduler.Scheduler;
 import me.colingrimes.midnight.scheduler.task.Task;
 import me.colingrimes.midnight.util.player.Players;
+import me.colingrimes.midnight.util.text.Text;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -24,7 +25,7 @@ public class ActionBar extends BaseDisplay {
 
     public ActionBar(@Nonnull MidnightPlugin plugin, @Nonnull String text) {
         this.plugin = plugin;
-        this.text = text;
+        this.text = Text.color(text);
     }
 
     @Nonnull
@@ -41,7 +42,7 @@ public class ActionBar extends BaseDisplay {
 
     @Override
     public void setText(@Nonnull String text) {
-        this.text = text;
+        this.text = Text.color(text);
     }
 
     @Nonnull

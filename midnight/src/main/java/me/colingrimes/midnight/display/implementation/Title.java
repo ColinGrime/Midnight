@@ -1,6 +1,7 @@
 package me.colingrimes.midnight.display.implementation;
 
 import me.colingrimes.midnight.display.manager.DisplayType;
+import me.colingrimes.midnight.util.text.Text;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -16,7 +17,7 @@ public class Title extends BaseDisplay {
     private int fadeOutTime;
 
     public Title(@Nonnull String titleText) {
-        this.titleText = titleText;
+        this.titleText = Text.color(titleText);
         this.subtitleText = "";
         this.fadeInTime = 20; // Default 1 second.
         this.stayTime = 60; // Default 3 seconds.
@@ -37,7 +38,7 @@ public class Title extends BaseDisplay {
 
     @Override
     public void setText(@Nonnull String text) {
-        this.titleText = text;
+        this.titleText = Text.color(text);
     }
 
     @Override
@@ -64,7 +65,7 @@ public class Title extends BaseDisplay {
      * @param subtitleText the subtitle text
      */
     public void setSubtitle(@Nonnull String subtitleText) {
-        this.subtitleText = subtitleText;
+        this.subtitleText = Text.color(subtitleText);
     }
 
     /**
