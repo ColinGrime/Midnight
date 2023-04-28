@@ -6,8 +6,50 @@ import org.bukkit.util.Vector;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class Parser {
+
+    private static final Pattern DURATION_PATTERN = Pattern.compile("^(\\d+)\\s*([a-zA-Z]+)$");
+    private static final Map<Pattern, ChronoUnit> UNIT_PATTERNS = new HashMap<>();
+
+    static {
+        UNIT_PATTERNS.put(Pattern.compile("s(?:ec(?:ond)?s?)?", Pattern.CASE_INSENSITIVE), ChronoUnit.SECONDS);
+        UNIT_PATTERNS.put(Pattern.compile("m(?:in(?:ute)?s?)?", Pattern.CASE_INSENSITIVE), ChronoUnit.MINUTES);
+        UNIT_PATTERNS.put(Pattern.compile("h(?:ou?rs?)?", Pattern.CASE_INSENSITIVE), ChronoUnit.HOURS);
+        UNIT_PATTERNS.put(Pattern.compile("d(?:ays?)?", Pattern.CASE_INSENSITIVE), ChronoUnit.DAYS);
+        UNIT_PATTERNS.put(Pattern.compile("w(?:ee)?ks?", Pattern.CASE_INSENSITIVE), ChronoUnit.WEEKS);
+        UNIT_PATTERNS.put(Pattern.compile("mo(?:nth)?s?", Pattern.CASE_INSENSITIVE), ChronoUnit.MONTHS);
+        UNIT_PATTERNS.put(Pattern.compile("y(?:ea)?rs?", Pattern.CASE_INSENSITIVE), ChronoUnit.YEARS);
+    }
+
+    /**
+     * Parses the given text into a {@link Duration}.
+     * @param text the text to parse
+     * @return the duration represented by the text
+     */
+    @Nullable
+    public static Duration parseDuration(@Nonnull String text) {
+        Matcher matcher = DURATION_PATTERN.matcher(text);
+        if (!matcher.matches()) {
+            return null;
+        }
+
+        long amount = Long.parseLong(matcher.group(1));
+        String unitString = matcher.group(2);
+
+        ChronoUnit unit = matchUnit(unitString);
+        if (unit == null) {
+            return null;
+        }
+
+        return Duration.of(amount, unit);
+    }
 
     /**
      * Parses a vector from a string.
@@ -68,6 +110,20 @@ public final class Parser {
             }
         } catch (NumberFormatException ignored) {}
 
+        return null;
+    }
+
+    /**
+     * Matches the given unit string to a {@link ChronoUnit}.
+     * @param unit the unit string
+     * @return the matching unit, or null if none was found
+     */
+    private static ChronoUnit matchUnit(@Nonnull String unit) {
+        for (Map.Entry<Pattern, ChronoUnit> entry : UNIT_PATTERNS.entrySet()) {
+            if (entry.getKey().matcher(unit).matches()) {
+                return entry.getValue();
+            }
+        }
         return null;
     }
 
