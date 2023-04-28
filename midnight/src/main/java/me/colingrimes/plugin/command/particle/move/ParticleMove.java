@@ -4,10 +4,13 @@ import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.util.CommandProperties;
 import me.colingrimes.midnight.command.util.Sender;
 import me.colingrimes.midnight.command.util.argument.ArgumentList;
+import me.colingrimes.midnight.locale.Placeholders;
 import me.colingrimes.midnight.model.Point;
-import me.colingrimes.midnight.model.Rotation;
 import me.colingrimes.midnight.particle.ParticleEffect;
+import me.colingrimes.midnight.util.Locations;
 import me.colingrimes.plugin.Midnight;
+import me.colingrimes.plugin.config.Messages;
+import org.bukkit.Location;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -16,12 +19,18 @@ public class ParticleMove implements Command<Midnight> {
 
 	@Override
 	public void execute(@Nonnull Midnight plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
-		Optional<ParticleEffect> effect = plugin.getParticleManager().getSelectedParticle(sender.player());
-		if (effect.isEmpty()) {
-			sender.message("&cYou must select a particle first!");
+		Optional<ParticleEffect> particle = plugin.getParticleManager().getSelectedParticle(sender.player());
+
+		// Check if a particle is selected.
+		if (particle.isEmpty()) {
+			Messages.PARTICLE_NOT_SELECTED.sendTo(sender);
 			return;
-		} else if (args.size() == 0) {
-			effect.get().setPoint(Point.of(sender.player()));
+		}
+
+		// Move the particle to the player's location if no coordinates are specified.
+		if (args.size() == 0) {
+			particle.get().setPoint(Point.of(sender.player()));
+			Messages.PARTICLE_MOVE.sendTo(sender, Placeholders.of("{location}", Locations.toString(sender.location())));
 			return;
 		}
 
@@ -30,9 +39,11 @@ public class ParticleMove implements Command<Midnight> {
 		Optional<Double> z = args.getDouble(2);
 
 		if (x.isPresent() && y.isPresent() && z.isPresent()) {
-			effect.get().setPoint(Point.of(sender.world(), x.get(), y.get(), z.get(), Rotation.of(0, 0, 0)));
+			Location location = new Location(sender.world(), x.get(), y.get(), z.get());
+			particle.get().setPoint(Point.of(location));
+			Messages.PARTICLE_MOVE.sendTo(sender, Placeholders.of("{location}", Locations.toString(location)));
 		} else {
-			sender.message("&cInvalid coordinates!");
+			Messages.INVALID_LOCATION.sendTo(sender);
 		}
 	}
 

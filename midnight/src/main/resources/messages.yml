@@ -1,4 +1,33 @@
+success:
+  actionbar-show: "&2&l✓ &aShowing Action Bar to &2player}&a."
+  bossbar-show: "&2&l✓ &aShowing Boss Bar to &2{player}&a."
+  particle-attach-player: "&2&l✓ &aParticle has been attached to &2{player}&a."
+  particle-attach-self: "&2&l✓ &aParticle has been attached to &2yourself&a."
+  particle-clear: "&2&l✓ &aAll particles have been cleared."
+  particle-create: "&2&l✓ &aParticle has been created with type &2{type}&a."
+  particle-detach-player: "&2&l✓ &aParticle has been detached from &2{player}&a."
+  particle-detach-self: "&2&l✓ &aParticle has been detached from &2yourself&a."
+  particle-modify: "&2&l✓ &aParticle property &2{property}&a has been set to &2{value}&a."
+  particle-move: "&2&l✓ &aParticle has been moved to &2{location}&a."
+  title-show: "&2&l✓ &aShowing Title to &2{player}&a."
+
+failure:
+  invalid-location: "&4&l❌ &cThe specified location is invalid."
+  invalid-property: "&4&l❌ &cThe specified property does not exist."
+  invalid-property-value: "&4&l❌ &cThe specified property value is invalid."
+  invalid-sender: "&4&l❌ &cThis command can only be executed by a player."
+  particle-not-found: "&4&l❌ &cThe specified particle does not exist."
+  particle-not-selected: "&4&l❌ &cYou must select a particle first."
+  permission-denied: "&4&l❌ &cYou lack the required permission for this command."
+  player-not-found: "&4&l❌ &cThe specified player is either offline or nonexistent."
+
 usage:
+  actionbar:
+    - "&eUsage: &a/actionbar <player> <text> [duration]"
+    - "&a► &7Show an actionbar message to a player (optional duration)."
+  bossbar:
+    - "&eUsage: &a/bossbar <player> <text> [duration]"
+    - "&a► &7Show an bossbar message to a player (optional duration)."
   particle:
     - "&7&m------------- &e&lParticle &aCommands &7&m-------------"
     - "&7- &a/particle create &e: &7Create a particle shape."
@@ -9,7 +38,7 @@ usage:
     - "&7- &a/particle detach &e: &7Detach particle from a player."
     - "&7- &a/particle save &e: &7Save particle configuration."
     - "&7- &a/particle load &e: &7Load a saved particle."
-    - "&7- &a/particle remove &e: &7Remove a saved particle."
+    - "&7- &a/particle delete &e: &7Delete a saved particle."
     - "&7- &a/particle clear &e: &7Clear all particles."
     - "&7&m--------------------------------------------"
   particle-create:
@@ -36,9 +65,12 @@ usage:
   particle-load:
     - "&eUsage: &a/particle load <name> [target]"
     - "&a► &7Load a saved particle with an optional target."
-  particle-remove:
-    - "&eUsage: &a/particle remove <name>"
-    - "&a► &7Remove a saved particle."
+  particle-delete:
+    - "&eUsage: &a/particle delete <name>"
+    - "&a► &7Delete a saved particle."
   particle-clear:
     - "&eUsage: &a/particle clear"
     - "&a► &7Clear all particles."
+  title:
+    - "&eUsage: &a/title <player> <title> [subtitle] [fade-in] [stay] [fade-out]"
+    - "&a► &7Show a title message to a player."

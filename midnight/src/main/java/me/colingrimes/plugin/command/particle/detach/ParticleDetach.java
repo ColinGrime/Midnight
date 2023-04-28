@@ -15,8 +15,14 @@ public class ParticleDetach implements Command<Midnight> {
 
 	@Override
 	public void execute(@Nonnull Midnight plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
-		Optional<ParticleEffect> effect = plugin.getParticleManager().getSelectedParticle(sender.player());
-		effect.ifPresent(ParticleEffect::detach);
+		Optional<ParticleEffect> particle = plugin.getParticleManager().getSelectedParticle(sender.player());
+
+		if (particle.isPresent()) {
+			particle.get().detach();
+			Messages.PARTICLE_DETACH_SELF.sendTo(sender);
+		} else {
+			Messages.PARTICLE_NOT_SELECTED.sendTo(sender);
+		}
 	}
 
 	@Override

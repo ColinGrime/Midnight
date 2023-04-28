@@ -9,12 +9,21 @@ import me.colingrimes.plugin.Midnight;
 import me.colingrimes.plugin.config.Messages;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 public class ParticleClear implements Command<Midnight> {
 
 	@Override
 	public void execute(@Nonnull Midnight plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
-		plugin.getParticleManager().getSelectedParticle(sender.player()).ifPresent(ParticleEffect::stopSpawning);
+		Optional<ParticleEffect> particle = plugin.getParticleManager().getSelectedParticle(sender.player());
+
+		// Check if a particle is selected.
+		if (particle.isPresent()) {
+			particle.get().stopSpawning();
+			Messages.PARTICLE_CLEAR.sendTo(sender);
+		} else {
+			Messages.PARTICLE_NOT_SELECTED.sendTo(sender);
+		}
 	}
 
 	@Override

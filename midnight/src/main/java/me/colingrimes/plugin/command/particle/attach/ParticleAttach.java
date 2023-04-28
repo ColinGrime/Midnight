@@ -4,9 +4,11 @@ import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.util.CommandProperties;
 import me.colingrimes.midnight.command.util.Sender;
 import me.colingrimes.midnight.command.util.argument.ArgumentList;
+import me.colingrimes.midnight.locale.Placeholders;
 import me.colingrimes.midnight.particle.ParticleEffect;
 import me.colingrimes.plugin.Midnight;
 import me.colingrimes.plugin.config.Messages;
+import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -15,13 +17,29 @@ public class ParticleAttach implements Command<Midnight>  {
 
 	@Override
 	public void execute(@Nonnull Midnight plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
-		Optional<ParticleEffect> effect = plugin.getParticleManager().getSelectedParticle(sender.player());
-		if (args.size() == 0) {
-			effect.ifPresent(particle -> particle.attach(sender.player()));
+		Optional<ParticleEffect> particle = plugin.getParticleManager().getSelectedParticle(sender.player());
+		Optional<Player> target = args.getPlayer(0);
+
+		// Check if a particle is selected.
+		if (particle.isEmpty()) {
+			Messages.PARTICLE_NOT_SELECTED.sendTo(sender);
 			return;
 		}
 
-		args.getPlayer(0).ifPresent(player -> effect.ifPresent(particle -> particle.attach(player)));
+		// Attach to self if no player is specified.
+		if (args.size() == 0) {
+			particle.get().attach(sender.player());
+			Messages.PARTICLE_ATTACH_SELF.sendTo(sender);
+			return;
+		}
+
+		// Attach to player if they exist.
+		if (target.isPresent()) {
+			particle.get().attach(target.get());
+			Messages.PARTICLE_ATTACH_PLAYER.sendTo(sender, Placeholders.of("{player}", target.get().getName()));
+		} else {
+			Messages.PLAYER_NOT_FOUND.sendTo(sender);
+		}
 	}
 
 	@Override
