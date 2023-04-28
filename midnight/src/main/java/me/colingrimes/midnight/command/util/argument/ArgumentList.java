@@ -1,9 +1,11 @@
 package me.colingrimes.midnight.command.util.argument;
 
+import me.colingrimes.midnight.util.text.Parser;
 import org.bukkit.entity.Player;
 import org.bukkit.Bukkit;
 
 import javax.annotation.Nonnull;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
@@ -17,6 +19,16 @@ public class ArgumentList extends ArrayList<String> implements TypeConverter {
 
 	public ArgumentList(@Nonnull String[] args) {
 		Collections.addAll(this, args);
+	}
+
+	@Nonnull
+	@Override
+	public Optional<String> getOptional(int index) {
+		if (isIndexOutOfBounds(index)) {
+			return Optional.empty();
+		}
+
+		return Optional.of(this.get(index));
 	}
 
 	@Nonnull
@@ -91,6 +103,16 @@ public class ArgumentList extends ArrayList<String> implements TypeConverter {
 		}
 
 		return Optional.ofNullable(Bukkit.getPlayer(this.get(index)));
+	}
+
+	@Nonnull
+	@Override
+	public Optional<Duration> getDuration(int index) {
+		if (isIndexOutOfBounds(index)) {
+			return Optional.empty();
+		}
+
+		return Optional.ofNullable(Parser.parseDuration(this.get(index)));
 	}
 
 	/**

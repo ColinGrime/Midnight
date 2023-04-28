@@ -3,6 +3,7 @@ package me.colingrimes.midnight.command.util.argument;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
+import java.time.Duration;
 import java.util.Optional;
 
 /**
@@ -11,6 +12,14 @@ import java.util.Optional;
  * as well as returning default values when the conversion is not possible.
  */
 public interface TypeConverter {
+
+	/**
+	 * Gets the optional version of the argument at the specified index.
+	 * @param index index of the argument
+	 * @return the argument in an optional
+	 */
+	@Nonnull
+	Optional<String> getOptional(int index);
 
 	/**
 	 * Gets the lowercase version of the argument at the specified index.
@@ -75,4 +84,12 @@ public interface TypeConverter {
 	 */
 	@Nonnull
 	Optional<Player> getPlayer(int index);
+
+	/**
+	 * Gets the duration argument at the specified index.
+	 * @param index index of the argument
+	 * @return the argument as a duration
+	 */
+	@Nonnull
+	Optional<Duration> getDuration(int index);
 }
