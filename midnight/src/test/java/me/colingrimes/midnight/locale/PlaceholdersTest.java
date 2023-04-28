@@ -12,7 +12,7 @@ class PlaceholdersTest {
 
 	@Test
 	void testReplaceString() {
-		Placeholders placeholders = new Placeholders("{player}", "John");
+		Placeholders placeholders = Placeholders.of("{player}", "John");
 		placeholders.add("{points}", 100);
 
 		String input = "{player} has {points} points.";
@@ -24,7 +24,7 @@ class PlaceholdersTest {
 
 	@Test
 	void testReplaceList() {
-		Placeholders placeholders = new Placeholders("{player}", "John");
+		Placeholders placeholders = Placeholders.of("{player}", "John");
 		placeholders.add("{points}", 100);
 
 		List<String> input = Arrays.asList("{player} has {points} points.", "Hello, {player}!");
@@ -36,7 +36,7 @@ class PlaceholdersTest {
 
 	@Test
 	void testReplaceTextComponent() {
-		Placeholders placeholders = new Placeholders("{player}", "John");
+		Placeholders placeholders = Placeholders.of("{player}", "John");
 		placeholders.add("{points}", 100);
 
 		TextComponent input = new TextComponent("{player} has {points} points.");

@@ -97,7 +97,7 @@ public final class Items {
 	 */
 	public static final class ItemBuilder {
 
-		private final Placeholders placeholders = new Placeholders();
+		private final Placeholders placeholders = Placeholders.create();
 		private final Material defMaterial;
 
 		private Material material;

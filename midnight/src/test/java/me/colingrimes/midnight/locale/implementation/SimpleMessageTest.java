@@ -15,7 +15,7 @@ class SimpleMessageTest {
 		String message = "Hello, {player}!";
 		SimpleMessage simpleMessage = new SimpleMessage(message);
 
-		Placeholders placeholders = new Placeholders("{player}", "John");
+		Placeholders placeholders = Placeholders.of("{player}", "John");
 
 		simpleMessage.sendTo(senderMock, placeholders);
 		verify(senderMock).sendMessage("Hello, John!");

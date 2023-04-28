@@ -50,7 +50,7 @@ public class Message<T> implements Option<T>, Messageable {
 	@Override
 	public void sendTo(@Nonnull CommandSender sender, @Nullable Placeholders placeholders) {
 		Objects.requireNonNull(sender, "Sender is null.");
-		placeholders = Objects.requireNonNullElse(placeholders, new Placeholders());
+		placeholders = Objects.requireNonNullElseGet(placeholders, Placeholders::create);
 		placeholders.replace(messages).forEach(sender::sendMessage);
 	}
 }

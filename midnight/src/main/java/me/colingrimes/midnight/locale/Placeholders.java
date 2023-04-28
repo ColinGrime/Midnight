@@ -16,9 +16,28 @@ public class Placeholders {
 
 	private final Map<String, String> placeholders = new HashMap<>();
 
-	public Placeholders() {}
+	/**
+	 * Creates a new placeholders object.
+	 * @return the placeholders object
+	 */
+	public static Placeholders create() {
+		return new Placeholders();
+	}
 
-	public <T> Placeholders(@Nonnull String placeholder, @Nonnull T replacement) {
+	/**
+	 * Creates a new placeholders object with the placeholder and replacement.
+	 * @param placeholder the placeholder you want to add
+	 * @param replacement the value you want to replace the placeholder with
+	 * @return the placeholders object
+	 * @param <T> any type
+	 */
+	public static <T> Placeholders of(@Nonnull String placeholder, @Nonnull T replacement) {
+		return new Placeholders(placeholder, replacement);
+	}
+
+	private Placeholders() {}
+
+	private <T> Placeholders(@Nonnull String placeholder, @Nonnull T replacement) {
 		Objects.requireNonNull(placeholder, "Placeholder is null.");
 		Objects.requireNonNull(replacement, "Replacement is null.");
 		placeholders.put(placeholder, String.valueOf(replacement));

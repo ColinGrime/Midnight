@@ -19,7 +19,7 @@ public class ComponentMessage implements Messageable {
 
 	@Override
 	public void sendTo(@Nonnull CommandSender sender, @Nullable Placeholders placeholders) {
-		placeholders = Objects.requireNonNullElseGet(placeholders, Placeholders::new);
+		placeholders = Objects.requireNonNullElseGet(placeholders, Placeholders::create);
 		sender.spigot().sendMessage(placeholders.replace(component));
 	}
 
