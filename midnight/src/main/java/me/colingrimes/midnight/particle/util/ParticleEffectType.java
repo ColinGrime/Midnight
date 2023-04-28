@@ -2,6 +2,7 @@ package me.colingrimes.midnight.particle.util;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 /**
  * The currently supported particle effect types.
@@ -11,22 +12,21 @@ public enum ParticleEffectType {
 
     /**
      * Parses the provided string to the corresponding ParticleEffectType.
-     * Defaults to {@link #CIRCLE} if the provided string does not match any of the types.
      * @param value the string value to parse
      * @return the ParticleEffectType matching the provided string
      */
     @Nonnull
-    public static ParticleEffectType fromString(@Nullable String value) {
+    public static Optional<ParticleEffectType> fromString(@Nullable String value) {
         if (value == null || value.isEmpty()) {
-            return CIRCLE;
+            return Optional.empty();
         }
 
         for (ParticleEffectType type : values()) {
             if (type.name().equalsIgnoreCase(value)) {
-                return type;
+                return Optional.of(type);
             }
         }
 
-        return CIRCLE;
+        return Optional.empty();
     }
 }
