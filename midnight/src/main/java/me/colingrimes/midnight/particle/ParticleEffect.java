@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.particle;
 
-import me.colingrimes.midnight.model.Point;
-import me.colingrimes.midnight.model.Rotation;
+import me.colingrimes.midnight.geometry.Point;
+import me.colingrimes.midnight.geometry.Rotation;
 import me.colingrimes.midnight.particle.util.ParticleProperties;
 import me.colingrimes.midnight.particle.util.ParticleProperty;
 import org.bukkit.entity.Entity;

@@ -5,7 +5,7 @@ import me.colingrimes.midnight.command.util.CommandProperties;
 import me.colingrimes.midnight.command.util.Sender;
 import me.colingrimes.midnight.command.util.argument.ArgumentList;
 import me.colingrimes.midnight.locale.Placeholders;
-import me.colingrimes.midnight.model.Point;
+import me.colingrimes.midnight.geometry.Point;
 import me.colingrimes.midnight.particle.ParticleEffect;
 import me.colingrimes.midnight.util.Locations;
 import me.colingrimes.plugin.Midnight;

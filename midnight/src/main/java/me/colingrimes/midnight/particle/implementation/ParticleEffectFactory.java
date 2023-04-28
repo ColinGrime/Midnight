@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.particle.implementation;
 
-import me.colingrimes.midnight.model.Point;
-import me.colingrimes.midnight.model.Rotation;
+import me.colingrimes.midnight.geometry.Point;
+import me.colingrimes.midnight.geometry.Rotation;
 import me.colingrimes.midnight.particle.ParticleEffect;
 import me.colingrimes.midnight.particle.implementation.type.CircleParticleEffect;
 import me.colingrimes.midnight.particle.util.ParticleEffectType;

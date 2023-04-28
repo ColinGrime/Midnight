@@ -1,8 +1,8 @@
 package me.colingrimes.midnight.particle.implementation.type;
 
-import me.colingrimes.midnight.model.Point;
-import me.colingrimes.midnight.model.Position;
-import me.colingrimes.midnight.model.Rotation;
+import me.colingrimes.midnight.geometry.Point;
+import me.colingrimes.midnight.geometry.Position;
+import me.colingrimes.midnight.geometry.Rotation;
 import me.colingrimes.midnight.particle.implementation.BaseParticleEffect;
 import me.colingrimes.midnight.particle.util.ParticleProperty;
 import org.bukkit.Location;
@@ -52,6 +52,9 @@ public class CircleParticleEffect extends BaseParticleEffect {
     @Override
     public void updateProperty(@Nonnull ParticleProperty property, @Nonnull String value) {
         Object parsedValue = property.parseValue(value);
+        if (parsedValue == null) {
+            return;
+        }
 
         switch (property) {
             case RADIUS -> radius = (double) parsedValue;

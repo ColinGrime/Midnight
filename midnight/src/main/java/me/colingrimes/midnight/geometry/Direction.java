@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.model;
+package me.colingrimes.midnight.geometry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

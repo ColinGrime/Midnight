@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.model;
+package me.colingrimes.midnight.geometry;
 
 import org.bukkit.Location;
 import org.bukkit.World;
