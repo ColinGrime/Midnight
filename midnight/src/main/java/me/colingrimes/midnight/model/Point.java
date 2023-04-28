@@ -20,7 +20,17 @@ public class Point<T extends Direction> {
 	 */
 	@Nonnull
 	public static Point<Rotation> of(@Nonnull Player player) {
-		return Point.of(player, 0, 0 ,0);
+		return Point.of(player.getLocation());
+	}
+
+	/**
+	 * Constructs a new Point with the given location.
+	 * @param location the location
+	 * @return the point
+	 */
+	@Nonnull
+	public static Point<Rotation> of(@Nonnull Location location) {
+		return Point.of(location, 0, 0 ,0);
 	}
 
 	/**
@@ -33,11 +43,24 @@ public class Point<T extends Direction> {
 	 */
 	@Nonnull
 	public static Point<Rotation> of(@Nonnull Player player, double yaw, double pitch, double roll) {
-		Location location = player.getLocation();
+		return Point.of(player.getLocation(), yaw, pitch, roll);
+	}
+
+	/**
+	 * Constructs a new Point with the given location and direction.
+	 * @param location location
+	 * @param yaw the yaw
+	 * @param pitch the pitch
+	 * @param roll the roll
+	 * @return the point
+	 */
+	@Nonnull
+	public static Point<Rotation> of(@Nonnull Location location, double yaw, double pitch, double roll) {
+		Objects.requireNonNull(location.getWorld(), "World is null.");
 		double x = location.getX();
 		double y = location.getY();
 		double z = location.getZ();
-		return Point.of(player.getWorld(), x, y, z, Rotation.of(yaw, pitch, roll));
+		return Point.of(location.getWorld(), x, y, z, Rotation.of(yaw, pitch, roll));
 	}
 
 	/**
