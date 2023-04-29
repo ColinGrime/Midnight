@@ -1,13 +1,17 @@
 package me.colingrimes.midnight.particle.implementation.type;
 
+import com.google.common.base.Preconditions;
 import me.colingrimes.midnight.geometry.Point;
 import me.colingrimes.midnight.geometry.Position;
 import me.colingrimes.midnight.geometry.Rotation;
 import me.colingrimes.midnight.particle.implementation.BaseParticleEffect;
+import me.colingrimes.midnight.particle.util.ParticleEffectType;
+import me.colingrimes.midnight.particle.util.ParticleProperties;
 import me.colingrimes.midnight.particle.util.ParticleProperty;
 import org.bukkit.Location;
 
 import javax.annotation.Nonnull;
+import java.util.Map;
 
 public class CircleParticleEffect extends BaseParticleEffect {
 
@@ -19,9 +23,19 @@ public class CircleParticleEffect extends BaseParticleEffect {
     }
 
     public CircleParticleEffect(@Nonnull Point<Rotation> point, double radius, int points) {
-        super(point);
+        this(point, ParticleProperties.create(), radius, points);
+    }
+
+    public CircleParticleEffect(@Nonnull Point<Rotation> point, @Nonnull ParticleProperties properties, double radius, int points) {
+        super(point, properties);
         this.radius = radius;
         this.points = points;
+    }
+
+    @Nonnull
+    @Override
+    public ParticleEffectType getType() {
+        return ParticleEffectType.CIRCLE;
     }
 
     @Override
@@ -48,7 +62,6 @@ public class CircleParticleEffect extends BaseParticleEffect {
         }
     }
 
-
     @Override
     public void updateProperty(@Nonnull ParticleProperty property, @Nonnull String value) {
         Object parsedValue = property.parseValue(value);
@@ -71,5 +84,35 @@ public class CircleParticleEffect extends BaseParticleEffect {
             case POINTS -> points;
             default -> super.getProperty(property);
         };
+    }
+
+    @Nonnull
+    @Override
+    public Map<String, Object> serialize() {
+        Map<String, Object> map = super.serialize();
+        map.put("radius", radius);
+        map.put("points", points);
+        return map;
+    }
+
+    /**
+     * Deserialize a CircleParticleEffect from a map.
+     * @param map the serialized map
+     * @return the CircleParticleEffect
+     */
+    @SuppressWarnings("unchecked")
+    @Nonnull
+    public static CircleParticleEffect deserialize(@Nonnull Map<String, Object> map) {
+        Preconditions.checkArgument(map.containsKey("point"));
+        Preconditions.checkArgument(map.containsKey("properties"));
+        Preconditions.checkArgument(map.containsKey("radius"));
+        Preconditions.checkArgument(map.containsKey("point"));
+        Preconditions.checkArgument(map.get("properties") instanceof Map);
+
+        Point<Rotation> point = Point.deserialize(map);
+        ParticleProperties properties = ParticleProperties.deserialize((Map<String, Object>) map.get("properties"));
+        double radius = (double) map.getOrDefault("radius", 5.0);
+        int points = (int) map.getOrDefault("points", 100);
+        return new CircleParticleEffect(point, properties, radius, points);
     }
 }

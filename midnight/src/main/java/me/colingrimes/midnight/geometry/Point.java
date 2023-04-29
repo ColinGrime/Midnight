@@ -1,14 +1,18 @@
 package me.colingrimes.midnight.geometry;
 
+import com.google.common.base.Preconditions;
+import me.colingrimes.midnight.serialize.Serializable;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
-public class Point<T extends Direction> {
+public class Point<T extends Direction> implements Serializable {
 
 	private final Position position;
 	private final T direction;
@@ -184,5 +188,37 @@ public class Point<T extends Direction> {
 				"position=" + position +
 				", direction=" + direction +
 				'}';
+	}
+
+	@Nonnull
+	@Override
+	public Map<String, Object> serialize() {
+		Map<String, Object> map = new HashMap<>();
+		map.put("position", position.serialize());
+		map.put("direction", direction.serialize());
+		return map;
+	}
+
+	/**
+	 * Deserializes a point from a map.
+	 * @param map the map to deserialize from
+	 * @return the deserialized point
+	 */
+	@SuppressWarnings("unchecked")
+	@Nonnull
+	public static <T extends Direction> Point<T> deserialize(@Nonnull Map<String, Object> map) {
+		Preconditions.checkArgument(map.containsKey("position"));
+		Preconditions.checkArgument(map.containsKey("direction"));
+		Preconditions.checkArgument(map.get("position") instanceof Map);
+		Preconditions.checkArgument(map.get("direction") instanceof Map);
+
+		Position position = Position.deserialize((Map<String, Object>) map.get("position"));
+		Map<String, Object> direction = (Map<String, Object>) map.get("direction");
+
+		if (direction.containsKey("roll")) {
+			return of(position, (T) Rotation.deserialize(direction));
+		} else {
+			return of(position, (T) Direction.deserialize(direction));
+		}
 	}
 }

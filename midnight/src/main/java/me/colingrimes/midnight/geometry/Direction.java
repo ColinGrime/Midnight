@@ -1,13 +1,18 @@
 package me.colingrimes.midnight.geometry;
 
+import com.google.common.base.Preconditions;
+import me.colingrimes.midnight.serialize.Serializable;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
  * Represents a 3D direction in the form of yaw and pitch angles.
  */
-public class Direction {
+public class Direction implements Serializable {
 
     private final double yaw;
     private final double pitch;
@@ -62,6 +67,31 @@ public class Direction {
                 "yaw=" + yaw +
                 ", pitch=" + pitch +
                 '}';
+    }
+
+    @Nonnull
+    @Override
+    public Map<String, Object> serialize() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("yaw", yaw);
+        map.put("pitch", pitch);
+        return map;
+    }
+
+    /**
+     * Deserializes a direction from a map.
+     * @param map the map to deserialize from
+     * @return the deserialized direction
+     */
+    @Nonnull
+    public static Direction deserialize(@Nonnull Map<String, Object> map) {
+        Preconditions.checkArgument(map.containsKey("yaw"));
+        Preconditions.checkArgument(map.containsKey("pitch"));
+
+        return of(
+                (double) map.get("yaw"),
+                (double) map.get("pitch")
+        );
     }
 }
 

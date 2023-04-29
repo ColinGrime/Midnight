@@ -1,14 +1,27 @@
 package me.colingrimes.midnight.particle;
 
+import com.google.common.base.Preconditions;
 import me.colingrimes.midnight.geometry.Point;
 import me.colingrimes.midnight.geometry.Rotation;
+import me.colingrimes.midnight.particle.implementation.type.CircleParticleEffect;
+import me.colingrimes.midnight.particle.util.ParticleEffectType;
 import me.colingrimes.midnight.particle.util.ParticleProperties;
 import me.colingrimes.midnight.particle.util.ParticleProperty;
+import me.colingrimes.midnight.serialize.Serializable;
 import org.bukkit.entity.Entity;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
+import java.util.Map;
 
-public interface ParticleEffect {
+public interface ParticleEffect extends Serializable {
+
+    /**
+     * Gets the type of the particle effect.
+     * @return the type of the particle effect
+     */
+    @Nonnull
+    ParticleEffectType getType();
 
     /**
      * Spawns the particle effect.
@@ -72,4 +85,31 @@ public interface ParticleEffect {
      */
     @Nonnull
     Object getProperty(@Nonnull ParticleProperty property) throws UnsupportedOperationException;
+
+    @Nonnull
+    @Override
+    default Map<String, Object> serialize() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("type", getType().name());
+        map.put("point", getPoint().serialize());
+        map.put("properties", getProperties().serialize());
+        return map;
+    }
+
+    /**
+     * Deserializes a particle effect from the specified map.
+     * @param map the map to deserialize from
+     * @return the deserialized particle effect
+     */
+    @Nonnull
+    static ParticleEffect deserialize(@Nonnull Map<String, Object> map) {
+        Preconditions.checkArgument(map.containsKey("type"));
+        Preconditions.checkArgument(ParticleEffectType.fromString((String) map.get("type")).isPresent());
+        ParticleEffectType type = ParticleEffectType.fromString((String) map.get("type")).get();
+
+        return switch (type) {
+            case CIRCLE -> CircleParticleEffect.deserialize(map);
+            default -> throw new IllegalArgumentException("Unknown particle effect type: " + type.name());
+        };
+    }
 }

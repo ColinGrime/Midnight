@@ -1,13 +1,17 @@
 package me.colingrimes.midnight.geometry;
 
+import com.google.common.base.Preconditions;
+import me.colingrimes.midnight.serialize.Serializable;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Map;
 import java.util.Objects;
 
 /**
  * Represents a 3D direction in the form of yaw, pitch, and roll angles.
  */
-public class Rotation extends Direction {
+public class Rotation extends Direction implements Serializable {
 
     private final double roll;
 
@@ -55,5 +59,31 @@ public class Rotation extends Direction {
                 ", pitch=" + getPitch() +
                 ", roll=" + getRoll() +
                 '}';
+    }
+
+    @Nonnull
+    @Override
+    public Map<String, Object> serialize() {
+        Map<String, Object> map = super.serialize();
+        map.put("roll", getRoll());
+        return map;
+    }
+
+    /**
+     * Deserializes a rotation from a map.
+     * @param map the map to deserialize from
+     * @return the deserialized rotation
+     */
+    @Nonnull
+    public static Rotation deserialize(@Nonnull Map<String, Object> map) {
+        Preconditions.checkArgument(map.containsKey("yaw"));
+        Preconditions.checkArgument(map.containsKey("pitch"));
+        Preconditions.checkArgument(map.containsKey("roll"));
+
+        return of(
+                (double) map.get("yaw"),
+                (double) map.get("pitch"),
+                (double) map.get("roll")
+        );
     }
 }
