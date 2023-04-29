@@ -1,5 +1,7 @@
 package me.colingrimes.midnight.storage;
 
+import me.colingrimes.midnight.serialize.Serializable;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -11,7 +13,7 @@ import java.util.Optional;
  *
  * @param <T> the type of data to be stored
  */
-public interface Storage<T> {
+public interface Storage<T extends Serializable> {
 
     /**
      * Initializes the storage.

@@ -1,6 +1,7 @@
 package me.colingrimes.midnight.storage.sql;
 
 import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.midnight.serialize.Serializable;
 import me.colingrimes.midnight.storage.Storage;
 import me.colingrimes.midnight.storage.sql.connection.ConnectionProvider;
 
@@ -18,7 +19,7 @@ import java.util.Optional;
  * An abstract class representing an SQL-based storage.
  * @param <T> the type of data being stored
  */
-public abstract class SqlStorage<T> implements Storage<T> {
+public abstract class SqlStorage<T extends Serializable> implements Storage<T> {
 
     protected final MidnightPlugin plugin;
     protected final ConnectionProvider connectionProvider;
