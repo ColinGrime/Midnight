@@ -1,23 +1,42 @@
+general:
+  particle-page-header: "&a&lParticle Effects &r&7(Page {page}/{totalPages})"
+  particle-page-entry: "&e- &a{name} &7| &eType: &a{type} &7| &eLocation: &a{location}"
+  particle-properties:
+    - "&7&m------------- &e&lParticle &aProperties &7&m-------------"
+    - "&7Particle: &e{particle}"
+    - "&7Count: &a{count}"
+    - "&7Offset: &ex={offset_x} &a, &ey={offset_y} &a, &ez={offset_z%}"
+    - "&7Speed: &e{speed%}"
+    - "&7Data: &a{data%}"
+    - "&7&m--------------------------------------------"
+
 success:
-  actionbar-show: "&2&l✓ &aShowing Action Bar to &2player}&a."
+  actionbar-show: "&2&l✓ &aShowing Action Bar to &2{player}&a."
   bossbar-show: "&2&l✓ &aShowing Boss Bar to &2{player}&a."
   particle-attach-player: "&2&l✓ &aParticle has been attached to &2{player}&a."
   particle-attach-self: "&2&l✓ &aParticle has been attached to &2yourself&a."
   particle-clear: "&2&l✓ &aAll particles have been cleared."
   particle-create: "&2&l✓ &aParticle has been created with type &2{type}&a."
+  particle-delete: "&2&l✓ &aParticle has been deleted with the name: &2{name}&a."
   particle-detach-player: "&2&l✓ &aParticle has been detached from &2{player}&a."
   particle-detach-self: "&2&l✓ &aParticle has been detached from &2yourself&a."
   particle-modify: "&2&l✓ &aParticle property &2{property}&a has been set to &2{value}&a."
   particle-move: "&2&l✓ &aParticle has been moved to &2{location}&a."
+  particle-rotate: "&2&l✓ &aParticle has been rotated.&a."
   particle-save: "&2&l✓ &aParticle has been saved with the name: &2{name}&a."
+  particle-select: "&2&l✓ &aParticle has been selected with the name: &2{name}&a."
+  particle-spawn: "&2&l✓ &aParticle has been spawned."
   title-show: "&2&l✓ &aShowing Title to &2{player}&a."
 
 failure:
   invalid-location: "&4&l❌ &cThe specified location is invalid."
+  invalid-page: "&4&l❌ &cThe specified page is invalid. Defaulting to page 1."
   invalid-property: "&4&l❌ &cThe specified property does not exist."
   invalid-property-value: "&4&l❌ &cThe specified property value is invalid."
+  invalid-rotation: "&4&l❌ &cValid rotations are: &2yaw&a, &2pitch&a, &2roll&a."
   invalid-sender: "&4&l❌ &cThis command can only be executed by a player."
   particle-name-taken: "&4&l❌ &cThe specified particle name is already taken."
+  particle-not-deleted: "&4&l❌ &cThe specified particle has failed to delete."
   particle-not-found: "&4&l❌ &cThe specified particle does not exist."
   particle-not-saved: "&4&l❌ &cThe specified particle has failed to save."
   particle-not-selected: "&4&l❌ &cYou must select a particle first."
@@ -34,28 +53,34 @@ usage:
   particle:
     - "&7&m------------- &e&lParticle &aCommands &7&m-------------"
     - "&7- &a/particle create &e: &7Create a particle shape."
-    - "&7- &a/particle select &e: &7Select a saved particle."
+    - "&7- &a/particle move &e: &7Move a particle to a location."
+    - "&7- &a/particle rotate &e: &7Rotate a particle around."
     - "&7- &a/particle modify &e: &7Modify particle properties."
-    - "&7- &a/particle preview &e: &7Preview particle location."
+    - "&7- &a/particle properties &e: &7List all particle properties."
     - "&7- &a/particle attach &e: &7Attach particle to a player."
     - "&7- &a/particle detach &e: &7Detach particle from a player."
     - "&7- &a/particle save &e: &7Save particle configuration."
-    - "&7- &a/particle load &e: &7Load a saved particle."
     - "&7- &a/particle delete &e: &7Delete a saved particle."
-    - "&7- &a/particle clear &e: &7Clear all particles."
+    - "&7- &a/particle clear &e: &7Clear particles."
+    - "&7- &a/particle list &e: &7List all saved particles."
+    - "&7- &a/particle select &e: &7Select a saved particle."
+    - "&7- &a/particle spawn &e: &7Spawn a selected particle."
     - "&7&m--------------------------------------------"
   particle-create:
     - "&eUsage: &a/particle create <shape> [target]"
     - "&a► &7Create a particle shape with an optional target."
-  particle-select:
-    - "&eUsage: &a/particle select <name>"
-    - "&a► &7Select a saved particle by name."
+  particle-move:
+    - "&eUsage: &a/particle move [x] [y] [z]"
+    - "&a► &7Move a particle to a location."
+  particle-rotate:
+    - "&eUsage: &a/particle rotate <yaw/pitch/roll> <angle>"
+    - "&a► &7Rotate a particle around."
   particle-modify:
     - "&eUsage: &a/particle modify <prop> <value>"
     - "&a► &7Modify a particle property."
-  particle-preview:
-    - "&eUsage: &a/particle preview"
-    - "&a► &7Toggle particle location preview."
+  particle-properties:
+    - "&eUsage: &a/particle properties"
+    - "&a► &7Lists all particle properties."
   particle-attach:
     - "&eUsage: &a/particle attach <player>"
     - "&a► &7Attach a particle to a player."
@@ -65,15 +90,21 @@ usage:
   particle-save:
     - "&eUsage: &a/particle save <name>"
     - "&a► &7Save a particle configuration."
-  particle-load:
-    - "&eUsage: &a/particle load <name> [target]"
-    - "&a► &7Load a saved particle with an optional target."
   particle-delete:
     - "&eUsage: &a/particle delete <name>"
     - "&a► &7Delete a saved particle."
   particle-clear:
     - "&eUsage: &a/particle clear"
     - "&a► &7Clear all particles."
+  particle-list:
+    - "&eUsage: &a/particle list"
+    - "&a► &7List all saved particles."
+  particle-select:
+    - "&eUsage: &a/particle select <name>"
+    - "&a► &7Select a saved particle by name."
+  particle-spawn:
+    - "&eUsage: &a/particle spawn"
+    - "&a► &7Spawn a selected particle."
   title:
     - "&eUsage: &a/title <player> <title> [subtitle] [fade-in] [stay] [fade-out]"
     - "&a► &7Show a title message to a player."
