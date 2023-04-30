@@ -8,6 +8,7 @@ import me.colingrimes.midnight.geometry.Point;
 import me.colingrimes.midnight.geometry.Rotation;
 import me.colingrimes.midnight.particle.ParticleEffect;
 import me.colingrimes.plugin.Midnight;
+import me.colingrimes.plugin.config.Messages;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -20,7 +21,7 @@ public class ParticleRotate implements Command<Midnight> {
 	public void execute(@Nonnull Midnight plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
 		Optional<ParticleEffect> effect = plugin.getParticleManager().getSelectedParticle(sender.player());
 		if (effect.isEmpty()) {
-			sender.message("&cYou must select a particle first!");
+			Messages.PARTICLE_NOT_SELECTED.sendTo(sender);
 			return;
 		}
 
@@ -31,10 +32,14 @@ public class ParticleRotate implements Command<Midnight> {
 			case "yaw" -> rotation = Rotation.of(value, rotation.getPitch(), rotation.getRoll());
 			case "pitch" -> rotation = Rotation.of(rotation.getYaw(), value, rotation.getRoll());
 			case "roll" -> rotation = Rotation.of(rotation.getYaw(), rotation.getPitch(), value);
-			default -> sender.message("&cInvalid rotation type! Must be yaw, pitch, or roll.");
+			default -> {
+				Messages.INVALID_ROTATION.sendTo(sender);
+				return;
+			}
 		}
 
 		effect.get().setPoint(Point.of(effect.get().getPoint().getPosition(), rotation));
+		Messages.PARTICLE_ROTATE.sendTo(sender);
 	}
 
 	@Nullable
@@ -49,6 +54,7 @@ public class ParticleRotate implements Command<Midnight> {
 
 	@Override
 	public void configureProperties(@Nonnull CommandProperties properties) {
+		properties.setUsage(Messages.PARTICLE_ROTATE_USAGE);
 		properties.setArgumentsRequired(2);
 		properties.setPlayerRequired(true);
 	}

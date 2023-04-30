@@ -49,6 +49,7 @@ public class ParticleMove implements Command<Midnight> {
 
 	@Override
 	public void configureProperties(@Nonnull CommandProperties properties) {
+		properties.setUsage(Messages.PARTICLE_MOVE_USAGE);
 		properties.setPlayerRequired(true);
 	}
 }

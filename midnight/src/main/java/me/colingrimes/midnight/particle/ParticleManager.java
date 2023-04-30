@@ -3,15 +3,24 @@ package me.colingrimes.midnight.particle;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class ParticleManager {
 
     private final Map<UUID, ParticleEffect> particleEffects = new HashMap<>();
     private final Map<Player, ParticleEffect> selectedParticles = new HashMap<>();
+
+    /**
+     * Gets all ParticleEffect objects in alphabetical order by their names.
+     * @return a sorted list of ParticleEffect objects
+     */
+    @Nonnull
+    public List<ParticleEffect> getParticles() {
+        List<ParticleEffect> particles = new ArrayList<>(particleEffects.values());
+        particles.sort(Comparator.comparing(ParticleEffect::getName));
+        return particles;
+    }
+
 
     /**
      * Gets the particle effect with the given name.
@@ -34,6 +43,21 @@ public class ParticleManager {
      */
     public void addParticle(@Nonnull ParticleEffect particle) {
         particleEffects.put(particle.getUUID(), particle);
+    }
+
+    /**
+     * Deletes a particle effect.
+     * @param particle the particle effect to delete
+     */
+    public void deleteParticle(@Nonnull ParticleEffect particle) {
+        particleEffects.remove(particle.getUUID());
+
+        // Remove the particle effect from any players that have it selected.
+        for (Player player : selectedParticles.keySet()) {
+            if (selectedParticles.get(player).equals(particle)) {
+                selectedParticles.remove(player);
+            }
+        }
     }
 
     /**

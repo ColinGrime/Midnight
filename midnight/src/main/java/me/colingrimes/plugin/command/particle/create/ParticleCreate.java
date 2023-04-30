@@ -27,10 +27,15 @@ public class ParticleCreate implements Command<Midnight> {
 			return;
 		}
 
-		ParticleEffect effect = ParticleEffectFactory.create(particleType.get(), sender.player());
-		effect.startSpawning();
-		plugin.getParticleManager().selectParticle(sender.player(), effect);
+		ParticleEffect particle = ParticleEffectFactory.create(particleType.get(), sender.player());
+		particle.startSpawning();
+		plugin.getParticleManager().selectParticle(sender.player(), particle);
 		Messages.PARTICLE_CREATE.sendTo(sender, Placeholders.of("{type}", Text.format(particleType.get().name())));
+
+		// Attach the particle if the player is specified.
+		if (args.getPlayer(1).isPresent()) {
+			particle.attach(args.getPlayer(1).get());
+		}
 	}
 
 	@Override
