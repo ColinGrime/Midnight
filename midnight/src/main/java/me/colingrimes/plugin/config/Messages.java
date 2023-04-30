@@ -157,4 +157,9 @@ public interface Messages {
 			"&eUsage: &a/particle spawn",
 			"&a► &7Spawn a selected particle."
 	);
+
+	Message<List<String>> TITLE_USAGE = message("usage.title",
+			"&eUsage: &a/title <player> <title> [subtitle] [fade-in] [stay] [fade-out]",
+			"&a► &7Show a title message to a player."
+	);
 }
