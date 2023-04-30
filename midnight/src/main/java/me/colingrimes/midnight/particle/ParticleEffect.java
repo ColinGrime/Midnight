@@ -13,6 +13,7 @@ import org.bukkit.entity.Entity;
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public interface ParticleEffect extends Serializable {
 
@@ -50,6 +51,26 @@ public interface ParticleEffect extends Serializable {
     void detach();
 
     /**
+     * Gets the UUID of the particle effect.
+     * @return the UUID of the particle effect
+     */
+    @Nonnull
+    UUID getUUID();
+
+    /**
+     * Gets the name of the particle effect.
+     * @return the name of the particle effect
+     */
+    @Nonnull
+    String getName();
+
+    /**
+     * Sets the name of the particle effect.
+     * @param name the name of the particle effect
+     */
+    void setName(@Nonnull String name);
+
+    /**
      * Gets the point where the particle effect is located.
      * @return the point of the particle effect
      */
@@ -68,6 +89,12 @@ public interface ParticleEffect extends Serializable {
      */
     @Nonnull
     ParticleProperties getProperties();
+
+    /**
+     * Sets the properties of the particle effect.
+     * @param properties the properties of the particle effect
+     */
+    void setProperties(@Nonnull ParticleProperties properties);
 
     /**
      * Updates the property of the particle effect with the specified value.
@@ -91,6 +118,8 @@ public interface ParticleEffect extends Serializable {
     default Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<>();
         map.put("type", getType().name());
+        map.put("uuid", getUUID().toString());
+        map.put("name", getName());
         map.put("point", getPoint().serialize());
         map.put("properties", getProperties().serialize());
         return map;

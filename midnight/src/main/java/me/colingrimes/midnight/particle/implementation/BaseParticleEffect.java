@@ -13,15 +13,36 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import javax.annotation.Nonnull;
+import java.util.UUID;
 
 public abstract class BaseParticleEffect implements ParticleEffect {
 
-    private final ParticleProperties properties;
+    private final UUID uuid;
+    private String name;
     private Point<Rotation> point;
+    private ParticleProperties properties;
     private Entity entity;
     private BukkitTask task;
 
+    /**
+     * Constructor for creating new particle effects.
+     * @param point the point to spawn the particle effect at
+     * @param properties the properties of the particle effect
+     */
     public BaseParticleEffect(@Nonnull Point<Rotation> point, @Nonnull ParticleProperties properties) {
+        this(UUID.randomUUID(), "Unnamed", point, properties);
+    }
+
+    /**
+     * Constructor for deserializing particle effects.
+     * @param uuid the UUID of the particle effect
+     * @param name the name of the particle effect
+     * @param point the point to spawn the particle effect at
+     * @param properties the properties of the particle effect
+     */
+    public BaseParticleEffect(@Nonnull UUID uuid, @Nonnull String name, @Nonnull Point<Rotation> point, @Nonnull ParticleProperties properties) {
+        this.uuid = uuid;
+        this.name = name;
         this.point = point;
         this.properties = properties;
     }
@@ -73,6 +94,23 @@ public abstract class BaseParticleEffect implements ParticleEffect {
 
     @Nonnull
     @Override
+    public UUID getUUID() {
+        return uuid;
+    }
+
+    @Nonnull
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setName(@Nonnull String name) {
+        this.name = name;
+    }
+
+    @Nonnull
+    @Override
     public Point<Rotation> getPoint() {
         return point;
     }
@@ -86,6 +124,11 @@ public abstract class BaseParticleEffect implements ParticleEffect {
     @Override
     public ParticleProperties getProperties() {
         return properties;
+    }
+
+    @Override
+    public void setProperties(@Nonnull ParticleProperties properties) {
+        this.properties = properties;
     }
 
     @Override

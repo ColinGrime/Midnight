@@ -12,22 +12,44 @@ import org.bukkit.Location;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
+import java.util.UUID;
 
 public class CircleParticleEffect extends BaseParticleEffect {
 
     private double radius;
     private int points;
 
+    /**
+     * Constructor for creating simple circle particle effects.
+     * @param point the point to spawn the particle effect at
+     */
     public CircleParticleEffect(@Nonnull Point<Rotation> point) {
         this(point, 5, 100);
     }
 
+    /**
+     * Constructor for creating more complex circle particle effects.
+     * @param point the point to spawn the particle effect at
+     * @param radius the radius of the circle
+     * @param points the number of points on the circle
+     */
     public CircleParticleEffect(@Nonnull Point<Rotation> point, double radius, int points) {
-        this(point, ParticleProperties.create(), radius, points);
+        super(point, ParticleProperties.create());
+        this.radius = radius;
+        this.points = points;
     }
 
-    public CircleParticleEffect(@Nonnull Point<Rotation> point, @Nonnull ParticleProperties properties, double radius, int points) {
-        super(point, properties);
+    /**
+     * Constructor for deserializing particle effects.
+     * @param uuid the UUID of the particle effect
+     * @param name the name of the particle effect
+     * @param point the point to spawn the particle effect at
+     * @param properties the properties of the particle effect
+     * @param radius the radius of the circle
+     * @param points the number of points on the circle
+     */
+    public CircleParticleEffect(@Nonnull UUID uuid, @Nonnull String name, @Nonnull Point<Rotation> point, @Nonnull ParticleProperties properties, double radius, int points) {
+        super(uuid, name, point, properties);
         this.radius = radius;
         this.points = points;
     }
@@ -103,16 +125,21 @@ public class CircleParticleEffect extends BaseParticleEffect {
     @SuppressWarnings("unchecked")
     @Nonnull
     public static CircleParticleEffect deserialize(@Nonnull Map<String, Object> map) {
+        Preconditions.checkArgument(map.containsKey("uuid"));
+        Preconditions.checkArgument(map.containsKey("name"));
         Preconditions.checkArgument(map.containsKey("point"));
         Preconditions.checkArgument(map.containsKey("properties"));
         Preconditions.checkArgument(map.containsKey("radius"));
         Preconditions.checkArgument(map.containsKey("point"));
         Preconditions.checkArgument(map.get("properties") instanceof Map);
 
+        UUID uuid = UUID.fromString((String) map.get("uuid"));
+        String name = (String) map.get("name");
         Point<Rotation> point = Point.deserialize(map);
         ParticleProperties properties = ParticleProperties.deserialize((Map<String, Object>) map.get("properties"));
         double radius = (double) map.getOrDefault("radius", 5.0);
         int points = (int) map.getOrDefault("points", 100);
-        return new CircleParticleEffect(point, properties, radius, points);
+
+        return new CircleParticleEffect(uuid, name, point, properties, radius, points);
     }
 }
