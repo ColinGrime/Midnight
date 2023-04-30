@@ -9,6 +9,7 @@ success:
   particle-detach-self: "&2&l✓ &aParticle has been detached from &2yourself&a."
   particle-modify: "&2&l✓ &aParticle property &2{property}&a has been set to &2{value}&a."
   particle-move: "&2&l✓ &aParticle has been moved to &2{location}&a."
+  particle-save: "&2&l✓ &aParticle has been saved with the name: &2{name}&a."
   title-show: "&2&l✓ &aShowing Title to &2{player}&a."
 
 failure:
@@ -16,7 +17,9 @@ failure:
   invalid-property: "&4&l❌ &cThe specified property does not exist."
   invalid-property-value: "&4&l❌ &cThe specified property value is invalid."
   invalid-sender: "&4&l❌ &cThis command can only be executed by a player."
+  particle-name-taken: "&4&l❌ &cThe specified particle name is already taken."
   particle-not-found: "&4&l❌ &cThe specified particle does not exist."
+  particle-not-saved: "&4&l❌ &cThe specified particle has failed to save."
   particle-not-selected: "&4&l❌ &cYou must select a particle first."
   permission-denied: "&4&l❌ &cYou lack the required permission for this command."
   player-not-found: "&4&l❌ &cThe specified player is either offline or nonexistent."

@@ -23,6 +23,7 @@ public interface Messages {
 	Message<String> PARTICLE_DETACH_SELF = message("success.particle-detach-self", "&2&l✓ &aParticle has been detached from &2yourself&a.");
 	Message<String> PARTICLE_MODIFY = message("success.particle-modify", "&2&l✓ &aParticle property &2{property}&a has been set to &2{value}&a.");
 	Message<String> PARTICLE_MOVE = message("success.particle-move", "&2&l✓ &aParticle has been moved to &2{location}&a.");
+	Message<String> PARTICLE_SAVE = message("success.particle-save", "&2&l✓ &aParticle has been saved with the name: &2{name}&a.");
 	Message<String> TITLE_SHOW = message("success.title-show", "&2&l✓ &aShowing Title to &2{player}&a.");
 
 	/**************************************************
@@ -32,7 +33,9 @@ public interface Messages {
 	Message<String> INVALID_PROPERTY = message("failure.invalid-property", "&4&l❌ &cThe specified property does not exist.");
 	Message<String> INVALID_PROPERTY_VALUE = message("failure.invalid-property-value", "&4&l❌ &cThe specified property value is invalid.");
 	Message<String> INVALID_SENDER = message("failure.invalid-sender", "&4&l❌ &cThis command can only be executed by a player.");
+	Message<String> PARTICLE_NAME_TAKEN = message("failure.particle-name-taken", "&4&l❌ &cThe specified particle name is already taken.");
 	Message<String> PARTICLE_NOT_FOUND = message("failure.particle-not-found", "&4&l❌ &cThe specified particle does not exist.");
+	Message<String> PARTICLE_NOT_SAVED = message("failure.particle-not-saved", "&4&l❌ &cThe specified particle has failed to save.");
 	Message<String> PARTICLE_NOT_SELECTED = message("failure.particle-not-selected", "&4&l❌ &cYou must select a particle first.");
 	Message<String> PERMISSION_DENIED = message("failure.permission-denied", "&4&l❌ &cYou lack the required permission for this command.");
 	Message<String> PLAYER_NOT_FOUND = message("failure.player-not-found", "&4&l❌ &cThe specified player is either offline or nonexistent.");
