@@ -50,6 +50,7 @@ public class ParticleManager {
      * @param particle the particle effect to delete
      */
     public void deleteParticle(@Nonnull ParticleEffect particle) {
+        particle.stopSpawning();
         particleEffects.remove(particle.getUUID());
 
         // Remove the particle effect from any players that have it selected.
@@ -86,9 +87,14 @@ public class ParticleManager {
      * @param particleEffect the particle effect that was selected
      */
     public void selectParticle(@Nonnull Player player, @Nonnull ParticleEffect particleEffect) {
-        if (getParticle(particleEffect.getName()).isEmpty()) {
-            addParticle(particleEffect);
-        }
         selectedParticles.put(player, particleEffect);
+    }
+
+    /**
+     * Removes the selected particle effect for a player.
+     * @param player the player to remove the selected particle effect for
+     */
+    public void removeSelectedParticle(@Nonnull Player player) {
+        selectedParticles.remove(player);
     }
 }
