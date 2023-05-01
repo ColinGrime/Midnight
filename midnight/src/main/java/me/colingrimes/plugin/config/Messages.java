@@ -14,21 +14,21 @@ public interface Messages {
 	 *                General Messages                *
 	 **************************************************/
 	Message<String> PARTICLE_PAGE_HEADER = message("general.particle-page-header", "&a&lParticle Effects &r&7(Page {page}/{total})");
-	Message<String> PARTICLE_PAGE_ENTRY = message("general.particle-page-entry", "&e- &a{Name} &7| &eType: &a{Type} &7| &eLocation: &a{Location}");
+	Message<String> PARTICLE_PAGE_ENTRY = message("general.particle-page-entry", "&7- &a{name} &7| &eType: &a{type} &7| &eLocation: &a{location}");
 	Message<List<String>> PARTICLE_PROPERTIES = message("general.particle-properties",
-			"&7&m------------- &e&lParticle &aProperties &7&m-------------",
-			"&7Particle: &e{particle}",
+			"&7&m-------------&r &e&lParticle &aProperties &7&m------------",
+			"&7Particle: &a{particle}",
 			"&7Count: &a{count}",
-			"&7Offset: &ex={offset_x} &a, &ey={offset_y} &a, &ez={offset_z%}",
-			"&7Speed: &e{speed%}",
-			"&7Data: &a{data%}",
+			"&7Offset: &aX={offset_x} Y={offset_y} Z={offset_z}",
+			"&7Speed: &a{speed}",
+			"&7Data: &a{data}",
 			"&7&m--------------------------------------------"
 	);
 
 	/**************************************************
 	 *                Success Messages                *
 	 **************************************************/
-	Message<String> ACTIONBAR_SHOW = message("success.actionbar-show", "&2&l✓ &aShowing Action Bar to &2player}&a.");
+	Message<String> ACTIONBAR_SHOW = message("success.actionbar-show", "&2&l✓ &aShowing Action Bar to &2{player}&a.");
 	Message<String> BOSSBAR_SHOW = message("success.bossbar-show", "&2&l✓ &aShowing Boss Bar to &2{player}&a.");
 	Message<String> PARTICLE_ATTACH_PLAYER = message("success.particle-attach-player", "&2&l✓ &aParticle has been attached to &2{player}&a.");
 	Message<String> PARTICLE_ATTACH_SELF = message("success.particle-attach-player", "&2&l✓ &aParticle has been attached to &2yourself&a.");
@@ -76,7 +76,7 @@ public interface Messages {
 	);
 
 	Message<List<String>> PARTICLE_USAGE = message("usage.particle",
-			"&7&m------------- &e&lParticle &aCommands &7&m-------------",
+			"&7&m-------------&r &e&lParticle &aCommands &7&m-------------",
 			"&7- &a/particle create &e: &7Create a particle shape.",
 			"&7- &a/particle move &e: &7Move a particle to a location.",
 			"&7- &a/particle rotate &e: &7Rotate a particle around.",
@@ -89,7 +89,7 @@ public interface Messages {
 			"&7- &a/particle clear &e: &7Clear particles.",
 			"&7- &a/particle list &e: &7List all saved particles.",
 			"&7- &a/particle select &e: &7Select a saved particle.",
-			"&7- &a/particle spawn &e: &7Spawn a selected particle.",
+			"&7- &a/particle spawn &e: &7Spawn a particle.",
 			"&7&m--------------------------------------------"
 	);
 
@@ -154,8 +154,8 @@ public interface Messages {
 	);
 
 	Message<List<String>> PARTICLE_SPAWN_USAGE = message("usage.particle-spawn",
-			"&eUsage: &a/particle spawn",
-			"&a► &7Spawn a selected particle."
+			"&eUsage: &a/particle spawn [name]",
+			"&a► &7Spawn a particle with an optional name."
 	);
 
 	Message<List<String>> TITLE_USAGE = message("usage.title",
