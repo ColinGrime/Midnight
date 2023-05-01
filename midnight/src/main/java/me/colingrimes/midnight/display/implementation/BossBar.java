@@ -63,6 +63,7 @@ public class BossBar extends BaseDisplay {
             }
         }
 
+        display.ifPresent(d -> d.hide(player));
         plugin.getDisplayManager().set(player, this);
         bossBar.addPlayer(player);
     }
@@ -74,13 +75,11 @@ public class BossBar extends BaseDisplay {
      */
     private boolean hasActiveBossBar(@Nonnull Player player) {
         Iterator<KeyedBossBar> bossBarIterator = Bukkit.getBossBars();
-
         while (bossBarIterator.hasNext()) {
             if (bossBarIterator.next().getPlayers().contains(player)) {
                 return true;
             }
         }
-
         return false;
     }
 

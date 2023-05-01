@@ -5,7 +5,7 @@ import me.colingrimes.midnight.display.Display;
 import me.colingrimes.midnight.display.manager.DisplayType;
 import me.colingrimes.midnight.scheduler.Scheduler;
 import me.colingrimes.midnight.scheduler.task.Task;
-import me.colingrimes.midnight.util.player.Players;
+import me.colingrimes.midnight.util.bukkit.Players;
 import me.colingrimes.midnight.util.text.Text;
 import org.bukkit.entity.Player;
 
@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 public class ActionBar extends BaseDisplay {
 
@@ -26,6 +25,7 @@ public class ActionBar extends BaseDisplay {
     public ActionBar(@Nonnull MidnightPlugin plugin, @Nonnull String text) {
         this.plugin = plugin;
         this.text = Text.color(text);
+        this.visible = true;
     }
 
     @Nonnull
@@ -58,14 +58,9 @@ public class ActionBar extends BaseDisplay {
             return;
         }
 
+        display.ifPresent(d -> d.hide(player));
         plugin.getDisplayManager().set(player, this);
         startTask(player);
-    }
-
-    @Override
-    public void show(@Nonnull Player player, long duration, @Nonnull TimeUnit unit) {
-        show(player);
-        Scheduler.SYNC.runLater(() -> hide(player), unit.toMillis(duration));
     }
 
     @Override
