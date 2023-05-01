@@ -12,6 +12,12 @@ public class Midnight extends MidnightPlugin {
 	@Override
 	protected void load() {
 		particleStorage = new ParticleStorage(this);
+
+		try {
+			particleStorage.loadAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**

@@ -2,14 +2,16 @@ package me.colingrimes.plugin.storage;
 
 import me.colingrimes.midnight.MidnightPlugin;
 import me.colingrimes.midnight.particle.ParticleEffect;
-import me.colingrimes.midnight.storage.file.JsonStorage;
+import me.colingrimes.midnight.storage.file.YamlStorage;
+import me.colingrimes.midnight.storage.file.composite.CompositeIdentifier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
-public class ParticleStorage extends JsonStorage<ParticleEffect> {
+public class ParticleStorage extends YamlStorage<ParticleEffect> {
 
 	private final MidnightPlugin plugin;
 
@@ -18,17 +20,24 @@ public class ParticleStorage extends JsonStorage<ParticleEffect> {
 		this.plugin = plugin;
 	}
 
-	@Nonnull
 	@Override
-	public Optional<String> getIdentifier(@Nullable ParticleEffect data) {
-		if (data == null) {
-			return Optional.empty();
-		}
-		return Optional.of(data.getUUID().toString());
+	protected void process(@Nonnull ParticleEffect data) {
+		plugin.getParticleManager().addParticle(data);
 	}
 
+	@Nonnull
 	@Override
-	protected void loadData(@Nonnull Map<String, ParticleEffect> dataMap) {
-		plugin.getParticleManager().loadParticles(dataMap);
+	protected Optional<CompositeIdentifier> getIdentifier(@Nullable ParticleEffect data) {
+		if (data == null) {
+			return Optional.of(new CompositeIdentifier("particles.yml", null));
+		} else {
+			return Optional.of(new CompositeIdentifier("particles.yml", data.getUUID().toString()));
+		}
+	}
+
+	@Nonnull
+	@Override
+	protected Function<Map<String, Object>, ParticleEffect> getDeserializationFunction() {
+		return ParticleEffect::deserialize;
 	}
 }

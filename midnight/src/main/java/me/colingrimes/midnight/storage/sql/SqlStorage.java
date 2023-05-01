@@ -13,7 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * An abstract class representing an SQL-based storage.
@@ -33,13 +32,8 @@ public abstract class SqlStorage<T extends Serializable> implements Storage<T> {
     public void init() throws Exception {
         connectionProvider.init();
 
-        Optional<String> identifier = getIdentifier(null);
-        if (identifier.isPresent()) {
-            if (!tableExists(identifier.get())) {
-                applySchema(identifier.get());
-            }
-        } else {
-            throw new Exception("Identifier not present");
+        if (!tableExists(getTable())) {
+            applySchema(getTable());
         }
     }
 
@@ -47,6 +41,13 @@ public abstract class SqlStorage<T extends Serializable> implements Storage<T> {
     public void shutdown() {
         connectionProvider.shutdown();
     }
+
+    /**
+     * Gets the table name.
+     * @return the table name
+     */
+    @Nonnull
+    protected abstract String getTable();
 
     /**
      * Checks whether a table with the given name exists in the connected database.

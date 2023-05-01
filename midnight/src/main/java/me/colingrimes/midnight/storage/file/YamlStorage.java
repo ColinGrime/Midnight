@@ -2,18 +2,20 @@ package me.colingrimes.midnight.storage.file;
 
 import me.colingrimes.midnight.MidnightPlugin;
 import me.colingrimes.midnight.serialize.Serializable;
-import me.colingrimes.midnight.util.Logger;
+import me.colingrimes.midnight.storage.file.composite.CompositeIdentifier;
+import me.colingrimes.midnight.util.io.Logger;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import javax.annotation.Nonnull;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 public abstract class YamlStorage<T extends Serializable> extends FileStorage<T> {
-
-    protected Map<String, T> dataMap = new HashMap<>();
 
     public YamlStorage(@Nonnull MidnightPlugin plugin) {
         super(plugin);
@@ -27,36 +29,97 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
     protected abstract Function<Map<String, Object>, T> getDeserializationFunction();
 
     @Override
-    public void load() {
-        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
-        dataMap = convertMap(yamlConfiguration.getValues(false));
-        loadData(dataMap);
+    public void loadAll() throws IOException {
+        Optional<File> defaultFile = getDefaultFile();
+        if (defaultFile.isEmpty()) {
+            Logger.severe("Default files are not setup for this plugin. Please do not use loadAll().");
+            return;
+        }
+
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(defaultFile.get());
+        ConfigurationSection sec = config.getConfigurationSection("");
+        if (sec == null) {
+            return;
+        }
+
+        // Process the default file.
+        Map<String, Object> rawData = convertToRawData(sec);
+        convertMap(rawData).values().forEach(this::process);
+    }
+
+    /**
+     * Recursively converts a memory section to a map.
+     * @param section the memory section
+     * @return the map
+     */
+    private Map<String, Object> convertToRawData(@Nonnull ConfigurationSection section) {
+        Map<String, Object> map = new HashMap<>();
+        for (String key : section.getKeys(false)) {
+            Object value = section.get(key);
+            if (value instanceof ConfigurationSection) {
+                map.put(key, convertToRawData((ConfigurationSection) value));
+            } else {
+                map.put(key, value);
+            }
+        }
+        return map;
+    }
+
+    @Override
+    public void load(@Nonnull String identifier) throws IOException {
+        File file = getFile(identifier, false);
+        if (!file.exists()) {
+            return;
+        }
+
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        ConfigurationSection sec = config.getConfigurationSection(identifier);
+        if (sec == null) {
+            return;
+        }
+
+        // Process the file of the specified identifier.
+        Map<String, Object> rawData = sec.getValues(false);
+        process(getDeserializationFunction().apply(rawData));
     }
 
     @Override
     public void save(@Nonnull T data) throws IOException {
-        String identifier = getIdentifier(data).orElseThrow(() -> new IllegalStateException("Missing identifier for data."));
-        dataMap.put(identifier, data);
-
-        // Serializes and saves the data to the file.
-        YamlConfiguration yamlConfiguration = new YamlConfiguration();
-        for (Map.Entry<String, T> entry : dataMap.entrySet()) {
-            for (Map.Entry<String, Object> serializedEntry : entry.getValue().serialize().entrySet()) {
-                yamlConfiguration.set(entry.getKey() + "." + serializedEntry.getKey(), serializedEntry.getValue());
-            }
+        Optional<CompositeIdentifier> identifier = getIdentifier(data);
+        if (identifier.isEmpty()) {
+            return;
         }
 
-        yamlConfiguration.save(file);
+        File file = getFile(identifier.get().getFilePath(), true);
+        String path = identifier.get().getInternalPath();
+
+        // Serialize the data.
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        for (Map.Entry<String, Object> serialized : data.serialize().entrySet()) {
+            config.set(path + "." + serialized.getKey(), serialized.getValue());
+        }
+
+        config.save(file);
     }
 
     @Override
     public void delete(@Nonnull T data) throws IOException {
-        String identifier = getIdentifier(data).orElseThrow(() -> new IllegalStateException("Missing identifier for data."));
-        dataMap.remove(identifier);
+        Optional<CompositeIdentifier> identifier = getIdentifier(data);
+        if (identifier.isEmpty() || identifier.get().getInternalPath() == null) {
+            return;
+        }
 
-        // Removes the data from the file.
+        File file = getFile(identifier.get().getFilePath(), false);
+        String path = identifier.get().getInternalPath();
+
+        // Delete the file if it is a unique file.
+        if (!file.equals(getDefaultFile().orElse(null)) && file.delete()) {
+            return;
+        }
+
+        // Otherwise, delete the data from the file.
         YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
-        yamlConfiguration.set(identifier, null);
+        yamlConfiguration.set(path, null);
         yamlConfiguration.save(file);
     }
 
