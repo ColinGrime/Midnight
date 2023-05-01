@@ -1,7 +1,6 @@
-package me.colingrimes.midnight.util.player;
+package me.colingrimes.midnight.util.bukkit;
 
 import me.colingrimes.midnight.util.Common;
-import me.colingrimes.midnight.util.Locations;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;

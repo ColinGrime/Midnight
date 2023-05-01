@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.config.adapter;
 
 import me.colingrimes.midnight.config.util.ConfigurableInventory;
-import me.colingrimes.midnight.util.item.Items;
+import me.colingrimes.midnight.util.bukkit.Items;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 

@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.util;
+package me.colingrimes.midnight.util.io;
 
 import org.bukkit.Bukkit;
 

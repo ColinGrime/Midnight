@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.annotation;
 
-import me.colingrimes.midnight.util.ClassFinder;
+import me.colingrimes.midnight.util.io.Files;
 import me.colingrimes.midnight.MidnightPlugin;
 
 import javax.annotation.Nonnull;
@@ -30,7 +30,7 @@ public final class AnnotationRegistry {
 	 * Processes all registered annotation processors.
 	 */
 	public void process() {
-		for (Class<?> clazz : ClassFinder.getClasses(plugin, plugin.getRootPackage())) {
+		for (Class<?> clazz : Files.getClasses(plugin, plugin.getRootPackage())) {
 			for (AnnotationProcessor processor : processors) {
 				// Perform all actions for this processor.
 				processClass(processor, clazz);

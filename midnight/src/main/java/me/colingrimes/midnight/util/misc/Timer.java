@@ -1,5 +1,6 @@
-package me.colingrimes.midnight.util;
+package me.colingrimes.midnight.util.misc;
 
+import me.colingrimes.midnight.util.io.Logger;
 import org.bukkit.plugin.Plugin;
 
 import javax.annotation.Nonnull;

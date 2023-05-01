@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.config.util;
 
 import com.google.common.base.Preconditions;
-import me.colingrimes.midnight.util.item.Items;
+import me.colingrimes.midnight.util.bukkit.Items;
 import me.colingrimes.midnight.util.text.Text;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;

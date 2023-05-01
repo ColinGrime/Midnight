@@ -1,5 +1,6 @@
-package me.colingrimes.midnight.util.item;
+package me.colingrimes.midnight.util.bukkit;
 
+import me.colingrimes.midnight.util.bukkit.Items;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;

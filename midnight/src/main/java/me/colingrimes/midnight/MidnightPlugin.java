@@ -13,15 +13,12 @@ import me.colingrimes.midnight.listener.InventoryListener;
 import me.colingrimes.midnight.menu.listener.MenuListener;
 import me.colingrimes.midnight.particle.ParticleManager;
 import me.colingrimes.midnight.util.Common;
-import me.colingrimes.midnight.util.Timer;
+import me.colingrimes.midnight.util.misc.Timer;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.java.JavaPluginLoader;
 
 import javax.annotation.Nonnull;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

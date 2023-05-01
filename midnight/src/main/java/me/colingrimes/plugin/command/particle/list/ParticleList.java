@@ -6,7 +6,7 @@ import me.colingrimes.midnight.command.util.Sender;
 import me.colingrimes.midnight.command.util.argument.ArgumentList;
 import me.colingrimes.midnight.locale.Placeholders;
 import me.colingrimes.midnight.particle.ParticleEffect;
-import me.colingrimes.midnight.util.Locations;
+import me.colingrimes.midnight.util.bukkit.Locations;
 import me.colingrimes.midnight.util.text.Text;
 import me.colingrimes.plugin.Midnight;
 import me.colingrimes.plugin.config.Messages;

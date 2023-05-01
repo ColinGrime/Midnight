@@ -3,8 +3,8 @@ package me.colingrimes.midnight.command.registry.util;
 import me.colingrimes.midnight.MidnightPlugin;
 import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.handler.factory.CommandHandlerFactory;
-import me.colingrimes.midnight.util.ClassFinder;
-import me.colingrimes.midnight.util.Logger;
+import me.colingrimes.midnight.util.io.Files;
+import me.colingrimes.midnight.util.io.Logger;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.InvocationTargetException;
@@ -32,7 +32,7 @@ public final class CommandPackageScanner {
      * @param <T> the type of MidnightPlugin
      */
     private static <T extends MidnightPlugin> void scanAndRegister(@Nonnull T plugin, @Nonnull String packagePath, @Nonnull String commandPath) {
-        List<Class<?>> classes = ClassFinder.getClasses(plugin, packagePath, false);
+        List<Class<?>> classes = Files.getClasses(plugin, packagePath, false);
         classes = classes.stream().filter(Command.class::isAssignableFrom).toList();
 
         // Only 1 command class per package.
@@ -52,7 +52,7 @@ public final class CommandPackageScanner {
         }
 
         // Recursively check the sub-packages for sub-commands.
-        for (String subPackage : ClassFinder.getSubPackages(plugin, packagePath)) {
+        for (String subPackage : Files.getPackageNames(plugin, packagePath)) {
             scanAndRegister(plugin, packagePath + "." + subPackage, commandPath);
         }
     }

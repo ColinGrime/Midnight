@@ -1,5 +1,6 @@
-package me.colingrimes.midnight.util;
+package me.colingrimes.midnight.util.misc;
 
+import me.colingrimes.midnight.util.misc.Random;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;

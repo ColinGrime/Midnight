@@ -7,7 +7,7 @@ import me.colingrimes.midnight.event.util.SimpleAction;
 import me.colingrimes.midnight.listener.util.ArmorType;
 import me.colingrimes.midnight.scheduler.Scheduler;
 import me.colingrimes.midnight.util.Common;
-import me.colingrimes.midnight.util.player.Players;
+import me.colingrimes.midnight.util.bukkit.Players;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

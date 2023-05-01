@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.util;
+package me.colingrimes.midnight.util.bukkit;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;

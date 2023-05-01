@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.util.item;
+package me.colingrimes.midnight.util.bukkit;
 
 import me.colingrimes.midnight.MidnightPlugin;
 import org.bukkit.NamespacedKey;

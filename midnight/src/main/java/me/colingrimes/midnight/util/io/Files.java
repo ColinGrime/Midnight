@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.util;
+package me.colingrimes.midnight.util.io;
 
 import me.colingrimes.midnight.MidnightPlugin;
 
@@ -11,7 +11,9 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
 
-public final class ClassFinder {
+import static java.nio.file.Files.*;
+
+public final class Files {
 
 	/**
 	 * Gets all classes in the given package, recursively.
@@ -41,14 +43,14 @@ public final class ClassFinder {
 			// If the URI is not a JAR, walk the directory.
 			if (!uri.getScheme().equals("jar")) {
 				Path packagePath = Paths.get(uri);
-				Files.walkFileTree(packagePath, Set.of(FileVisitOption.FOLLOW_LINKS), maxDepth, new CustomFileVisitor(plugin, packageName, packagePath, classes));
+				walkFileTree(packagePath, Set.of(FileVisitOption.FOLLOW_LINKS), maxDepth, new CustomFileVisitor(plugin, packageName, packagePath, classes));
 				return classes;
 			}
 
 			// If the URI is a JAR, walk the JAR.
 			try (FileSystem fileSystem = FileSystems.newFileSystem(uri, new HashMap<>())) {
 				Path packagePath = fileSystem.getPath(path);
-				Files.walkFileTree(packagePath, Set.of(FileVisitOption.FOLLOW_LINKS), maxDepth, new CustomFileVisitor(plugin, packageName, packagePath, classes));
+				walkFileTree(packagePath, Set.of(FileVisitOption.FOLLOW_LINKS), maxDepth, new CustomFileVisitor(plugin, packageName, packagePath, classes));
 			}
 		} catch (IOException | URISyntaxException e) {
 			e.printStackTrace();
@@ -57,8 +59,14 @@ public final class ClassFinder {
 		return classes;
 	}
 
+	/**
+	 * Gets all package names in the given package, one level deep.
+	 * @param plugin the plugin
+	 * @param packageName the package name
+	 * @return the list of package names
+	 */
 	@Nonnull
-	public static List<String> getSubPackages(@Nonnull MidnightPlugin plugin, @Nonnull String packageName) {
+	public static List<String> getPackageNames(@Nonnull MidnightPlugin plugin, @Nonnull String packageName) {
 		List<String> subPackages = new ArrayList<>();
 		String path = packageName.replace('.', '/');
 
@@ -67,9 +75,9 @@ public final class ClassFinder {
 
 			// If the URI is not a JAR, walk the directory.
 			if (!uri.getScheme().equals("jar")) {
-				try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(uri))) {
+				try (DirectoryStream<Path> stream = newDirectoryStream(Paths.get(uri))) {
 					for (Path subPath : stream) {
-						if (Files.isDirectory(subPath)) {
+						if (isDirectory(subPath)) {
 							subPackages.add(subPath.getFileName().toString());
 						}
 					}
@@ -80,9 +88,9 @@ public final class ClassFinder {
 			// If the URI is a JAR, walk the JAR.
 			try (FileSystem fileSystem = FileSystems.newFileSystem(uri, new HashMap<>())) {
 				Path packagePath = fileSystem.getPath(path);
-				try (DirectoryStream<Path> stream = Files.newDirectoryStream(packagePath)) {
+				try (DirectoryStream<Path> stream = newDirectoryStream(packagePath)) {
 					for (Path subPath : stream) {
-						if (Files.isDirectory(subPath)) {
+						if (isDirectory(subPath)) {
 							subPackages.add(subPath.getFileName().toString());
 						}
 					}
@@ -151,7 +159,7 @@ public final class ClassFinder {
 		}
 	}
 
-	private ClassFinder() {
+	private Files() {
 		throw new UnsupportedOperationException("This class cannot be instantiated.");
 	}
 }
