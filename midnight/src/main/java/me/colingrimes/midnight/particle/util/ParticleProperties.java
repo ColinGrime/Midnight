@@ -7,6 +7,8 @@ import org.bukkit.Particle;
 import org.bukkit.util.Vector;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ParticleProperties implements Serializable {
@@ -34,11 +36,11 @@ public class ParticleProperties implements Serializable {
      * @param data the data
      * @return the particle properties
      */
-    public static ParticleProperties of(@Nonnull Particle particle, int count, @Nonnull Vector offset, double speed, @Nonnull Object data) {
+    public static ParticleProperties of(@Nonnull Particle particle, int count, @Nonnull Vector offset, double speed, @Nullable Object data) {
         return new ParticleProperties(particle, count, offset, speed, data);
     }
 
-    private ParticleProperties(@Nonnull Particle particle, int count, @Nonnull Vector offset, double speed, @Nonnull Object data) {
+    private ParticleProperties(@Nonnull Particle particle, int count, @Nonnull Vector offset, double speed, @Nullable Object data) {
         this.particle = particle;
         this.count = count;
         this.offset = offset;
@@ -117,7 +119,7 @@ public class ParticleProperties implements Serializable {
      * Gets the data for the particle.
      * @return the particle data
      */
-    @Nonnull
+    @Nullable
     public Object getData() {
         return data;
     }
@@ -161,13 +163,22 @@ public class ParticleProperties implements Serializable {
     @Nonnull
     @Override
     public Map<String, Object> serialize() {
-        return Map.of(
-                "particle", particle.name(),
-                "count", count,
-                "offset", offset.serialize(),
-                "speed", speed,
-                "data", data
-        );
+        Map<String, Object> map = new HashMap<>();
+        map.put("particle", particle.name());
+        map.put("count", count);
+        map.put("offset", offset.serialize());
+        map.put("speed", speed);
+
+        // The annoying particles that require more data.
+        if (data instanceof Particle.DustOptions dust) {
+            map.put("data", Map.of("type", "dust_options", "color", dust.getColor().asRGB(), "size", dust.getSize()));
+        } else if (particle == Particle.SPELL_MOB || particle == Particle.SPELL_MOB_AMBIENT) {
+            map.put("data", Map.of("type", "color_as_rgb", "value", data));
+        } else if (particle == Particle.NOTE) {
+            map.put("data", Map.of("type", "color_red", "value", data));
+        }
+
+        return map;
     }
 
     /**
@@ -182,15 +193,30 @@ public class ParticleProperties implements Serializable {
         Preconditions.checkArgument(map.containsKey("count"));
         Preconditions.checkArgument(map.containsKey("offset"));
         Preconditions.checkArgument(map.containsKey("speed"));
-        Preconditions.checkArgument(map.containsKey("data"));
         Preconditions.checkArgument(map.get("offset") instanceof Map);
 
-        return ParticleProperties.of(
+        ParticleProperties properties = ParticleProperties.of(
                 Particle.valueOf((String) map.get("particle")),
                 (int) map.get("count"),
                 Vector.deserialize((Map<String, Object>) map.get("offset")),
                 (double) map.get("speed"),
-                map.get("data")
+                null
         );
+
+        // The annoying particles that require more data.
+        if (map.containsKey("data")) {
+            Map<String, Object> data = (Map<String, Object>) map.get("data");
+            String type = (String) data.get("type");
+
+            if (type.equals("dust_options") && properties.getParticle() == Particle.REDSTONE) {
+                properties.setData(new Particle.DustOptions(Color.fromRGB((int) data.get("color")), ((Number) data.get("size")).floatValue()));
+            } else if (type.equals("color_as_rgb") && (properties.getParticle() == Particle.SPELL_MOB || properties.getParticle() == Particle.SPELL_MOB_AMBIENT)) {
+                properties.setData(data.get("value"));
+            } else if (type.equals("color_red") && properties.getParticle() == Particle.NOTE) {
+                properties.setData(data.get("value"));
+            }
+        }
+
+        return properties;
     }
 }

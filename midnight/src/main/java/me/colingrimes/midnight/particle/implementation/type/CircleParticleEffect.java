@@ -131,11 +131,12 @@ public class CircleParticleEffect extends BaseParticleEffect {
         Preconditions.checkArgument(map.containsKey("properties"));
         Preconditions.checkArgument(map.containsKey("radius"));
         Preconditions.checkArgument(map.containsKey("point"));
+        Preconditions.checkArgument(map.get("point") instanceof Map);
         Preconditions.checkArgument(map.get("properties") instanceof Map);
 
         UUID uuid = UUID.fromString((String) map.get("uuid"));
         String name = (String) map.get("name");
-        Point<Rotation> point = Point.deserialize(map);
+        Point<Rotation> point = Point.deserialize((Map<String, Object>) map.get("point"));
         ParticleProperties properties = ParticleProperties.deserialize((Map<String, Object>) map.get("properties"));
         double radius = (double) map.getOrDefault("radius", 5.0);
         int points = (int) map.getOrDefault("points", 100);
