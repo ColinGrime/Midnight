@@ -9,6 +9,7 @@ import me.colingrimes.midnight.particle.ParticleEffect;
 import me.colingrimes.midnight.util.text.Text;
 import me.colingrimes.plugin.Midnight;
 import me.colingrimes.plugin.config.Messages;
+import org.bukkit.Particle;
 import org.bukkit.util.Vector;
 
 import javax.annotation.Nonnull;
@@ -33,11 +34,21 @@ public class ParticleProperties implements Command<Midnight> {
 		Placeholders placeholders = Placeholders
 				.of("{particle}", Text.format(properties.getParticle().name()))
 				.add("{count}", properties.getCount())
-				.add("{offset_x}", vector.getX())
-				.add("{offset_y}", vector.getY())
-				.add("{offset_z}", vector.getZ())
-				.add("{speed}", properties.getSpeed())
-				.add("{data}", properties.getData());
+				.add("{offset_x}", vector.getBlockX())
+				.add("{offset_y}", vector.getBlockY())
+				.add("{offset_z}", vector.getBlockZ())
+				.add("{speed}", properties.getSpeed());
+
+		Object data = properties.getData();
+		if (data != null) {
+			if (data instanceof Particle.DustOptions dust) {
+				placeholders.add("{data}", dust.getColor().asRGB());
+			} else {
+				placeholders.add("{data}", data.toString());
+			}
+		} else {
+			placeholders.add("{data}", "None");
+		}
 
 		Messages.PARTICLE_PROPERTIES.sendTo(sender, placeholders);
 	}
