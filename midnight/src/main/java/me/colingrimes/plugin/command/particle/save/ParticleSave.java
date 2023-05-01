@@ -10,7 +10,6 @@ import me.colingrimes.plugin.Midnight;
 import me.colingrimes.plugin.config.Messages;
 
 import javax.annotation.Nonnull;
-import java.io.IOException;
 import java.util.Optional;
 
 public class ParticleSave implements Command<Midnight> {
@@ -30,17 +29,20 @@ public class ParticleSave implements Command<Midnight> {
 		if (plugin.getParticleManager().getParticle(name).isPresent()) {
 			Messages.PARTICLE_NAME_TAKEN.sendTo(sender);
 			return;
+		} else {
+			particle.get().setName(name);
 		}
 
-		Scheduler.ASYNC.run(() -> {
-			try {
-				particle.get().setName(name);
-				plugin.getParticleStorage().save(particle.get());
-				Messages.PARTICLE_SAVE.sendTo(sender);
-			} catch (IOException e) {
-				Messages.PARTICLE_NOT_SAVED.sendTo(sender);
-				e.printStackTrace();
-			}
+		Scheduler.ASYNC.call(() -> {
+			plugin.getParticleStorage().save(particle.get());
+			return null;
+		}).thenRun(() -> {
+			plugin.getParticleManager().addParticle(particle.get());
+			Messages.PARTICLE_SAVE.sendTo(sender);
+		}).exceptionally(ex -> {
+			Messages.PARTICLE_NOT_SAVED.sendTo(sender);
+			ex.printStackTrace();
+			return null;
 		});
 	}
 

@@ -12,7 +12,6 @@ import me.colingrimes.plugin.Midnight;
 import me.colingrimes.plugin.config.Messages;
 
 import javax.annotation.Nonnull;
-import java.io.IOException;
 import java.util.Optional;
 
 public class ParticleDelete implements Command<Midnight> {
@@ -28,15 +27,16 @@ public class ParticleDelete implements Command<Midnight> {
 			return;
 		}
 
-		Scheduler.ASYNC.run(() -> {
-			try {
-				plugin.getParticleStorage().delete(particle.get());
-				plugin.getParticleManager().deleteParticle(particle.get());
-				Messages.PARTICLE_DELETE.sendTo(sender, Placeholders.of("{name}", Text.format(name)));
-			} catch (IOException e) {
-				Messages.PARTICLE_NOT_DELETED.sendTo(sender);
-				e.printStackTrace();
-			}
+		Scheduler.ASYNC.call(() -> {
+			plugin.getParticleStorage().delete(particle.get());
+			return null;
+		}).thenRun(() -> {
+			plugin.getParticleManager().deleteParticle(particle.get());
+			Messages.PARTICLE_DELETE.sendTo(sender, Placeholders.of("{name}", Text.format(name)));
+		}).exceptionally(ex -> {
+			Messages.PARTICLE_NOT_DELETED.sendTo(sender);
+			ex.printStackTrace();
+			return null;
 		});
 	}
 
