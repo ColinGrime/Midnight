@@ -4,6 +4,7 @@ import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.util.CommandProperties;
 import me.colingrimes.midnight.command.util.Sender;
 import me.colingrimes.midnight.command.util.argument.ArgumentList;
+import me.colingrimes.midnight.locale.Placeholders;
 import me.colingrimes.midnight.particle.ParticleEffect;
 import me.colingrimes.midnight.scheduler.Scheduler;
 import me.colingrimes.plugin.Midnight;
@@ -38,7 +39,7 @@ public class ParticleSave implements Command<Midnight> {
 			return null;
 		}).thenRun(() -> {
 			plugin.getParticleManager().addParticle(particle.get());
-			Messages.PARTICLE_SAVE.sendTo(sender);
+			Messages.PARTICLE_SAVE.sendTo(sender, Placeholders.of("{name}", name));
 		}).exceptionally(ex -> {
 			Messages.PARTICLE_NOT_SAVED.sendTo(sender);
 			ex.printStackTrace();
