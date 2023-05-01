@@ -10,7 +10,7 @@ import java.util.List;
 public class ExamplePlugin extends MidnightPlugin {
 
 	@Override
-	protected void registerListeners(@Nonnull List<? super Listener> listeners) {
+	protected void registerListeners(@Nonnull List<Listener> listeners) {
 		listeners.add(new PlayerListeners());
 	}
 }

@@ -36,7 +36,7 @@ public abstract class MidnightPlugin extends JavaPlugin {
 	protected void load() {}
 	protected void enable() {}
 	protected void disable() {}
-	protected void registerListeners(@Nonnull List<? super Listener> listeners) {}
+	protected void registerListeners(@Nonnull List<Listener> listeners) {}
 
 	@Override
 	public void onLoad() {
