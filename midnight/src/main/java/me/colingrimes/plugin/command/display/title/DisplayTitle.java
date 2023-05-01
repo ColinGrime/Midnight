@@ -4,6 +4,7 @@ import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.util.CommandProperties;
 import me.colingrimes.midnight.command.util.Sender;
 import me.colingrimes.midnight.command.util.argument.ArgumentList;
+import me.colingrimes.midnight.display.implementation.Title;
 import me.colingrimes.midnight.locale.Placeholders;
 import me.colingrimes.plugin.Midnight;
 import me.colingrimes.plugin.config.Messages;
@@ -22,7 +23,7 @@ public class DisplayTitle implements Command<Midnight> {
 			return;
 		}
 
-		me.colingrimes.midnight.display.implementation.Title title = plugin.display().createTitle(args.get(1));
+		Title title = plugin.display().createTitle(args.get(1));
 		args.getOptional(2).ifPresent(title::setSubtitle);
 		args.getInt(3).ifPresent(title::setFadeInTime);
 		args.getInt(4).ifPresent(title::setStayTime);
