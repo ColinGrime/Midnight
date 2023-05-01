@@ -1,6 +1,5 @@
 ### Gradle ###
 .gradle/
-!gradle-wrapper.jar
 build/
 
 ### IntelliJ ###
@@ -84,3 +83,6 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 *.lnk
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
