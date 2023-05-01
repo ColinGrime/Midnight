@@ -14,7 +14,7 @@ public class SyncScheduler implements Scheduler {
 
     @Nonnull
     @Override
-    public <T> CompletableFuture<T> run(@Nonnull Callable<T> task) {
+    public <T> CompletableFuture<T> call(@Nonnull Callable<T> task) {
         CompletableFuture<T> future = new CompletableFuture<>();
         Bukkit.getScheduler().runTask(MidnightPlugin.getInstance(), () -> {
             try {
@@ -28,7 +28,7 @@ public class SyncScheduler implements Scheduler {
 
     @Nonnull
     @Override
-    public <T> CompletableFuture<T> runLater(@Nonnull Callable<T> task, long delayTicks) {
+    public <T> CompletableFuture<T> callLater(@Nonnull Callable<T> task, long delayTicks) {
         CompletableFuture<T> future = new CompletableFuture<>();
         Bukkit.getScheduler().runTaskLater(MidnightPlugin.getInstance(), () -> {
             try {
