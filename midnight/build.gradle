@@ -1,5 +1,9 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
+plugins {
+    id 'maven-publish'
+}
+
 group 'me.colingrimes.midnight'
 version '1.0.0'
 
@@ -16,4 +20,12 @@ dependencies {
 // ${version} placeholders.
 processResources {
     filter ReplaceTokens, beginToken: '${', endToken: '}', tokens: ['version': version]
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
 }
