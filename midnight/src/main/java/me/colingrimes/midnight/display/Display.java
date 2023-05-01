@@ -69,7 +69,7 @@ public interface Display {
      */
     default void show(@Nonnull Player player, long duration, @Nonnull TimeUnit unit) {
         show(player);
-        Scheduler.SYNC.runLater(() -> hide(player), unit.toMillis(duration));
+        Scheduler.SYNC.runLater(() -> hide(player), unit.toSeconds(duration) * 20);
     }
 
     /**
