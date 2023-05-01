@@ -20,7 +20,7 @@ public class ParticleList implements Command<Midnight> {
 	public void execute(@Nonnull Midnight plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
 		List<ParticleEffect> particles = plugin.getParticleManager().getParticles();
 		int page = args.getIntOrDefault(0, 1);
-		int totalPages = (int) Math.ceil(particles.size() / 10.0);
+		int totalPages = Math.max(1, (int) Math.ceil(particles.size() / 10.0));
 
 		// Check for invalid page.
 		if (page < 1 || page > totalPages) {
@@ -36,13 +36,13 @@ public class ParticleList implements Command<Midnight> {
 		Messages.PARTICLE_PAGE_HEADER.sendTo(sender, header);
 
 		for (int i=startIndex; i<endIndex; i++) {
-			ParticleEffect effect = particles.get(i);
+			ParticleEffect particle = particles.get(i);
 
 			// Send the entry message.
 			Placeholders entry = Placeholders
-					.of("{name}", Text.format(effect.getName()))
-					.add("{type}", Text.format(effect.getType().name()))
-					.add("{location}", Locations.toString(effect.getPoint().getPosition().toLocation()));
+					.of("{name}", Text.format(particle.getName()))
+					.add("{type}", Text.format(particle.getType().name()))
+					.add("{location}", Locations.toString(particle.getPoint().getPosition().toLocation()));
 			Messages.PARTICLE_PAGE_ENTRY.sendTo(sender, entry);
 		}
 	}
