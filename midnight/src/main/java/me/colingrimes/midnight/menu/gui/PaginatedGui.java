@@ -1,5 +1,6 @@
 package me.colingrimes.midnight.menu.gui;
 
+import me.colingrimes.midnight.menu.Gui;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -10,7 +11,7 @@ import java.util.Map;
  * The PaginatedGui abstract class.
  * Extend this class to create multipage GUI menus.
  */
-public abstract class PaginatedGui extends AbstractGui {
+public abstract class PaginatedGui extends Gui {
 
     private final Map<Integer, PaginatedGui> pages;
     private final int pageNumber;
