@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'me.colingrimes.midnight'
-version '1.0.0'
+version '1.0.1'
 
 dependencies {
     implementation 'com.zaxxer:HikariCP:5.0.1'
