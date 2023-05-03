@@ -26,7 +26,7 @@ public abstract class Gui {
 	private final Player player;
 	private final Inventory inventory;
 	private final Map<Integer, Slot> slots = new HashMap<>();
-	private boolean valid = false;
+	private boolean valid = true;
 
 	public Gui(@Nonnull Player player, @Nonnull String title, int rows) {
 		this.player = player;
@@ -64,7 +64,7 @@ public abstract class Gui {
 	 */
 	@Nonnull
 	public Slot getSlot(int slot) {
-		Preconditions.checkArgument(slot < 0 || slot >= inventory.getSize(), "Invalid slot: " + slot);
+		Preconditions.checkArgument(slot >= 0 && slot < inventory.getSize(), "Invalid slot: " + slot);
 		return slots.computeIfAbsent(slot, i -> new SimpleSlot(this, i));
 	}
 
