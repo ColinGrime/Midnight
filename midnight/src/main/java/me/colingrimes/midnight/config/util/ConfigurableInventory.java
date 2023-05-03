@@ -109,7 +109,7 @@ public class ConfigurableInventory {
             return;
         }
 
-        ItemStack item = new Items.ItemBuilder()
+        ItemStack item = Items.create()
                 .material(sec.getString("fill"))
                 .name("")
                 .build();

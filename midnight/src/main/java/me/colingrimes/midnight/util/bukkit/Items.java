@@ -17,9 +17,44 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Provides various utilities for {@link ItemStack} objects.
+ * Provides various utilties for {@link ItemStack} objects.</p>
  */
 public final class Items {
+
+	/**
+	 * Creates a new {@link Builder} object.
+	 * Defaults to {@link Material#STONE}.
+	 * @return the item builder object
+	 */
+	@Nonnull
+	public static Builder create() {
+		return new Builder(Material.STONE);
+	}
+
+	/**
+	 * Creates a new {@link Builder} object.
+	 * @param material the default material of the item
+	 * @return the item builder object
+	 */
+	@Nonnull
+	public static Builder of(@Nonnull Material material) {
+		return new Builder(material);
+	}
+
+	/**
+	 * Parses a {@link ConfigurationSection} and checks for the following:
+	 * - A "type" or "material" key for materials.
+	 * - A "name" key for the name of the item.
+	 * - A "lore" key for the lore of the item.
+	 * - A "glowing" key for whether the item should be glowing or not.
+	 *
+	 * @param sec the section of the configuration file
+	 * @return the item builder object
+	 */
+	@Nonnull
+	public static ItemStack config(@Nullable ConfigurationSection sec) {
+		return create().config(sec).build();
+	}
 
 	/**
 	 * Finds the slot number of the first occurrence of the specified item,
@@ -75,27 +110,14 @@ public final class Items {
 	}
 
 	/**
-	 * Parses a {@link ConfigurationSection} and checks for the following:
-	 * - A "type" or "material" key for materials.
-	 * - A "name" key for the name of the item.
-	 * - A "lore" key for the lore of the item.
-	 * - A "glowing" key for whether the item should be glowing or not.
-	 *
-	 * @param sec the section of the configuration file
-	 * @return the item stack
+	 * Provides a simple way to build {@link ItemStack} objects:
+	 * <ul>
+	 *   <li>Supports parsing of {@link Material} enums from string formats.</li>
+	 *   <li>Supports parsing of {@link ConfigurationSection} objects.</li>
+	 *   <li>Supports replacing {@link Placeholders} from the name/lore.</li>
+	 * </ul>
 	 */
-	@Nonnull
-	public static ItemStack config(@Nullable ConfigurationSection sec) {
-		return new ItemBuilder().config(sec).build();
-	}
-
-	/**
-	 * Provides a simple way to build {@link ItemStack} objects.
-	 * - Supports parsing of {@link Material} enums from string formats.
-	 * - Supports parsing of {@link ConfigurationSection} objects.
-	 * - Supports replacing {@link Placeholders} from the name/lore.
-	 */
-	public static final class ItemBuilder {
+	public static class Builder {
 
 		private final Placeholders placeholders = Placeholders.create();
 		private final Material defMaterial;
@@ -106,11 +128,7 @@ public final class Items {
 		private boolean hide = false;
 		private boolean glow = false;
 
-		public ItemBuilder() {
-			this(Material.STONE);
-		}
-
-		public ItemBuilder(@Nonnull Material def) {
+		public Builder(@Nonnull Material def) {
 			this.defMaterial = Objects.requireNonNull(def, "material");
 		}
 
@@ -120,7 +138,7 @@ public final class Items {
 		 * @return the itembuilder object
 		 */
 		@Nonnull
-		public ItemBuilder material(@Nullable Material material) {
+		public Builder material(@Nullable Material material) {
 			this.material = material;
 			return this;
 		}
@@ -131,7 +149,7 @@ public final class Items {
 		 * @return the itembuilder object
 		 */
 		@Nonnull
-		public ItemBuilder material(@Nullable String str) {
+		public Builder material(@Nullable String str) {
 			if (str == null) {
 				return this;
 			}
@@ -146,7 +164,7 @@ public final class Items {
 		 * @return the itembuilder object
 		 */
 		@Nonnull
-		public ItemBuilder name(@Nullable String name) {
+		public Builder name(@Nullable String name) {
 			this.name = name;
 			return this;
 		}
@@ -157,7 +175,7 @@ public final class Items {
 		 * @return the itembuilder object
 		 */
 		@Nonnull
-		public ItemBuilder lore(@Nullable List<String> lore) {
+		public Builder lore(@Nullable List<String> lore) {
 			this.lore = lore;
 			return this;
 		}
@@ -167,7 +185,7 @@ public final class Items {
 		 * @return the itembuilder object
 		 */
 		@Nonnull
-		public ItemBuilder hide(boolean hide) {
+		public Builder hide(boolean hide) {
 			this.hide = hide;
 			return this;
 		}
@@ -177,7 +195,7 @@ public final class Items {
 		 * @return the itembuilder object
 		 */
 		@Nonnull
-		public ItemBuilder glow(boolean glow) {
+		public Builder glow(boolean glow) {
 			this.glow = glow;
 			return this;
 		}
@@ -193,7 +211,7 @@ public final class Items {
 		 * @return the itembuilder object
 		 */
 		@Nonnull
-		public ItemBuilder config(@Nullable ConfigurationSection sec) {
+		public Builder config(@Nullable ConfigurationSection sec) {
 			if (sec == null) {
 				return this;
 			}
@@ -214,7 +232,7 @@ public final class Items {
 		 * @return the placeholders object
 		 */
 		@Nonnull
-		public <T> ItemBuilder placeholder(@Nonnull String placeholder, @Nonnull T replacement) {
+		public <T> Builder placeholder(@Nonnull String placeholder, @Nonnull T replacement) {
 			placeholders.add(placeholder, replacement);
 			return this;
 		}
@@ -261,9 +279,5 @@ public final class Items {
 		private <T> Optional<T> parse(@Nonnull ConfigurationSection sec, @Nonnull String key, @Nonnull Class<T> clazz) {
 			return Optional.ofNullable(sec.getObject(key, clazz));
 		}
-	}
-
-	private Items() {
-		throw new UnsupportedOperationException("This class cannot be instantiated.");
 	}
 }
