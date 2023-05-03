@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.menu.listener;
+package me.colingrimes.midnight.listener;
 
 import me.colingrimes.midnight.MidnightPlugin;
 import me.colingrimes.midnight.menu.Gui;
@@ -17,11 +17,11 @@ import org.bukkit.event.server.PluginDisableEvent;
 
 import javax.annotation.Nonnull;
 
-public class MenuListener implements Listener {
+public class MenuListeners implements Listener {
 
     private final MidnightPlugin plugin;
 
-    public MenuListener(@Nonnull MidnightPlugin plugin) {
+    public MenuListeners(@Nonnull MidnightPlugin plugin) {
         this.plugin = plugin;
     }
 

@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.menu.gui;
+package me.colingrimes.midnight.menu.paginated;
 
 import me.colingrimes.midnight.menu.Gui;
 import org.bukkit.entity.Player;
