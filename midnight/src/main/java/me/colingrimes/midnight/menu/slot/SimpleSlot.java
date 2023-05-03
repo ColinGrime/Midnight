@@ -72,13 +72,6 @@ public class SimpleSlot implements Slot {
 		return this;
 	}
 
-	@Nonnull
-	@Override
-	public Slot bind(@Nonnull Consumer<InventoryClickEvent> handler, @Nonnull ClickType... types) {
-		Arrays.stream(types).forEach(t -> bind(t, handler));
-		return this;
-	}
-
 	@Override
 	public void clearBindings() {
 		handlers.clear();
