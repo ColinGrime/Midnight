@@ -38,32 +38,32 @@ public class ArmorEquipListeners implements Listener {
 		}
 
 		Player player = event.getPlayer();
-		ItemStack cursor = event.getCursorItem().orElse(null);
-		ItemStack clicked = event.getClickedItem().orElse(null);
+		ItemStack cursor = event.getCursor().orElse(null);
+		ItemStack clicked = event.getClicked().orElse(null);
 		boolean clickedArmor = event.getSlotType() == InventoryType.SlotType.ARMOR;
 
 		// Accounts for PICKING armor up (unequip).
-		if (clickedArmor && event.getSimpleAction() == SimpleAction.PICKUP) {
+		if (clickedArmor && event.getAction() == SimpleAction.PICKUP) {
 			Common.call(new ArmorEquipEvent(player, EquipAction.UNEQUIP, null, clicked));
 		}
 
 		// Accounts for PLACING armor down (equip).
-		else if (clickedArmor && event.getSimpleAction() == SimpleAction.PLACE) {
+		else if (clickedArmor && event.getAction() == SimpleAction.PLACE) {
 			Common.call(new ArmorEquipEvent(player, EquipAction.EQUIP, cursor, null));
 		}
 
 		// Accounts for DROPPING armor off (unequip).
-		else if (clickedArmor && event.getSimpleAction() == SimpleAction.DROP) {
+		else if (clickedArmor && event.getAction() == SimpleAction.DROP) {
 			Common.call(new ArmorEquipEvent(player, EquipAction.UNEQUIP, null, clicked));
 		}
 
 		// Accounts for SWAPPING armor (swap).
-		else if (clickedArmor && event.getSimpleAction() == SimpleAction.SWAP) {
+		else if (clickedArmor && event.getAction() == SimpleAction.SWAP) {
 			Common.call(new ArmorEquipEvent(player, EquipAction.SWAP, cursor, clicked));
 		}
 
 		// Accounts for SHIFT+CLICKING armor (equip).
-		if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
+		if (event.getSpecificAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
 			Optional<ArmorType> armorType = ArmorType.fromItem(clicked);
 			if (armorType.isPresent() && armorType.get().getFrom(player).isEmpty()) {
 				Common.call(new ArmorEquipEvent(player, EquipAction.EQUIP, clicked, null));
@@ -71,7 +71,7 @@ public class ArmorEquipListeners implements Listener {
 		}
 
 		// Accounts for KEYPADDING armor (all).
-		if (event.getAction() == InventoryAction.HOTBAR_SWAP) {
+		if (event.getSpecificAction() == InventoryAction.HOTBAR_SWAP) {
 			Optional<ArmorType> armorType = ArmorType.fromItem(clicked);
 			if (armorType.isEmpty()) {
 				return;
