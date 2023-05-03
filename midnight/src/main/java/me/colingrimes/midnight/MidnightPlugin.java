@@ -10,7 +10,7 @@ import me.colingrimes.midnight.display.DisplayFactory;
 import me.colingrimes.midnight.display.manager.DisplayManager;
 import me.colingrimes.midnight.listener.ArmorEquipListeners;
 import me.colingrimes.midnight.listener.InventoryListener;
-import me.colingrimes.midnight.menu.listener.MenuListener;
+import me.colingrimes.midnight.listener.MenuListeners;
 import me.colingrimes.midnight.particle.ParticleManager;
 import me.colingrimes.midnight.util.Common;
 import me.colingrimes.midnight.util.misc.Timer;
@@ -40,7 +40,11 @@ public abstract class MidnightPlugin extends JavaPlugin {
 
 	@Override
 	public void onLoad() {
-		instance = this;
+		// Initialize the Midnight plugin instance.
+		if (instance == null) {
+			instance = this;
+		}
+
 		commandRegistry = new CommandRegistry(this);
 		configurationManager = new ConfigurationManager();
 		particleManager = new ParticleManager();
@@ -92,7 +96,7 @@ public abstract class MidnightPlugin extends JavaPlugin {
 		List<Listener> listeners = new ArrayList<>();
 
 		// Register default listeners.
-		listeners.add(new MenuListener(this));
+		listeners.add(new MenuListeners(this));
 		listeners.add(new InventoryListener());
 		listeners.add(new ArmorEquipListeners());
 
