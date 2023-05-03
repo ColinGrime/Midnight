@@ -1,7 +1,7 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 group 'me.colingrimes.example'
-version '1.0.0'
+version '1.0.1'
 
 dependencies {
     compileOnly project(':midnight')
@@ -10,4 +10,8 @@ dependencies {
 // ${version} placeholders.
 processResources {
     filter ReplaceTokens, beginToken: '${', endToken: '}', tokens: ['version': version]
+}
+
+jar {
+    archivesBaseName = 'Midnight-Example'
 }

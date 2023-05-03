@@ -29,3 +29,7 @@ publishing {
         }
     }
 }
+
+jar {
+    archivesBaseName = 'Midnight'
+}
