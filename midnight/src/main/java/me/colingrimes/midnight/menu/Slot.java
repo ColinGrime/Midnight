@@ -1,11 +1,14 @@
 package me.colingrimes.midnight.menu;
 
+import me.colingrimes.midnight.util.bukkit.Items;
+import org.bukkit.Material;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 /**
@@ -54,6 +57,16 @@ public interface Slot {
 	Slot setItem(@Nonnull ItemStack item);
 
 	/**
+	 * Sets an empty item of the slot.
+	 * @param material the material of the item
+	 * @return the slot object
+	 */
+	@Nonnull
+	default Slot setItem(@Nonnull Material material) {
+		return setItem(Items.of(material).name("").build());
+	}
+
+	/**
 	 * Binds a click type to a handler that will perform an action on click.
 	 * @param type the click type
 	 * @param handler the action to perform on the click
@@ -69,7 +82,10 @@ public interface Slot {
 	 * @return the slot object
 	 */
 	@Nonnull
-	Slot bind(@Nonnull Consumer<InventoryClickEvent> handler, @Nonnull ClickType... types);
+	default Slot bind(@Nonnull Consumer<InventoryClickEvent> handler, @Nonnull ClickType... types) {
+		Arrays.stream(types).forEach(t -> bind(t, handler));
+		return this;
+	}
 
 	/**
 	 * Clears all bindings of all click types.
