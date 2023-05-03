@@ -10,7 +10,7 @@ public class Midnight extends MidnightPlugin {
 	private ParticleStorage particleStorage;
 
 	@Override
-	protected void load() {
+	protected void enable() {
 		particleStorage = new ParticleStorage(this);
 
 		try {
