@@ -6,6 +6,7 @@ import me.colingrimes.midnight.command.registry.CommandRegistry;
 import me.colingrimes.midnight.command.registry.util.CommandPackageScanner;
 import me.colingrimes.midnight.config.ConfigurationManager;
 import me.colingrimes.midnight.config.annotation.processor.ConfigurationProcessor;
+import me.colingrimes.midnight.dependency.Dependencies;
 import me.colingrimes.midnight.display.DisplayFactory;
 import me.colingrimes.midnight.display.manager.DisplayManager;
 import me.colingrimes.midnight.listener.ArmorEquipListeners;
@@ -19,14 +20,19 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class MidnightPlugin extends JavaPlugin {
 
+	// Main plugn instance -- USE WITH CAUTION.
 	private static Plugin instance;
-	private CommandRegistry commandRegistry;
+	// Are the default listeners registered?
+	private static boolean registerDefaultListeners = false;
 
+	private Dependencies dependencies;
+	private CommandRegistry commandRegistry;
 	private ConfigurationManager configurationManager;
 	private ParticleManager particleManager;
 	private DisplayManager displayManager;
@@ -45,6 +51,7 @@ public abstract class MidnightPlugin extends JavaPlugin {
 			instance = this;
 		}
 
+		dependencies = new Dependencies(this);
 		commandRegistry = new CommandRegistry(this);
 		configurationManager = new ConfigurationManager();
 		particleManager = new ParticleManager();
@@ -96,9 +103,12 @@ public abstract class MidnightPlugin extends JavaPlugin {
 		List<Listener> listeners = new ArrayList<>();
 
 		// Register default listeners.
-		listeners.add(new MenuListeners(this));
-		listeners.add(new InventoryListener());
-		listeners.add(new ArmorEquipListeners());
+		if (!registerDefaultListeners) {
+			registerDefaultListeners = true;
+			listeners.add(new MenuListeners(this));
+			listeners.add(new InventoryListener());
+			listeners.add(new ArmorEquipListeners());
+		}
 
 		// Register additional listeners.
 		registerListeners(listeners);
@@ -122,6 +132,63 @@ public abstract class MidnightPlugin extends JavaPlugin {
 	@Nonnull
 	public static Plugin getInstance() {
 		return instance;
+	}
+
+	/**
+	 * Gets the dependencies of the plugin.
+	 * @return dependencies
+	 */
+	@Nonnull
+	public Dependencies getDependencies() {
+		return dependencies;
+	}
+
+	/**
+	 * Loads a required dependency by its class.
+	 * If the dependency is not found, the plugin will be disabled.
+	 *
+	 * @param clazz the class of the plugin
+	 */
+	public <T extends Plugin> void depend(@Nonnull Class<T> clazz) {
+		dependencies.depend(clazz);
+	}
+
+	/**
+	 * Loads a required dependency by its class and name.
+	 * If the dependency is not found, the plugin will be disabled.
+	 *
+	 * @param clazz the class of the plugin
+	 * @param name  the name of the plugin
+	 */
+	public <T extends Plugin> void depend(@Nonnull Class<T> clazz, @Nonnull String name) {
+		dependencies.depend(clazz, name);
+	}
+
+	/**
+	 * Loads a soft dependency by its class.
+	 * @param clazz the class of the plugin
+	 */
+	public <T extends Plugin> void softDepend(@Nonnull Class<T> clazz) {
+		dependencies.softDepend(clazz);
+	}
+
+	/**
+	 * Loads a soft dependency by its name and class.
+	 * @param clazz the class of the plugin
+	 * @param name the name of the plugin
+	 */
+	public <T extends Plugin> void softDepend(@Nonnull Class<T> clazz, @Nonnull String name) {
+		dependencies.softDepend(clazz, name);
+	}
+
+	/**
+	 * Gets a loaded plugin instance by its class.
+	 * @param clazz the class of the plugin
+	 * @return the loaded plugin instance, or null if not found or not enabled
+	 */
+	@Nullable
+	public <T extends Plugin> T getDependency(@Nonnull Class<T> clazz) {
+		return dependencies.getDependency(clazz);
 	}
 
 	/**
