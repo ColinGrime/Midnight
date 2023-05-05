@@ -8,7 +8,6 @@ import me.colingrimes.midnight.storage.file.composite.CompositeIdentifier;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 
 public class ParticleStorage extends YamlStorage<ParticleEffect> {
@@ -25,13 +24,13 @@ public class ParticleStorage extends YamlStorage<ParticleEffect> {
 		plugin.getParticleManager().addParticle(data);
 	}
 
-	@Nonnull
+	@Nullable
 	@Override
-	protected Optional<CompositeIdentifier> getIdentifier(@Nullable ParticleEffect data) {
+	protected CompositeIdentifier getIdentifier(@Nullable ParticleEffect data) {
 		if (data == null) {
-			return Optional.of(new CompositeIdentifier("particles.yml", null));
+			return CompositeIdentifier.of("particles.yml");
 		} else {
-			return Optional.of(new CompositeIdentifier("particles.yml", data.getUUID().toString()));
+			return CompositeIdentifier.of("particles.yml", data.getUUID().toString());
 		}
 	}
 
