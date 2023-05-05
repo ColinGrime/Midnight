@@ -144,51 +144,44 @@ public abstract class MidnightPlugin extends JavaPlugin {
 	}
 
 	/**
-	 * Loads a required dependency by its class.
+	 * Loads a required dependency by its name.
 	 * If the dependency is not found, the plugin will be disabled.
 	 *
-	 * @param clazz the class of the plugin
-	 */
-	public <T extends Plugin> void depend(@Nonnull Class<T> clazz) {
-		dependencies.depend(clazz);
-	}
-
-	/**
-	 * Loads a required dependency by its class and name.
-	 * If the dependency is not found, the plugin will be disabled.
-	 *
-	 * @param clazz the class of the plugin
-	 * @param name  the name of the plugin
-	 */
-	public <T extends Plugin> void depend(@Nonnull Class<T> clazz, @Nonnull String name) {
-		dependencies.depend(clazz, name);
-	}
-
-	/**
-	 * Loads a soft dependency by its class.
-	 * @param clazz the class of the plugin
-	 */
-	public <T extends Plugin> void softDepend(@Nonnull Class<T> clazz) {
-		dependencies.softDepend(clazz);
-	}
-
-	/**
-	 * Loads a soft dependency by its name and class.
-	 * @param clazz the class of the plugin
 	 * @param name the name of the plugin
 	 */
-	public <T extends Plugin> void softDepend(@Nonnull Class<T> clazz, @Nonnull String name) {
-		dependencies.softDepend(clazz, name);
+	public void depend(@Nonnull String name) {
+		dependencies.depend(name);
 	}
 
 	/**
-	 * Gets a loaded plugin instance by its class.
+	 * Loads a soft dependency by its name.
+	 * @param name the name of the plugin
+	 */
+	public void softDepend(@Nonnull String name) {
+		dependencies.softDepend(name);
+	}
+
+	/**
+	 * Gets a loaded plugin instance by its name.
+	 * @param name the name of the plugin
+	 * @return the loaded plugin instance, or null if not found or not enabled
+	 */
+	@Nullable
+	public Plugin getDependency(@Nonnull String name) {
+		return dependencies.getDependency(name);
+	}
+
+	/**
+	 * Gets a loaded plugin instance by its name, and casts it to the given class.
+	 * Warning: Should only be used if the plugin is required.
+	 *
+	 * @param name the name of the plugin
 	 * @param clazz the class of the plugin
 	 * @return the loaded plugin instance, or null if not found or not enabled
 	 */
 	@Nullable
-	public <T extends Plugin> T getDependency(@Nonnull Class<T> clazz) {
-		return dependencies.getDependency(clazz);
+	public <T extends Plugin> T getDependency(@Nonnull String name, @Nonnull Class<T> clazz) {
+		return dependencies.getDependency(name, clazz);
 	}
 
 	/**

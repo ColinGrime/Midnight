@@ -1,7 +1,8 @@
 name: ExamplePlugin
 main: me.colingrimes.example.ExamplePlugin
 version: ${version}
-depend: [Midnight, WorldEdit]
+depend: [Midnight]
+softdepend: [WorldEdit]
 
 authors: [Scill]
 api-version: 1.19

@@ -1,6 +1,5 @@
 package me.colingrimes.example;
 
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import me.colingrimes.example.listener.PlayerListeners;
 import me.colingrimes.example.player.PlayerManager;
 import me.colingrimes.example.storage.PlayerStorage;
@@ -23,7 +22,7 @@ public class ExamplePlugin extends MidnightPlugin {
 
 	@Override
 	protected void enable() {
-		depend(WorldEditPlugin.class, "WorldEdit");
+		softDepend("WorldEdit");
 	}
 
 	@Override
