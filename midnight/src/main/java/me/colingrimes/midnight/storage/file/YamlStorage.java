@@ -66,14 +66,14 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
     }
 
     @Override
-    public void load(@Nonnull String identifier) throws IOException {
-        File file = getFile(identifier, false);
+    public void load(@Nonnull CompositeIdentifier identifier) throws IOException {
+        File file = getFile(getFilePath(identifier), false);
         if (!file.exists()) {
             return;
         }
 
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        ConfigurationSection sec = config.getConfigurationSection(identifier);
+        ConfigurationSection sec = config.getConfigurationSection(identifier.getInternalPath());
         if (sec == null) {
             return;
         }
@@ -85,18 +85,19 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
 
     @Override
     public void save(@Nonnull T data) throws IOException {
-        Optional<CompositeIdentifier> identifier = getIdentifier(data);
-        if (identifier.isEmpty()) {
+        CompositeIdentifier identifier = getIdentifier(data);
+        if (identifier == null) {
             return;
         }
 
-        File file = getFile(identifier.get().getFilePath(), true);
-        String path = identifier.get().getInternalPath();
+        // Gets the file and internal path.
+        File file = getFile(getFilePath(identifier), true);
+        String path = getInternalPath(identifier);
 
         // Serialize the data.
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         for (Map.Entry<String, Object> serialized : data.serialize().entrySet()) {
-            config.set(path + "." + serialized.getKey(), serialized.getValue());
+            config.set(path + serialized.getKey(), serialized.getValue());
         }
 
         config.save(file);
@@ -104,13 +105,13 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
 
     @Override
     public void delete(@Nonnull T data) throws IOException {
-        Optional<CompositeIdentifier> identifier = getIdentifier(data);
-        if (identifier.isEmpty() || identifier.get().getInternalPath() == null) {
+        CompositeIdentifier identifier = getIdentifier(data);
+        if (identifier == null) {
             return;
         }
 
-        File file = getFile(identifier.get().getFilePath(), false);
-        String path = identifier.get().getInternalPath();
+        File file = getFile(getFilePath(identifier), false);
+        String path = identifier.getInternalPath();
 
         // Delete the file if it is a unique file.
         if (!file.equals(getDefaultFile().orElse(null)) && file.delete()) {
@@ -156,5 +157,25 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
         }
 
         return convertedMap;
+    }
+
+    /**
+     * Gets the file for the specified identifier.
+     * @param identifier the identifier
+     * @return the file
+     */
+    private String getFilePath(@Nonnull CompositeIdentifier identifier) {
+        String filePath = identifier.getFilePath();
+        return filePath.endsWith(".yml") ? filePath : filePath + ".yml";
+    }
+
+    /**
+     * Gets the internal path for the specified identifier.
+     * @param identifier the identifier
+     * @return the internal path
+     */
+    private String getInternalPath(@Nonnull CompositeIdentifier identifier) {
+        String internalPath = identifier.getInternalPath();
+        return internalPath.isEmpty() ? "" : internalPath + ".";
     }
 }
