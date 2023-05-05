@@ -52,7 +52,7 @@ public interface Messages {
 	Message<String> INVALID_PAGE = message("failure.invalid-page", "&4&l❌ &cThe specified page is invalid. Defaulting to page 1.");
 	Message<String> INVALID_PROPERTY = message("failure.invalid-property", "&4&l❌ &cThe specified property does not exist.");
 	Message<String> INVALID_PROPERTY_VALUE = message("failure.invalid-property-value", "&4&l❌ &cThe specified property value is invalid.");
-	Message<String> INVALID_ROTATION = message("failure.invalid-rotation", "&4&l❌ &cValid rotations are: &2yaw&a, &2pitch&a, &2roll&a.");
+	Message<String> INVALID_ROTATION = message("failure.invalid-rotation", "&4&l❌ &cValid rotations are: Yaw, Pitch, Roll.");
 	Message<String> INVALID_SENDER = message("failure.invalid-sender", "&4&l❌ &cThis command can only be executed by a player.");
 	Message<String> PARTICLE_NAME_TAKEN = message("failure.particle-name-taken", "&4&l❌ &cThe specified particle name is already taken.");
 	Message<String> PARTICLE_NOT_DELETED = message("failure.particle-not-deleted", "&4&l❌ &cThe specified particle has failed to delete.");

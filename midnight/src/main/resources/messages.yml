@@ -33,7 +33,7 @@ failure:
   invalid-page: "&4&l❌ &cThe specified page is invalid. Defaulting to page 1."
   invalid-property: "&4&l❌ &cThe specified property does not exist."
   invalid-property-value: "&4&l❌ &cThe specified property value is invalid."
-  invalid-rotation: "&4&l❌ &cValid rotations are: &2yaw&a, &2pitch&a, &2roll&a."
+  invalid-rotation: "&4&l❌ &cValid rotations are: Yaw, Pitch, Roll."
   invalid-sender: "&4&l❌ &cThis command can only be executed by a player."
   particle-name-taken: "&4&l❌ &cThe specified particle name is already taken."
   particle-not-deleted: "&4&l❌ &cThe specified particle has failed to delete."
