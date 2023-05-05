@@ -47,6 +47,24 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
         convertMap(rawData).values().forEach(this::process);
     }
 
+    @Override
+    public void load(@Nonnull CompositeIdentifier identifier) throws IOException {
+        File file = getFile(getFilePath(identifier), false);
+        if (!file.exists()) {
+            return;
+        }
+
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        ConfigurationSection sec = config.getConfigurationSection(identifier.getInternalPath());
+        if (sec == null) {
+            return;
+        }
+
+        // Process the file of the specified identifier.
+        Map<String, Object> rawData = convertToRawData(sec);
+        process(getDeserializationFunction().apply(rawData));
+    }
+
     /**
      * Recursively converts a memory section to a map.
      * @param section the memory section
@@ -63,24 +81,6 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
             }
         }
         return map;
-    }
-
-    @Override
-    public void load(@Nonnull CompositeIdentifier identifier) throws IOException {
-        File file = getFile(getFilePath(identifier), false);
-        if (!file.exists()) {
-            return;
-        }
-
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        ConfigurationSection sec = config.getConfigurationSection(identifier.getInternalPath());
-        if (sec == null) {
-            return;
-        }
-
-        // Process the file of the specified identifier.
-        Map<String, Object> rawData = sec.getValues(false);
-        process(getDeserializationFunction().apply(rawData));
     }
 
     @Override
