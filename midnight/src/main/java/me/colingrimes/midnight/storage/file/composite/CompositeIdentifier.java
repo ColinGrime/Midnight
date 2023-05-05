@@ -9,7 +9,26 @@ public class CompositeIdentifier {
     private final String filePath;
     private final String internalPath;
 
-    public CompositeIdentifier(@Nonnull String filePath, @Nullable String internalPath) {
+    /**
+     * Creates a new composite identifier with the given file path.
+     * @param filePath the file path
+     * @return the composite identifier
+     */
+    public static CompositeIdentifier of(@Nonnull String filePath) {
+        return new CompositeIdentifier(filePath, null);
+    }
+
+    /**
+     * Creates a new composite identifier with the given file path and internal path.
+     * @param filePath the file path
+     * @param internalPath the internal path
+     * @return the composite identifier
+     */
+    public static CompositeIdentifier of(@Nonnull String filePath, @Nullable String internalPath) {
+        return new CompositeIdentifier(filePath, internalPath);
+    }
+
+   private CompositeIdentifier(@Nonnull String filePath, @Nullable String internalPath) {
         this.filePath = filePath;
         this.internalPath = internalPath;
     }
@@ -27,9 +46,9 @@ public class CompositeIdentifier {
      * Gets the internal path.
      * @return the internal path
      */
-    @Nullable
+    @Nonnull
     public String getInternalPath() {
-        return internalPath;
+        return internalPath == null ? "" : internalPath;
     }
 
     @Override
