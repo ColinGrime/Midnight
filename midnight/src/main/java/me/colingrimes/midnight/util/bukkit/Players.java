@@ -74,11 +74,21 @@ public final class Players {
 	}
 
 	/**
+	 * Performs the command as the given player.
+	 * @param player the player
+	 * @param command the command
+	 */
+	public static void command(@Nonnull Player player, @Nonnull String command) {
+		command = command.startsWith("/") ? command.substring(1) : command;
+		player.performCommand(command);
+	}
+
+	/**
 	 * Plays the given sound to the given player.
 	 * @param player the player
 	 * @param sound the sound
 	 */
-	public static void playSound(@Nonnull Player player, @Nonnull Sound sound) {
+	public static void sound(@Nonnull Player player, @Nonnull Sound sound) {
 		player.playSound(player.getLocation(), sound, 1F, 1F);
 	}
 
