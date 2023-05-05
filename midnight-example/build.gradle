@@ -3,8 +3,13 @@ import org.apache.tools.ant.filters.ReplaceTokens
 group 'me.colingrimes.example'
 version '1.0.1'
 
+repositories {
+    maven { url 'https://maven.enginehub.org/repo/' }
+}
+
 dependencies {
     compileOnly project(':midnight')
+    compileOnly 'com.sk89q.worldedit:worldedit-bukkit:7.2.8'
 }
 
 // ${version} placeholders.
