@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.util.misc;
+package me.colingrimes.midnight.dependency;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
