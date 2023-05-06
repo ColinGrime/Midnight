@@ -26,8 +26,6 @@ public interface Messages {
 	/**************************************************
 	 *                Success Messages                *
 	 **************************************************/
-	Message<?> ACTIONBAR_SHOW = message("success.actionbar-show", "&2&l✓ &aShowing Action Bar to &2{player}&a.");
-	Message<?> BOSSBAR_SHOW = message("success.bossbar-show", "&2&l✓ &aShowing Boss Bar to &2{player}&a.");
 	Message<?> PARTICLE_ATTACH_PLAYER = message("success.particle-attach-player", "&2&l✓ &aParticle has been attached to &2{player}&a.");
 	Message<?> PARTICLE_ATTACH_SELF = message("success.particle-attach-player", "&2&l✓ &aParticle has been attached to &2yourself&a.");
 	Message<?> PARTICLE_CLEAR = message("success.particle-clear", "&2&l✓ &aAll particles have been cleared.");
@@ -41,7 +39,6 @@ public interface Messages {
 	Message<?> PARTICLE_SAVE = message("success.particle-save", "&2&l✓ &aParticle has been saved with the name: &2{name}&a.");
 	Message<?> PARTICLE_SELECT = message("success.particle-select", "&2&l✓ &aParticle has been selected with the name: &2{name}&a.");
 	Message<?> PARTICLE_SPAWN = message("success.particle-spawn", "&2&l✓ &aParticle has been spawned.");
-	Message<?> TITLE_SHOW = message("success.title-show", "&2&l✓ &aShowing Title to &2{player}&a.");
 
 	/**************************************************
 	 *                Failure Messages                *
@@ -63,16 +60,6 @@ public interface Messages {
 	/**************************************************
 	 *                 Usage Messages                 *
 	 **************************************************/
-	Message<?> ACTIONBAR_USAGE = message("usage.actionbar",
-			"&eUsage: &a/actionbar <player> <text> [duration]",
-			"&a► &7Show an actionbar message to a player (optional duration)."
-	);
-
-	Message<?> BOSSBAR_USAGE = message("usage.bossbar",
-			"&eUsage: &a/bossbar <player> <text> [duration]",
-			"&a► &7Show an bossbar message to a player (optional duration)."
-	);
-
 	Message<?> PARTICLE_USAGE = message("usage.particle",
 			"&7&m-------------&r &e&lParticle &aCommands &7&m-------------",
 			"&7- &a/particle create &e: &7Create a particle shape.",
@@ -154,10 +141,5 @@ public interface Messages {
 	Message<?> PARTICLE_SPAWN_USAGE = message("usage.particle-spawn",
 			"&eUsage: &a/particle spawn [name]",
 			"&a► &7Spawn a particle with an optional name."
-	);
-
-	Message<?> TITLE_USAGE = message("usage.title",
-			"&eUsage: &a/title <player> <title> [subtitle] [fade-in] [stay] [fade-out]",
-			"&a► &7Show a title message to a player."
 	);
 }

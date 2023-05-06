@@ -11,8 +11,6 @@ general:
     - "&7&m--------------------------------------------"
 
 success:
-  actionbar-show: "&2&l✓ &aShowing Action Bar to &2{player}&a."
-  bossbar-show: "&2&l✓ &aShowing Boss Bar to &2{player}&a."
   particle-attach-player: "&2&l✓ &aParticle has been attached to &2{player}&a."
   particle-attach-self: "&2&l✓ &aParticle has been attached to &2yourself&a."
   particle-clear: "&2&l✓ &aAll particles have been cleared."
@@ -26,7 +24,6 @@ success:
   particle-save: "&2&l✓ &aParticle has been saved with the name: &2{name}&a."
   particle-select: "&2&l✓ &aParticle has been selected with the name: &2{name}&a."
   particle-spawn: "&2&l✓ &aParticle has been spawned."
-  title-show: "&2&l✓ &aShowing Title to &2{player}&a."
 
 failure:
   invalid-location: "&4&l❌ &cThe specified location is invalid."
@@ -44,12 +41,6 @@ failure:
   player-not-found: "&4&l❌ &cThe specified player is either offline or nonexistent."
 
 usage:
-  actionbar:
-    - "&eUsage: &a/actionbar <player> <text> [duration]"
-    - "&a► &7Show an actionbar message to a player (optional duration)."
-  bossbar:
-    - "&eUsage: &a/bossbar <player> <text> [duration]"
-    - "&a► &7Show an bossbar message to a player (optional duration)."
   particle:
     - "&7&m-------------&r &e&lParticle &aCommands &7&m-------------"
     - "&7- &a/particle create &e: &7Create a particle shape."
@@ -105,6 +96,3 @@ usage:
   particle-spawn:
     - "&eUsage: &a/particle spawn"
     - "&a► &7Spawn a particle with an optional name."
-  title:
-    - "&eUsage: &a/title <player> <title> [subtitle] [fade-in] [stay] [fade-out]"
-    - "&a► &7Show a title message to a player."
