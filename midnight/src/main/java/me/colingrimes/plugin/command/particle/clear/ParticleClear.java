@@ -20,9 +20,9 @@ public class ParticleClear implements Command<Midnight> {
 		// Check if a particle is selected.
 		if (particle.isPresent()) {
 			particle.get().stopSpawning();
-			Messages.PARTICLE_CLEAR.sendTo(sender);
+			Messages.PARTICLE_CLEAR.send(sender);
 		} else {
-			Messages.PARTICLE_NOT_SELECTED.sendTo(sender);
+			Messages.PARTICLE_NOT_SELECTED.send(sender);
 		}
 	}
 

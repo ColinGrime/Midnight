@@ -1,7 +1,6 @@
 package me.colingrimes.midnight.util.text;
 
-import me.colingrimes.midnight.locale.Messageable;
-import me.colingrimes.midnight.locale.implementation.ComponentMessage;
+import me.colingrimes.midnight.message.implementation.ComponentMessage;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -38,7 +37,7 @@ public class Markdown {
 	 * @param input the input string with custom markup
 	 * @return a text component with the parsed events and colors
 	 */
-	public static Messageable of(@Nonnull String input) {
+	public static ComponentMessage of(@Nonnull String input) {
 		TextComponent message = new TextComponent();
 		Matcher matcher = MARKDOWN.matcher(input);
 		int lastEnd = 0;

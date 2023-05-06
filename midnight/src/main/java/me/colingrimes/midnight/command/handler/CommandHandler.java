@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.command.handler;
 
-import me.colingrimes.midnight.locale.Messageable;
+import me.colingrimes.midnight.message.Message;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -24,5 +24,5 @@ public interface CommandHandler extends TabExecutor {
 	 * @return usage message
 	 */
 	@Nullable
-	Messageable getUsage();
+	Message<?> getUsage();
 }

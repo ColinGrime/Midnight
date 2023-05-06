@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.command.util;
 
-import me.colingrimes.midnight.locale.Messageable;
+import me.colingrimes.midnight.message.Message;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -13,18 +13,18 @@ import javax.annotation.Nullable;
  */
 public class CommandProperties {
 
-    private Messageable usage = null;
+    private Message<?> usage = null;
     private String permission = null;
     private String[] aliases = new String[]{};
     private int argumentsRequired = 0;
     private boolean playerRequired = false;
 
     @Nullable
-    public Messageable getUsage() {
+    public Message<?> getUsage() {
         return usage;
     }
 
-    public void setUsage(@Nonnull Messageable usage) {
+    public void setUsage(@Nonnull Message<?> usage) {
         this.usage = usage;
     }
 

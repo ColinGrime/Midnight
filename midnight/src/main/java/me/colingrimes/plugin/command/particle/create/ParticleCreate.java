@@ -4,7 +4,6 @@ import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.util.CommandProperties;
 import me.colingrimes.midnight.command.util.Sender;
 import me.colingrimes.midnight.command.util.argument.ArgumentList;
-import me.colingrimes.midnight.locale.Placeholders;
 import me.colingrimes.midnight.particle.ParticleEffect;
 import me.colingrimes.midnight.particle.implementation.ParticleEffectFactory;
 import me.colingrimes.midnight.particle.util.ParticleEffectType;
@@ -30,7 +29,7 @@ public class ParticleCreate implements Command<Midnight> {
 
 		// Check if the particle type does not exist.
 		if (particleType.isEmpty()) {
-			Messages.PARTICLE_NOT_FOUND.sendTo(sender);
+			Messages.PARTICLE_NOT_FOUND.send(sender);
 			return;
 		}
 
@@ -43,7 +42,7 @@ public class ParticleCreate implements Command<Midnight> {
 		ParticleEffect particle = ParticleEffectFactory.create(particleType.get(), player);
 		particle.startSpawning();
 		plugin.getParticleManager().selectParticle(player, particle);
-		Messages.PARTICLE_CREATE.sendTo(sender, Placeholders.of("{type}", Text.format(particleType.get().name())));
+		Messages.PARTICLE_CREATE.replace("{type}", Text.format(particleType.get().name())).send(sender);
 
 		// Attach the particle if the player is specified.
 		if (args.getPlayer(1).isPresent()) {

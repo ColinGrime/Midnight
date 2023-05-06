@@ -4,7 +4,6 @@ import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.util.CommandProperties;
 import me.colingrimes.midnight.command.util.Sender;
 import me.colingrimes.midnight.command.util.argument.ArgumentList;
-import me.colingrimes.midnight.locale.Placeholders;
 import me.colingrimes.midnight.particle.ParticleEffect;
 import me.colingrimes.plugin.Midnight;
 import me.colingrimes.plugin.config.Messages;
@@ -22,23 +21,23 @@ public class ParticleAttach implements Command<Midnight>  {
 
 		// Check if a particle is selected.
 		if (particle.isEmpty()) {
-			Messages.PARTICLE_NOT_SELECTED.sendTo(sender);
+			Messages.PARTICLE_NOT_SELECTED.send(sender);
 			return;
 		}
 
 		// Attach to self if no player is specified.
 		if (args.size() == 0) {
 			particle.get().attach(sender.player());
-			Messages.PARTICLE_ATTACH_SELF.sendTo(sender);
+			Messages.PARTICLE_ATTACH_SELF.send(sender);
 			return;
 		}
 
 		// Attach to player if they exist.
 		if (target.isPresent()) {
 			particle.get().attach(target.get());
-			Messages.PARTICLE_ATTACH_PLAYER.sendTo(sender, Placeholders.of("{player}", target.get().getName()));
+			Messages.PARTICLE_ATTACH_PLAYER.replace("{player}", target.get().getName()).send(sender);
 		} else {
-			Messages.PLAYER_NOT_FOUND.sendTo(sender);
+			Messages.PLAYER_NOT_FOUND.send(sender);
 		}
 	}
 

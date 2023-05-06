@@ -1,8 +1,8 @@
 package me.colingrimes.midnight.command.handler;
 
 import me.colingrimes.midnight.command.handler.util.ArgumentParser;
-import me.colingrimes.midnight.locale.Messageable;
-import me.colingrimes.midnight.locale.implementation.SimpleMessage;
+import me.colingrimes.midnight.message.Message;
+import me.colingrimes.midnight.message.implementation.TextMessage;
 import me.colingrimes.plugin.config.Messages;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -24,27 +24,27 @@ public class ReflectiveCommandHandler implements CommandHandler {
     private final Parameter[] parameters;
     private final Object instance;
     private final String permission;
-    private final Messageable usageMessage;
+    private final Message<?> usageMessage;
 
     public ReflectiveCommandHandler(@Nonnull Method method, @Nonnull Object instance, @Nullable String permission, @Nullable String usageMessage) {
         this.method = method;
         this.parameters = method.getParameters();
         this.instance = instance;
         this.permission = permission;
-        this.usageMessage = usageMessage == null ? null : new SimpleMessage(usageMessage);
+        this.usageMessage = usageMessage == null ? null : new TextMessage(usageMessage);
     }
 
     @Override
     public boolean onCommand(@Nonnull CommandSender sender, @Nonnull org.bukkit.command.Command cmd, @Nonnull String label, @Nonnull String[] args) {
         if (!sender.hasPermission(permission)) {
-            Messages.PERMISSION_DENIED.sendTo(sender);
+            Messages.PERMISSION_DENIED.send(sender);
             return true;
         }
 
         Object[] convertedArgs = parseArguments(sender, args);
         if (convertedArgs == null) {
             if (getUsage() != null) {
-                getUsage().sendTo(sender);
+                getUsage().send(sender);
                 return true;
             }
             return false;
@@ -61,7 +61,7 @@ public class ReflectiveCommandHandler implements CommandHandler {
 
     @Nullable
     @Override
-    public Messageable getUsage() {
+    public Message<?> getUsage() {
         return usageMessage;
     }
 

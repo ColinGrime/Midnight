@@ -4,7 +4,6 @@ import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.util.CommandProperties;
 import me.colingrimes.midnight.command.util.Sender;
 import me.colingrimes.midnight.command.util.argument.ArgumentList;
-import me.colingrimes.midnight.locale.Placeholders;
 import me.colingrimes.midnight.particle.ParticleEffect;
 import me.colingrimes.midnight.util.bukkit.Locations;
 import me.colingrimes.midnight.util.text.Text;
@@ -24,7 +23,7 @@ public class ParticleList implements Command<Midnight> {
 
 		// Check for invalid page.
 		if (page < 1 || page > totalPages) {
-			Messages.INVALID_PAGE.sendTo(sender);
+			Messages.INVALID_PAGE.send(sender);
 			page = 1;
 		}
 
@@ -32,18 +31,20 @@ public class ParticleList implements Command<Midnight> {
 		int endIndex = Math.min(startIndex + 10, particles.size());
 
 		// Send the head message.
-		Placeholders header = Placeholders.of("{page}", page).add("{total}", totalPages);
-		Messages.PARTICLE_PAGE_HEADER.sendTo(sender, header);
+		Messages.PARTICLE_PAGE_HEADER
+				.replace("{page}", page)
+				.replace("{total}", totalPages)
+				.send(sender);
 
 		for (int i=startIndex; i<endIndex; i++) {
 			ParticleEffect particle = particles.get(i);
 
 			// Send the entry message.
-			Placeholders entry = Placeholders
-					.of("{name}", Text.format(particle.getName()))
-					.add("{type}", Text.format(particle.getType().name()))
-					.add("{location}", Locations.toString(particle.getPoint().getPosition().toLocation()));
-			Messages.PARTICLE_PAGE_ENTRY.sendTo(sender, entry);
+			Messages.PARTICLE_PAGE_ENTRY
+					.replace("{name}", Text.format(particle.getName()))
+					.replace("{type}", Text.format(particle.getType().name()))
+					.replace("{location}", Locations.toString(particle.getPoint().getPosition().toLocation()))
+					.send(sender);
 		}
 	}
 

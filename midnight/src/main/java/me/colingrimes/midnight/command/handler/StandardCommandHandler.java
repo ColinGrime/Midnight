@@ -5,8 +5,8 @@ import me.colingrimes.midnight.command.util.CommandProperties;
 import me.colingrimes.midnight.command.util.argument.ArgumentList;
 import me.colingrimes.midnight.command.util.Sender;
 import me.colingrimes.midnight.command.util.exception.CommandNotImplementedException;
-import me.colingrimes.midnight.locale.Messageable;
 import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.midnight.message.Message;
 import me.colingrimes.plugin.config.Messages;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -42,14 +42,14 @@ public class StandardCommandHandler<T extends MidnightPlugin> implements Command
 	@Override
 	public boolean onCommand(@Nonnull CommandSender sender, @Nonnull org.bukkit.command.Command cmd, @Nonnull String label, @Nonnull String[] args) {
 		if (properties.isPlayerRequired() && !(sender instanceof Player)) {
-			Messages.INVALID_SENDER.sendTo(sender);
+			Messages.INVALID_SENDER.send(sender);
 			return true;
 		} else if (properties.getPermission() != null && !sender.hasPermission(properties.getPermission())) {
-			Messages.PERMISSION_DENIED.sendTo(sender);
+			Messages.PERMISSION_DENIED.send(sender);
 			return true;
 		} else if (args.length < properties.getArgumentsRequired()) {
 			if (getUsage() != null) {
-				getUsage().sendTo(sender);
+				getUsage().send(sender);
 				return true;
 			}
 			return false;
@@ -59,7 +59,7 @@ public class StandardCommandHandler<T extends MidnightPlugin> implements Command
 			command.execute(plugin, new Sender(sender), new ArgumentList(args));
 		} catch (CommandNotImplementedException e) {
 			if (getUsage() != null) {
-				getUsage().sendTo(sender);
+				getUsage().send(sender);
 				return true;
 			}
 			return false;
@@ -75,7 +75,7 @@ public class StandardCommandHandler<T extends MidnightPlugin> implements Command
 
 	@Nullable
 	@Override
-	public Messageable getUsage() {
+	public Message<?> getUsage() {
 		return properties.getUsage();
 	}
 }

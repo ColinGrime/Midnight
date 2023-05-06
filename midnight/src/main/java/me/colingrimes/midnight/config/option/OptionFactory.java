@@ -51,18 +51,18 @@ public interface OptionFactory<T> {
 	}
 
 	@Nonnull
-	static Message<String> message(@Nonnull String path, @Nonnull String def) {
-		return new Message<>(new Bound<>(STRING, path, def));
+	static MessageOption<String> message(@Nonnull String path, @Nonnull String def) {
+		return new MessageOption<>(new Bound<>(STRING, path, def));
 	}
 
 	@Nonnull
-	static Message<List<String>> message(@Nonnull String path, @Nonnull List<String> def) {
-		return new Message<>(new Bound<>(STRING_LIST, path, def));
+	static MessageOption<List<String>> message(@Nonnull String path, @Nonnull List<String> def) {
+		return new MessageOption<>(new Bound<>(STRING_LIST, path, def));
 	}
 
 	@Nonnull
-	static Message<List<String>> message(@Nonnull String path, @Nonnull String...def) {
-		return new Message<>(new Bound<>(STRING_LIST, path, List.of(def)));
+	static MessageOption<List<String>> message(@Nonnull String path, @Nonnull String...def) {
+		return new MessageOption<>(new Bound<>(STRING_LIST, path, List.of(def)));
 	}
 
 	/**

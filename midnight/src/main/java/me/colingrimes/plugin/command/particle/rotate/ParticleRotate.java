@@ -21,7 +21,7 @@ public class ParticleRotate implements Command<Midnight> {
 	public void execute(@Nonnull Midnight plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
 		Optional<ParticleEffect> effect = plugin.getParticleManager().getSelectedParticle(sender.player());
 		if (effect.isEmpty()) {
-			Messages.PARTICLE_NOT_SELECTED.sendTo(sender);
+			Messages.PARTICLE_NOT_SELECTED.send(sender);
 			return;
 		}
 
@@ -33,13 +33,13 @@ public class ParticleRotate implements Command<Midnight> {
 			case "pitch" -> rotation = Rotation.of(rotation.getYaw(), value, rotation.getRoll());
 			case "roll" -> rotation = Rotation.of(rotation.getYaw(), rotation.getPitch(), value);
 			default -> {
-				Messages.INVALID_ROTATION.sendTo(sender);
+				Messages.INVALID_ROTATION.send(sender);
 				return;
 			}
 		}
 
 		effect.get().setPoint(Point.of(effect.get().getPoint().getPosition(), rotation));
-		Messages.PARTICLE_ROTATE.sendTo(sender);
+		Messages.PARTICLE_ROTATE.send(sender);
 	}
 
 	@Nullable

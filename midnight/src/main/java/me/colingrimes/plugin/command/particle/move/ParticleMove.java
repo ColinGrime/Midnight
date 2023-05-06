@@ -4,7 +4,6 @@ import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.util.CommandProperties;
 import me.colingrimes.midnight.command.util.Sender;
 import me.colingrimes.midnight.command.util.argument.ArgumentList;
-import me.colingrimes.midnight.locale.Placeholders;
 import me.colingrimes.midnight.geometry.Point;
 import me.colingrimes.midnight.particle.ParticleEffect;
 import me.colingrimes.midnight.util.bukkit.Locations;
@@ -23,14 +22,14 @@ public class ParticleMove implements Command<Midnight> {
 
 		// Check if a particle is selected.
 		if (particle.isEmpty()) {
-			Messages.PARTICLE_NOT_SELECTED.sendTo(sender);
+			Messages.PARTICLE_NOT_SELECTED.send(sender);
 			return;
 		}
 
 		// Move the particle to the player's location if no coordinates are specified.
 		if (args.size() == 0) {
 			particle.get().setPoint(Point.of(sender.player()));
-			Messages.PARTICLE_MOVE.sendTo(sender, Placeholders.of("{location}", Locations.toString(sender.location())));
+			Messages.PARTICLE_MOVE.replace("{location}", Locations.toString(sender.location())).send(sender);
 			return;
 		}
 
@@ -41,9 +40,9 @@ public class ParticleMove implements Command<Midnight> {
 		if (x.isPresent() && y.isPresent() && z.isPresent()) {
 			Location location = new Location(sender.world(), x.get(), y.get(), z.get());
 			particle.get().setPoint(Point.of(location));
-			Messages.PARTICLE_MOVE.sendTo(sender, Placeholders.of("{location}", Locations.toString(location)));
+			Messages.PARTICLE_MOVE.replace("{location}", Locations.toString(location)).send(sender);
 		} else {
-			Messages.INVALID_LOCATION.sendTo(sender);
+			Messages.INVALID_LOCATION.send(sender);
 		}
 	}
 

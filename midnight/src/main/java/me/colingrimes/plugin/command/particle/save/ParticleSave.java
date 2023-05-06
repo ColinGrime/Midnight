@@ -4,7 +4,6 @@ import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.util.CommandProperties;
 import me.colingrimes.midnight.command.util.Sender;
 import me.colingrimes.midnight.command.util.argument.ArgumentList;
-import me.colingrimes.midnight.locale.Placeholders;
 import me.colingrimes.midnight.particle.ParticleEffect;
 import me.colingrimes.midnight.scheduler.Scheduler;
 import me.colingrimes.plugin.Midnight;
@@ -22,13 +21,13 @@ public class ParticleSave implements Command<Midnight> {
 
 		// Check if a particle is selected.
 		if (particle.isEmpty()) {
-			Messages.PARTICLE_NOT_SELECTED.sendTo(sender);
+			Messages.PARTICLE_NOT_SELECTED.send(sender);
 			return;
 		}
 
 		// Check if the particle name is valid.
 		if (plugin.getParticleManager().getParticle(name).isPresent()) {
-			Messages.PARTICLE_NAME_TAKEN.sendTo(sender);
+			Messages.PARTICLE_NAME_TAKEN.send(sender);
 			return;
 		} else {
 			particle.get().setName(name);
@@ -39,9 +38,9 @@ public class ParticleSave implements Command<Midnight> {
 			return null;
 		}).thenRun(() -> {
 			plugin.getParticleManager().addParticle(particle.get());
-			Messages.PARTICLE_SAVE.sendTo(sender, Placeholders.of("{name}", name));
+			Messages.PARTICLE_SAVE.replace("{name}", name).send(sender);
 		}).exceptionally(ex -> {
-			Messages.PARTICLE_NOT_SAVED.sendTo(sender);
+			Messages.PARTICLE_NOT_SAVED.send(sender);
 			ex.printStackTrace();
 			return null;
 		});

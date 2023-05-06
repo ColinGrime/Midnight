@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.util.bukkit;
 
-import me.colingrimes.midnight.locale.Placeholders;
+import me.colingrimes.midnight.message.Placeholders;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -246,8 +246,8 @@ public final class Items {
 			ItemStack item = new ItemStack(Objects.requireNonNullElse(this.material, this.defMaterial));
 			ItemMeta meta = Objects.requireNonNull(item.getItemMeta(), "Meta is null.");
 
-			if (name != null) meta.setDisplayName(placeholders.replace(name));
-			if (lore != null) meta.setLore(placeholders.replace(lore));
+			if (name != null) meta.setDisplayName(placeholders.apply(name));
+			if (lore != null) meta.setLore(placeholders.apply(lore));
 			if (hide) meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 			if (glow) {
 				item.addUnsafeEnchantment(Enchantment.ARROW_INFINITE, 1);

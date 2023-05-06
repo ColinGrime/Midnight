@@ -4,7 +4,6 @@ import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.util.CommandProperties;
 import me.colingrimes.midnight.command.util.Sender;
 import me.colingrimes.midnight.command.util.argument.ArgumentList;
-import me.colingrimes.midnight.locale.Placeholders;
 import me.colingrimes.midnight.particle.ParticleEffect;
 import me.colingrimes.midnight.util.text.Text;
 import me.colingrimes.plugin.Midnight;
@@ -22,13 +21,13 @@ public class ParticleSpawn implements Command<Midnight> {
 				Optional<ParticleEffect> particle = plugin.getParticleManager().getSelectedParticle(sender.player());
 				if (particle.isPresent()) {
 					particle.get().startSpawning();
-					Messages.PARTICLE_SPAWN.sendTo(sender);
+					Messages.PARTICLE_SPAWN.send(sender);
 					return;
 				} else {
-					Messages.PARTICLE_NOT_SELECTED.sendTo(sender);
+					Messages.PARTICLE_NOT_SELECTED.send(sender);
 				}
 			} else {
-				Messages.INVALID_SENDER.sendTo(sender);
+				Messages.INVALID_SENDER.send(sender);
 			}
 			return;
 		}
@@ -38,12 +37,12 @@ public class ParticleSpawn implements Command<Midnight> {
 
 		// Check if the particle exists.
 		if (particle.isEmpty()) {
-			Messages.PARTICLE_NOT_FOUND.sendTo(sender);
+			Messages.PARTICLE_NOT_FOUND.send(sender);
 			return;
 		}
 
 		particle.get().startSpawning();
-		Messages.PARTICLE_SPAWN.sendTo(sender, Placeholders.of("{name}", Text.format(name)));
+		Messages.PARTICLE_SPAWN.replace("{name}", Text.format(name)).send(sender);
 	}
 
 	@Override

@@ -19,9 +19,9 @@ public class ParticleDetach implements Command<Midnight> {
 
 		if (particle.isPresent()) {
 			particle.get().detach();
-			Messages.PARTICLE_DETACH_SELF.sendTo(sender);
+			Messages.PARTICLE_DETACH_SELF.send(sender);
 		} else {
-			Messages.PARTICLE_NOT_SELECTED.sendTo(sender);
+			Messages.PARTICLE_NOT_SELECTED.send(sender);
 		}
 	}
 

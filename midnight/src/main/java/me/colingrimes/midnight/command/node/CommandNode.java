@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.command.node;
 
 import me.colingrimes.midnight.command.handler.CommandHandler;
-import me.colingrimes.midnight.locale.Messageable;
+import me.colingrimes.midnight.message.Message;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -49,9 +49,9 @@ public final class CommandNode implements TabExecutor {
         if (child != null) {
             child.onCommand(sender, cmd, label, Arrays.copyOfRange(args, 1, args.length));
         } else if (commandHandler == null || !commandHandler.onCommand(sender, cmd, label, args)) {
-            Optional<Messageable> usageMessage = findUsageMessage();
+            Optional<Message<?>> usageMessage = findUsageMessage();
             if (usageMessage.isPresent()) {
-                usageMessage.get().sendTo(sender);
+                usageMessage.get().send(sender);
             } else {
                 sender.sendMessage("Unknown command. Type \"/help\" for help.");
             }
@@ -97,9 +97,9 @@ public final class CommandNode implements TabExecutor {
      * @return the first non-null usage message or null if none is found
      */
     @Nonnull
-    private Optional<Messageable> findUsageMessage() {
+    private Optional<Message<?>> findUsageMessage() {
         if (commandHandler != null) {
-            Messageable usageMessage = commandHandler.getUsage();
+            Message<?> usageMessage = commandHandler.getUsage();
             if (usageMessage != null) {
                 return Optional.of(usageMessage);
             }

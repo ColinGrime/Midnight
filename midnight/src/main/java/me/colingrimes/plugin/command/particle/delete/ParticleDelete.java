@@ -4,7 +4,6 @@ import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.util.CommandProperties;
 import me.colingrimes.midnight.command.util.Sender;
 import me.colingrimes.midnight.command.util.argument.ArgumentList;
-import me.colingrimes.midnight.locale.Placeholders;
 import me.colingrimes.midnight.particle.ParticleEffect;
 import me.colingrimes.midnight.scheduler.Scheduler;
 import me.colingrimes.midnight.util.text.Text;
@@ -23,7 +22,7 @@ public class ParticleDelete implements Command<Midnight> {
 
 		// Check if the particle exists.
 		if (particle.isEmpty()) {
-			Messages.PARTICLE_NOT_FOUND.sendTo(sender);
+			Messages.PARTICLE_NOT_FOUND.send(sender);
 			return;
 		}
 
@@ -32,9 +31,9 @@ public class ParticleDelete implements Command<Midnight> {
 			return null;
 		}).thenRun(() -> {
 			plugin.getParticleManager().deleteParticle(particle.get());
-			Messages.PARTICLE_DELETE.sendTo(sender, Placeholders.of("{name}", Text.format(name)));
+			Messages.PARTICLE_DELETE.replace("{name}", Text.format(name)).send(sender);
 		}).exceptionally(ex -> {
-			Messages.PARTICLE_NOT_DELETED.sendTo(sender);
+			Messages.PARTICLE_NOT_DELETED.send(sender);
 			ex.printStackTrace();
 			return null;
 		});

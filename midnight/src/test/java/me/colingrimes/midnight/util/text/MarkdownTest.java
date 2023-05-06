@@ -1,7 +1,5 @@
 package me.colingrimes.midnight.util.text;
 
-import me.colingrimes.midnight.locale.Messageable;
-import me.colingrimes.midnight.locale.implementation.ComponentMessage;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.junit.jupiter.api.Test;
@@ -14,8 +12,7 @@ class MarkdownTest {
 	@Test
 	void testMarkdownWithCommand() {
 		String input = "Click [here](/command) to execute the command!";
-		Messageable messageable = Markdown.of(input);
-		TextComponent textComponent = ((ComponentMessage) messageable).getComponent();
+		TextComponent textComponent = Markdown.of(input).getContent();
 
 		assertNotNull(textComponent, "Text component should not be null");
 
@@ -29,8 +26,7 @@ class MarkdownTest {
 	@Test
 	void testMarkdownWithUrl() {
 		String input = "Click [here](https://example.com) to visit the website!";
-		Messageable messageable = Markdown.of(input);
-		TextComponent textComponent = ((ComponentMessage) messageable).getComponent();
+		TextComponent textComponent = Markdown.of(input).getContent();
 
 		assertNotNull(textComponent, "Text component should not be null");
 
@@ -44,8 +40,7 @@ class MarkdownTest {
 	@Test
 	void testMarkdownWithHoverText() {
 		String input = "Hover [here](Hover text) to see the text!";
-		Messageable messageable = Markdown.of(input);
-		TextComponent textComponent = ((ComponentMessage) messageable).getComponent();
+		TextComponent textComponent = Markdown.of(input).getContent();
 
 		assertNotNull(textComponent, "Text component should not be null");
 

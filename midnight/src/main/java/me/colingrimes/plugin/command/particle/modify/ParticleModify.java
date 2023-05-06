@@ -4,7 +4,6 @@ import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.util.CommandProperties;
 import me.colingrimes.midnight.command.util.Sender;
 import me.colingrimes.midnight.command.util.argument.ArgumentList;
-import me.colingrimes.midnight.locale.Placeholders;
 import me.colingrimes.midnight.particle.ParticleEffect;
 import me.colingrimes.midnight.particle.util.ParticleProperty;
 import me.colingrimes.midnight.util.text.Text;
@@ -28,26 +27,25 @@ public class ParticleModify implements Command<Midnight> {
 
 		// Check if a particle is selected.
 		if (particle.isEmpty()) {
-			Messages.PARTICLE_NOT_SELECTED.sendTo(sender);
+			Messages.PARTICLE_NOT_SELECTED.send(sender);
 			return;
 		}
 
 		// Check if the property is valid.
 		if (property.isEmpty()) {
-			Messages.INVALID_PROPERTY.sendTo(sender);
+			Messages.INVALID_PROPERTY.send(sender);
 			return;
 		}
 
 		// Attempt to update the property.
 		try {
 			particle.get().updateProperty(property.get(), args.get(1));
-
-			Placeholders placeholders = Placeholders
-					.of("{property}", Text.format(args.get(0)))
-					.add("{value}", Text.format(args.get(1)));
-			Messages.PARTICLE_MODIFY.sendTo(sender, placeholders);
+			Messages.PARTICLE_MODIFY
+					.replace("{property}", Text.format(args.get(0)))
+					.replace("{value}", Text.format(args.get(1)))
+					.send(sender);
 		} catch (UnsupportedOperationException e) {
-			Messages.INVALID_PROPERTY_VALUE.sendTo(sender);
+			Messages.INVALID_PROPERTY_VALUE.send(sender);
 		}
 	}
 

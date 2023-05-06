@@ -4,7 +4,7 @@ import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.util.CommandProperties;
 import me.colingrimes.midnight.command.util.Sender;
 import me.colingrimes.midnight.command.util.argument.ArgumentList;
-import me.colingrimes.midnight.locale.Placeholders;
+import me.colingrimes.midnight.message.Placeholders;
 import me.colingrimes.midnight.particle.ParticleEffect;
 import me.colingrimes.midnight.util.text.Text;
 import me.colingrimes.plugin.Midnight;
@@ -23,7 +23,7 @@ public class ParticleProperties implements Command<Midnight> {
 
 		// Check if a particle is selected.
 		if (particle.isEmpty()) {
-			Messages.PARTICLE_NOT_SELECTED.sendTo(sender);
+			Messages.PARTICLE_NOT_SELECTED.send(sender);
 			return;
 		}
 
@@ -50,7 +50,7 @@ public class ParticleProperties implements Command<Midnight> {
 			placeholders.add("{data}", "None");
 		}
 
-		Messages.PARTICLE_PROPERTIES.sendTo(sender, placeholders);
+		Messages.PARTICLE_PROPERTIES.replace(placeholders).send(sender);
 	}
 
 	@Override
