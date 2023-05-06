@@ -1,24 +1,24 @@
 package me.colingrimes.midnight.config.option;
 
 import me.colingrimes.midnight.config.adapter.ConfigurationAdapter;
-import me.colingrimes.midnight.locale.Messageable;
-import me.colingrimes.midnight.locale.Placeholders;
+import me.colingrimes.midnight.message.Message;
+import me.colingrimes.midnight.message.Placeholders;
 import me.colingrimes.midnight.util.text.Text;
 import org.bukkit.command.CommandSender;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-public class Message<T> implements Option<T>, Messageable {
+
+public class MessageOption<T> implements Option<T>, Message<String> {
 
 	private final Function<ConfigurationAdapter, ? extends T> function;
 	private T value;
 	private List<String> messages;
 
-	public Message(@Nonnull Function<ConfigurationAdapter, ? extends T> function) {
+	public MessageOption(@Nonnull Function<ConfigurationAdapter, ? extends T> function) {
 		this.function = function;
 		this.reload(null);
 	}
@@ -46,11 +46,21 @@ public class Message<T> implements Option<T>, Messageable {
 		}
 	}
 
+	@Nonnull
+	@Override
+	public String getContent() {
+		return String.join("\n", messages);
+	}
 
 	@Override
-	public void sendTo(@Nonnull CommandSender sender, @Nullable Placeholders placeholders) {
-		Objects.requireNonNull(sender, "Sender is null.");
-		placeholders = Objects.requireNonNullElseGet(placeholders, Placeholders::create);
-		placeholders.replace(messages).forEach(sender::sendMessage);
+	public void send(@Nonnull CommandSender recipient) {
+		messages.forEach(recipient::sendMessage);
+	}
+
+	@Nonnull
+	@Override
+	public Message<String> replace(@Nonnull Placeholders placeholders) {
+		messages = placeholders.apply(messages);
+		return this;
 	}
 }
