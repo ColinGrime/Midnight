@@ -1,6 +1,7 @@
 package me.colingrimes.midnight.storage.sql.connection;
 
 import javax.annotation.Nonnull;
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.function.Function;
@@ -36,10 +37,22 @@ public interface ConnectionProvider {
     Connection getConnection() throws SQLException;
 
     /**
-     * Returns a statement processor function which can modify statements, e.g., to add table prefixes.
-     *
+     * Gets the {@link DataSource} associated with the connection provider.
+     * @return the DataSource instance
+     */
+    @Nonnull
+    DataSource getDataSource();
+
+    /**
+     * Returns a statement processor function which can modify statements.
      * @return a function that processes statements
      */
     @Nonnull
     Function<String, String> getStatementProcessor();
+
+    /**
+     * Gets whether the connection provider has been initialized.
+     * @return true if the provider has been initialized
+     */
+    boolean isInitialized();
 }

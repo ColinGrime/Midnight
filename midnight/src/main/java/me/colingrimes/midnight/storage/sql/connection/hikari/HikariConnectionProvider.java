@@ -6,6 +6,7 @@ import me.colingrimes.midnight.storage.sql.connection.DatabaseCredentials;
 import me.colingrimes.midnight.storage.sql.connection.ConnectionProvider;
 
 import javax.annotation.Nonnull;
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -13,6 +14,7 @@ public abstract class HikariConnectionProvider implements ConnectionProvider {
 
     private final DatabaseCredentials credentials;
     private HikariDataSource hikari;
+    private boolean initialized = false;
 
     public HikariConnectionProvider(@Nonnull DatabaseCredentials credentials) {
         this.credentials = credentials;
@@ -27,6 +29,12 @@ public abstract class HikariConnectionProvider implements ConnectionProvider {
 
     @Override
     public void init() {
+        if (initialized) {
+            return;
+        } else {
+            initialized = true;
+        }
+
         HikariConfig config = new HikariConfig();
         configureDatabase(config, credentials);
 
@@ -70,5 +78,16 @@ public abstract class HikariConnectionProvider implements ConnectionProvider {
         }
 
         return connection;
+    }
+
+    @Nonnull
+    @Override
+    public DataSource getDataSource() {
+        return hikari;
+    }
+
+    @Override
+    public boolean isInitialized() {
+        return initialized;
     }
 }
