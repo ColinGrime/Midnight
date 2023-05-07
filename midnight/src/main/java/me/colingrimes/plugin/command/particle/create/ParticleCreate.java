@@ -8,7 +8,7 @@ import me.colingrimes.midnight.particle.ParticleEffect;
 import me.colingrimes.midnight.particle.implementation.ParticleEffectFactory;
 import me.colingrimes.midnight.particle.util.ParticleEffectType;
 import me.colingrimes.midnight.util.text.Text;
-import me.colingrimes.plugin.Midnight;
+import me.colingrimes.plugin.MidnightPlugin;
 import me.colingrimes.plugin.config.Messages;
 import org.bukkit.entity.Player;
 
@@ -19,10 +19,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class ParticleCreate implements Command<Midnight> {
+public class ParticleCreate implements Command<MidnightPlugin> {
 
 	@Override
-	public void execute(@Nonnull Midnight plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
+	public void execute(@Nonnull MidnightPlugin plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
 		Player player = sender.player();
 		Optional<ParticleEffectType> particleType = ParticleEffectType.fromString(args.get(0));
 		Optional<ParticleEffect> selectedParticle = plugin.getParticleManager().getSelectedParticle(player);
@@ -52,7 +52,7 @@ public class ParticleCreate implements Command<Midnight> {
 
 	@Nullable
 	@Override
-	public List<String> tabComplete(@Nonnull Midnight plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
+	public List<String> tabComplete(@Nonnull MidnightPlugin plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
 		if (args.size() == 1) {
 			return Arrays.stream(ParticleEffectType.values()).map(p -> p.name().toLowerCase()).collect(Collectors.toList());
 		}

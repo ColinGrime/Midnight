@@ -6,7 +6,7 @@ import me.colingrimes.midnight.command.annotation.CommandPermission;
 import me.colingrimes.midnight.command.annotation.CommandUsage;
 import me.colingrimes.midnight.command.handler.CommandHandler;
 import me.colingrimes.midnight.command.handler.factory.CommandHandlerFactory;
-import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.midnight.Midnight;
 
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
@@ -17,9 +17,9 @@ import java.util.List;
 
 public class CommandProcessor implements AnnotationProcessor {
 
-	private final MidnightPlugin plugin;
+	private final Midnight plugin;
 
-	public CommandProcessor(@Nonnull MidnightPlugin plugin) {
+	public CommandProcessor(@Nonnull Midnight plugin) {
 		this.plugin = plugin;
 	}
 

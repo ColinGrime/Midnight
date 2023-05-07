@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.scheduler.task;
 
-import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.plugin.MidnightPlugin;
 import org.bukkit.Bukkit;
 
 import javax.annotation.Nonnull;

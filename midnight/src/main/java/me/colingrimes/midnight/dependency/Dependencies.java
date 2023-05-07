@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.dependency;
 
-import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.util.io.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -16,10 +16,10 @@ import java.util.Optional;
  */
 public class Dependencies {
 
-    private final MidnightPlugin plugin;
+    private final Midnight plugin;
     private final Map<String, Plugin> dependencies = new HashMap<>();
 
-    public Dependencies(@Nonnull MidnightPlugin plugin) {
+    public Dependencies(@Nonnull Midnight plugin) {
         this.plugin = plugin;
     }
 

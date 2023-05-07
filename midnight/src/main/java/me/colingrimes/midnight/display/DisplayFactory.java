@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.display;
 
-import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.display.implementation.ActionBar;
 import me.colingrimes.midnight.display.implementation.BossBar;
 import me.colingrimes.midnight.display.implementation.Title;
@@ -10,9 +10,9 @@ import javax.annotation.Nonnull;
 
 public class DisplayFactory {
 
-    private final MidnightPlugin plugin;
+    private final Midnight plugin;
 
-    public DisplayFactory(@Nonnull MidnightPlugin plugin) {
+    public DisplayFactory(@Nonnull Midnight plugin) {
         this.plugin = plugin;
     }
 

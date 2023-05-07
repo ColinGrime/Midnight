@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.util.bukkit;
 
-import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.plugin.MidnightPlugin;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;

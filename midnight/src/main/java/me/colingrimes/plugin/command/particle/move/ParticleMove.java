@@ -7,17 +7,17 @@ import me.colingrimes.midnight.command.util.argument.ArgumentList;
 import me.colingrimes.midnight.geometry.Point;
 import me.colingrimes.midnight.particle.ParticleEffect;
 import me.colingrimes.midnight.util.bukkit.Locations;
-import me.colingrimes.plugin.Midnight;
+import me.colingrimes.plugin.MidnightPlugin;
 import me.colingrimes.plugin.config.Messages;
 import org.bukkit.Location;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
-public class ParticleMove implements Command<Midnight> {
+public class ParticleMove implements Command<MidnightPlugin> {
 
 	@Override
-	public void execute(@Nonnull Midnight plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
+	public void execute(@Nonnull MidnightPlugin plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
 		Optional<ParticleEffect> particle = plugin.getParticleManager().getSelectedParticle(sender.player());
 
 		// Check if a particle is selected.

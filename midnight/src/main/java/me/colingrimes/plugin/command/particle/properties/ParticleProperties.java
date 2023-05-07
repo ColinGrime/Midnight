@@ -7,7 +7,7 @@ import me.colingrimes.midnight.command.util.argument.ArgumentList;
 import me.colingrimes.midnight.message.Placeholders;
 import me.colingrimes.midnight.particle.ParticleEffect;
 import me.colingrimes.midnight.util.text.Text;
-import me.colingrimes.plugin.Midnight;
+import me.colingrimes.plugin.MidnightPlugin;
 import me.colingrimes.plugin.config.Messages;
 import org.bukkit.Particle;
 import org.bukkit.util.Vector;
@@ -15,10 +15,10 @@ import org.bukkit.util.Vector;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
-public class ParticleProperties implements Command<Midnight> {
+public class ParticleProperties implements Command<MidnightPlugin> {
 
 	@Override
-	public void execute(@Nonnull Midnight plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
+	public void execute(@Nonnull MidnightPlugin plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
 		Optional<ParticleEffect> particle = plugin.getParticleManager().getSelectedParticle(sender.player());
 
 		// Check if a particle is selected.

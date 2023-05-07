@@ -1,12 +1,12 @@
 package me.colingrimes.midnight.particle.implementation;
 
-import me.colingrimes.midnight.MidnightPlugin;
 import me.colingrimes.midnight.geometry.Point;
 import me.colingrimes.midnight.geometry.Position;
 import me.colingrimes.midnight.geometry.Rotation;
 import me.colingrimes.midnight.particle.ParticleEffect;
 import me.colingrimes.midnight.particle.util.ParticleProperties;
 import me.colingrimes.midnight.particle.util.ParticleProperty;
+import me.colingrimes.plugin.MidnightPlugin;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitTask;

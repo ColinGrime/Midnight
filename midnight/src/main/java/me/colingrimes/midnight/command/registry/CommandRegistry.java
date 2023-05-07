@@ -3,7 +3,7 @@ package me.colingrimes.midnight.command.registry;
 import me.colingrimes.midnight.command.handler.CommandHandler;
 import me.colingrimes.midnight.command.node.CommandNode;
 import me.colingrimes.midnight.command.registry.util.CommandRegistrar;
-import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.midnight.Midnight;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -12,10 +12,10 @@ import java.util.Map;
 
 public class CommandRegistry {
 
-	private final MidnightPlugin plugin;
+	private final Midnight plugin;
 	private final Map<String, CommandNode> commandNodes = new HashMap<>();
 
-	public CommandRegistry(@Nonnull MidnightPlugin plugin) {
+	public CommandRegistry(@Nonnull Midnight plugin) {
 		this.plugin = plugin;
 	}
 

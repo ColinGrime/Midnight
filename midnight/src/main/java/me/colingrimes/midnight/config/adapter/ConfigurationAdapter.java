@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.config.adapter;
 
-import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.config.util.ConfigurableInventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface ConfigurationAdapter {
 
 	@Nonnull
-	static ConfigurationAdapter of(@Nonnull MidnightPlugin plugin, @Nonnull String name) {
+	static ConfigurationAdapter of(@Nonnull Midnight plugin, @Nonnull String name) {
 		String fileName = name.endsWith(".yml") ? name.toLowerCase() : name.toLowerCase() + ".yml";
 
 		if (fileName.equals("config.yml")) {

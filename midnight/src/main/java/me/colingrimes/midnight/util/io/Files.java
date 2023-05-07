@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.util.io;
 
-import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.midnight.Midnight;
 
 import javax.annotation.Nonnull;
 import java.io.File;
@@ -21,7 +21,7 @@ public final class Files {
 	 * @return the list of classes
 	 */
 	@Nonnull
-	public static List<Class<?>> getClasses(@Nonnull MidnightPlugin plugin, @Nonnull String packageName) {
+	public static List<Class<?>> getClasses(@Nonnull Midnight plugin, @Nonnull String packageName) {
 		return getClasses(plugin, packageName, true);
 	}
 
@@ -32,7 +32,7 @@ public final class Files {
 	 * @return the list of classes
 	 */
 	@Nonnull
-	public static List<Class<?>> getClasses(@Nonnull MidnightPlugin plugin, @Nonnull String packageName, boolean recursive) {
+	public static List<Class<?>> getClasses(@Nonnull Midnight plugin, @Nonnull String packageName, boolean recursive) {
 		List<Class<?>> classes = new ArrayList<>();
 		String path = packageName.replace('.', '/');
 		int maxDepth = recursive ? Integer.MAX_VALUE : 1;
@@ -66,7 +66,7 @@ public final class Files {
 	 * @return the list of package names
 	 */
 	@Nonnull
-	public static List<String> getPackageNames(@Nonnull MidnightPlugin plugin, @Nonnull String packageName) {
+	public static List<String> getPackageNames(@Nonnull Midnight plugin, @Nonnull String packageName) {
 		List<String> subPackages = new ArrayList<>();
 		String path = packageName.replace('.', '/');
 
@@ -124,12 +124,12 @@ public final class Files {
 
 	private static class CustomFileVisitor extends SimpleFileVisitor<Path> {
 
-		private final MidnightPlugin plugin;
+		private final Midnight plugin;
 		private final String packageName;
 		private final Path packagePath;
 		private final List<Class<?>> classes;
 
-		public CustomFileVisitor(@Nonnull MidnightPlugin plugin, @Nonnull String packageName, @Nonnull Path packagePath, @Nonnull List<Class<?>> classes) {
+		public CustomFileVisitor(@Nonnull Midnight plugin, @Nonnull String packageName, @Nonnull Path packagePath, @Nonnull List<Class<?>> classes) {
 			this.plugin = plugin;
 			this.packageName = packageName;
 			this.packagePath = packagePath;

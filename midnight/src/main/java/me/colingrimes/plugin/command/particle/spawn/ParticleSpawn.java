@@ -6,16 +6,16 @@ import me.colingrimes.midnight.command.util.Sender;
 import me.colingrimes.midnight.command.util.argument.ArgumentList;
 import me.colingrimes.midnight.particle.ParticleEffect;
 import me.colingrimes.midnight.util.text.Text;
-import me.colingrimes.plugin.Midnight;
+import me.colingrimes.plugin.MidnightPlugin;
 import me.colingrimes.plugin.config.Messages;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
-public class ParticleSpawn implements Command<Midnight> {
+public class ParticleSpawn implements Command<MidnightPlugin> {
 
 	@Override
-	public void execute(@Nonnull Midnight plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
+	public void execute(@Nonnull MidnightPlugin plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
 		if (args.size() == 0) {
 			if (sender.isPlayer()) {
 				Optional<ParticleEffect> particle = plugin.getParticleManager().getSelectedParticle(sender.player());

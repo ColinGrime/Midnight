@@ -4,7 +4,7 @@ import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.handler.CommandHandler;
 import me.colingrimes.midnight.command.handler.ReflectiveCommandHandler;
 import me.colingrimes.midnight.command.handler.StandardCommandHandler;
-import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.midnight.Midnight;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -32,7 +32,7 @@ public interface CommandHandlerFactory {
 	 * @return the command handler
 	 */
 	@Nonnull
-	static <T extends MidnightPlugin> CommandHandler create(@Nonnull T plugin, @Nonnull Command<T> command) {
+	static <T extends Midnight> CommandHandler create(@Nonnull T plugin, @Nonnull Command<T> command) {
 		return new StandardCommandHandler<>(plugin, command);
 	}
 

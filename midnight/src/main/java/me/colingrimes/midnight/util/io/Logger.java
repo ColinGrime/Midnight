@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.util.io;
 
-import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.midnight.Midnight;
 import org.bukkit.Bukkit;
 
 import javax.annotation.Nonnull;
@@ -17,7 +17,7 @@ public final class Logger {
 	 * @param plugin the plugin to log for
 	 * @param msg the info message to log
 	 */
-	public static void log(@Nonnull MidnightPlugin plugin, @Nonnull String msg) {
+	public static void log(@Nonnull Midnight plugin, @Nonnull String msg) {
 		log("[" + plugin.getName() + "] " + msg);
 	}
 
@@ -35,7 +35,7 @@ public final class Logger {
 	 * @param plugin the plugin to log for
 	 * @param msg the warning message to log
 	 */
-	public static void warn(@Nonnull MidnightPlugin plugin, @Nonnull String msg) {
+	public static void warn(@Nonnull Midnight plugin, @Nonnull String msg) {
 		warn("[" + plugin.getName() + "] " + msg);
 	}
 
@@ -53,7 +53,7 @@ public final class Logger {
 	 * @param plugin the plugin to log for
 	 * @param msg the severe message to log
 	 */
-	public static void severe(@Nonnull MidnightPlugin plugin, @Nonnull String msg) {
+	public static void severe(@Nonnull Midnight plugin, @Nonnull String msg) {
 		severe("[" + plugin.getName() + "] " + msg);
 	}
 

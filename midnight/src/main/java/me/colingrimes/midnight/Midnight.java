@@ -11,7 +11,6 @@ import me.colingrimes.midnight.display.DisplayFactory;
 import me.colingrimes.midnight.display.manager.DisplayManager;
 import me.colingrimes.midnight.listener.ArmorEquipListeners;
 import me.colingrimes.midnight.listener.InventoryListener;
-import me.colingrimes.midnight.listener.MenuListeners;
 import me.colingrimes.midnight.particle.ParticleManager;
 import me.colingrimes.midnight.util.Common;
 import me.colingrimes.midnight.util.misc.Timer;
@@ -24,12 +23,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class MidnightPlugin extends JavaPlugin {
-
-	// Main plugn instance -- USE WITH CAUTION.
-	private static Plugin instance;
-	// Are the default listeners registered?
-	private static boolean registerDefaultListeners = false;
+public abstract class Midnight extends JavaPlugin {
 
 	private Dependencies dependencies;
 	private CommandRegistry commandRegistry;
@@ -46,11 +40,6 @@ public abstract class MidnightPlugin extends JavaPlugin {
 
 	@Override
 	public void onLoad() {
-		// Initialize the Midnight plugin instance.
-		if (instance == null) {
-			instance = this;
-		}
-
 		dependencies = new Dependencies(this);
 		commandRegistry = new CommandRegistry(this);
 		configurationManager = new ConfigurationManager();
@@ -103,16 +92,12 @@ public abstract class MidnightPlugin extends JavaPlugin {
 		List<Listener> listeners = new ArrayList<>();
 
 		// Register default listeners.
-		if (!registerDefaultListeners) {
-			registerDefaultListeners = true;
-			listeners.add(new MenuListeners(this));
-			listeners.add(new InventoryListener());
-			listeners.add(new ArmorEquipListeners());
-		}
+		listeners.add(new InventoryListener());
+		listeners.add(new ArmorEquipListeners());
 
 		// Register additional listeners.
 		registerListeners(listeners);
-		listeners.forEach(Common::register);
+		listeners.forEach(listener -> Common.register(this, listener));
 	}
 
 	/**
@@ -123,15 +108,6 @@ public abstract class MidnightPlugin extends JavaPlugin {
 	@Nonnull
 	public String getRootPackage() {
 		return getClass().getPackage().getName();
-	}
-
-	/**
-	 * Gets the instance of the plugin.
-	 * @return instance of the plugin
-	 */
-	@Nonnull
-	public static Plugin getInstance() {
-		return instance;
 	}
 
 	/**

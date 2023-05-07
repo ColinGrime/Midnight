@@ -4,7 +4,7 @@ import me.colingrimes.midnight.command.util.CommandProperties;
 import me.colingrimes.midnight.command.util.argument.ArgumentList;
 import me.colingrimes.midnight.command.util.Sender;
 import me.colingrimes.midnight.command.util.exception.CommandNotImplementedException;
-import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.midnight.Midnight;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -13,9 +13,9 @@ import java.util.List;
 /**
  * Represents a command with support for command execution, tab completion, usage message,
  * permissions, aliases, and sender requirements. Provides a flexible structure for
- * creating custom commands in a {@link MidnightPlugin}.
+ * creating custom commands in a {@link Midnight}.
  */
-public interface Command<T extends MidnightPlugin> {
+public interface Command<T extends Midnight> {
 
 	/**
 	 * Executes the command.

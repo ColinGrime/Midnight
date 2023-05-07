@@ -3,13 +3,13 @@ package me.colingrimes.example;
 import me.colingrimes.example.listener.PlayerListeners;
 import me.colingrimes.example.player.PlayerManager;
 import me.colingrimes.example.storage.PlayerStorage;
-import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.midnight.Midnight;
 import org.bukkit.event.Listener;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class ExamplePlugin extends MidnightPlugin {
+public class ExamplePlugin extends Midnight {
 
 	private PlayerStorage playerStorage;
 	private PlayerManager playerManager;

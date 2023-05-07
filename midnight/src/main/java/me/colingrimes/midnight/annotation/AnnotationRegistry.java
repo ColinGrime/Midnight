@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.annotation;
 
 import me.colingrimes.midnight.util.io.Files;
-import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.midnight.Midnight;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
@@ -11,10 +11,10 @@ import java.util.List;
 
 public final class AnnotationRegistry {
 
-	private final MidnightPlugin plugin;
+	private final Midnight plugin;
 	private final List<AnnotationProcessor> processors = new ArrayList<>();
 
-	public AnnotationRegistry(@Nonnull MidnightPlugin plugin) {
+	public AnnotationRegistry(@Nonnull Midnight plugin) {
 		this.plugin = plugin;
 	}
 

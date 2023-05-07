@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.display.implementation;
 
-import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.display.Display;
 import me.colingrimes.midnight.display.manager.DisplayType;
 import me.colingrimes.midnight.scheduler.Scheduler;
@@ -18,11 +18,11 @@ import java.util.Optional;
 public class ActionBar extends BaseDisplay {
 
     private final Map<Player, Task> tasks = new HashMap<>();
-    private final MidnightPlugin plugin;
+    private final Midnight plugin;
     private String text;
     private boolean visible;
 
-    public ActionBar(@Nonnull MidnightPlugin plugin, @Nonnull String text) {
+    public ActionBar(@Nonnull Midnight plugin, @Nonnull String text) {
         this.plugin = plugin;
         this.text = Text.color(text);
         this.visible = true;

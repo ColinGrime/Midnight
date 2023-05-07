@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.display.implementation;
 
-import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.display.Display;
 import me.colingrimes.midnight.display.manager.DisplayType;
 import me.colingrimes.midnight.util.text.Text;
@@ -18,10 +18,10 @@ import java.util.Optional;
 
 public class BossBar extends BaseDisplay {
 
-    private final MidnightPlugin plugin;
+    private final Midnight plugin;
     private final org.bukkit.boss.BossBar bossBar;
 
-    public BossBar(@Nonnull MidnightPlugin plugin, @Nonnull String text) {
+    public BossBar(@Nonnull Midnight plugin, @Nonnull String text) {
         this.plugin = plugin;
         this.bossBar = Bukkit.createBossBar(Text.color(text), BarColor.PURPLE, BarStyle.SOLID);
         this.bossBar.setVisible(true);

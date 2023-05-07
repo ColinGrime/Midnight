@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.listener;
 
-import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.menu.Gui;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -19,9 +19,9 @@ import javax.annotation.Nonnull;
 
 public class MenuListeners implements Listener {
 
-    private final MidnightPlugin plugin;
+    private final Midnight plugin;
 
-    public MenuListeners(@Nonnull MidnightPlugin plugin) {
+    public MenuListeners(@Nonnull Midnight plugin) {
         this.plugin = plugin;
     }
 

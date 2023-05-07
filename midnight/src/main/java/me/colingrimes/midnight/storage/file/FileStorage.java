@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.storage.file;
 
-import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.serialize.Serializable;
 import me.colingrimes.midnight.storage.Storage;
 import me.colingrimes.midnight.storage.file.composite.CompositeIdentifier;
@@ -19,10 +19,10 @@ import java.util.Optional;
  */
 public abstract class FileStorage<T extends Serializable> implements Storage<T> {
 
-    protected final MidnightPlugin plugin;
+    protected final Midnight plugin;
     protected Map<String, File> fileMap;
 
-    public FileStorage(@Nonnull MidnightPlugin plugin) {
+    public FileStorage(@Nonnull Midnight plugin) {
         this.plugin = plugin;
         this.fileMap = new HashMap<>();
     }

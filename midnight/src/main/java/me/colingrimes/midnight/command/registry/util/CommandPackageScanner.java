@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.command.registry.util;
 
-import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.handler.factory.CommandHandlerFactory;
 import me.colingrimes.midnight.util.io.Files;
@@ -20,7 +20,7 @@ public final class CommandPackageScanner {
      * @param plugin the plugin to register command classes for
      * @param <T> the type of the MidnightPlugin
      */
-    public static <T extends MidnightPlugin> void scanAndRegister(@Nonnull T plugin) {
+    public static <T extends Midnight> void scanAndRegister(@Nonnull T plugin) {
         scanAndRegister(plugin, plugin.getRootPackage() + ".command", "");
     }
 
@@ -31,7 +31,7 @@ public final class CommandPackageScanner {
      * @param commandPath the command path
      * @param <T> the type of MidnightPlugin
      */
-    private static <T extends MidnightPlugin> void scanAndRegister(@Nonnull T plugin, @Nonnull String packagePath, @Nonnull String commandPath) {
+    private static <T extends Midnight> void scanAndRegister(@Nonnull T plugin, @Nonnull String packagePath, @Nonnull String commandPath) {
         List<Class<?>> classes = Files.getClasses(plugin, packagePath, false);
         classes = classes.stream().filter(Command.class::isAssignableFrom).toList();
 
@@ -66,7 +66,7 @@ public final class CommandPackageScanner {
      * @param <T> the type of the MidnightPlugin
      */
     @Nonnull
-    private static <T extends MidnightPlugin> String getCommandPath(@Nonnull T plugin, @Nonnull String packagePath, @Nonnull String commandPath) {
+    private static <T extends Midnight> String getCommandPath(@Nonnull T plugin, @Nonnull String packagePath, @Nonnull String commandPath) {
         // Ignore the root command package.
         if (packagePath.equals(plugin.getRootPackage() + ".command")) {
             return commandPath;
@@ -84,7 +84,7 @@ public final class CommandPackageScanner {
      * @param commandPath the command path
      * @param <T> the type of the MidnightPlugin
      */
-    private static <T extends MidnightPlugin> void registerCommand(@Nonnull T plugin, @Nonnull String commandPath, @Nonnull Class<?> commandClass) {
+    private static <T extends Midnight> void registerCommand(@Nonnull T plugin, @Nonnull String commandPath, @Nonnull Class<?> commandClass) {
         Command<T> command = null;
 
         try {

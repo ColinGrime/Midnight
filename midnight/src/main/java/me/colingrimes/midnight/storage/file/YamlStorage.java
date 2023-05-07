@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.storage.file;
 
-import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.serialize.Serializable;
 import me.colingrimes.midnight.storage.file.composite.CompositeIdentifier;
 import me.colingrimes.midnight.util.io.Logger;
@@ -17,7 +17,7 @@ import java.util.function.Function;
 
 public abstract class YamlStorage<T extends Serializable> extends FileStorage<T> {
 
-    public YamlStorage(@Nonnull MidnightPlugin plugin) {
+    public YamlStorage(@Nonnull Midnight plugin) {
         super(plugin);
     }
 

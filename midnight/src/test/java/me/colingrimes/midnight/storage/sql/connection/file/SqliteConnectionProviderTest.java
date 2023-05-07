@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.storage.sql.connection.file;
 
-import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.midnight.Midnight;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -16,12 +16,12 @@ import static org.mockito.Mockito.when;
 
 class SqliteConnectionProviderTest {
 
-	private MidnightPlugin plugin;
+	private Midnight plugin;
 	private SqliteConnectionProvider provider;
 
 	@BeforeEach
 	public void setUp(@TempDir Path tempDir) {
-		plugin = mock(MidnightPlugin.class);
+		plugin = mock(Midnight.class);
 		when(plugin.getDataFolder()).thenReturn(tempDir.toFile());
 		provider = new SqliteConnectionProvider(plugin, "test_database");
 	}

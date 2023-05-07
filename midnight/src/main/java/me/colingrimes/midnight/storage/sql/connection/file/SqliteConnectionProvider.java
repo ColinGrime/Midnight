@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.storage.sql.connection.file;
 
-import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.storage.sql.connection.ConnectionProvider;
 import org.sqlite.SQLiteDataSource;
 
@@ -14,12 +14,12 @@ import java.util.function.Function;
 
 public class SqliteConnectionProvider implements ConnectionProvider {
 
-	private final MidnightPlugin plugin;
+	private final Midnight plugin;
 	private final String databaseName;
 	private SQLiteDataSource dataSource;
 	private boolean initialized = false;
 
-	public SqliteConnectionProvider(@Nonnull MidnightPlugin plugin, @Nonnull String databaseName) {
+	public SqliteConnectionProvider(@Nonnull Midnight plugin, @Nonnull String databaseName) {
 		this.plugin = plugin;
 		this.databaseName = databaseName.endsWith(".db") ? databaseName : databaseName + ".db";
 	}

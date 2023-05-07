@@ -1,9 +1,9 @@
 package me.colingrimes.midnight.scheduler.implementation;
 
-import me.colingrimes.midnight.MidnightPlugin;
 import me.colingrimes.midnight.scheduler.Scheduler;
 import me.colingrimes.midnight.scheduler.task.SyncTask;
 import me.colingrimes.midnight.scheduler.task.Task;
+import me.colingrimes.plugin.MidnightPlugin;
 import org.bukkit.Bukkit;
 
 import javax.annotation.Nonnull;

@@ -5,7 +5,7 @@ import me.colingrimes.midnight.command.util.CommandProperties;
 import me.colingrimes.midnight.command.util.argument.ArgumentList;
 import me.colingrimes.midnight.command.util.Sender;
 import me.colingrimes.midnight.command.util.exception.CommandNotImplementedException;
-import me.colingrimes.midnight.MidnightPlugin;
+import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.message.Message;
 import me.colingrimes.plugin.config.Messages;
 import org.bukkit.command.CommandSender;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * A standard implementation of the {@link CommandHandler} interface.
  * This class handles the execution and tab completion of commands
- * for a given {@link Command} and {@link MidnightPlugin} instance.
+ * for a given {@link Command} and {@link Midnight} instance.
  *
  * <p>It checks for sender requirements, permissions, and the number of arguments
  * before executing the command. Appropriate messages are sent to the sender
@@ -26,7 +26,7 @@ import java.util.List;
  *
  * @param <T> the type of the MidnightPlugin
  */
-public class StandardCommandHandler<T extends MidnightPlugin> implements CommandHandler {
+public class StandardCommandHandler<T extends Midnight> implements CommandHandler {
 
 	private final T plugin;
 	private final Command<T> command;
