@@ -1,14 +1,12 @@
 package me.colingrimes.midnight.channel;
 
+import me.colingrimes.midnight.channel.filter.ChatFilter;
 import me.colingrimes.midnight.channel.util.ChannelPermission;
 import me.colingrimes.midnight.message.Message;
-import me.colingrimes.midnight.message.implementation.ChannelMessage;
 import me.colingrimes.midnight.util.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -16,13 +14,6 @@ import java.util.UUID;
  * Represents a communication channel.
  */
 public interface Channel {
-
-    /**
-     * Gets the channel's list of logs.
-     * @return the logs of the channel
-     */
-    @Nonnull
-    List<ChannelMessage<?>> getLogs();
 
     /**
      * Gets the channel's unique identifier.
@@ -39,8 +30,27 @@ public interface Channel {
     String getName();
 
     /**
+     * Gets an unmodifiable set of the channel's chat filters.
+     * @return an unmodifiable set of chat filters
+     */
+    @Nonnull
+    Set<ChatFilter> getFilters();
+
+    /**
+     * Adds a chat filter to the channel.
+     * @param filter the chat filter to add
+     */
+    void addFilter(@Nonnull ChatFilter filter);
+
+    /**
+     * Removes a chat filter from the channel.
+     * @param filter the chat filter to remove
+     */
+    void removeFilter(@Nonnull ChatFilter filter);
+
+    /**
      * Broadcasts a message to all participants in the channel.
-     * This is to be used for system messages.
+     * This is to be used for system messages and will bypass all chat filters.
      *
      * @param message the message to send
      */
@@ -82,11 +92,11 @@ public interface Channel {
     boolean remove(@Nonnull Participant participant);
 
     /**
-     * Verifies if a player is a participant in the channel.
-     * @param player the player to check
-     * @return true if the player is a participant, false otherwise
+     * Verifies if a participant is in the channel.
+     * @param participant the participant to check
+     * @return true if the participant is in the channel, false otherwise
      */
-    boolean contains(@Nonnull Player player);
+    boolean contains(@Nonnull Participant participant);
 
     /**
      * Gets the chat color for a participant in the channel.
