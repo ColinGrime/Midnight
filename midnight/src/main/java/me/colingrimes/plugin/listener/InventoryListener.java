@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.listener;
+package me.colingrimes.plugin.listener;
 
 import me.colingrimes.midnight.event.SimpleClickEvent;
 import me.colingrimes.midnight.util.Common;

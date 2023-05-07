@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.listener.util;
+package me.colingrimes.plugin.listener.util;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

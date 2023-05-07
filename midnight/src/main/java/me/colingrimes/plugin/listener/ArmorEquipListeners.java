@@ -1,10 +1,10 @@
-package me.colingrimes.midnight.listener;
+package me.colingrimes.plugin.listener;
 
 import me.colingrimes.midnight.event.ArmorEquipEvent;
 import me.colingrimes.midnight.event.SimpleClickEvent;
 import me.colingrimes.midnight.event.util.EquipAction;
 import me.colingrimes.midnight.event.util.SimpleAction;
-import me.colingrimes.midnight.listener.util.ArmorType;
+import me.colingrimes.plugin.listener.util.ArmorType;
 import me.colingrimes.midnight.scheduler.Scheduler;
 import me.colingrimes.midnight.util.Common;
 import me.colingrimes.midnight.util.bukkit.Players;

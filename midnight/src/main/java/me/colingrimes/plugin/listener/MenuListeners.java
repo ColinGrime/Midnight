@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.listener;
+package me.colingrimes.plugin.listener;
 
 import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.menu.Gui;
