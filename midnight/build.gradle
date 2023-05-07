@@ -8,7 +8,9 @@ group 'me.colingrimes.midnight'
 version '1.0.2.1'
 
 dependencies {
+    implementation 'org.flywaydb:flyway-core:9.8.3'
     implementation 'com.zaxxer:HikariCP:5.0.1'
+    implementation 'org.xerial:sqlite-jdbc:3.41.2.1'
 
     // Used for testing.
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
