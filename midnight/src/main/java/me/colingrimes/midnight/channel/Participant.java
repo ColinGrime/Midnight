@@ -2,7 +2,6 @@ package me.colingrimes.midnight.channel;
 
 import me.colingrimes.midnight.channel.implementation.SimpleParticipant;
 import me.colingrimes.midnight.message.Message;
-import me.colingrimes.midnight.message.implementation.ChannelMessage;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -25,21 +24,6 @@ public interface Participant {
     static Participant of(@Nonnull Player player) {
         return new SimpleParticipant(player);
     }
-
-    /**
-     * Gets the participant's list of logs.
-     * Logs are updated when messages are sent through {@link Channel#send(Participant, Message)}.
-     *
-     * @return the logs of the participant
-     */
-    @Nonnull
-    List<ChannelMessage<?>> getLogs();
-
-    /**
-     * Adds a log to the participant's list of logs.
-     * @param log the log to add
-     */
-    void addLog(@Nonnull ChannelMessage<?> log);
 
     /**
      * Gets the participant's unique identifier.
@@ -176,5 +160,5 @@ public interface Participant {
      * @return the timestamp when the participant first joined the server
      */
     @Nonnull
-    ZonedDateTime getJoinedDate();
+    ZonedDateTime getJoinDate();
 }

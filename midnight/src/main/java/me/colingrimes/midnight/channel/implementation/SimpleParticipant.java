@@ -3,7 +3,6 @@ package me.colingrimes.midnight.channel.implementation;
 import me.colingrimes.midnight.channel.Channel;
 import me.colingrimes.midnight.channel.Participant;
 import me.colingrimes.midnight.message.Message;
-import me.colingrimes.midnight.message.implementation.ChannelMessage;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -13,12 +12,11 @@ import java.util.*;
 
 public class SimpleParticipant implements Participant {
 
-    private final List<ChannelMessage<?>> logs;
     private final UUID id;
     private final Player player;
     private final List<Channel> channels;
     private final Set<UUID> ignored;
-    private final ZonedDateTime joinedDate;
+    private final ZonedDateTime joinDate;
     private Channel activeChannel;
     private boolean isMuted;
     private ZonedDateTime muteEndTime;
@@ -30,12 +28,11 @@ public class SimpleParticipant implements Participant {
      * @param player the player to create the participant from
      */
     public SimpleParticipant(@Nonnull Player player) {
-        this.logs = new ArrayList<>();
         this.id = player.getUniqueId();
         this.player = player;
         this.channels = new ArrayList<>();
         this.ignored = new HashSet<>();
-        this.joinedDate = ZonedDateTime.now();
+        this.joinDate = ZonedDateTime.now();
         this.isMuted = false;
         this.nickname = player.getName();
         this.lastSeen = ZonedDateTime.now();
@@ -43,7 +40,6 @@ public class SimpleParticipant implements Participant {
 
     /**
      * Creates a participant that was stored in a database.
-     * @param logs the logs of the participant
      * @param id the unique identifier of the participant
      * @param player the player associated with the participant
      * @param channels the channels the participant is in
@@ -55,29 +51,25 @@ public class SimpleParticipant implements Participant {
      * @param nickname the participant's nickname
      * @param lastSeen the last time the participant was seen
      */
-    public SimpleParticipant(@Nonnull List<ChannelMessage<?>> logs, @Nonnull UUID id, @Nonnull Player player, @Nonnull List<Channel> channels, @Nonnull Set<UUID> ignored, @Nonnull ZonedDateTime joinedDate, @Nonnull Channel activeChannel, boolean isMuted, @Nonnull ZonedDateTime muteEndTime, @Nonnull String nickname, @Nonnull ZonedDateTime lastSeen) {
-        this.logs = logs;
+    public SimpleParticipant(@Nonnull UUID id, @Nonnull Player player,
+                             @Nonnull List<Channel> channels,
+                             @Nonnull Set<UUID> ignored,
+                             @Nonnull ZonedDateTime joinedDate,
+                             @Nonnull Channel activeChannel,
+                             boolean isMuted,
+                             @Nonnull ZonedDateTime muteEndTime,
+                             @Nonnull String nickname,
+                             @Nonnull ZonedDateTime lastSeen) {
         this.id = id;
         this.player = player;
         this.channels = channels;
         this.ignored = ignored;
-        this.joinedDate = joinedDate;
+        this.joinDate = joinedDate;
         this.activeChannel = activeChannel;
         this.isMuted = isMuted;
         this.muteEndTime = muteEndTime;
         this.nickname = nickname;
         this.lastSeen = lastSeen;
-    }
-
-    @Nonnull
-    @Override
-    public List<ChannelMessage<?>> getLogs() {
-        return Collections.unmodifiableList(logs);
-    }
-
-    @Override
-    public void addLog(@Nonnull ChannelMessage<?> log) {
-        logs.add(log);
     }
 
     @Nonnull
@@ -196,7 +188,7 @@ public class SimpleParticipant implements Participant {
 
     @Nonnull
     @Override
-    public ZonedDateTime getJoinedDate() {
-        return joinedDate;
+    public ZonedDateTime getJoinDate() {
+        return joinDate;
     }
 }
