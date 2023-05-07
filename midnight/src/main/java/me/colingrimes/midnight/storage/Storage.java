@@ -23,19 +23,6 @@ public interface Storage<T> {
     void shutdown();
 
     /**
-     * Loads all data from the storage.
-     * @throws Exception if there is an issue loading the data
-     */
-    void loadAll() throws Exception;
-
-    /**
-     * Loads the data with the specified identifier from the storage.
-     * @param identifier the identifier of the data to be loaded
-     * @throws Exception if there is an issue loading the data
-     */
-    void load(@Nonnull String identifier) throws Exception;
-
-    /**
      * Saves the specified data to the storage.
      * @param data the data to be saved
      * @throws Exception if there is an issue saving the data

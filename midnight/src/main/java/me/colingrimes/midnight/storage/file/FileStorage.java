@@ -38,14 +38,10 @@ public abstract class FileStorage<T extends Serializable> implements Storage<T> 
     }
 
     /**
-     * String-based identifiers are not supported for file-based storage.
-     * <p>Please use {@link #load(CompositeIdentifier)} instead.</p>
-     * @param identifier the identifier of the data to be loaded
+     * Loads all data from the storage.
+     * @throws Exception if there is an issue loading the data
      */
-    @Override
-    public void load(@Nonnull String identifier) {
-        throw new UnsupportedOperationException();
-    }
+    public abstract void loadAll() throws Exception;
 
     /**
      * Loads the data associated with the specified composite identifier.
