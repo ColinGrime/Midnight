@@ -1,5 +1,6 @@
-package me.colingrimes.midnight.cache.implementation;
+package me.colingrimes.midnight.cache.cooldown;
 
+import me.colingrimes.midnight.cache.cooldown.SimpleCooldownCache;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

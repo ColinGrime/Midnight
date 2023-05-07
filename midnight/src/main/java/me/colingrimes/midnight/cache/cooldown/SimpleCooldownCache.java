@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.cache.implementation;
+package me.colingrimes.midnight.cache.cooldown;
 
 import me.colingrimes.midnight.cache.CooldownCache;
 
