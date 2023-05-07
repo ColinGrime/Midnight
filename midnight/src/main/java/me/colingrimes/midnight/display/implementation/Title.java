@@ -1,6 +1,9 @@
 package me.colingrimes.midnight.display.implementation;
 
-import me.colingrimes.midnight.display.manager.DisplayType;
+import me.colingrimes.midnight.display.type.DisplayType;
+import me.colingrimes.midnight.event.DisplayHideEvent;
+import me.colingrimes.midnight.event.DisplayShowEvent;
+import me.colingrimes.midnight.util.Common;
 import me.colingrimes.midnight.util.text.Text;
 import org.bukkit.entity.Player;
 
@@ -43,11 +46,16 @@ public class Title extends BaseDisplay {
 
     @Override
     public void show(@Nonnull Player player) {
-        player.sendTitle(titleText, subtitleText, fadeInTime, stayTime, fadeOutTime);
+        DisplayShowEvent displayShowEvent = new DisplayShowEvent(this, player);
+        Common.call(displayShowEvent);
+        if (!displayShowEvent.isCancelled()) {
+            player.sendTitle(titleText, subtitleText, fadeInTime, stayTime, fadeOutTime);
+        }
     }
 
     @Override
     public void show(@Nonnull Player player, long duration, @Nonnull TimeUnit unit) {
+        Common.call(new DisplayHideEvent(this, player));
         player.sendTitle(titleText, subtitleText, fadeInTime, (int) unit.toMillis(duration) / 50, fadeOutTime);
     }
 

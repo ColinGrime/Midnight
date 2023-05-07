@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.display;
 
-import me.colingrimes.midnight.display.manager.DisplayType;
+import me.colingrimes.midnight.display.type.DisplayType;
 import me.colingrimes.midnight.scheduler.Scheduler;
 import org.bukkit.entity.Player;
 

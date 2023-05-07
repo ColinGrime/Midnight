@@ -1,10 +1,11 @@
 package me.colingrimes.midnight.display.implementation;
 
-import me.colingrimes.midnight.Midnight;
-import me.colingrimes.midnight.display.Display;
-import me.colingrimes.midnight.display.manager.DisplayType;
+import me.colingrimes.midnight.display.type.DisplayType;
+import me.colingrimes.midnight.event.DisplayHideEvent;
+import me.colingrimes.midnight.event.DisplayShowEvent;
 import me.colingrimes.midnight.scheduler.Scheduler;
 import me.colingrimes.midnight.scheduler.task.Task;
+import me.colingrimes.midnight.util.Common;
 import me.colingrimes.midnight.util.bukkit.Players;
 import me.colingrimes.midnight.util.text.Text;
 import org.bukkit.entity.Player;
@@ -13,17 +14,14 @@ import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class ActionBar extends BaseDisplay {
 
     private final Map<Player, Task> tasks = new HashMap<>();
-    private final Midnight plugin;
     private String text;
     private boolean visible;
 
-    public ActionBar(@Nonnull Midnight plugin, @Nonnull String text) {
-        this.plugin = plugin;
+    public ActionBar(@Nonnull String text) {
         this.text = Text.color(text);
         this.visible = true;
     }
@@ -53,23 +51,16 @@ public class ActionBar extends BaseDisplay {
 
     @Override
     public void show(@Nonnull Player player) {
-        Optional<Display> display = plugin.getDisplayManager().get(player, DisplayType.ACTION_BAR);
-        if (display.isPresent() && getPriority() < display.get().getPriority()) {
-            return;
+        DisplayShowEvent displayShowEvent = new DisplayShowEvent(this, player);
+        Common.call(displayShowEvent);
+        if (!displayShowEvent.isCancelled()) {
+            startTask(player);
         }
-
-        display.ifPresent(d -> d.hide(player));
-        plugin.getDisplayManager().set(player, this);
-        startTask(player);
     }
 
     @Override
     public void hide(@Nonnull Player player) {
-        Optional<Display> display = plugin.getDisplayManager().get(player, DisplayType.ACTION_BAR);
-        if (display.isPresent() && display.get().equals(this)) {
-            plugin.getDisplayManager().remove(player, DisplayType.ACTION_BAR);
-        }
-
+        Common.call(new DisplayHideEvent(this, player));
         stopTask(player);
     }
 

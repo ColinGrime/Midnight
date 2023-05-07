@@ -1,28 +1,24 @@
 package me.colingrimes.midnight.display.implementation;
 
-import me.colingrimes.midnight.Midnight;
-import me.colingrimes.midnight.display.Display;
-import me.colingrimes.midnight.display.manager.DisplayType;
+import me.colingrimes.midnight.display.type.DisplayType;
+import me.colingrimes.midnight.event.DisplayHideEvent;
+import me.colingrimes.midnight.event.DisplayShowEvent;
+import me.colingrimes.midnight.util.Common;
 import me.colingrimes.midnight.util.text.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.KeyedBossBar;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 public class BossBar extends BaseDisplay {
 
-    private final Midnight plugin;
     private final org.bukkit.boss.BossBar bossBar;
 
-    public BossBar(@Nonnull Midnight plugin, @Nonnull String text) {
-        this.plugin = plugin;
+    public BossBar(@Nonnull String text) {
         this.bossBar = Bukkit.createBossBar(Text.color(text), BarColor.PURPLE, BarStyle.SOLID);
         this.bossBar.setVisible(true);
     }
@@ -52,44 +48,16 @@ public class BossBar extends BaseDisplay {
 
     @Override
     public void show(@Nonnull Player player) {
-        Optional<Display> display = plugin.getDisplayManager().get(player, DisplayType.BOSS_BAR);
-        if (display.isPresent() && getPriority() < display.get().getPriority()) {
-            if (getPriority() < display.get().getPriority()) {
-                return;
-            }
-        } else if (hasActiveBossBar(player)) {
-            if (getPriority() < Display.DEFAULT_PRIORITY) {
-                return;
-            }
+        DisplayShowEvent displayShowEvent = new DisplayShowEvent(this, player);
+        Common.call(displayShowEvent);
+        if (!displayShowEvent.isCancelled()) {
+            bossBar.addPlayer(player);
         }
-
-        display.ifPresent(d -> d.hide(player));
-        plugin.getDisplayManager().set(player, this);
-        bossBar.addPlayer(player);
-    }
-
-    /**
-     * Checks if the player has an externally active boss bar.
-     * @param player the player to check
-     * @return true if the player has an externally active boss bar
-     */
-    private boolean hasActiveBossBar(@Nonnull Player player) {
-        Iterator<KeyedBossBar> bossBarIterator = Bukkit.getBossBars();
-        while (bossBarIterator.hasNext()) {
-            if (bossBarIterator.next().getPlayers().contains(player)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override
     public void hide(@Nonnull Player player) {
-        Optional<Display> display = plugin.getDisplayManager().get(player, DisplayType.BOSS_BAR);
-        if (display.isPresent() && display.get().equals(this)) {
-            plugin.getDisplayManager().remove(player, DisplayType.BOSS_BAR);
-        }
-
+        Common.call(new DisplayHideEvent(this, player));
         bossBar.removePlayer(player);
     }
 

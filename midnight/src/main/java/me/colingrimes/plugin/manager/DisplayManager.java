@@ -1,6 +1,7 @@
-package me.colingrimes.midnight.display.manager;
+package me.colingrimes.plugin.manager;
 
 import me.colingrimes.midnight.display.Display;
+import me.colingrimes.midnight.display.type.DisplayType;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
