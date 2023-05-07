@@ -12,7 +12,10 @@ import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
- * Represents a message sent in a {@link Channel} by a {@link Participant}.
+ * Represents a message sent in a {@code Channel} by a {@code Participant}.
+ * <p>
+ * If the {@link Participant} is {@code null}, then the message was sent by the server.
+ *
  * @param <T> the type of the message content
  */
 public class ChannelMessage<T> implements Message<T> {
@@ -22,19 +25,25 @@ public class ChannelMessage<T> implements Message<T> {
     private final Message<T> message;
     private final ZonedDateTime timestamp;
 
-    public ChannelMessage(@Nullable Channel channel, @Nonnull Participant participant, @Nonnull Message<T> message) {
+    /**
+     * Creates a new channel message.
+     * @param channel the channel the message was sent in
+     * @param participant the participant that sent the message
+     * @param message the message
+     */
+    public ChannelMessage(@Nonnull Channel channel, @Nullable Participant participant, @Nonnull Message<T> message) {
         this.channel = channel;
         this.participant = participant;
         this.message = message;
         this.timestamp = ZonedDateTime.now();
     }
 
-    @Nullable
+    @Nonnull
     public Channel getChannel() {
         return channel;
     }
 
-    @Nonnull
+    @Nullable
     public Participant getParticipant() {
         return participant;
     }
