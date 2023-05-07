@@ -38,6 +38,20 @@ public class ChannelMessage<T> implements Message<T> {
         this.timestamp = ZonedDateTime.now();
     }
 
+    /**
+     * Creates a new channel message from storage.
+     * @param channel the channel the message was sent in
+     * @param participant the participant that sent the message
+     * @param message the message
+     * @param timestamp the timestamp of the message
+     */
+    public ChannelMessage(@Nonnull Channel channel, @Nullable Participant participant, @Nonnull Message<T> message, @Nonnull ZonedDateTime timestamp) {
+        this.channel = channel;
+        this.participant = participant;
+        this.message = message;
+        this.timestamp = timestamp;
+    }
+
     @Nonnull
     public Channel getChannel() {
         return channel;
