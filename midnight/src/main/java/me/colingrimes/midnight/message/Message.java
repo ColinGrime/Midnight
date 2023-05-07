@@ -2,6 +2,7 @@ package me.colingrimes.midnight.message;
 
 import me.colingrimes.midnight.channel.Participant;
 import me.colingrimes.midnight.command.util.Sender;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -19,6 +20,22 @@ public interface Message<T> {
      */
     @Nonnull
     T getContent();
+
+    /**
+     * Converts the message content to a plain text format.
+     * @return the plain text representation of the message content
+     */
+    @Nonnull
+    default String toText() {
+        T content = getContent();
+        if (content instanceof String) {
+            return (String) content;
+        } else if (content instanceof TextComponent) {
+            return ((TextComponent) content).toPlainText();
+        } else {
+            return "";
+        }
+    }
 
     /**
      * Sends the message to a {@link CommandSender} recipient.
