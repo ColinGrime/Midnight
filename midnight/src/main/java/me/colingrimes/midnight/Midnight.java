@@ -7,11 +7,6 @@ import me.colingrimes.midnight.command.registry.util.CommandPackageScanner;
 import me.colingrimes.midnight.config.ConfigurationManager;
 import me.colingrimes.midnight.config.annotation.processor.ConfigurationProcessor;
 import me.colingrimes.midnight.dependency.Dependencies;
-import me.colingrimes.midnight.display.DisplayFactory;
-import me.colingrimes.midnight.display.manager.DisplayManager;
-import me.colingrimes.midnight.listener.ArmorEquipListeners;
-import me.colingrimes.midnight.listener.InventoryListener;
-import me.colingrimes.midnight.particle.ParticleManager;
 import me.colingrimes.midnight.util.Common;
 import me.colingrimes.midnight.util.misc.Timer;
 import org.bukkit.event.Listener;
@@ -28,9 +23,6 @@ public abstract class Midnight extends JavaPlugin {
 	private Dependencies dependencies;
 	private CommandRegistry commandRegistry;
 	private ConfigurationManager configurationManager;
-	private ParticleManager particleManager;
-	private DisplayManager displayManager;
-	private DisplayFactory displayFactory;
 
 	// Override these methods to add functionality to your plugin.
 	protected void load() {}
@@ -43,9 +35,6 @@ public abstract class Midnight extends JavaPlugin {
 		dependencies = new Dependencies(this);
 		commandRegistry = new CommandRegistry(this);
 		configurationManager = new ConfigurationManager();
-		particleManager = new ParticleManager();
-		displayManager = new DisplayManager();
-		displayFactory = new DisplayFactory(this);
 		load();
 	}
 
@@ -90,12 +79,6 @@ public abstract class Midnight extends JavaPlugin {
 	 */
 	private void registerListeners() {
 		List<Listener> listeners = new ArrayList<>();
-
-		// Register default listeners.
-		listeners.add(new InventoryListener());
-		listeners.add(new ArmorEquipListeners());
-
-		// Register additional listeners.
 		registerListeners(listeners);
 		listeners.forEach(listener -> Common.register(this, listener));
 	}
@@ -176,32 +159,5 @@ public abstract class Midnight extends JavaPlugin {
 	@Nonnull
 	public ConfigurationManager getConfigurationManager() {
 		return configurationManager;
-	}
-
-	/**
-	 * Gets the particle manager.
-	 * @return particle manager
-	 */
-	@Nonnull
-	public ParticleManager getParticleManager() {
-		return particleManager;
-	}
-
-	/**
-	 * Gets the display manager.
-	 * @return display manager
-	 */
-	@Nonnull
-	public DisplayManager getDisplayManager() {
-		return displayManager;
-	}
-
-	/**
-	 * Gets the display factory.
-	 * @return display factory
-	 */
-	@Nonnull
-	public DisplayFactory display() {
-		return displayFactory;
 	}
 }

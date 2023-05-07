@@ -1,5 +1,6 @@
-package me.colingrimes.midnight.particle;
+package me.colingrimes.plugin.manager;
 
+import me.colingrimes.midnight.particle.ParticleEffect;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;

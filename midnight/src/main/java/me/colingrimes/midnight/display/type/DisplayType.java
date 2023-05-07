@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.display.manager;
+package me.colingrimes.midnight.display.type;
 
 public enum DisplayType {
 	BOSS_BAR,
