@@ -40,15 +40,16 @@ public interface Channel {
 
     /**
      * Broadcasts a message to all participants in the channel.
-     * <p>This is to be used for system messages.</p>
+     * This is to be used for system messages.
      *
      * @param message the message to send
      */
     void broadcast(@Nonnull Message<?> message);
 
     /**
-     * Sends a message to all participants in the channel.
-     * <p>This will fail if the sender has no permission to speak.</p>
+     * Sends a message from a {@code Participant} to all participants in the channel.
+     * This will fail if the sender has no permission to speak.
+     * This is to be used for regular messages.
      *
      * @param sender the participant sending the message
      * @param message the message to send
@@ -56,7 +57,7 @@ public interface Channel {
     void send(@Nonnull Participant sender, @Nonnull Message<?> message);
 
     /**
-     * Retrieves an unmodifiable set of the channel's participants.
+     * Gets an unmodifiable set of the channel's participants.
      * @return an unmodifiable set of participants
      */
     @Nonnull
@@ -64,7 +65,7 @@ public interface Channel {
 
     /**
      * Adds a participant to the channel.
-     * <p>This will fail if the participant has no permission to join.</p>
+     * This will fail if the participant has no permission to join.
      *
      * @param participant the participant to add
      * @return true if added successfully, false if already present
@@ -73,7 +74,7 @@ public interface Channel {
 
     /**
      * Removes a participant from the channel.
-     * <p>This will fail if the participant has no permission to leave.</p>
+     * This will fail if the participant has no permission to leave.
      *
      * @param participant the participant to remove
      * @return true if removed successfully, false if not present

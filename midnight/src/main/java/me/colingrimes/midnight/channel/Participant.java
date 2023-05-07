@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.channel;
 
-import me.colingrimes.midnight.channel.implementation.BasicParticipant;
+import me.colingrimes.midnight.channel.implementation.SimpleParticipant;
 import me.colingrimes.midnight.message.Message;
 import me.colingrimes.midnight.message.implementation.ChannelMessage;
 import org.bukkit.entity.Player;
@@ -23,15 +23,23 @@ public interface Participant {
      * @return the new participant
      */
     static Participant of(@Nonnull Player player) {
-        return new BasicParticipant(player);
+        return new SimpleParticipant(player);
     }
 
     /**
      * Gets the participant's list of logs.
+     * Logs are updated when messages are sent through {@link Channel#send(Participant, Message)}.
+     *
      * @return the logs of the participant
      */
     @Nonnull
     List<ChannelMessage<?>> getLogs();
+
+    /**
+     * Adds a log to the participant's list of logs.
+     * @param log the log to add
+     */
+    void addLog(@Nonnull ChannelMessage<?> log);
 
     /**
      * Gets the participant's unique identifier.
@@ -55,17 +63,10 @@ public interface Participant {
     Player player();
 
     /**
-     * Sends a message to this participant.
+     * Sends a message to this participant.*
      * @param message the message to send
      */
     void send(@Nonnull Message<?> message);
-
-    /**
-     * Sends a private message to another participant.
-     * @param recipient the participant to send the private message to
-     * @param message the message to send
-     */
-    void privateMessage(@Nonnull Participant recipient, @Nonnull Message<?> message);
 
     /**
      * Gets the channels this participant has access to.
