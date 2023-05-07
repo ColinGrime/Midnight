@@ -1,7 +1,5 @@
 package me.colingrimes.midnight.storage;
 
-import me.colingrimes.midnight.serialize.Serializable;
-
 import javax.annotation.Nonnull;
 
 /**
@@ -11,7 +9,7 @@ import javax.annotation.Nonnull;
  *
  * @param <T> the type of data to be stored
  */
-public interface Storage<T extends Serializable> {
+public interface Storage<T> {
 
     /**
      * Initializes the storage.
