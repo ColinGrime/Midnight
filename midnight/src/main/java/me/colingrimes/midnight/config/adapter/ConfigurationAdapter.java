@@ -36,6 +36,9 @@ public interface ConfigurationAdapter {
 	Optional<Integer> getInteger(@Nonnull String path);
 
 	@Nonnull
+	Optional<Double> getDouble(@Nonnull String path);
+
+	@Nonnull
 	Optional<Boolean> getBoolean(@Nonnull String path);
 
 	@Nonnull

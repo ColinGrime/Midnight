@@ -16,6 +16,7 @@ public interface OptionFactory<T> {
 	OptionFactory<String> STRING = ConfigurationAdapter::getString;
 	OptionFactory<List<String>> STRING_LIST = ConfigurationAdapter::getStringList;
 	OptionFactory<Integer> INTEGER = ConfigurationAdapter::getInteger;
+	OptionFactory<Double> DOUBLE = ConfigurationAdapter::getDouble;
 	OptionFactory<Boolean> BOOL = ConfigurationAdapter::getBoolean;
 	OptionFactory<ItemStack> ITEM_STACK = ConfigurationAdapter::getItemStack;
 	OptionFactory<ConfigurableInventory> INVENTORY = ConfigurationAdapter::getInventory;
@@ -33,6 +34,11 @@ public interface OptionFactory<T> {
 	@Nonnull
 	static Option<Integer> option(@Nonnull String path, int def) {
 		return Option.of(new Bound<>(INTEGER, path, def));
+	}
+
+	@Nonnull
+	static Option<Double> option(@Nonnull String path, double def) {
+		return Option.of(new Bound<>(DOUBLE, path, def));
 	}
 
 	@Nonnull
