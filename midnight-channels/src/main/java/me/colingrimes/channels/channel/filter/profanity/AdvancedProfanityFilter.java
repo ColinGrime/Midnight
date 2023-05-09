@@ -1,7 +1,6 @@
-package me.colingrimes.midnight.channel.filter.profanity;
+package me.colingrimes.channels.channel.filter.profanity;
 
-import me.colingrimes.midnight.message.implementation.ChannelMessage;
-import me.colingrimes.plugin.config.Filters;
+import me.colingrimes.channels.message.ChannelMessage;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;

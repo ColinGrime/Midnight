@@ -1,6 +1,6 @@
-package me.colingrimes.midnight.channel.filter;
+package me.colingrimes.channels.channel.filter;
 
-import me.colingrimes.midnight.message.implementation.ChannelMessage;
+import me.colingrimes.channels.message.ChannelMessage;
 
 import javax.annotation.Nonnull;
 import java.util.regex.Pattern;

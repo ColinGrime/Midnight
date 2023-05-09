@@ -1,11 +1,14 @@
-package me.colingrimes.midnight.channel.implementation;
+package me.colingrimes.channels.channel.implementation;
 
-import me.colingrimes.midnight.channel.Channel;
-import me.colingrimes.midnight.channel.Participant;
+import me.colingrimes.channels.channel.Channel;
+import me.colingrimes.channels.channel.Participant;
 import me.colingrimes.midnight.message.Message;
+import me.colingrimes.midnight.scheduler.Scheduler;
+import me.colingrimes.midnight.util.bukkit.Players;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.*;
@@ -13,10 +16,10 @@ import java.util.*;
 public class SimpleParticipant implements Participant {
 
     private final UUID id;
-    private final Player player;
     private final List<Channel> channels;
     private final Set<UUID> ignored;
     private final ZonedDateTime joinDate;
+    private Player player;
     private Channel activeChannel;
     private boolean isMuted;
     private ZonedDateTime muteEndTime;
@@ -24,47 +27,67 @@ public class SimpleParticipant implements Participant {
     private ZonedDateTime lastSeen;
 
     /**
-     * Creates a new participant from a player.
-     * @param player the player to create the participant from
+     * Creates a new participant from the uuid.
+     *
+     * @param uuid the uuid to create the participant from
      */
-    public SimpleParticipant(@Nonnull Player player) {
-        this.id = player.getUniqueId();
-        this.player = player;
+    public SimpleParticipant(@Nonnull UUID uuid) {
+        this.id = uuid;
         this.channels = new ArrayList<>();
         this.ignored = new HashSet<>();
         this.joinDate = ZonedDateTime.now();
         this.isMuted = false;
+        this.activeChannel = MidnightTemp.getInstance().getGlobalChannel();
+        this.nickname = player.getName();
+        this.lastSeen = ZonedDateTime.now();
+    }
+
+    /**
+     * Creates a new participant from a player.
+     *
+     * @param player the player to create the participant from
+     */
+    public SimpleParticipant(@Nonnull Player player) {
+        this.id = player.getUniqueId();
+        this.channels = new ArrayList<>();
+        this.ignored = new HashSet<>();
+        this.joinDate = ZonedDateTime.now();
+        this.isMuted = false;
+        this.player = player;
+        this.activeChannel = MidnightTemp.getInstance().getGlobalChannel();
         this.nickname = player.getName();
         this.lastSeen = ZonedDateTime.now();
     }
 
     /**
      * Creates a participant that was stored in a database.
+     *
      * @param id the unique identifier of the participant
-     * @param player the player associated with the participant
      * @param channels the channels the participant is in
      * @param ignored the participants the participant is ignoring
      * @param joinedDate the date the participant joined
+     * @param player the player associated with the participant
      * @param activeChannel the participant's active channel
      * @param isMuted whether the participant is muted
      * @param muteEndTime the time the participant's mute ends
      * @param nickname the participant's nickname
      * @param lastSeen the last time the participant was seen
      */
-    public SimpleParticipant(@Nonnull UUID id, @Nonnull Player player,
+    public SimpleParticipant(@Nonnull UUID id,
                              @Nonnull List<Channel> channels,
                              @Nonnull Set<UUID> ignored,
                              @Nonnull ZonedDateTime joinedDate,
+                             @Nullable Player player,
                              @Nonnull Channel activeChannel,
                              boolean isMuted,
                              @Nonnull ZonedDateTime muteEndTime,
                              @Nonnull String nickname,
                              @Nonnull ZonedDateTime lastSeen) {
         this.id = id;
-        this.player = player;
         this.channels = channels;
         this.ignored = ignored;
         this.joinDate = joinedDate;
+        this.player = player;
         this.activeChannel = activeChannel;
         this.isMuted = isMuted;
         this.muteEndTime = muteEndTime;
@@ -87,12 +110,17 @@ public class SimpleParticipant implements Participant {
     @Nonnull
     @Override
     public Player player() {
+        if (player != null) {
+            return player;
+        }
+
+        Players.get(id).ifPresent(p -> player = p);
         return player;
     }
 
     @Override
     public void send(@Nonnull Message<?> message) {
-        message.send(this);
+        Scheduler.SYNC.run(() -> message.send(this));
     }
 
     @Nonnull
@@ -122,6 +150,12 @@ public class SimpleParticipant implements Participant {
         this.activeChannel = channel;
     }
 
+    @Nonnull
+    @Override
+    public ZonedDateTime getMuteEndTime() {
+        return muteEndTime;
+    }
+
     @Override
     public boolean isMuted() {
         if (isMuted && muteEndTime.isBefore(ZonedDateTime.now())) {
@@ -148,17 +182,18 @@ public class SimpleParticipant implements Participant {
     }
 
     @Override
-    public boolean isIgnoring(@Nonnull Participant participant) {
-        return ignored.contains(participant.getID());
+    public boolean isIgnoring(@Nonnull UUID uuid) {
+        return ignored.contains(uuid);
     }
 
     @Override
-    public void ignore(@Nonnull Participant participant) {
-        ignored.add(participant.getID());
+    public void ignore(@Nonnull UUID uuid) {
+        ignored.add(uuid);
     }
+
     @Override
-    public void unignore(@Nonnull Participant participant) {
-        ignored.remove(participant.getID());
+    public void unignore(@Nonnull UUID uuid) {
+        ignored.remove(uuid);
     }
 
     @Nonnull

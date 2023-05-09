@@ -1,12 +1,11 @@
-package me.colingrimes.midnight.particle.implementation;
+package me.colingrimes.particles.particle.implementation;
 
 import me.colingrimes.midnight.geometry.Point;
 import me.colingrimes.midnight.geometry.Position;
 import me.colingrimes.midnight.geometry.Rotation;
-import me.colingrimes.midnight.particle.ParticleEffect;
-import me.colingrimes.midnight.particle.util.ParticleProperties;
-import me.colingrimes.midnight.particle.util.ParticleProperty;
-import me.colingrimes.plugin.MidnightPlugin;
+import me.colingrimes.particles.particle.ParticleEffect;
+import me.colingrimes.particles.particle.util.ParticleProperties;
+import me.colingrimes.particles.particle.util.ParticleProperty;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitTask;
@@ -71,7 +70,7 @@ public abstract class BaseParticleEffect implements ParticleEffect {
         }
 
         // Start the particle spawning task.
-        task = Bukkit.getScheduler().runTaskTimer(MidnightPlugin.getInstance(), this::spawn, 0L, 10L);
+        task = Bukkit.getScheduler().runTaskTimer(MidnightTemp.getInstance(), this::spawn, 0L, 10L);
     }
 
     @Override

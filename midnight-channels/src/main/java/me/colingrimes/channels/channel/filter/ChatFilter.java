@@ -1,6 +1,6 @@
-package me.colingrimes.midnight.channel.filter;
+package me.colingrimes.channels.channel.filter;
 
-import me.colingrimes.midnight.message.implementation.ChannelMessage;
+import me.colingrimes.channels.message.ChannelMessage;
 
 import javax.annotation.Nonnull;
 
@@ -11,11 +11,9 @@ public interface ChatFilter {
 
     /**
      * Filters a channel message based on its content.
-     *
      * <p>
      * Implementations of this method should return true if the message passes the filter,
      * and false if the message should be blocked or modified.
-     * </p>
      *
      * @param message the message to filter
      * @return true if the message passes the filter, false otherwise

@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.message.implementation;
+package me.colingrimes.channels.message;
 
 import me.colingrimes.midnight.channel.Channel;
 import me.colingrimes.midnight.channel.Participant;

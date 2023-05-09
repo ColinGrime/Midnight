@@ -1,13 +1,13 @@
-package me.colingrimes.midnight.particle.implementation.type;
+package me.colingrimes.particles.particle.implementation.type;
 
 import com.google.common.base.Preconditions;
 import me.colingrimes.midnight.geometry.Point;
 import me.colingrimes.midnight.geometry.Position;
 import me.colingrimes.midnight.geometry.Rotation;
-import me.colingrimes.midnight.particle.implementation.BaseParticleEffect;
-import me.colingrimes.midnight.particle.util.ParticleEffectType;
-import me.colingrimes.midnight.particle.util.ParticleProperties;
-import me.colingrimes.midnight.particle.util.ParticleProperty;
+import me.colingrimes.particles.particle.implementation.BaseParticleEffect;
+import me.colingrimes.particles.particle.util.ParticleEffectType;
+import me.colingrimes.particles.particle.util.ParticleProperties;
+import me.colingrimes.particles.particle.util.ParticleProperty;
 import org.bukkit.Location;
 
 import javax.annotation.Nonnull;
