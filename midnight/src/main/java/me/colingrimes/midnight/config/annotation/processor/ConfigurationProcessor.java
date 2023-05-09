@@ -1,6 +1,7 @@
 package me.colingrimes.midnight.config.annotation.processor;
 
 import me.colingrimes.midnight.annotation.AnnotationProcessor;
+import me.colingrimes.midnight.annotation.AnnotationType;
 import me.colingrimes.midnight.config.ConfigurationState;
 import me.colingrimes.midnight.config.adapter.ConfigurationAdapter;
 import me.colingrimes.midnight.config.annotation.Configuration;
@@ -26,6 +27,12 @@ public class ConfigurationProcessor implements AnnotationProcessor {
 	@Override
 	public Class<? extends Annotation> getAnnotation() {
 		return Configuration.class;
+	}
+
+	@Nonnull
+	@Override
+	public AnnotationType getAnnotationType() {
+		return AnnotationType.CLASS;
 	}
 
 	@Override

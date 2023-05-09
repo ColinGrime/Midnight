@@ -13,6 +13,7 @@ public interface ConnectionProvider {
 
     /**
      * Gets the name of the connection provider.
+     *
      * @return the name of the provider
      */
     @Nonnull
@@ -30,6 +31,7 @@ public interface ConnectionProvider {
 
     /**
      * Gets a new SQL Connection.
+     *
      * @return a new Connection instance
      * @throws SQLException if an error occurs while getting the connection
      */
@@ -38,6 +40,7 @@ public interface ConnectionProvider {
 
     /**
      * Gets the {@link DataSource} associated with the connection provider.
+     *
      * @return the DataSource instance
      */
     @Nonnull
@@ -45,6 +48,7 @@ public interface ConnectionProvider {
 
     /**
      * Returns a statement processor function which can modify statements.
+     *
      * @return a function that processes statements
      */
     @Nonnull
@@ -52,6 +56,7 @@ public interface ConnectionProvider {
 
     /**
      * Gets whether the connection provider has been initialized.
+     *
      * @return true if the provider has been initialized
      */
     boolean isInitialized();

@@ -13,6 +13,7 @@ public interface ExpiringCache<K, V> extends Map<K, V> {
 
     /**
      * Returns the expiration duration for entries in the cache.
+     *
      * @return the duration after which entries expire
      */
     @Nonnull
@@ -20,6 +21,7 @@ public interface ExpiringCache<K, V> extends Map<K, V> {
 
     /**
      * Sets the expiration duration for entries in the cache.
+     *
      * @param duration the duration after which entries should expire
      */
     void setExpiration(@Nonnull Duration duration);

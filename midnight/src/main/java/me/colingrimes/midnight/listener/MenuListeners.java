@@ -1,4 +1,4 @@
-package me.colingrimes.plugin.listener;
+package me.colingrimes.midnight.listener;
 
 import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.menu.Gui;
@@ -90,6 +90,7 @@ public class MenuListeners implements Listener {
 
     /**
      * Invalidates a valid {@link Gui}.
+     *
      * @param humanEntity the entity
      */
     private void invalidate(@Nonnull HumanEntity humanEntity) {

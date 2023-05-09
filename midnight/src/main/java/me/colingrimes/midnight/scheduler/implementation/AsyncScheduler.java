@@ -1,9 +1,9 @@
 package me.colingrimes.midnight.scheduler.implementation;
 
+import me.colingrimes.midnight.plugin.MidnightPlugin;
 import me.colingrimes.midnight.scheduler.Scheduler;
 import me.colingrimes.midnight.scheduler.task.AsyncTask;
 import me.colingrimes.midnight.scheduler.task.Task;
-import me.colingrimes.plugin.MidnightPlugin;
 import org.bukkit.Bukkit;
 
 import javax.annotation.Nonnull;
@@ -16,7 +16,7 @@ public class AsyncScheduler implements Scheduler {
     @Override
     public <T> CompletableFuture<T> call(@Nonnull Callable<T> task) {
         CompletableFuture<T> future = new CompletableFuture<>();
-        Bukkit.getScheduler().runTaskAsynchronously(MidnightPlugin.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(MidnightPlugin.get(), () -> {
             try {
                 future.complete(task.call());
             } catch (Exception e) {
@@ -30,7 +30,7 @@ public class AsyncScheduler implements Scheduler {
     @Override
     public <T> CompletableFuture<T> callLater(@Nonnull Callable<T> task, long delayTicks) {
         CompletableFuture<T> future = new CompletableFuture<>();
-        Bukkit.getScheduler().runTaskLaterAsynchronously(MidnightPlugin.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLaterAsynchronously(MidnightPlugin.get(), () -> {
             try {
                 future.complete(task.call());
             } catch (Exception e) {

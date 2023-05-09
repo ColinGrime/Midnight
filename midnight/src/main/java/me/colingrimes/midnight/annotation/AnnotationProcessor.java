@@ -2,33 +2,40 @@ package me.colingrimes.midnight.annotation;
 
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+/**
+ * Responsible for processing annotations on classes and methods.
+ */
 public interface AnnotationProcessor {
 
 	/**
-	 * Gets the main annotation that this processor is for.
-	 * @return the annotation
+	 * Gets the main annotation that this processor is responsible for.
+	 *
+	 * @return the annotation class
 	 */
 	@Nonnull
 	Class<? extends Annotation> getAnnotation();
 
 	/**
-	 * Process annotations on the class level.
-	 * @param clazz the class to process
+	 * Gets the type of annotation that this processor is responsible for.
+	 *
+	 * @return the annotation type
+	 */
+	@Nonnull
+	AnnotationType getAnnotationType();
+
+	/**
+	 * Processes annotations on the class level.
+	 *
+	 * @param clazz the class containing the annotation to be processed
 	 */
 	default void process(@Nonnull Class<?> clazz) {}
 
 	/**
-	 * Process annotations on the method level.
-	 * @param method the method to process
+	 * Processes annotations on the method level.
+	 *
+	 * @param method the method containing the annotation to be processed
 	 */
 	default void process(@Nonnull Method method) {}
-
-	/**
-	 * Process annotations on the field level.
-	 * @param field the field to process
-	 */
-	default void process(@Nonnull Field field) {}
 }

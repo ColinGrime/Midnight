@@ -23,7 +23,9 @@ public final class Items {
 
 	/**
 	 * Creates a new {@link Builder} object.
+	 * <p>
 	 * Defaults to {@link Material#STONE}.
+	 *
 	 * @return the item builder object
 	 */
 	@Nonnull
@@ -33,6 +35,7 @@ public final class Items {
 
 	/**
 	 * Creates a new {@link Builder} object.
+	 *
 	 * @param material the default material of the item
 	 * @return the item builder object
 	 */
@@ -57,9 +60,10 @@ public final class Items {
 	}
 
 	/**
-	 * Finds the slot number of the first occurrence of the specified item,
+	 * Finds the slot number of the first occurrence of the specified item.
+	 *
 	 * @param player the player to check
-	 * @param item the item to search for
+	 * @param item   the item to search for
 	 * @return the first slot that contains the item
 	 */
 	@Nonnull
@@ -68,8 +72,9 @@ public final class Items {
 	}
 
 	/**
-	 * Finds the slot number of the first occurrence of the specified item,
-	 * @param inv the inventory to check
+	 * Finds the slot number of the first occurrence of the specified item.
+	 *
+	 * @param inv  the inventory to check
 	 * @param item the item to search for
 	 * @return the first slot that contains the item
 	 */
@@ -79,9 +84,10 @@ public final class Items {
 	}
 
 	/**
-	 * Finds the slot number of the first occurrence of the specified item,
+	 * Finds the slot number of the first occurrence of the specified item.
+	 *
 	 * @param items the items to check
-	 * @param item the item to search for
+	 * @param item  the item to search for
 	 * @return the first slot that contains the item
 	 */
 	@Nonnull
@@ -101,6 +107,7 @@ public final class Items {
 
 	/**
 	 * Checks if two items are of the same {@link org.bukkit.Material}.
+	 *
 	 * @param item1 any item
 	 * @param item2 any item
 	 * @return true if the two items are of the same type
@@ -134,6 +141,7 @@ public final class Items {
 
 		/**
 		 * Sets the {@link Material} of the item.
+		 *
 		 * @param material the material you want the item to be
 		 * @return the itembuilder object
 		 */
@@ -145,6 +153,7 @@ public final class Items {
 
 		/**
 		 * Sets the {@link Material} of the item.
+		 *
 		 * @param str the string containing the material name
 		 * @return the itembuilder object
 		 */
@@ -160,6 +169,7 @@ public final class Items {
 
 		/**
 		 * Sets the name of the item.
+		 *
 		 * @param name the name you want the item to be
 		 * @return the itembuilder object
 		 */
@@ -171,6 +181,7 @@ public final class Items {
 
 		/**
 		 * Sets the lore of the item.
+		 *
 		 * @param lore the lore you want the item to have
 		 * @return the itembuilder object
 		 */
@@ -182,6 +193,7 @@ public final class Items {
 
 		/**
 		 * Hides the attributes of the item.
+		 *
 		 * @return the itembuilder object
 		 */
 		@Nonnull
@@ -192,6 +204,7 @@ public final class Items {
 
 		/**
 		 * Makes the item glow.
+		 *
 		 * @return the itembuilder object
 		 */
 		@Nonnull
@@ -226,6 +239,7 @@ public final class Items {
 
 		/**
 		 * Adds a placeholder to the list of placeholders.
+		 *
 		 * @param placeholder the placeholder you want to add
 		 * @param replacement the value you want to replace the placeholder with
 		 * @param <T>         any type
@@ -239,6 +253,7 @@ public final class Items {
 
 		/**
 		 * Builds the {@link ItemStack} item.
+		 *
 		 * @return the item
 		 */
 		@Nonnull
@@ -260,6 +275,7 @@ public final class Items {
 
 		/**
 		 * Gets the string that corresponds to the inputted key.
+		 *
 		 * @param sec the section of the configuration file
 		 * @param key the key of the string
 		 * @return the value corresponding to the key
@@ -271,6 +287,7 @@ public final class Items {
 
 		/**
 		 * Gets the object that corresponds to the inputted key.
+		 *
 		 * @param sec the section of the configuration file
 		 * @param key the key of the string
 		 * @return the value corresponding to the key

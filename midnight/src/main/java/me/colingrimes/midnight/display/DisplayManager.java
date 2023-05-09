@@ -1,6 +1,5 @@
-package me.colingrimes.plugin.manager;
+package me.colingrimes.midnight.display;
 
-import me.colingrimes.midnight.display.Display;
 import me.colingrimes.midnight.display.type.DisplayType;
 import org.bukkit.entity.Player;
 
@@ -15,6 +14,7 @@ public class DisplayManager {
 
     /**
      * Gets the display element for the player.
+     *
      * @param player the player to get the display element for
      * @param displayType the type of display element to get
      * @return the display element for the player
@@ -26,6 +26,7 @@ public class DisplayManager {
 
     /**
      * Sets the display element for the player.
+     *
      * @param player the player to set the display element for
      * @param display the display element to set
      */
@@ -35,6 +36,7 @@ public class DisplayManager {
 
     /**
      * Removes the display element from the player's display list.
+     *
      * @param player the player to remove the display element from
      * @param displayType the type of display element to remove
      */

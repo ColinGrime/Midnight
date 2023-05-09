@@ -1,10 +1,10 @@
-package me.colingrimes.plugin.listener;
+package me.colingrimes.midnight.listener;
 
 import me.colingrimes.midnight.event.ArmorEquipEvent;
 import me.colingrimes.midnight.event.SimpleClickEvent;
 import me.colingrimes.midnight.event.util.EquipAction;
 import me.colingrimes.midnight.event.util.SimpleAction;
-import me.colingrimes.plugin.listener.util.ArmorType;
+import me.colingrimes.midnight.listener.util.ArmorType;
 import me.colingrimes.midnight.scheduler.Scheduler;
 import me.colingrimes.midnight.util.Common;
 import me.colingrimes.midnight.util.bukkit.Players;
@@ -29,6 +29,7 @@ public class ArmorEquipListeners implements Listener {
 
 	/**
 	 * ArmorEquipEvent is run when armor is equipped through player inventory.
+	 *
 	 * @param event inventory click event
 	 */
 	@EventHandler
@@ -91,6 +92,7 @@ public class ArmorEquipListeners implements Listener {
 
 	/**
 	 * ArmorEquipEvent is run when armor is equipped from dragging it on.
+	 *
 	 * @param event inventory drag event
 	 */
 	@EventHandler
@@ -119,6 +121,7 @@ public class ArmorEquipListeners implements Listener {
 
 	/**
 	 * ArmorEquipEvent is run when armor is equipped through right-clicking the hand.
+	 *
 	 * @param event player interact event
 	 */
 	@EventHandler
@@ -146,6 +149,7 @@ public class ArmorEquipListeners implements Listener {
 
 	/**
 	 * ArmorEquipEvent is run when armor is broken.
+	 *
 	 * @param event player item break event
 	 */
 	@EventHandler
@@ -157,6 +161,7 @@ public class ArmorEquipListeners implements Listener {
 
 	/**
 	 * ArmorEquipEvent is run when player is dead.
+	 *
 	 * @param event player death event
 	 */
 	@EventHandler
@@ -170,6 +175,7 @@ public class ArmorEquipListeners implements Listener {
 
 	/**
 	 * ArmorEquipEvent is run when armor is equipped through dispenser.
+	 *
 	 * @param event block dispense event
 	 */
 	@EventHandler

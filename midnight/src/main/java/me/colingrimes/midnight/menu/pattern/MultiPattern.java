@@ -22,6 +22,7 @@ public class MultiPattern {
 
     /**
      * Creates a new MultiPattern instance.
+     *
      * @return the new MultiPattern instance
      */
     @Nonnull
@@ -36,6 +37,7 @@ public class MultiPattern {
 
     /**
      * Adds a new mask to the pattern.
+     *
      * @param mask the pattern mask, using '0' for empty slots and any other character for slots to be filled
      * @return this MultiPattern instance for chaining
      * @throws IllegalStateException if more than 6 lines have been added to the pattern
@@ -50,6 +52,7 @@ public class MultiPattern {
 
     /**
      * Maps a character in the pattern to the given item.
+     *
      * @param c the character to map to the item
      * @param item the item to place in the slots represented by the character in the pattern
      * @return this MultiPattern instance for chaining
@@ -63,6 +66,7 @@ public class MultiPattern {
 
     /**
      * Maps a character in the pattern to the given material.
+     *
      * @param c the character to map to the material
      * @param material the material to place in the slots represented by the character in the pattern
      * @return this MultiPattern instance for chaining
@@ -74,6 +78,7 @@ public class MultiPattern {
 
     /**
      * Fills the slots in the {@link Gui} based on the current pattern and mapped items.
+     *
      * @param gui the {@link Gui} in which to fill the slots
      * @throws IllegalArgumentException if the pattern is too large to fit in the Gui
      * @throws IllegalStateException if a character in the pattern is not mapped to an item

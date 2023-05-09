@@ -1,14 +1,14 @@
 package me.colingrimes.midnight.storage.sql.connection.hikari;
 
 import com.zaxxer.hikari.HikariConfig;
-import me.colingrimes.midnight.storage.sql.connection.DatabaseCredentials;
+import me.colingrimes.midnight.storage.sql.DatabaseCredentials;
 
 import javax.annotation.Nonnull;
 import java.util.function.Function;
 
-public class PostgresConnectionProvider extends HikariConnectionProvider {
+public class PostgreSqlConnectionProvider extends HikariConnectionProvider {
 
-    public PostgresConnectionProvider(@Nonnull DatabaseCredentials credentials) {
+    public PostgreSqlConnectionProvider(@Nonnull DatabaseCredentials credentials) {
         super(credentials);
     }
 

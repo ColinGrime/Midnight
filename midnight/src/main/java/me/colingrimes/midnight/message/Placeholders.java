@@ -22,6 +22,7 @@ public class Placeholders {
 
 	/**
 	 * Creates a new placeholders object.
+	 *
 	 * @return the placeholders object
 	 */
 	@Nonnull
@@ -31,8 +32,9 @@ public class Placeholders {
 
 	/**
 	 * Creates a new placeholders object.
+	 *
 	 * @param placeholder the placeholder you want to add
-	 * @param value the value you want to replace the placeholder with
+	 * @param value       the value you want to replace the placeholder with
 	 * @return the placeholders object
 	 * @param <T> any type
 	 */
@@ -43,8 +45,9 @@ public class Placeholders {
 
 	/**
 	 * Adds a placeholder to the list of placeholders.
+	 *
 	 * @param placeholder the placeholder you want to add
-	 * @param value the value you want to replace the placeholder with
+	 * @param value       the value you want to replace the placeholder with
 	 * @return the placeholders object
 	 * @param <T> any type
 	 */
@@ -56,6 +59,7 @@ public class Placeholders {
 
 	/**
 	 * Applies all placeholders in a string.
+	 *
 	 * @param str the string to apply placeholders to
 	 * @return the new string with applied placeholders
 	 */
@@ -75,6 +79,7 @@ public class Placeholders {
 
 	/**
 	 * Applies all placeholders in all strings.
+	 *
 	 * @param strList the list of strings to apply placeholders to
 	 * @return the new list of strings with applied placeholders
 	 */
@@ -89,6 +94,7 @@ public class Placeholders {
 
 	/**
 	 * Applies all placeholders in a component.
+	 *
 	 * @param component the component to apply placeholders to
 	 * @return the new component with applied placeholders
 	 */

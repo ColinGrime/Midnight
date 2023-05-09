@@ -18,6 +18,7 @@ public final class Players {
 
 	/**
 	 * Returns the player with the given UUID.
+	 *
 	 * @param uuid the UUID of the player
 	 * @return the player
 	 */
@@ -28,6 +29,7 @@ public final class Players {
 
 	/**
 	 * Returns the player with the given UUID.
+	 *
 	 * @param uuid the UUID of the player
 	 * @return the player
 	 */
@@ -38,6 +40,7 @@ public final class Players {
 
 	/**
 	 * Returns the player with the given name.
+	 *
 	 * @param name the name of the player
 	 * @return the player
 	 */
@@ -48,6 +51,7 @@ public final class Players {
 
 	/**
 	 * Returns the player with the given name.
+	 *
 	 * @param name the name of the player
 	 * @return the player
 	 */
@@ -58,6 +62,7 @@ public final class Players {
 
 	/**
 	 * Returns a collection of all online players.
+	 *
 	 * @return all online players
 	 */
 	@Nonnull
@@ -67,6 +72,7 @@ public final class Players {
 
 	/**
 	 * Performs the given action for each online player.
+	 *
 	 * @param action the action to perform
 	 */
 	public static void forEach(@Nonnull Consumer<? super Player> action) {
@@ -75,7 +81,8 @@ public final class Players {
 
 	/**
 	 * Performs the command as the given player.
-	 * @param player the player
+	 *
+	 * @param player  the player
 	 * @param command the command
 	 */
 	public static void command(@Nonnull Player player, @Nonnull String command) {
@@ -85,8 +92,9 @@ public final class Players {
 
 	/**
 	 * Plays the given sound to the given player.
+	 *
 	 * @param player the player
-	 * @param sound the sound
+	 * @param sound  the sound
 	 */
 	public static void sound(@Nonnull Player player, @Nonnull Sound sound) {
 		player.playSound(player.getLocation(), sound, 1F, 1F);
@@ -94,7 +102,8 @@ public final class Players {
 
 	/**
 	 * Sends the given message as an action bar to the given player.
-	 * @param player the player
+	 *
+	 * @param player  the player
 	 * @param message the message
 	 */
 	public static void sendActionBar(@Nonnull Player player, @Nonnull String message) {
@@ -103,6 +112,7 @@ public final class Players {
 
 	/**
 	 * Finds the closest player to the given location within 100 blocks.
+	 *
 	 * @param location the location
 	 * @return the closest player
 	 */
@@ -113,8 +123,9 @@ public final class Players {
 
 	/**
 	 * Finds the closest player to the given location within the given number of blocks.
+	 *
 	 * @param location the location
-	 * @param blocks the number of blocks
+	 * @param blocks   the number of blocks
 	 * @return the closest player
 	 */
 	@Nonnull

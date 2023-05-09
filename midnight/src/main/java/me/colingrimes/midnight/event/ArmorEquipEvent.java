@@ -25,8 +25,9 @@ public class ArmorEquipEvent extends Event implements Cancellable {
 
     /**
      * Constructs a new ArmorEquipEvent.
-     * @param player the player performing the action
-     * @param action the equip action being performed
+     *
+     * @param player   the player performing the action
+     * @param action   the equip action being performed
      * @param oldArmor the old armor item being unequipped
      * @param newArmor the new armor item being equipped
      */
@@ -40,6 +41,7 @@ public class ArmorEquipEvent extends Event implements Cancellable {
 
     /**
      * Gets the player who performed the equip action.
+     *
      * @return the player
      */
     @Nonnull
@@ -49,6 +51,7 @@ public class ArmorEquipEvent extends Event implements Cancellable {
 
     /**
      * Gets the equip action being performed.
+     *
      * @return the equip action
      */
     @Nonnull
@@ -58,6 +61,7 @@ public class ArmorEquipEvent extends Event implements Cancellable {
 
     /**
      * Gets the old armor item being unequipped.
+     *
      * @return the old armor item
      */
     @Nonnull
@@ -67,6 +71,7 @@ public class ArmorEquipEvent extends Event implements Cancellable {
 
     /**
      * Gets the new armor item being equipped.
+     *
      * @return the new armor item
      */
     @Nonnull

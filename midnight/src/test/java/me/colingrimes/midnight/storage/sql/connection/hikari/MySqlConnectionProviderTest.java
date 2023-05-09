@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.storage.sql.connection.hikari;
 
-import me.colingrimes.midnight.storage.sql.connection.DatabaseCredentials;
+import me.colingrimes.midnight.storage.sql.DatabaseCredentials;
 import com.zaxxer.hikari.HikariConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

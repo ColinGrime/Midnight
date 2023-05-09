@@ -27,6 +27,7 @@ public class SimpleClickEvent extends Event implements Cancellable {
 
     /**
      * Constructs a new {@link SimpleClickEvent} from an {@link InventoryClickEvent}.
+     *
      * @param event the inventory click event
      */
     public SimpleClickEvent(InventoryClickEvent event) {
@@ -36,6 +37,7 @@ public class SimpleClickEvent extends Event implements Cancellable {
 
     /**
      * Gets the player who performed the inventory click action.
+     *
      * @return the player
      */
     @Nonnull
@@ -45,6 +47,7 @@ public class SimpleClickEvent extends Event implements Cancellable {
 
     /**
      * Gets the primary inventory.
+     *
      * @return the inventory
      */
     @Nonnull
@@ -54,6 +57,7 @@ public class SimpleClickEvent extends Event implements Cancellable {
 
     /**
      * Gets the inventory view that was clicked.
+     *
      * @return the inventory view
      */
     @Nonnull
@@ -63,6 +67,7 @@ public class SimpleClickEvent extends Event implements Cancellable {
 
     /**
      * Gets the type of slot that was clicked.
+     *
      * @return the slot type
      */
     @Nonnull
@@ -72,6 +77,7 @@ public class SimpleClickEvent extends Event implements Cancellable {
 
     /**
      * Gets the click type that was performed.
+     *
      * @return the click type
      */
     @Nonnull
@@ -81,6 +87,7 @@ public class SimpleClickEvent extends Event implements Cancellable {
 
     /**
      * Gets the simplified inventory action performed by the player.
+     *
      * @return the action
      */
     @Nonnull
@@ -90,6 +97,7 @@ public class SimpleClickEvent extends Event implements Cancellable {
 
     /**
      * Gets the inventory action that was performed.
+     *
      * @return the inventory action
      */
     @Nonnull
@@ -99,6 +107,7 @@ public class SimpleClickEvent extends Event implements Cancellable {
 
     /**
      * Gets the item in the cursor.
+     *
      * @return the cursor item
      */
     @Nonnull
@@ -108,6 +117,7 @@ public class SimpleClickEvent extends Event implements Cancellable {
 
     /**
      * Gets the item that was clicked in the inventory action.
+     *
      * @return the clicked item
      */
     @Nonnull
@@ -117,6 +127,7 @@ public class SimpleClickEvent extends Event implements Cancellable {
 
     /**
      * Gets the slot that was clicked.
+     *
      * @return the slot
      */
     public int getSlot() {
@@ -125,6 +136,7 @@ public class SimpleClickEvent extends Event implements Cancellable {
 
     /**
      * Gets the raw slot that was clicked.
+     *
      * @return the raw slot
      */
     public int getRawSlot() {
@@ -133,6 +145,7 @@ public class SimpleClickEvent extends Event implements Cancellable {
 
     /**
      * Gets the hotbar button that was clicked.
+     *
      * @return the hotbar button
      */
     public int getHotbarButton() {

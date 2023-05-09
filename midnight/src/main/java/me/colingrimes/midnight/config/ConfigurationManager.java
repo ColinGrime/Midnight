@@ -17,6 +17,7 @@ public class ConfigurationManager {
 
 	/**
 	 * Adds a configuration to the manager.
+	 *
 	 * @param name the name of the configuration
 	 * @param state the state of the configuration
 	 */
@@ -33,6 +34,7 @@ public class ConfigurationManager {
 
 	/**
 	 * Reloads a specific configuration.
+	 *
 	 * @param name the name of the configuration
 	 */
 	public void reload(@Nonnull String name) {

@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.command.util.exception;
+package me.colingrimes.midnight.command.exception;
 
 import javax.annotation.Nonnull;
 

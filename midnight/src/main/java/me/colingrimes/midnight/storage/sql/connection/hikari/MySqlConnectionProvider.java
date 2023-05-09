@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.storage.sql.connection.hikari;
 
 import com.zaxxer.hikari.HikariConfig;
-import me.colingrimes.midnight.storage.sql.connection.DatabaseCredentials;
+import me.colingrimes.midnight.storage.sql.DatabaseCredentials;
 
 import javax.annotation.Nonnull;
 import java.util.function.Function;

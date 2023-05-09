@@ -10,7 +10,8 @@ public final class Timer {
 
     /**
      * Times the execution of a method and logs the result to the console.
-     * @param method the method to time
+     *
+     * @param method  the method to time
      * @param message the message to log
      */
     public static <T extends Plugin> void time(@Nonnull T plugin, @Nonnull String message, @Nonnull Runnable method) {

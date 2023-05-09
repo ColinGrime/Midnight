@@ -11,12 +11,14 @@ public interface CooldownCache<K> {
 
     /**
      * Adds the specified key to the cache with the current time as the start of the cooldown period.
+     *
      * @param key the key to add
      */
     void add(@Nonnull K key);
 
     /**
      * Adds the specified key to the cache with the specified duration as the cooldown period.
+     *
      * @param key the key to add
      * @param duration the duration of the cooldown
      */
@@ -24,6 +26,7 @@ public interface CooldownCache<K> {
 
     /**
      * Checks if the specified key is on cooldown.
+     *
      * @param key the key to check
      * @return true if the key is on cooldown, false otherwise
      */
@@ -31,6 +34,7 @@ public interface CooldownCache<K> {
 
     /**
      * Returns the cooldown duration for keys in the cache.
+     *
      * @return the duration of the cooldown
      */
     @Nonnull
@@ -38,6 +42,7 @@ public interface CooldownCache<K> {
 
     /**
      * Sets the cooldown duration for keys in the cache.
+     *
      * @param duration the duration of the cooldown
      */
     void setCooldown(@Nonnull Duration duration);

@@ -15,6 +15,7 @@ import java.util.Optional;
 
 /**
  * An abstract class representing a file-based storage.
+ *
  * @param <T> the type of data being stored
  */
 public abstract class FileStorage<T extends Serializable> implements Storage<T> {
@@ -39,24 +40,28 @@ public abstract class FileStorage<T extends Serializable> implements Storage<T> 
 
     /**
      * Loads all data from the storage.
+     *
      * @throws Exception if there is an issue loading the data
      */
     public abstract void loadAll() throws Exception;
 
     /**
      * Loads the data associated with the specified composite identifier.
+     *
      * @param identifier the composite identifier
      */
     public abstract void load(@Nonnull CompositeIdentifier identifier) throws Exception;
 
     /**
      * Processes the data after it has been loaded.
+     *
      * @param data the data to process
      */
     protected abstract void process(@Nonnull T data);
 
     /**
      * Gets the composite identifier for the specified data object.
+     *
      * @param data the data for which the identifier is required
      * @return the composite identifier
      */
@@ -84,6 +89,7 @@ public abstract class FileStorage<T extends Serializable> implements Storage<T> 
 
     /**
      * Gets the default file if one exists.
+     *
      * @return the default file
      * @throws IOException if there is an issue creating the file
      */

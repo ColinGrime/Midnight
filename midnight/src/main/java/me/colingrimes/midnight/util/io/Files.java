@@ -17,6 +17,7 @@ public final class Files {
 
 	/**
 	 * Gets all classes in the given package, recursively.
+	 *
 	 * @param packageName the package name
 	 * @return the list of classes
 	 */
@@ -27,8 +28,9 @@ public final class Files {
 
 	/**
 	 * Gets all classes in the given package.
+	 *
 	 * @param packageName the package name
-	 * @param recursive whether to recursively search sub-packages
+	 * @param recursive   whether to recursively search sub-packages
 	 * @return the list of classes
 	 */
 	@Nonnull
@@ -61,7 +63,8 @@ public final class Files {
 
 	/**
 	 * Gets all package names in the given package, one level deep.
-	 * @param plugin the plugin
+	 *
+	 * @param plugin      the plugin
 	 * @param packageName the package name
 	 * @return the list of package names
 	 */
@@ -105,6 +108,7 @@ public final class Files {
 
 	/**
 	 * Gets the URI of the given path.
+	 *
 	 * @param path the path
 	 * @return the URI
 	 * @throws URISyntaxException if the URI is invalid

@@ -1,4 +1,4 @@
-package me.colingrimes.plugin.listener.util;
+package me.colingrimes.midnight.listener.util;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -26,6 +26,7 @@ public enum ArmorType {
 
 	/**
 	 * Gets the armor type item from the player's inventory if it exists.
+	 *
 	 * @param player the player
 	 * @return armor from inventory
 	 */
@@ -36,6 +37,7 @@ public enum ArmorType {
 
 	/**
 	 * Gets the armor type from the item stack.
+	 *
 	 * @param item the item stack
 	 * @return armor type
 	 */

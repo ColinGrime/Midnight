@@ -18,9 +18,10 @@ public abstract class PaginatedGui extends Gui {
 
     /**
      * Constructs a PaginatedGui instance.
-     * @param player the player who will view the GUI
-     * @param title the title of the GUI
-     * @param rows the number of rows in the GUI
+     *
+     * @param player     the player who will view the GUI
+     * @param title      the title of the GUI
+     * @param rows       the number of rows in the GUI
      * @param pageNumber the page number of this GUI
      */
     public PaginatedGui(@Nonnull Player player, @Nonnull String title, int rows, int pageNumber) {
@@ -31,6 +32,7 @@ public abstract class PaginatedGui extends Gui {
 
     /**
      * Returns the page number of this PaginatedGui.
+     *
      * @return the page number
      */
     public int getPageNumber() {
@@ -39,6 +41,7 @@ public abstract class PaginatedGui extends Gui {
 
     /**
      * Gets the {@link PaginatedGui} for the specified page number.
+     *
      * @param pageNumber the page number
      * @return the gui for the specified page number
      */
@@ -49,8 +52,9 @@ public abstract class PaginatedGui extends Gui {
 
     /**
      * Adds a {@link PaginatedGui} for the specified page number.
+     *
      * @param pageNumber the page number
-     * @param gui the gui for the specified page number
+     * @param gui        the gui for the specified page number
      */
     public void addPage(int pageNumber, @Nonnull PaginatedGui gui) {
         pages.put(pageNumber, gui);

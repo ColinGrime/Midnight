@@ -73,6 +73,7 @@ public class BossBar extends BaseDisplay {
 
     /**
      * Sets the color of the boss bar.
+     *
      * @param color the new color of the boss bar
      */
     public void setColor(@Nonnull BarColor color) {
@@ -81,6 +82,7 @@ public class BossBar extends BaseDisplay {
 
     /**
      * Gets the color of the boss bar.
+     *
      * @return the color of the boss bar
      */
     @Nonnull
@@ -90,6 +92,7 @@ public class BossBar extends BaseDisplay {
 
     /**
      * Sets the style of the boss bar.
+     *
      * @param style the new style of the boss bar
      */
     public void setStyle(@Nonnull BarStyle style) {
@@ -98,6 +101,7 @@ public class BossBar extends BaseDisplay {
 
     /**
      * Gets the style of the boss bar.
+     *
      * @return the style of the boss bar
      */
     @Nonnull
@@ -107,6 +111,7 @@ public class BossBar extends BaseDisplay {
 
     /**
      * Sets the progress of the boss bar.
+     *
      * @param progress the new progress of the boss bar
      */
     public void setProgress(double progress) {
@@ -115,6 +120,7 @@ public class BossBar extends BaseDisplay {
 
     /**
      * Gets the progress of the boss bar.
+     *
      * @return the progress of the boss bar
      */
     public double getProgress() {
@@ -123,6 +129,7 @@ public class BossBar extends BaseDisplay {
 
     /**
      * Adds a flag to the boss bar.
+     *
      * @param flag the flag to add
      */
     public void addFlag(@Nonnull BarFlag flag) {
@@ -131,6 +138,7 @@ public class BossBar extends BaseDisplay {
 
     /**
      * Removes a flag from the boss bar.
+     *
      * @param flag the flag to remove
      */
     public void removeFlag(@Nonnull BarFlag flag) {
@@ -139,6 +147,7 @@ public class BossBar extends BaseDisplay {
 
     /**
      * Checks if the boss bar has a flag.
+     *
      * @param flag the flag to check for
      * @return true if the boss bar has the flag
      */

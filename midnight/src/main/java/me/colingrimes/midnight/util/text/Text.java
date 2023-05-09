@@ -18,6 +18,7 @@ public final class Text {
 
 	/**
 	 * Turns the string into a color-coded string.
+	 *
 	 * @param str the string to be colored
 	 * @return color-coded string
 	 */
@@ -29,6 +30,7 @@ public final class Text {
 
 	/**
 	 * Turns the list of strings into a color-coded list of strings.
+	 *
 	 * @param strList the list of strings
 	 * @return color-coded list of messages
 	 */

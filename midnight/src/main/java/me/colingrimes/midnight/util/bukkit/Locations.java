@@ -12,6 +12,7 @@ public final class Locations {
 
 	/**
 	 * Converts a location to a very readable string.
+	 *
 	 * @param location the location
 	 * @return the string
 	 */
@@ -21,10 +22,11 @@ public final class Locations {
 
 	/**
 	 * Finds the closest entity of the specified type to the given location within the given number of blocks.
+	 *
 	 * @param entityType the class of the desired entity type
-	 * @param location the location
-	 * @param blocks the number of blocks
-	 * @param <T> the type of the entity
+	 * @param location   the location
+	 * @param blocks     the number of blocks
+	 * @param <T>        the type of the entity
 	 * @return the closest entity of the specified type
 	 */
 	@Nonnull

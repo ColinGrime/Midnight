@@ -13,6 +13,7 @@ public interface Storage<T> {
 
     /**
      * Initializes the storage.
+     *
      * @throws Exception if there is an issue initializing the storage
      */
     void init() throws Exception;
@@ -24,6 +25,7 @@ public interface Storage<T> {
 
     /**
      * Saves the specified data to the storage.
+     *
      * @param data the data to be saved
      * @throws Exception if there is an issue saving the data
      */
@@ -31,6 +33,7 @@ public interface Storage<T> {
 
     /**
      * Deletes the specified data from the storage.
+     *
      * @param data the data to be deleted
      * @throws Exception if there is an issue deleting the data
      */

@@ -42,6 +42,7 @@ public class RollingWindowCache<K> {
 
     /**
      * Gets the count of the specified key within the rolling time window.
+     *
      * @param key the key to get the count for
      * @return the count of the key within the rolling time window
      */

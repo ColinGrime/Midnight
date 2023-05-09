@@ -28,6 +28,7 @@ public class Pattern {
 
     /**
      * Creates a new Pattern instance.
+     *
      * @return the new Pattern instance
      */
     @Nonnull
@@ -37,6 +38,7 @@ public class Pattern {
 
     /**
      * Creates a new Pattern instance with the given item.
+     *
      * @param item the item to place in the slots represented by '1' in the pattern
      * @return the new Pattern instance
      */
@@ -47,6 +49,7 @@ public class Pattern {
 
     /**
      * Creates a new Pattern instance with the given material.
+     *
      * @param material the material to place in the slots represented by '1' in the pattern
      * @return the new Pattern instance
      */
@@ -61,6 +64,7 @@ public class Pattern {
 
     /**
      * Adds a new mask to the pattern.
+     *
      * @param mask the pattern mask, using '0' for empty slots and '1' for slots to be filled
      * @return this Pattern instance for chaining
      * @throws IllegalStateException if more than 6 lines have been added to the pattern
@@ -77,6 +81,7 @@ public class Pattern {
 
     /**
      * Sets the item to be placed in the slots represented by '1' in the pattern.
+     *
      * @param item the item to place in the slots
      * @return this Pattern instance for chaining
      */
@@ -88,6 +93,7 @@ public class Pattern {
 
     /**
      * Sets the material to be placed in the slots represented by '1' in the pattern.
+     *
      * @param material the material to place in the slots
      * @return this Pattern instance for chaining
      */
@@ -98,6 +104,7 @@ public class Pattern {
 
     /**
      * Fills the slots in the {@link Gui} based on the current pattern and item.
+     *
      * @param gui the {@link Gui} in which to fill the slots
      * @throws IllegalArgumentException if the pattern is too large to fit in the Gui
      */

@@ -11,6 +11,7 @@ public class DisplayFactory {
 
     /**
      * Creates a {@code Display} based on the provided {@code DisplayType} and text.
+     *
      * @param displayType the type of display to create
      * @param text the text to display
      * @return the created display
@@ -26,6 +27,7 @@ public class DisplayFactory {
 
     /**
      * Creates a {@code BossBar} with the provided text.
+     *
      * @param text the text to display
      * @return the created bossbar
      */
@@ -36,6 +38,7 @@ public class DisplayFactory {
 
     /**
      * Creates an {@code ActionBar} with the provided text.
+     *
      * @param text the text to display
      * @return the created actionbar
      */
@@ -46,6 +49,7 @@ public class DisplayFactory {
 
     /**
      * Creates a {@code Title} with the provided text.
+     *
      * @param text the text to display
      * @return the created title
      */

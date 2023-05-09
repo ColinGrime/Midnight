@@ -8,8 +8,9 @@ public final class Experience {
 
 	/**
 	 * Adds experience to a Player.
+	 *
 	 * @param player the Player
-	 * @param exp the amount of experience to add
+	 * @param exp    the amount of experience to add
 	 */
 	public static void add(@Nonnull Player player, int exp) {
 		changeExp(player, exp);
@@ -17,8 +18,9 @@ public final class Experience {
 
 	/**
 	 * Removes experience from a Player.
+	 *
 	 * @param player the Player
-	 * @param exp the amount of experience to remove
+	 * @param exp    the amount of experience to remove
 	 */
 	public static void remove(@Nonnull Player player, int exp) {
 		changeExp(player, -exp);
@@ -26,6 +28,7 @@ public final class Experience {
 
 	/**
 	 * Calculate a player's total experience based on level and progress to next.
+	 *
 	 * @param player the Player
 	 * @return the amount of experience the Player has
 	 * @see <a href=http://minecraft.gamepedia.com/Experience#Leveling_up>Experience#Leveling_up</a>
@@ -36,6 +39,7 @@ public final class Experience {
 
 	/**
 	 * Calculate total experience based on level.
+	 *
 	 * @param level the level
 	 * @return the total experience calculated
 	 * @see <a href=http://minecraft.gamepedia.com/Experience#Leveling_up>Experience#Leveling_up</a>
@@ -52,6 +56,7 @@ public final class Experience {
 
 	/**
 	 * Calculate level (including progress to next level) based on total experience.
+	 *
 	 * @param exp the total experience
 	 * @return the level calculated
 	 */
@@ -71,6 +76,7 @@ public final class Experience {
 
 	/**
 	 * Calculate level based on total experience.
+	 *
 	 * @param exp the total experience
 	 * @return the level calculated
 	 */
@@ -88,7 +94,8 @@ public final class Experience {
 	}
 
 	/**
-	 * Get the total amount of experience required to progress to the next level.
+	 * Gets the total amount of experience required to progress to the next level.
+	 *
 	 * @param level the current level
 	 * @see <a href=http://minecraft.gamepedia.com/Experience#Leveling_up>Experience#Leveling_up</a>
 	 */

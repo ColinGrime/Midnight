@@ -2,7 +2,7 @@ package me.colingrimes.midnight.storage.sql.connection.hikari;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import me.colingrimes.midnight.storage.sql.connection.DatabaseCredentials;
+import me.colingrimes.midnight.storage.sql.DatabaseCredentials;
 import me.colingrimes.midnight.storage.sql.connection.ConnectionProvider;
 
 import javax.annotation.Nonnull;
@@ -22,6 +22,7 @@ public abstract class HikariConnectionProvider implements ConnectionProvider {
 
     /**
      * Configure the database-specific settings for the HikariConfig.
+     *
      * @param config the {@link HikariConfig} object to be configured
      * @param credentials the StorageCredentials containing the required database settings
      */

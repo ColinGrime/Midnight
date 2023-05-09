@@ -26,6 +26,7 @@ public class Position implements Serializable {
 
     /**
      * Constructs a new Position with the given location.
+     *
      * @param location the location
      */
     public static Position of(@Nonnull Location location) {
@@ -35,10 +36,11 @@ public class Position implements Serializable {
 
     /**
      * Constructs a new Position with the given x, y, and z coordinates.
+     *
      * @param world the world
-     * @param x the x coordinate
-     * @param y the y coordinate
-     * @param z the z coordinate
+     * @param x     the x coordinate
+     * @param y     the y coordinate
+     * @param z     the z coordinate
      */
     public static Position of(@Nonnull World world, double x, double y, double z) {
         return new Position(world, x, y, z);
@@ -53,6 +55,7 @@ public class Position implements Serializable {
 
     /**
      * Converts this Position into a Bukkit Location.
+     *
      * @return a new Location object representing this Position
      */
     @Nonnull
@@ -65,6 +68,7 @@ public class Position implements Serializable {
 
     /**
      * Adds the given x, y, and z values to this position.
+     *
      * @param x the x value to add
      * @param y the y value to add
      * @param z the z value to add
@@ -77,6 +81,7 @@ public class Position implements Serializable {
 
     /**
      * Subtracts the given x, y, and z values from this position.
+     *
      * @param x the x value to subtract
      * @param y the y value to subtract
      * @param z the z value to subtract
@@ -89,6 +94,7 @@ public class Position implements Serializable {
 
     /**
      * Rotates the position using the specified rotation's pitch, yaw, and roll angles.
+     *
      * @param rotation the rotation to use
      * @return a new position rotated by the pitch, yaw, and roll angles
      */
@@ -139,6 +145,7 @@ public class Position implements Serializable {
 
     /**
      * Multiplies two 3x3 matrices.
+     *
      * @param matrix1 the first matrix
      * @param matrix2 the second matrix
      * @return the product of the two matrices
@@ -157,6 +164,7 @@ public class Position implements Serializable {
 
     /**
      * Gets the world of this position.
+     *
      * @return the world
      */
     @Nonnull
@@ -166,6 +174,7 @@ public class Position implements Serializable {
 
     /**
      * Gets the x coordinate.
+     *
      * @return the x coordinate
      */
     public double getX() {
@@ -174,6 +183,7 @@ public class Position implements Serializable {
 
     /**
      * Gets the y coordinate.
+     *
      * @return the y coordinate
      */
     public double getY() {
@@ -182,6 +192,7 @@ public class Position implements Serializable {
 
     /**
      * Gets the z coordinate.
+     *
      * @return the z coordinate
      */
     public double getZ() {
@@ -225,6 +236,7 @@ public class Position implements Serializable {
 
     /**
      * Deserializes a position from a map.
+     *
      * @param map the map to deserialize from
      * @return the deserialized position
      */

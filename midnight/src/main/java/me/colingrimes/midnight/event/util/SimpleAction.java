@@ -42,6 +42,7 @@ public enum SimpleAction {
 
     /**
      * Gets the corresponding {@link SimpleAction} from an {@link InventoryAction}.
+     *
      * @param inventoryAction the inventory action
      * @return the corresponding simplified inventory action
      */

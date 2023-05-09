@@ -68,7 +68,9 @@ public class Markdown {
 	}
 
 	/**
-	 * Handles the event based on the event value and sets the appropriate event to the provided {@link TextComponent}.
+	 * Handles the event based on the event value and sets the
+	 * appropriate event to the provided {@link TextComponent}.
+	 *
 	 * @param eventComponent the text component to apply the event to
 	 * @param eventValue the event value from the input string
 	 */
@@ -83,9 +85,11 @@ public class Markdown {
 	}
 
 	/**
-	 * Handles URL events and sets the appropriate ClickEvent and HoverEvent (if applicable) to the provided {@link TextComponent}.
+	 * Handles URL events and sets the appropriate ClickEvent and
+	 * HoverEvent (if applicable) to the provided {@link TextComponent}.
+	 *
 	 * @param eventComponent the text component to apply the event to
-	 * @param eventValue the event value from the input string
+	 * @param eventValue     the event value from the input string
 	 */
 	private static void handleUrlEvent(@Nonnull TextComponent eventComponent, @Nonnull String eventValue) {
 		int spaceIndex = eventValue.indexOf(' ');
@@ -102,6 +106,7 @@ public class Markdown {
 
 	/**
 	 * Gets the content for the provided text.
+	 *
 	 * @param text the text to get the content for
 	 * @return the content for the provided text
 	 */

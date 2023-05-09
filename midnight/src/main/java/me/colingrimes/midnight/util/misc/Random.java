@@ -6,6 +6,7 @@ public final class Random {
 
 	/**
 	 * Gets a random number from 0 to a number (exclusive).
+	 *
 	 * @param num any integer
 	 * @return random number
 	 */
@@ -15,7 +16,8 @@ public final class Random {
 
 	/**
 	 * Gets a random number between two integers.
-	 * @param lowNum low integer
+	 *
+	 * @param lowNum  low integer
 	 * @param highNum high integer
 	 * @return random number
 	 */
@@ -25,7 +27,8 @@ public final class Random {
 
 	/**
 	 * Gets a random number between two doubles.
-	 * @param lowNum low double
+	 *
+	 * @param lowNum  low double
 	 * @param highNum high double
 	 * @return random number
 	 */
@@ -35,6 +38,7 @@ public final class Random {
 
 	/**
 	 * Returns true if the random number is higher than a random number 0-100.
+	 *
 	 * @param num any integer
 	 * @return true if num is higher than a random number 0-100
 	 */
@@ -44,6 +48,7 @@ public final class Random {
 
 	/**
 	 * Returns true if the random number is higher than a random number 0-100.
+	 *
 	 * @param num any double
 	 * @return true if num is higher than a random number 0-100
 	 */

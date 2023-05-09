@@ -41,6 +41,7 @@ public abstract class Gui {
 
 	/**
 	 * Gets the player viewing the {@link Gui}.
+	 *
 	 * @return the player
 	 */
 	@Nonnull
@@ -50,6 +51,7 @@ public abstract class Gui {
 
 	/**
 	 * Gets the inventory that the {@link Gui} is representing.
+	 *
 	 * @return the inventory
 	 */
 	@Nonnull
@@ -59,6 +61,7 @@ public abstract class Gui {
 
 	/**
 	 * Gets the {@link Slot} that corresponds to the slot number.
+	 *
 	 * @param slot the slot number
 	 * @return the slot object
 	 */
@@ -70,6 +73,7 @@ public abstract class Gui {
 
 	/**
 	 * Gets whether the {@link Gui} is valid (opened).
+	 *
 	 * @return true if valid
 	 */
 	public boolean isValid() {

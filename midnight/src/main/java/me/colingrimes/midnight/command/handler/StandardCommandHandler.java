@@ -1,13 +1,12 @@
 package me.colingrimes.midnight.command.handler;
 
 import me.colingrimes.midnight.command.Command;
-import me.colingrimes.midnight.command.util.CommandProperties;
-import me.colingrimes.midnight.command.util.argument.ArgumentList;
-import me.colingrimes.midnight.command.util.Sender;
-import me.colingrimes.midnight.command.util.exception.CommandNotImplementedException;
+import me.colingrimes.midnight.command.handler.util.CommandProperties;
+import me.colingrimes.midnight.command.handler.util.ArgumentList;
+import me.colingrimes.midnight.command.handler.util.Sender;
+import me.colingrimes.midnight.command.exception.CommandNotImplementedException;
 import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.message.Message;
-import me.colingrimes.plugin.config.Messages;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -16,15 +15,15 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * A standard implementation of the {@link CommandHandler} interface.
- * This class handles the execution and tab completion of commands
- * for a given {@link Command} and {@link Midnight} instance.
+ * A standard implementation of the {@link CommandHandler} interface designed for use
+ * with {@link Midnight} plugins. This class handles the execution and tab completion
+ * of commands for a given {@link Command} and {@link Midnight} plugin instance.
+ * <p>
+ * Before executing the command, the handler checks for sender requirements, permissions,
+ * and the number of arguments. Appropriate messages are sent to the sender based on these
+ * conditions.
  *
- * <p>It checks for sender requirements, permissions, and the number of arguments
- * before executing the command. Appropriate messages are sent to the sender
- * based on these conditions.</p>
- *
- * @param <T> the type of the MidnightPlugin
+ * @param <T> the type of the plugin
  */
 public class StandardCommandHandler<T extends Midnight> implements CommandHandler {
 

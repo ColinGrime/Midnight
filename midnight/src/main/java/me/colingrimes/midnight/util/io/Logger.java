@@ -14,8 +14,9 @@ public final class Logger {
 
 	/**
 	 * Logs a normal message.
+	 *
 	 * @param plugin the plugin to log for
-	 * @param msg the info message to log
+	 * @param msg    the info message to log
 	 */
 	public static void log(@Nonnull Midnight plugin, @Nonnull String msg) {
 		log("[" + plugin.getName() + "] " + msg);
@@ -23,6 +24,7 @@ public final class Logger {
 
 	/**
 	 * Logs a normal message.
+	 *
 	 * @param msg the info message to log
 	 */
 	public static void log(@Nonnull String msg) {
@@ -32,8 +34,9 @@ public final class Logger {
 
 	/**
 	 * Logs a warning message.
+	 *
 	 * @param plugin the plugin to log for
-	 * @param msg the warning message to log
+	 * @param msg    the warning message to log
 	 */
 	public static void warn(@Nonnull Midnight plugin, @Nonnull String msg) {
 		warn("[" + plugin.getName() + "] " + msg);
@@ -41,6 +44,7 @@ public final class Logger {
 
 	/**
 	 * Logs a warning message.
+	 *
 	 * @param msg the warning message to log
 	 */
 	public static void warn(@Nonnull String msg) {
@@ -50,8 +54,9 @@ public final class Logger {
 
 	/**
 	 * Logs a severe message.
+	 *
 	 * @param plugin the plugin to log for
-	 * @param msg the severe message to log
+	 * @param msg    the severe message to log
 	 */
 	public static void severe(@Nonnull Midnight plugin, @Nonnull String msg) {
 		severe("[" + plugin.getName() + "] " + msg);
@@ -59,6 +64,7 @@ public final class Logger {
 
 	/**
 	 * Logs a severe message.
+	 *
 	 * @param msg the severe message to log
 	 */
 	public static void severe(@Nonnull String msg) {

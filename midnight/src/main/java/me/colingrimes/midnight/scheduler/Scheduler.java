@@ -19,8 +19,9 @@ public interface Scheduler {
 
 	/**
 	 * Calls the given callable.
+	 *
 	 * @param task the task to call
-	 * @param <T> the type of the result
+	 * @param <T>  the type of the result
 	 * @return a future that will be completed when the task is finished
 	 */
 	@Nonnull
@@ -28,8 +29,9 @@ public interface Scheduler {
 
 	/**
 	 * Supplies a value using the given supplier.
+	 *
 	 * @param task the task to supply a value
-	 * @param <T> the type of the result
+	 * @param <T>  the type of the result
 	 * @return a future that will be completed when the task is finished
 	 */
 	@Nonnull
@@ -39,6 +41,7 @@ public interface Scheduler {
 
 	/**
 	 * Runs the given runnable.
+	 *
 	 * @param task the task to run
 	 * @return a future that will be completed when the task is finished
 	 */
@@ -52,9 +55,10 @@ public interface Scheduler {
 
 	/**
 	 * Calls the given callable after a delay.
-	 * @param task the task to call
+	 *
+	 * @param task       the task to call
 	 * @param delayTicks the delay in ticks
-	 * @param <T> the type of the result
+	 * @param <T>        the type of the result
 	 * @return a future that will be completed when the task is finished
 	 */
 	@Nonnull
@@ -62,9 +66,10 @@ public interface Scheduler {
 
 	/**
 	 * Supplies a value using the given supplier after a delay.
-	 * @param task the task to supply a value
+	 *
+	 * @param task       the task to supply a value
 	 * @param delayTicks the delay in ticks
-	 * @param <T> the type of the result
+	 * @param <T>        the type of the result
 	 * @return a future that will be completed when the task is finished
 	 */
 	@Nonnull
@@ -74,7 +79,8 @@ public interface Scheduler {
 
 	/**
 	 * Runs the given runnable after a delay.
-	 * @param task the task to run
+	 *
+	 * @param task       the task to run
 	 * @param delayTicks the delay in ticks
 	 * @return a future that will be completed when the task is finished
 	 */
@@ -88,8 +94,9 @@ public interface Scheduler {
 
 	/**
 	 * Runs a task repeatedly.
-	 * @param task the task to run
-	 * @param delayTicks the delay in ticks
+	 *
+	 * @param task        the task to run
+	 * @param delayTicks  the delay in ticks
 	 * @param periodTicks the period in ticks
 	 * @return a task that can be used to cancel the task
 	 */

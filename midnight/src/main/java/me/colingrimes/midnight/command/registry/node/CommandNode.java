@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.command.node;
+package me.colingrimes.midnight.command.registry.node;
 
 import me.colingrimes.midnight.command.handler.CommandHandler;
 import me.colingrimes.midnight.message.Message;
@@ -12,8 +12,17 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Represents a node in a tree-like structure for managing command hierarchies.
- * Responsible for handling command execution and tab completion.
+ * Represents a node in a tree-like structure for managing command hierarchies,
+ * handling command execution and tab completion.
+ * <p>
+ * CommandNode instances can have children, representing subcommands or
+ * related commands, and a parent to refer back to the higher command hierarchy.
+ * The parent node is used to find usage messages when a command fails to execute
+ * and there is no usage message defined in the current node, effectively
+ * traversing up the command hierarchy until a suitable usage message is found.
+ * <p>
+ * The class also holds a reference to a {@link CommandHandler} for executing
+ * and tab completing commands.
  */
 public final class CommandNode implements TabExecutor {
 
@@ -22,7 +31,8 @@ public final class CommandNode implements TabExecutor {
     private final CommandHandler commandHandler;
 
     /**
-     * Creates a new child command node.
+     * Creates a new child command node with the specified parent.
+     *
      * @param parent the parent node
      */
     public CommandNode(@Nullable CommandNode parent) {
@@ -30,9 +40,10 @@ public final class CommandNode implements TabExecutor {
     }
 
     /**
-     * Creates a new child command node.
-     * @param parent the parent node
-     * @param commandHandler the command handler
+     * Creates a new child command node with the specified parent and command handler.
+     *
+     * @param parent         the parent node
+     * @param commandHandler the command handler for executing and tab completing commands
      */
     public CommandNode(@Nullable CommandNode parent, @Nullable CommandHandler commandHandler) {
         this.parent = parent;
@@ -84,8 +95,10 @@ public final class CommandNode implements TabExecutor {
     }
 
     /**
-     * Gets the children of this command node.
-     * @return the children
+     * Retrieves the child command nodes of this command node.
+     *
+     * @return a map containing the child command nodes, with the command
+     *         name as the key and the associated CommandNode as the value
      */
     @Nonnull
     public Map<String, CommandNode> getChildren() {
@@ -94,7 +107,10 @@ public final class CommandNode implements TabExecutor {
 
     /**
      * Recursively searches for the first non-null usage message in the command node's hierarchy.
-     * @return the first non-null usage message or null if none is found
+     * The search starts with the current command node and moves up through its ancestors.
+     *
+     * @return an {@link Optional} containing the first non-null usage message found,
+     *         or an empty {@link Optional} if none is found
      */
     @Nonnull
     private Optional<Message<?>> findUsageMessage() {

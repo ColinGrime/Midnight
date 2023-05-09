@@ -76,6 +76,7 @@ public class ActionBar extends BaseDisplay {
 
     /**
      * Starts the task for the player.
+     *
      * @param player the player
      */
     private void startTask(@Nonnull Player player) {
@@ -93,6 +94,7 @@ public class ActionBar extends BaseDisplay {
 
     /**
      * Stops the task for the player.
+     *
      * @param player the player
      */
     private void stopTask(@Nonnull Player player) {

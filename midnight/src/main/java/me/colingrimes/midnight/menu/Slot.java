@@ -18,12 +18,14 @@ public interface Slot {
 
 	/**
 	 * Handles all click events on the slot.
+	 *
 	 * @param event inventory click event
 	 */
 	void handle(@Nonnull InventoryClickEvent event);
 
 	/**
 	 * Gets the {@link Gui} of the slot.
+	 *
 	 * @return the gui of the slot
 	 */
 	@Nonnull
@@ -31,11 +33,9 @@ public interface Slot {
 
 	/**
 	 * Gets the ID number of the slot.
-	 *
 	 * <p>
 	 * This is the slot number that corresponds to its
 	 * placement in the {@link Gui} that it is associated with.
-	 * </p>
 	 *
 	 * @return the id of the slot
 	 */
@@ -43,6 +43,7 @@ public interface Slot {
 
 	/**
 	 * Gets the item of the slot.
+	 *
 	 * @return the item of the slot
 	 */
 	@Nullable
@@ -50,6 +51,7 @@ public interface Slot {
 
 	/**
 	 * Sets the item of the slot.
+	 *
 	 * @param item the item of the slot
 	 * @return the slot object
 	 */
@@ -58,6 +60,7 @@ public interface Slot {
 
 	/**
 	 * Sets an empty item of the slot.
+	 *
 	 * @param material the material of the item
 	 * @return the slot object
 	 */
@@ -68,6 +71,7 @@ public interface Slot {
 
 	/**
 	 * Binds a click type to a handler that will perform an action on click.
+	 *
 	 * @param type the click type
 	 * @param handler the action to perform on the click
 	 * @return the slot object
@@ -77,6 +81,7 @@ public interface Slot {
 
 	/**
 	 * Binds a click type to a handler that will perform an action on click.
+	 *
 	 * @param handler the action to perform on the click
 	 * @param types the click types
 	 * @return the slot object

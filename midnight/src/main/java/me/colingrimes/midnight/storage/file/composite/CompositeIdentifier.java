@@ -11,6 +11,7 @@ public class CompositeIdentifier {
 
     /**
      * Creates a new composite identifier with the given file path.
+     *
      * @param filePath the file path
      * @return the composite identifier
      */
@@ -20,6 +21,7 @@ public class CompositeIdentifier {
 
     /**
      * Creates a new composite identifier with the given file path and internal path.
+     *
      * @param filePath the file path
      * @param internalPath the internal path
      * @return the composite identifier
@@ -35,6 +37,7 @@ public class CompositeIdentifier {
 
     /**
      * Gets the file path.
+     *
      * @return the file path
      */
     @Nonnull
@@ -44,6 +47,7 @@ public class CompositeIdentifier {
 
     /**
      * Gets the internal path.
+     *
      * @return the internal path
      */
     @Nonnull

@@ -23,6 +23,7 @@ public interface Option<T> {
 
 	/**
 	 * The value of the option.
+	 *
 	 * @return the value
 	 */
 	@Nonnull
@@ -30,12 +31,14 @@ public interface Option<T> {
 
 	/**
 	 * Reloads the option from the given configuration adapter.
+	 *
 	 * @param adapter the adapter
 	 */
 	void reload(@Nullable ConfigurationAdapter adapter);
 
 	/**
 	 * Initializes all static fields of the given class that are of type {@link Option}.
+	 *
 	 * @param optionClass the class
 	 * @return the list of options
 	 */

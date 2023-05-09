@@ -61,6 +61,7 @@ public class Title extends BaseDisplay {
 
     /**
      * Gets the subtitle text.
+     *
      * @return the subtitle text
      */
     @Nonnull
@@ -70,6 +71,7 @@ public class Title extends BaseDisplay {
 
     /**
      * Sets the subtitle text.
+     *
      * @param subtitleText the subtitle text
      */
     public void setSubtitle(@Nonnull String subtitleText) {
@@ -78,6 +80,7 @@ public class Title extends BaseDisplay {
 
     /**
      * Gets the fade in time.
+     *
      * @return the fade in time
      */
     public int getFadeInTime() {
@@ -86,6 +89,7 @@ public class Title extends BaseDisplay {
 
     /**
      * Sets the fade in time.
+     *
      * @param fadeInTime the fade in time
      */
     public void setFadeInTime(int fadeInTime) {
@@ -94,6 +98,7 @@ public class Title extends BaseDisplay {
 
     /**
      * Gets the stay time.
+     *
      * @return the stay time
      */
     public int getStayTime() {
@@ -102,6 +107,7 @@ public class Title extends BaseDisplay {
 
     /**
      * Sets the stay time.
+     *
      * @param stayTime the stay time
      */
     public void setStayTime(int stayTime) {
@@ -110,6 +116,7 @@ public class Title extends BaseDisplay {
 
     /**
      * Gets the fade out time.
+     *
      * @return the fade out time
      */
     public int getFadeOutTime() {
@@ -118,6 +125,7 @@ public class Title extends BaseDisplay {
 
     /**
      * Sets the fade out time.
+     *
      * @param fadeOutTime the fade out time
      */
     public void setFadeOutTime(int fadeOutTime) {

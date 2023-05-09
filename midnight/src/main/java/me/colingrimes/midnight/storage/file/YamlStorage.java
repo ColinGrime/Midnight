@@ -23,6 +23,7 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
 
     /**
      * Returns the deserialization function for the specific data type.
+     *
      * @return the deserialization function
      */
     @Nonnull
@@ -161,6 +162,7 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
 
     /**
      * Gets the file for the specified identifier.
+     *
      * @param identifier the identifier
      * @return the file
      */
@@ -171,6 +173,7 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
 
     /**
      * Gets the internal path for the specified identifier.
+     *
      * @param identifier the identifier
      * @return the internal path
      */

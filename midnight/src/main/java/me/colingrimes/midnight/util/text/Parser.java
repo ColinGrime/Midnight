@@ -30,12 +30,13 @@ public final class Parser {
 
     /**
      * Parses the given text into a {@link Duration}.
-     * @param text the text to parse
+     *
+     * @param value the text to parse
      * @return the duration represented by the text
      */
     @Nullable
-    public static Duration parseDuration(@Nonnull String text) {
-        Matcher matcher = DURATION_PATTERN.matcher(text);
+    public static Duration parseDuration(@Nonnull String value) {
+        Matcher matcher = DURATION_PATTERN.matcher(value);
         if (!matcher.matches()) {
             return null;
         }
@@ -53,6 +54,7 @@ public final class Parser {
 
     /**
      * Parses a vector from a string.
+     *
      * @param value the string to parse
      * @return the parsed vector
      */
@@ -68,6 +70,7 @@ public final class Parser {
 
     /**
      * Parses a vector from a string.
+     *
      * @param value the string to parse
      * @return the parsed vector
      */
@@ -90,6 +93,7 @@ public final class Parser {
 
     /**
      * Parses a color from a string.
+     *
      * @param value the string to parse
      * @return the parsed color
      */
@@ -115,6 +119,7 @@ public final class Parser {
 
     /**
      * Matches the given unit string to a {@link ChronoUnit}.
+     *
      * @param unit the unit string
      * @return the matching unit, or null if none was found
      */

@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.command.util;
+package me.colingrimes.midnight.command.handler.util;
 
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -22,6 +22,7 @@ public class Sender {
 
 	/**
 	 * Gets the underlying {@link CommandSender} instance.
+	 *
 	 * @return the command sender
 	 */
 	@Nonnull
@@ -31,6 +32,7 @@ public class Sender {
 
 	/**
 	 * Sends a message to the sender.
+	 *
 	 * @param message the message to send to the sender
 	 */
 	public void message(@Nonnull String message) {
@@ -39,6 +41,7 @@ public class Sender {
 
 	/**
 	 * Checks if the sender is a player.
+	 *
 	 * @return true if the sender is a player
 	 */
 	public boolean isPlayer() {
@@ -47,6 +50,7 @@ public class Sender {
 
 	/**
 	 * Gets the player instance of the sender.
+	 *
 	 * @return the player instance of the sender
 	 */
 	@Nonnull
@@ -59,6 +63,7 @@ public class Sender {
 
 	/**
 	 * Gets the location of the sender.
+	 *
 	 * @return the location of the sender
 	 */
 	@Nonnull
@@ -68,6 +73,7 @@ public class Sender {
 
 	/**
 	 * Gets the world of the sender.
+	 *
 	 * @return the world of the sender
 	 */
 	@Nonnull
@@ -77,6 +83,7 @@ public class Sender {
 
 	/**
 	 * Gets the x coordinate of the sender.
+	 *
 	 * @return the x coordinate of the sender
 	 */
 	public double x() {
@@ -85,6 +92,7 @@ public class Sender {
 
 	/**
 	 * Gets the y coordinate of the sender.
+	 *
 	 * @return the y coordinate of the sender
 	 */
 	public double y() {
@@ -93,6 +101,7 @@ public class Sender {
 
 	/**
 	 * Gets the z coordinate of the sender.
+	 *
 	 * @return the z coordinate of the sender
 	 */
 	public double z() {

@@ -17,9 +17,10 @@ public class Rotation extends Direction implements Serializable {
 
     /**
      * Constructs a new Rotation with the given yaw, pitch, and roll angles.
-     * @param yaw the yaw angle
+     *
+     * @param yaw   the yaw angle
      * @param pitch the pitch angle
-     * @param roll the roll angle
+     * @param roll  the roll angle
      */
     public static Rotation of(double yaw, double pitch, double roll) {
         return new Rotation(yaw, pitch, roll);
@@ -32,6 +33,7 @@ public class Rotation extends Direction implements Serializable {
 
     /**
      * Gets the roll angle.
+     *
      * @return the roll angle
      */
     public double getRoll() {
@@ -71,6 +73,7 @@ public class Rotation extends Direction implements Serializable {
 
     /**
      * Deserializes a rotation from a map.
+     *
      * @param map the map to deserialize from
      * @return the deserialized rotation
      */

@@ -21,6 +21,7 @@ public class ConfigurableInventory {
 
     /**
      * Creates a configurable inventory.
+     *
      * @param sec the configuration section to parse
      * @return the configurable inventory
      */
@@ -37,6 +38,7 @@ public class ConfigurableInventory {
 
     /**
      * Constructs a ConfigurableInventory instance from a ConfigurationSection.
+     *
      * @param sec the configuration section to parse
      */
     private ConfigurableInventory(@Nonnull ConfigurationSection sec) {
@@ -48,6 +50,7 @@ public class ConfigurableInventory {
 
     /**
      * Parses the title of the inventory from the configuration section.
+     *
      * @param sec the configuration section to parse
      * @return the title of the inventory
      */
@@ -57,6 +60,7 @@ public class ConfigurableInventory {
 
     /**
      * Parses the ItemStacks for the inventory from the configuration section.
+     *
      * @param sec the configuration section to parse
      * @return an array of ItemStacks
      */
@@ -79,6 +83,7 @@ public class ConfigurableInventory {
 
     /**
      * Parses the commands for each slot from the configuration section.
+     *
      * @param sec the configuration section to parse
      * @return a map of commands associated with each slot
      */
@@ -102,6 +107,7 @@ public class ConfigurableInventory {
 
     /**
      * Fills empty slots in the inventory with the specified material.
+     *
      * @param sec the configuration section to parse
      */
     private void fillEmptySlots(ConfigurationSection sec) {
@@ -124,6 +130,7 @@ public class ConfigurableInventory {
 
     /**
      * Returns the title of the inventory.
+     *
      * @return the title
      */
     @Nonnull
@@ -133,6 +140,7 @@ public class ConfigurableInventory {
 
     /**
      * Returns the number of rows in the inventory.
+     *
      * @return the rows
      */
     public int getRows() {
@@ -141,6 +149,7 @@ public class ConfigurableInventory {
 
     /**
      * Returns the ItemStacks in the inventory.
+     *
      * @return an array of ItemStacks
      */
     @Nonnull
@@ -150,6 +159,7 @@ public class ConfigurableInventory {
 
     /**
      * Returns the command associated with the specified slot.
+     *
      * @param slot the slot number
      * @return the command to run
      */

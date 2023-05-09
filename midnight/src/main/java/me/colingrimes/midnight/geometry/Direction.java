@@ -19,7 +19,8 @@ public class Direction implements Serializable {
 
     /**
      * Constructs a new Direction with the given yaw and pitch angles.
-     * @param yaw the yaw angle
+     *
+     * @param yaw   the yaw angle
      * @param pitch the pitch angle
      */
     public static Direction of(double yaw, double pitch) {
@@ -33,6 +34,7 @@ public class Direction implements Serializable {
 
     /**
      * Gets the yaw angle.
+     *
      * @return the yaw angle
      */
     public double getYaw() {
@@ -41,6 +43,7 @@ public class Direction implements Serializable {
 
     /**
      * Gets the pitch angle.
+     *
      * @return the pitch angle
      */
     public double getPitch() {
@@ -80,6 +83,7 @@ public class Direction implements Serializable {
 
     /**
      * Deserializes a direction from a map.
+     *
      * @param map the map to deserialize from
      * @return the deserialized direction
      */
