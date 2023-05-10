@@ -1,5 +1,6 @@
 package me.colingrimes.midnight.display.implementation;
 
+import me.colingrimes.midnight.display.Display;
 import me.colingrimes.midnight.display.type.DisplayType;
 import me.colingrimes.midnight.event.DisplayHideEvent;
 import me.colingrimes.midnight.event.DisplayShowEvent;
@@ -14,7 +15,7 @@ import org.bukkit.entity.Player;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class BossBar extends BaseDisplay {
+public class BossBar implements Display {
 
     private final org.bukkit.boss.BossBar bossBar;
 

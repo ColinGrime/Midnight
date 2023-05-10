@@ -1,5 +1,6 @@
 package me.colingrimes.midnight.display.implementation;
 
+import me.colingrimes.midnight.display.Display;
 import me.colingrimes.midnight.display.type.DisplayType;
 import me.colingrimes.midnight.event.DisplayHideEvent;
 import me.colingrimes.midnight.event.DisplayShowEvent;
@@ -11,7 +12,7 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class Title extends BaseDisplay {
+public class Title implements Display {
 
     private String titleText;
     private String subtitleText;
@@ -22,8 +23,8 @@ public class Title extends BaseDisplay {
     public Title(@Nonnull String titleText) {
         this.titleText = Text.color(titleText);
         this.subtitleText = "";
-        this.fadeInTime = 20; // Default 1 second.
-        this.stayTime = 60; // Default 3 seconds.
+        this.fadeInTime = 20;  // Default 1 second.
+        this.stayTime = 60;    // Default 3 seconds.
         this.fadeOutTime = 20; // Default 1 second.
     }
 

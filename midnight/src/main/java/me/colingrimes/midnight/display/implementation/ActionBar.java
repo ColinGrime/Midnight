@@ -1,5 +1,6 @@
 package me.colingrimes.midnight.display.implementation;
 
+import me.colingrimes.midnight.display.Display;
 import me.colingrimes.midnight.display.type.DisplayType;
 import me.colingrimes.midnight.event.DisplayHideEvent;
 import me.colingrimes.midnight.event.DisplayShowEvent;
@@ -15,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ActionBar extends BaseDisplay {
+public class ActionBar implements Display {
 
     private final Map<Player, Task> tasks = new HashMap<>();
     private String text;

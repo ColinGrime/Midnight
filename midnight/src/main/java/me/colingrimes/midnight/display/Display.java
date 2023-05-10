@@ -106,20 +106,4 @@ public interface Display {
      * @param visible true if the display element should be visible
      */
     void setVisible(boolean visible);
-
-    /**
-     * Gets the priority of the display element.
-     *
-     * @return the priority of the display element
-     */
-    int getPriority();
-
-    /**
-     * Sets the priority of the display element. A display element with a higher priority will not be replaced
-     * by one with a lower priority. Setting the priority below the default value will prevent the display
-     * element from replacing externally-created displays.
-     *
-     * @param priority the priority for the display element
-     */
-    void setPriority(int priority);
 }
