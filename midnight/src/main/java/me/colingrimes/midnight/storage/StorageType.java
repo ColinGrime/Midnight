@@ -9,6 +9,7 @@ import java.util.Optional;
 public enum StorageType {
     YAML("YAML"),
     JSON("JSON"),
+    POSTGRESQL("PostgreSQL"),
     MYSQL("MySQL"),
     SQLITE("SQLite");
 
@@ -25,6 +26,7 @@ public enum StorageType {
 
     /**
      * Returns a StorageType enum by its name.
+     *
      * @param name the name of the storage type
      * @return the StorageType enum if it exists, otherwise an empty Optional
      */
