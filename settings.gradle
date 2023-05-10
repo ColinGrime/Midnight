@@ -1,3 +1,4 @@
 rootProject.name = 'Midnight'
 include 'midnight'
-include 'midnight-example'
+include 'midnight-channels'
+include 'midnight-particles'

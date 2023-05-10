@@ -1,0 +1,23 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '7.1.1'
+}
+
+group 'me.colingrimes.midnight-particles'
+
+dependencies {
+    implementation project(':midnight')
+}
+
+shadowJar {
+    archiveFileName = "MidnightParticles-${project.version}.jar"
+    dependencies {
+        include dependency(':midnight')
+    }
+}
+
+tasks.register('fullBuild') {
+    dependsOn 'test'
+    dependsOn 'clean'
+    dependsOn 'shadowJar'
+    tasks.findByPath('shadowJar').mustRunAfter('clean').mustRunAfter('test')
+}
