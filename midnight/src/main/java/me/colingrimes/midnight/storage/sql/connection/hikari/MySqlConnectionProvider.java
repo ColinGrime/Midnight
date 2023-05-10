@@ -2,6 +2,7 @@ package me.colingrimes.midnight.storage.sql.connection.hikari;
 
 import com.zaxxer.hikari.HikariConfig;
 import me.colingrimes.midnight.storage.sql.DatabaseCredentials;
+import me.colingrimes.midnight.storage.sql.DatabaseType;
 
 import javax.annotation.Nonnull;
 import java.util.function.Function;
@@ -14,8 +15,8 @@ public class MySqlConnectionProvider extends HikariConnectionProvider {
 
     @Nonnull
     @Override
-    public String getName() {
-        return "MySQL";
+    public DatabaseType getType() {
+        return DatabaseType.MYSQL;
     }
 
     @Nonnull

@@ -1,6 +1,7 @@
 package me.colingrimes.midnight.storage.sql.connection.file;
 
 import me.colingrimes.midnight.Midnight;
+import me.colingrimes.midnight.storage.sql.DatabaseType;
 import me.colingrimes.midnight.storage.sql.connection.ConnectionProvider;
 import org.sqlite.SQLiteDataSource;
 
@@ -26,8 +27,8 @@ public class SqliteConnectionProvider implements ConnectionProvider {
 
 	@Nonnull
 	@Override
-	public String getName() {
-		return "SQLite";
+	public DatabaseType getType() {
+		return DatabaseType.SQLITE;
 	}
 
 	@Override

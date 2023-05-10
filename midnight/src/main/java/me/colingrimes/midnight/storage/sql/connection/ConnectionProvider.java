@@ -1,5 +1,7 @@
 package me.colingrimes.midnight.storage.sql.connection;
 
+import me.colingrimes.midnight.storage.sql.DatabaseType;
+
 import javax.annotation.Nonnull;
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -12,12 +14,12 @@ import java.util.function.Function;
 public interface ConnectionProvider {
 
     /**
-     * Gets the name of the connection provider.
+     * Gets the type of connection provider.
      *
-     * @return the name of the provider
+     * @return the type of the provider
      */
     @Nonnull
-    String getName();
+    DatabaseType getType();
 
     /**
      * Initializes the connection provider.
