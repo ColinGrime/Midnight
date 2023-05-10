@@ -1,5 +1,7 @@
 package me.colingrimes.midnight.storage.sql.connection;
 
+import me.colingrimes.midnight.storage.sql.DatabaseCredentials;
+import me.colingrimes.midnight.storage.sql.DatabaseType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +32,7 @@ class DatabaseCredentialsTest {
 
 	@Test
 	public void testOf() {
-		DatabaseCredentials credentials = DatabaseCredentials.of("example.com", 1234, "test_db", "test_user", "test_password");
+		DatabaseCredentials credentials = DatabaseCredentials.of(DatabaseType.MYSQL, "example.com", 1234, "test_db", "test_user", "test_password");
 
 		assertNotNull(credentials, "DatabaseCredentials object should not be null");
 		assertEquals("example.com", credentials.getHost(), "Host should be 'example.com'");
@@ -42,7 +44,7 @@ class DatabaseCredentialsTest {
 
 	@Test
 	public void testFromConfig() {
-		DatabaseCredentials credentials = DatabaseCredentials.fromConfig(config);
+		DatabaseCredentials credentials = DatabaseCredentials.fromConfig(config).orElseThrow();
 
 		assertNotNull(credentials, "DatabaseCredentials object should not be null");
 		assertEquals("example.com", credentials.getHost(), "Host should be 'example.com'");
@@ -54,7 +56,7 @@ class DatabaseCredentialsTest {
 
 	@Test
 	public void testToString() {
-		DatabaseCredentials credentials = DatabaseCredentials.of("example.com", 1234, "test_db", "test_user", "test_password");
+		DatabaseCredentials credentials = DatabaseCredentials.of(DatabaseType.MYSQL, "example.com", 1234, "test_db", "test_user", "test_password");
 		String expectedString = "StorageCredentials{host='example.com', port=1234, database='test_db', user='test_user', password='test_password'}";
 
 		assertEquals(expectedString, credentials.toString(), "toString() should return the expected string representation");

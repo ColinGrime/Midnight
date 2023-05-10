@@ -1,7 +1,5 @@
 package me.colingrimes.midnight.util.bukkit;
 
-import org.bukkit.Color;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -11,22 +9,22 @@ import java.util.Map;
  * Represents a set of custom chat colors with RGB values.
  */
 public enum ChatColor {
-    BLACK        ('0', 0 ,  0,   0    ),
-    DARK_BLUE    ('1', 0,   0,   128  ),
-    GREEN        ('2', 0,   128, 0    ),
-    AQUA         ('3', 0,   128, 128  ),
-    RED          ('4', 128, 0,   0    ),
-    PURPLE       ('5', 128, 0,   128  ),
-    GOLD         ('6', 255, 128, 0    ),
-    GRAY         ('7', 128, 128, 128  ),
-    DARK_GRAY    ('8', 64,  64,  64   ),
-    BLUE         ('9', 64,  64,  255  ),
-    LIGHT_GREEN  ('a', 64,  255, 64   ),
-    LIGHT_BLUE   ('b', 64,  255, 255  ),
-    LIGHT_RED    ('c', 255, 64,  64   ),
-    PINK         ('d', 255, 64,  255  ),
-    YELLOW       ('e', 255, 255, 64   ),
-    WHITE        ('f', 255, 255, 255  );
+    BLACK        ('0', "000000"),
+    DARK_BLUE    ('1', "000080"),
+    GREEN        ('2', "008000"),
+    AQUA         ('3', "008080"),
+    RED          ('4', "800000"),
+    PURPLE       ('5', "800080"),
+    GOLD         ('6', "FFA500"),
+    GRAY         ('7', "808080"),
+    DARK_GRAY    ('8', "404040"),
+    BLUE         ('9', "4040FF"),
+    LIGHT_GREEN  ('a', "40FF40"),
+    LIGHT_BLUE   ('b', "40FFFF"),
+    LIGHT_RED    ('c', "FF4040"),
+    PINK         ('d', "FF40FF"),
+    YELLOW       ('e', "FFFF40"),
+    WHITE        ('f', "FFFFFF");
 
     private static final Map<Character, ChatColor> CODE_MAP = new HashMap<>();
 
@@ -37,22 +35,22 @@ public enum ChatColor {
     }
 
     private final char code;
-    private final Color color;
+    private final String hexColor;
 
     /**
      * Constructs a new ChatColor.
-     * @param code the color code
-     * @param r the red value
-     * @param g the green value
-     * @param b the blue value
+     *
+     * @param code     the color code
+     * @param hexColor the hex color
      */
-    ChatColor(char code, int r, int g, int b) {
+    ChatColor(char code, @Nonnull String hexColor) {
         this.code = code;
-        this.color = Color.fromRGB(r, g, b);
+        this.hexColor = hexColor;
     }
 
     /**
      * Gets the color code.
+     *
      * @return the color code
      */
     public char getCode() {
@@ -60,21 +58,23 @@ public enum ChatColor {
     }
 
     /**
-     * Gets the RGB color.
-     * @return the RGB color
+     * Gets the hex color.
+     *
+     * @return the hex color
      */
     @Nonnull
-    public Color getColor() {
-        return color;
+    public String getHexColor() {
+        return hexColor;
     }
 
     /**
      * Parses a {@link ChatColor} from a string (name or '&' code).
+     *
      * @param value the string to parse
      * @return the parsed custom chat color or null if the input is invalid
      */
     @Nullable
-    public static ChatColor parse(@Nullable String value) {
+    public static ChatColor fromString(@Nullable String value) {
         if (value == null || value.isEmpty()) {
             return null;
         }
@@ -89,5 +89,15 @@ public enum ChatColor {
         } catch (IllegalArgumentException ignored) {
             return null;
         }
+    }
+
+    /**
+     * Applies the color to the input string.
+     *
+     * @param input the string to apply the color to
+     * @return the input string with the color applied
+     */
+    public String apply(@Nonnull String input) {
+        return "§x" + hexColor.substring(0, 2) + "§x" + hexColor.substring(2, 4) + "§x" + hexColor.substring(4, 6) + input;
     }
 }

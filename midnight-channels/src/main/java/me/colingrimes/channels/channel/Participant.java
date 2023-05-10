@@ -48,7 +48,7 @@ public interface Participant {
      *
      * @return the associated player
      */
-    @Nullable
+    @Nonnull
     Player player();
 
     /**
@@ -57,6 +57,13 @@ public interface Participant {
      * @param message the message to send
      */
     void send(@Nonnull Message<?> message);
+
+    /**
+     * Sends a message to this participant.
+     *
+     * @param message the message to send
+     */
+    void send(@Nonnull String message);
 
     /**
      * Gets the channels this participant has access to.
@@ -86,7 +93,7 @@ public interface Participant {
      *
      * @return the active channel
      */
-    @Nonnull
+    @Nullable
     Channel getActiveChannel();
 
     /**
@@ -95,14 +102,14 @@ public interface Participant {
      *
      * @param channel the channel to set as the active channel
      */
-    void setActiveChannel(@Nonnull Channel channel);
+    void setActiveChannel(@Nullable Channel channel);
 
     /**
      * Gets the time the participant is muted until.
      *
      * @return the time the participant is muted until
      */
-    @Nonnull
+    @Nullable
     ZonedDateTime getMuteEndTime();
 
     /**
