@@ -1,6 +1,8 @@
 package me.colingrimes.midnight.message;
 
 import me.colingrimes.midnight.command.handler.util.Sender;
+import me.colingrimes.midnight.message.implementation.ComponentMessage;
+import me.colingrimes.midnight.message.implementation.TextMessage;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -13,6 +15,25 @@ import javax.annotation.Nonnull;
  * @param <T> the type of the message content
  */
 public interface Message<T> {
+
+    /**
+     * Factory method that generates a Message of type T.
+     *
+     * @param content the content for the Message, must be of type String or TextComponent.
+     * @param <T>     the type of the content. Supported types are String and TextComponent.
+     * @return a new Message of type T.
+     * @throws IllegalArgumentException if the content is not of a supported type.
+     */
+    @SuppressWarnings("unchecked")
+    static <T> Message<T> of(@Nonnull T content) {
+        if (content instanceof String) {
+            return (Message<T>) new TextMessage((String) content);
+        } else if (content instanceof TextComponent) {
+            return (Message<T>) new ComponentMessage((TextComponent) content);
+        } else {
+            throw new IllegalArgumentException("Unsupported message content type: " + content.getClass().getName());
+        }
+    }
 
     /**
      * Gets the content of the message.
