@@ -7,6 +7,7 @@ import me.colingrimes.midnight.command.handler.util.Sender;
 import me.colingrimes.midnight.command.exception.CommandNotImplementedException;
 import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.message.Message;
+import me.colingrimes.midnight.util.text.Text;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -41,10 +42,10 @@ public class StandardCommandHandler<T extends Midnight> implements CommandHandle
 	@Override
 	public boolean onCommand(@Nonnull CommandSender sender, @Nonnull org.bukkit.command.Command cmd, @Nonnull String label, @Nonnull String[] args) {
 		if (properties.isPlayerRequired() && !(sender instanceof Player)) {
-			Messages.INVALID_SENDER.send(sender);
+			sender.sendMessage(Text.color("&4&l❌ &cThis command can only be executed by a player."));
 			return true;
 		} else if (properties.getPermission() != null && !sender.hasPermission(properties.getPermission())) {
-			Messages.PERMISSION_DENIED.send(sender);
+			sender.sendMessage(Text.color("&4&l❌ &cYou lack the required permission for this command."));
 			return true;
 		} else if (args.length < properties.getArgumentsRequired()) {
 			if (getUsage() != null) {
