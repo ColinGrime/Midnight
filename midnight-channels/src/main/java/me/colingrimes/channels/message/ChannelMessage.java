@@ -1,7 +1,7 @@
 package me.colingrimes.channels.message;
 
-import me.colingrimes.midnight.channel.Channel;
-import me.colingrimes.midnight.channel.Participant;
+import me.colingrimes.channels.channel.Channel;
+import me.colingrimes.channels.channel.Participant;
 import me.colingrimes.midnight.message.Message;
 import me.colingrimes.midnight.message.Placeholders;
 import org.bukkit.command.CommandSender;
@@ -13,7 +13,6 @@ import java.util.Objects;
 
 /**
  * Represents a message sent in a {@code Channel} by a {@code Participant}.
- * <p>
  * If the {@link Participant} is {@code null}, then the message was sent by the server.
  *
  * @param <T> the type of the message content
@@ -27,9 +26,10 @@ public class ChannelMessage<T> implements Message<T> {
 
     /**
      * Creates a new channel message.
-     * @param channel the channel the message was sent in
+     *
+     * @param channel     the channel the message was sent in
      * @param participant the participant that sent the message
-     * @param message the message
+     * @param message     the message
      */
     public ChannelMessage(@Nonnull Channel channel, @Nullable Participant participant, @Nonnull Message<T> message) {
         this.channel = channel;
@@ -40,10 +40,11 @@ public class ChannelMessage<T> implements Message<T> {
 
     /**
      * Creates a new channel message from storage.
-     * @param channel the channel the message was sent in
+     *
+     * @param channel     the channel the message was sent in
      * @param participant the participant that sent the message
-     * @param message the message
-     * @param timestamp the timestamp of the message
+     * @param message     the message
+     * @param timestamp   the timestamp of the message
      */
     public ChannelMessage(@Nonnull Channel channel, @Nullable Participant participant, @Nonnull Message<T> message, @Nonnull ZonedDateTime timestamp) {
         this.channel = channel;

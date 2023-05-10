@@ -37,7 +37,6 @@ failure:
   particle-not-found: "&4&l❌ &cThe specified particle does not exist."
   particle-not-saved: "&4&l❌ &cThe specified particle has failed to save."
   particle-not-selected: "&4&l❌ &cYou must select a particle first."
-  permission-denied: "&4&l❌ &cYou lack the required permission for this command."
   player-not-found: "&4&l❌ &cThe specified player is either offline or nonexistent."
 
 usage:

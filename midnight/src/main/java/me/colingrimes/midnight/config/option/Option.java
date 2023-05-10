@@ -12,6 +12,7 @@ import java.util.function.Function;
 
 /**
  * Represents a configuration option for a configuration file.
+ *
  * @param <T> type of the option
  */
 public interface Option<T> {

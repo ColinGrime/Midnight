@@ -1,5 +1,6 @@
 package me.colingrimes.channels.channel.filter;
 
+import me.colingrimes.channels.config.Filters;
 import me.colingrimes.midnight.cache.expiring.RollingWindowCache;
 import me.colingrimes.channels.message.ChannelMessage;
 
@@ -21,6 +22,10 @@ public class FloodFilter implements ChatFilter {
 
     @Override
     public boolean filter(@Nonnull ChannelMessage<?> message) {
+        if (message.getParticipant() == null) {
+            return true;
+        }
+
         UUID uuid = message.getParticipant().getID();
         messageCache.increment(uuid);
         return messageCache.getCount(uuid) <= Filters.FLOOD_MAX_MESSAGES.get();

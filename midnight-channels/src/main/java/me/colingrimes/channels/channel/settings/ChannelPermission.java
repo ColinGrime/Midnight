@@ -1,4 +1,4 @@
-package me.colingrimes.channels.channel.permission;
+package me.colingrimes.channels.channel.settings;
 
 /**
  * Represents permissions for different actions in a channel.

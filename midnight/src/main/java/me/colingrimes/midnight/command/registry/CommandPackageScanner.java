@@ -25,6 +25,8 @@ public class CommandPackageScanner {
 
     /**
      * Scans and registers command classes.
+     * <p>
+     * Only classes in the "command" package will be processed.
      */
     public void scan() {
         scan(plugin.getRootPackage() + ".command", "");

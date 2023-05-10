@@ -1,5 +1,6 @@
 package me.colingrimes.channels.channel.filter.profanity;
 
+import me.colingrimes.channels.config.Filters;
 import me.colingrimes.channels.message.ChannelMessage;
 
 import javax.annotation.Nonnull;

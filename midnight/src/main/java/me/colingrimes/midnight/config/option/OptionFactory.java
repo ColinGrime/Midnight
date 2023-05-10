@@ -73,8 +73,9 @@ public interface OptionFactory<T> {
 
 	/**
 	 * Gets the value of the option.
+	 *
 	 * @param adapter the configuration adapter
-	 * @param path the path
+	 * @param path    the path
 	 * @return the value
 	 */
 	@Nonnull
@@ -82,6 +83,7 @@ public interface OptionFactory<T> {
 
 	/**
 	 * Bounds an option to a specific path.
+	 *
 	 * @param <T> the type of the option
 	 */
 	class Bound<T> implements Function<ConfigurationAdapter, T> {

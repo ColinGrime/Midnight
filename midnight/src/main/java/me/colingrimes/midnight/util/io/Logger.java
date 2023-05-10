@@ -4,7 +4,6 @@ import me.colingrimes.midnight.Midnight;
 import org.bukkit.Bukkit;
 
 import javax.annotation.Nonnull;
-import java.util.Objects;
 import java.util.logging.Level;
 
 /**
@@ -28,7 +27,6 @@ public final class Logger {
 	 * @param msg the info message to log
 	 */
 	public static void log(@Nonnull String msg) {
-		Objects.requireNonNull(msg);
 		Bukkit.getLogger().log(Level.INFO, msg);
 	}
 
@@ -48,7 +46,6 @@ public final class Logger {
 	 * @param msg the warning message to log
 	 */
 	public static void warn(@Nonnull String msg) {
-		Objects.requireNonNull(msg);
 		Bukkit.getLogger().log(Level.WARNING, msg);
 	}
 
@@ -68,7 +65,6 @@ public final class Logger {
 	 * @param msg the severe message to log
 	 */
 	public static void severe(@Nonnull String msg) {
-		Objects.requireNonNull(msg);
 		Bukkit.getLogger().log(Level.SEVERE, msg);
 	}
 

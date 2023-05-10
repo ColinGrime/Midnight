@@ -72,7 +72,7 @@ public class Markdown {
 	 * appropriate event to the provided {@link TextComponent}.
 	 *
 	 * @param eventComponent the text component to apply the event to
-	 * @param eventValue the event value from the input string
+	 * @param eventValue     the event value from the input string
 	 */
 	private static void handleEvent(@Nonnull TextComponent eventComponent, @Nonnull String eventValue) {
 		if (eventValue.startsWith("/")) {

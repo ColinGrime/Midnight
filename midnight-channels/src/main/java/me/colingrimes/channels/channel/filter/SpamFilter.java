@@ -1,5 +1,7 @@
 package me.colingrimes.channels.channel.filter;
 
+import me.colingrimes.channels.config.Filters;
+import me.colingrimes.midnight.cache.ExpiringCache;
 import me.colingrimes.midnight.cache.expiring.SimpleExpiringCache;
 import me.colingrimes.channels.message.ChannelMessage;
 
@@ -13,7 +15,7 @@ import java.util.UUID;
  */
 public class SpamFilter implements ChatFilter {
 
-    private final SimpleExpiringCache<UUID, String> messageCache;
+    private final ExpiringCache<UUID, String> messageCache;
 
     public SpamFilter() {
         this.messageCache = new SimpleExpiringCache<>(Duration.ofMillis(Filters.SPAM_TIME_WINDOW.get()));
@@ -21,6 +23,10 @@ public class SpamFilter implements ChatFilter {
 
     @Override
     public boolean filter(@Nonnull ChannelMessage<?> message) {
+        if (message.getParticipant() == null) {
+            return true;
+        }
+
         UUID uuid = message.getParticipant().getID();
         String content = message.toText();
 

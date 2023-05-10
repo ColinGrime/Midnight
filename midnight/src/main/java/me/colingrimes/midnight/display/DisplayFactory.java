@@ -13,7 +13,7 @@ public class DisplayFactory {
      * Creates a {@code Display} based on the provided {@code DisplayType} and text.
      *
      * @param displayType the type of display to create
-     * @param text the text to display
+     * @param text        the text to display
      * @return the created display
      */
     @Nonnull
