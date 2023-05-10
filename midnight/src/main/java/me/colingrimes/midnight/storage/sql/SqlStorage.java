@@ -5,6 +5,7 @@ import me.colingrimes.midnight.storage.sql.connection.ConnectionProvider;
 import org.flywaydb.core.Flyway;
 
 import javax.annotation.Nonnull;
+import java.util.function.Function;
 
 /**
  * An abstract class representing an SQL-based storage.
@@ -12,30 +13,34 @@ import javax.annotation.Nonnull;
  */
 public abstract class SqlStorage<T> implements Storage<T> {
 
-    protected final ConnectionProvider connectionProvider;
+    protected final ConnectionProvider provider;
+    protected final DatabaseType database;
+    protected final Function<String, String> processor;
 
     public SqlStorage(@Nonnull ConnectionProvider connectionProvider) {
-        this.connectionProvider = connectionProvider;
+        this.provider = connectionProvider;
+        this.database = connectionProvider.getType();
+        this.processor = connectionProvider.getStatementProcessor();
     }
 
     @Override
     public void init() throws Exception {
-        if (connectionProvider.isInitialized()) {
+        if (provider.isInitialized()) {
             return;
         } else {
-            connectionProvider.init();
+            provider.init();
         }
 
         // Configure and run Flyway migrations.
-        Flyway.configure()
-                .dataSource(connectionProvider.getDataSource())
-                .locations("classpath:/migrations/" + connectionProvider.getName().toLowerCase())
+        Flyway.configure(getClass().getClassLoader())
+                .dataSource(provider.getDataSource())
+                .locations("classpath:/migrations/" + provider.getType().getName().toLowerCase())
                 .load()
                 .migrate();
     }
 
     @Override
     public void shutdown() {
-        connectionProvider.shutdown();
+        provider.shutdown();
     }
 }
