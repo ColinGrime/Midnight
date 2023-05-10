@@ -1,0 +1,5 @@
+name: MidnightChannels
+main: me.colingrimes.channels.MidnightChannels
+version: ${version}
+author: Scill
+api-version: 1.19
