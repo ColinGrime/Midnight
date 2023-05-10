@@ -44,7 +44,7 @@ class DatabaseCredentialsTest {
 
 	@Test
 	public void testFromConfig() {
-		DatabaseCredentials credentials = DatabaseCredentials.fromConfig(config).orElseThrow();
+		DatabaseCredentials credentials = DatabaseCredentials.fromConfig(config);
 
 		assertNotNull(credentials, "DatabaseCredentials object should not be null");
 		assertEquals("example.com", credentials.getHost(), "Host should be 'example.com'");
