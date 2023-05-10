@@ -3,6 +3,7 @@ package me.colingrimes.midnight.util.io;
 import me.colingrimes.midnight.Midnight;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -41,6 +42,9 @@ public final class Files {
 
 		try {
 			URI uri = getUri(plugin.getClass().getClassLoader(), path);
+			if (uri == null) {
+				return classes;
+			}
 
 			// If the URI is not a JAR, walk the directory.
 			if (!uri.getScheme().equals("jar")) {
@@ -54,7 +58,7 @@ public final class Files {
 				Path packagePath = fileSystem.getPath(path);
 				walkFileTree(packagePath, Set.of(FileVisitOption.FOLLOW_LINKS), maxDepth, new CustomFileVisitor(plugin, packageName, packagePath, classes));
 			}
-		} catch (IOException | URISyntaxException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
@@ -75,6 +79,9 @@ public final class Files {
 
 		try {
 			URI uri = getUri(plugin.getClass().getClassLoader(), path);
+			if (uri == null) {
+				return subPackages;
+			}
 
 			// If the URI is not a JAR, walk the directory.
 			if (!uri.getScheme().equals("jar")) {
@@ -99,7 +106,7 @@ public final class Files {
 					}
 				}
 			}
-		} catch (IOException | URISyntaxException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
@@ -111,19 +118,14 @@ public final class Files {
 	 *
 	 * @param path the path
 	 * @return the URI
-	 * @throws URISyntaxException if the URI is invalid
 	 */
-	@Nonnull
-	private static URI getUri(@Nonnull ClassLoader classLoader, @Nonnull String path) throws URISyntaxException {
-		URI uri;
-
+	@Nullable
+	private static URI getUri(@Nonnull ClassLoader classLoader, @Nonnull String path) {
 		try {
-			uri = Objects.requireNonNull(classLoader.getResource(path)).toURI();
+			return Objects.requireNonNull(classLoader.getResource(path)).toURI();
 		} catch (NullPointerException | URISyntaxException e) {
-			throw new RuntimeException("Failed to get the URI for the path: " + path);
+			return null;
 		}
-
-		return uri;
 	}
 
 	private static class CustomFileVisitor extends SimpleFileVisitor<Path> {
