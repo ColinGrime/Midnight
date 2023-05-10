@@ -1,9 +1,9 @@
 package me.colingrimes.particles.storage;
 
-import me.colingrimes.midnight.particle.ParticleEffect;
 import me.colingrimes.midnight.storage.file.YamlStorage;
 import me.colingrimes.midnight.storage.file.composite.CompositeIdentifier;
-import me.colingrimes.plugin.MidnightTemp;
+import me.colingrimes.particles.MidnightParticles;
+import me.colingrimes.particles.particle.ParticleEffect;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -12,9 +12,9 @@ import java.util.function.Function;
 
 public class ParticleStorage extends YamlStorage<ParticleEffect> {
 
-	private final MidnightTemp plugin;
+	private final MidnightParticles plugin;
 
-	public ParticleStorage(@Nonnull MidnightTemp plugin) {
+	public ParticleStorage(@Nonnull MidnightParticles plugin) {
 		super(plugin);
 		this.plugin = plugin;
 	}

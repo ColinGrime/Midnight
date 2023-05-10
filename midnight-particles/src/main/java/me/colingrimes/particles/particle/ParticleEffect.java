@@ -19,6 +19,7 @@ public interface ParticleEffect extends Serializable {
 
     /**
      * Gets the type of the particle effect.
+     *
      * @return the type of the particle effect
      */
     @Nonnull
@@ -41,6 +42,7 @@ public interface ParticleEffect extends Serializable {
 
     /**
      * Attaches the particle effect to the specified entity.
+     *
      * @param entity the entity to attach to
      */
     void attach(@Nonnull Entity entity);
@@ -52,6 +54,7 @@ public interface ParticleEffect extends Serializable {
 
     /**
      * Gets the UUID of the particle effect.
+     *
      * @return the UUID of the particle effect
      */
     @Nonnull
@@ -59,6 +62,7 @@ public interface ParticleEffect extends Serializable {
 
     /**
      * Gets the name of the particle effect.
+     *
      * @return the name of the particle effect
      */
     @Nonnull
@@ -66,12 +70,14 @@ public interface ParticleEffect extends Serializable {
 
     /**
      * Sets the name of the particle effect.
+     *
      * @param name the name of the particle effect
      */
     void setName(@Nonnull String name);
 
     /**
      * Gets the point where the particle effect is located.
+     *
      * @return the point of the particle effect
      */
     @Nonnull
@@ -79,12 +85,14 @@ public interface ParticleEffect extends Serializable {
 
     /**
      * Sets the point where the particle effect is located.
+     *
      * @param point the point of the particle effect
      */
     void setPoint(@Nonnull Point<Rotation> point);
 
     /**
      * Gets the properties of the particle effect.
+     *
      * @return the properties of the particle effect
      */
     @Nonnull
@@ -92,20 +100,23 @@ public interface ParticleEffect extends Serializable {
 
     /**
      * Sets the properties of the particle effect.
+     *
      * @param properties the properties of the particle effect
      */
     void setProperties(@Nonnull ParticleProperties properties);
 
     /**
      * Updates the property of the particle effect with the specified value.
+     *
      * @param property the property to update
-     * @param value the new value for the property
+     * @param value    the new value for the property
      * @throws UnsupportedOperationException if the property is not supported by the particle effect
      */
     void updateProperty(@Nonnull ParticleProperty property, @Nonnull String value) throws UnsupportedOperationException;
 
     /**
      * Gets the current value of the specified property.
+     *
      * @param property the property to get the value for
      * @return the current value of the property
      * @throws UnsupportedOperationException if the property is not supported by the particle effect
@@ -127,6 +138,7 @@ public interface ParticleEffect extends Serializable {
 
     /**
      * Deserializes a particle effect from the specified map.
+     *
      * @param map the map to deserialize from
      * @return the deserialized particle effect
      */
@@ -138,7 +150,6 @@ public interface ParticleEffect extends Serializable {
 
         return switch (type) {
             case CIRCLE -> CircleParticleEffect.deserialize(map);
-            default -> throw new IllegalArgumentException("Unknown particle effect type: " + type.name());
         };
     }
 }

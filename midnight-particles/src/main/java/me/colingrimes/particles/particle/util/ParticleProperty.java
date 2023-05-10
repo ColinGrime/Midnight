@@ -15,7 +15,7 @@ public enum ParticleProperty {
 	SPEED(Double::parseDouble),
 	COLOR(Parser::parseColor),
 	RADIUS(Double::parseDouble), // Specific to CircleParticleEffect
-	POINTS(Integer::parseInt); // Specific to CircleParticleEffect
+	POINTS(Integer::parseInt);   // Specific to CircleParticleEffect
 
 	private final Function<String, Object> valueParser;
 
@@ -30,6 +30,7 @@ public enum ParticleProperty {
 
 	/**
 	 * Parses the provided string to the corresponding ParticleProperty.
+	 *
 	 * @param value the string value to parse
 	 * @return the ParticleProperty matching the provided string
 	 */

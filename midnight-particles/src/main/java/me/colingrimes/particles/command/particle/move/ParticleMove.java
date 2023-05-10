@@ -5,19 +5,20 @@ import me.colingrimes.midnight.command.handler.util.CommandProperties;
 import me.colingrimes.midnight.command.handler.util.Sender;
 import me.colingrimes.midnight.command.handler.util.ArgumentList;
 import me.colingrimes.midnight.geometry.Point;
-import me.colingrimes.midnight.particle.ParticleEffect;
+import me.colingrimes.midnight.geometry.Rotation;
 import me.colingrimes.midnight.util.bukkit.Locations;
-import me.colingrimes.plugin.MidnightTemp;
-import me.colingrimes.plugin.config.Messages;
+import me.colingrimes.particles.MidnightParticles;
+import me.colingrimes.particles.config.Messages;
+import me.colingrimes.particles.particle.ParticleEffect;
 import org.bukkit.Location;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
-public class ParticleMove implements Command<MidnightTemp> {
+public class ParticleMove implements Command<MidnightParticles> {
 
 	@Override
-	public void execute(@Nonnull MidnightTemp plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
+	public void execute(@Nonnull MidnightParticles plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
 		Optional<ParticleEffect> particle = plugin.getParticleManager().getSelectedParticle(sender.player());
 
 		// Check if a particle is selected.
@@ -28,7 +29,7 @@ public class ParticleMove implements Command<MidnightTemp> {
 
 		// Move the particle to the player's location if no coordinates are specified.
 		if (args.size() == 0) {
-			particle.get().setPoint(Point.of(sender.player()));
+			particle.get().setPoint(Point.of(sender.player(), Rotation.create()));
 			Messages.PARTICLE_MOVE.replace("{location}", Locations.toString(sender.location())).send(sender);
 			return;
 		}
@@ -39,7 +40,7 @@ public class ParticleMove implements Command<MidnightTemp> {
 
 		if (x.isPresent() && y.isPresent() && z.isPresent()) {
 			Location location = new Location(sender.world(), x.get(), y.get(), z.get());
-			particle.get().setPoint(Point.of(location));
+			particle.get().setPoint(Point.of(location, Rotation.create()));
 			Messages.PARTICLE_MOVE.replace("{location}", Locations.toString(location)).send(sender);
 		} else {
 			Messages.INVALID_LOCATION.send(sender);

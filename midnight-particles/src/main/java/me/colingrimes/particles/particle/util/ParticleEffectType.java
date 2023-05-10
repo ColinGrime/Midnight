@@ -12,6 +12,7 @@ public enum ParticleEffectType {
 
     /**
      * Parses the provided string to the corresponding ParticleEffectType.
+     *
      * @param value the string value to parse
      * @return the ParticleEffectType matching the provided string
      */

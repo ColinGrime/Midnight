@@ -1,6 +1,6 @@
 package me.colingrimes.particles.manager;
 
-import me.colingrimes.midnight.particle.ParticleEffect;
+import me.colingrimes.particles.particle.ParticleEffect;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -13,6 +13,7 @@ public class ParticleManager {
 
     /**
      * Gets all ParticleEffect objects in alphabetical order by their names.
+     *
      * @return a sorted list of ParticleEffect objects
      */
     @Nonnull
@@ -25,6 +26,7 @@ public class ParticleManager {
 
     /**
      * Gets the particle effect with the given name.
+     *
      * @param name the name of the particle effect
      * @return the particle effect, if any
      */
@@ -40,6 +42,7 @@ public class ParticleManager {
 
     /**
      * Adds a particle effect.
+     *
      * @param particle the particle effect to add
      */
     public void addParticle(@Nonnull ParticleEffect particle) {
@@ -48,6 +51,7 @@ public class ParticleManager {
 
     /**
      * Deletes a particle effect.
+     *
      * @param particle the particle effect to delete
      */
     public void deleteParticle(@Nonnull ParticleEffect particle) {
@@ -64,6 +68,7 @@ public class ParticleManager {
 
     /**
      * Loads the particle effects.
+     *
      * @param particles the particle effects to load
      */
     public void loadParticles(@Nonnull Map<String, ParticleEffect> particles) {
@@ -74,6 +79,7 @@ public class ParticleManager {
 
     /**
      * Gets the selected particle effect for a player.
+     *
      * @param player the player to get the selected particle effect for
      * @return the selected particle effect, if any
      */
@@ -84,6 +90,7 @@ public class ParticleManager {
 
     /**
      * Selects a particle effect for a player.
+     *
      * @param player the player that selected the particle effect
      * @param particleEffect the particle effect that was selected
      */
@@ -93,6 +100,7 @@ public class ParticleManager {
 
     /**
      * Removes the selected particle effect for a player.
+     *
      * @param player the player to remove the selected particle effect for
      */
     public void removeSelectedParticle(@Nonnull Player player) {

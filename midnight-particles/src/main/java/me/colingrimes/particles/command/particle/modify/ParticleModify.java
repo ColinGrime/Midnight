@@ -4,11 +4,11 @@ import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.handler.util.CommandProperties;
 import me.colingrimes.midnight.command.handler.util.Sender;
 import me.colingrimes.midnight.command.handler.util.ArgumentList;
-import me.colingrimes.midnight.particle.ParticleEffect;
-import me.colingrimes.midnight.particle.util.ParticleProperty;
 import me.colingrimes.midnight.util.text.Text;
-import me.colingrimes.plugin.MidnightTemp;
-import me.colingrimes.plugin.config.Messages;
+import me.colingrimes.particles.MidnightParticles;
+import me.colingrimes.particles.config.Messages;
+import me.colingrimes.particles.particle.ParticleEffect;
+import me.colingrimes.particles.particle.util.ParticleProperty;
 import org.bukkit.Particle;
 
 import javax.annotation.Nonnull;
@@ -18,10 +18,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class ParticleModify implements Command<MidnightTemp> {
+public class ParticleModify implements Command<MidnightParticles> {
 
 	@Override
-	public void execute(@Nonnull MidnightTemp plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
+	public void execute(@Nonnull MidnightParticles plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
 		Optional<ParticleEffect> particle = plugin.getParticleManager().getSelectedParticle(sender.player());
 		Optional<ParticleProperty> property = ParticleProperty.fromString(args.get(0));
 
@@ -51,7 +51,7 @@ public class ParticleModify implements Command<MidnightTemp> {
 
 	@Nullable
 	@Override
-	public List<String> tabComplete(@Nonnull MidnightTemp plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
+	public List<String> tabComplete(@Nonnull MidnightParticles plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
 		if (args.size() == 1) {
 			return Arrays.stream(ParticleProperty.values()).map(p -> p.name().toLowerCase()).collect(Collectors.toList());
 		}

@@ -4,17 +4,17 @@ import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.handler.util.CommandProperties;
 import me.colingrimes.midnight.command.handler.util.Sender;
 import me.colingrimes.midnight.command.handler.util.ArgumentList;
-import me.colingrimes.midnight.particle.ParticleEffect;
-import me.colingrimes.plugin.MidnightTemp;
-import me.colingrimes.plugin.config.Messages;
+import me.colingrimes.particles.MidnightParticles;
+import me.colingrimes.particles.config.Messages;
+import me.colingrimes.particles.particle.ParticleEffect;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
-public class ParticleClear implements Command<MidnightTemp> {
+public class ParticleClear implements Command<MidnightParticles> {
 
 	@Override
-	public void execute(@Nonnull MidnightTemp plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
+	public void execute(@Nonnull MidnightParticles plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
 		Optional<ParticleEffect> particle = plugin.getParticleManager().getSelectedParticle(sender.player());
 
 		// Check if a particle is selected.

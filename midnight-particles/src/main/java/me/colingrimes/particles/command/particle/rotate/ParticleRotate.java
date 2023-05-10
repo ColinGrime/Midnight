@@ -6,19 +6,19 @@ import me.colingrimes.midnight.command.handler.util.Sender;
 import me.colingrimes.midnight.command.handler.util.ArgumentList;
 import me.colingrimes.midnight.geometry.Point;
 import me.colingrimes.midnight.geometry.Rotation;
-import me.colingrimes.midnight.particle.ParticleEffect;
-import me.colingrimes.plugin.MidnightTemp;
-import me.colingrimes.plugin.config.Messages;
+import me.colingrimes.particles.MidnightParticles;
+import me.colingrimes.particles.config.Messages;
+import me.colingrimes.particles.particle.ParticleEffect;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class ParticleRotate implements Command<MidnightTemp> {
+public class ParticleRotate implements Command<MidnightParticles> {
 
 	@Override
-	public void execute(@Nonnull MidnightTemp plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
+	public void execute(@Nonnull MidnightParticles plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
 		Optional<ParticleEffect> effect = plugin.getParticleManager().getSelectedParticle(sender.player());
 		if (effect.isEmpty()) {
 			Messages.PARTICLE_NOT_SELECTED.send(sender);
@@ -44,7 +44,7 @@ public class ParticleRotate implements Command<MidnightTemp> {
 
 	@Nullable
 	@Override
-	public List<String> tabComplete(@Nonnull MidnightTemp plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
+	public List<String> tabComplete(@Nonnull MidnightParticles plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
 		if (args.size() == 1) {
 			return List.of("yaw", "pitch", "roll");
 		} else {

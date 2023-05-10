@@ -21,6 +21,7 @@ public class ParticleProperties implements Serializable {
 
     /**
      * Constructs a new ParticleProperties with default values.
+     *
      * @return the particle properties
      */
     public static ParticleProperties create() {
@@ -29,11 +30,12 @@ public class ParticleProperties implements Serializable {
 
     /**
      * Constructs a new ParticleProperties with the given particle type.
+     *
      * @param particle the particle type
-     * @param count the number of particles to spawn
-     * @param offset the offset
-     * @param speed the speed
-     * @param data the data
+     * @param count    the number of particles to spawn
+     * @param offset   the offset
+     * @param speed    the speed
+     * @param data     the data
      * @return the particle properties
      */
     public static ParticleProperties of(@Nonnull Particle particle, int count, @Nonnull Vector offset, double speed, @Nullable Object data) {
@@ -50,6 +52,7 @@ public class ParticleProperties implements Serializable {
 
     /**
      * Gets the particle type.
+     *
      * @return the particle type
      */
     @Nonnull
@@ -59,6 +62,7 @@ public class ParticleProperties implements Serializable {
 
     /**
      * Sets the particle type.
+     *
      * @param particle the particle type
      */
     public void setParticle(@Nonnull Particle particle) {
@@ -68,6 +72,7 @@ public class ParticleProperties implements Serializable {
 
     /**
      * Gets the number of particles to spawn.
+     *
      * @return the count of particles
      */
     public int getCount() {
@@ -76,6 +81,7 @@ public class ParticleProperties implements Serializable {
 
     /**
      * Sets the number of particles to spawn.
+     *
      * @param count the count of particles
      */
     public void setCount(int count) {
@@ -84,6 +90,7 @@ public class ParticleProperties implements Serializable {
 
     /**
      * Gets the offset of the particle.
+     *
      * @return the particle offset
      */
     @Nonnull
@@ -93,6 +100,7 @@ public class ParticleProperties implements Serializable {
 
     /**
      * Sets the offset of the particle.
+     *
      * @param offset the particle offset
      */
     public void setOffset(@Nonnull Vector offset) {
@@ -101,6 +109,7 @@ public class ParticleProperties implements Serializable {
 
     /**
      * Gets the speed of the particle.
+     *
      * @return the particle speed
      */
     public double getSpeed() {
@@ -109,6 +118,7 @@ public class ParticleProperties implements Serializable {
 
     /**
      * Sets the speed of the particle.
+     *
      * @param speed the particle speed
      */
     public void setSpeed(double speed) {
@@ -117,6 +127,7 @@ public class ParticleProperties implements Serializable {
 
     /**
      * Gets the data for the particle.
+     *
      * @return the particle data
      */
     @Nullable
@@ -126,6 +137,7 @@ public class ParticleProperties implements Serializable {
 
     /**
      * Sets the data for the particle.
+     *
      * @param data the particle data
      */
     public void setData(@Nonnull Object data) {
@@ -134,6 +146,7 @@ public class ParticleProperties implements Serializable {
 
     /**
      * Sets the color of the particle.
+     *
      * @param color the color
      */
     public void setColor(@Nonnull Color color) {
@@ -183,6 +196,7 @@ public class ParticleProperties implements Serializable {
 
     /**
      * Deserializes a map into a ParticleProperties object.
+     *
      * @param map the serialized map
      * @return the particle properties
      */

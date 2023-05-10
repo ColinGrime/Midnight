@@ -4,12 +4,12 @@ import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.handler.util.CommandProperties;
 import me.colingrimes.midnight.command.handler.util.Sender;
 import me.colingrimes.midnight.command.handler.util.ArgumentList;
-import me.colingrimes.midnight.particle.ParticleEffect;
-import me.colingrimes.midnight.particle.implementation.ParticleEffectFactory;
-import me.colingrimes.midnight.particle.util.ParticleEffectType;
 import me.colingrimes.midnight.util.text.Text;
-import me.colingrimes.plugin.MidnightTemp;
-import me.colingrimes.plugin.config.Messages;
+import me.colingrimes.particles.MidnightParticles;
+import me.colingrimes.particles.config.Messages;
+import me.colingrimes.particles.particle.ParticleEffect;
+import me.colingrimes.particles.particle.implementation.ParticleEffectFactory;
+import me.colingrimes.particles.particle.util.ParticleEffectType;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -19,10 +19,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class ParticleCreate implements Command<MidnightTemp> {
+public class ParticleCreate implements Command<MidnightParticles> {
 
 	@Override
-	public void execute(@Nonnull MidnightTemp plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
+	public void execute(@Nonnull MidnightParticles plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
 		Player player = sender.player();
 		Optional<ParticleEffectType> particleType = ParticleEffectType.fromString(args.get(0));
 		Optional<ParticleEffect> selectedParticle = plugin.getParticleManager().getSelectedParticle(player);
@@ -52,7 +52,7 @@ public class ParticleCreate implements Command<MidnightTemp> {
 
 	@Nullable
 	@Override
-	public List<String> tabComplete(@Nonnull MidnightTemp plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
+	public List<String> tabComplete(@Nonnull MidnightParticles plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
 		if (args.size() == 1) {
 			return Arrays.stream(ParticleEffectType.values()).map(p -> p.name().toLowerCase()).collect(Collectors.toList());
 		}
