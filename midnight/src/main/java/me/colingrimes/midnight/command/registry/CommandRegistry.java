@@ -1,28 +1,53 @@
 package me.colingrimes.midnight.command.registry;
 
 import me.colingrimes.midnight.command.handler.CommandHandler;
-import me.colingrimes.midnight.command.node.CommandNode;
-import me.colingrimes.midnight.command.registry.util.CommandRegistrar;
+import me.colingrimes.midnight.command.registry.node.CommandNode;
 import me.colingrimes.midnight.Midnight;
+import org.bukkit.Bukkit;
+import org.bukkit.command.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+/**
+ * A registry for managing commands and their handlers within the Midnight plugin.
+ * This class provides methods for registering commands, subcommands, and their
+ * associated {@link CommandHandler}s, and for automatically registering those
+ * commands with the Bukkit command map.
+ */
 public class CommandRegistry {
 
 	private final Midnight plugin;
 	private final Map<String, CommandNode> commandNodes = new HashMap<>();
 
+	/**
+	 * Creates a new command registry.
+	 *
+	 * @param plugin the Midnight plugin
+	 */
 	public CommandRegistry(@Nonnull Midnight plugin) {
 		this.plugin = plugin;
 	}
 
 	/**
-	 * Registers a command.
-	 * @param args the command arguments
-	 * @param handler the command handler
+	 * Scans and registers command classes within the root command package of the plugin.
+	 */
+	public void scanPackages() {
+		CommandPackageScanner packageScanner = new CommandPackageScanner(plugin, this);
+		packageScanner.scan();
+	}
+
+	/**
+	 * Registers a command with its associated {@link CommandHandler}.
+	 *
+	 * @param args    the command arguments, where the first element is the command name,
+	 *                and any subsequent elements are subcommand names
+	 * @param handler the command handler for the command
 	 */
 	public void register(@Nonnull String[] args, @Nullable CommandHandler handler) {
 		CommandNode current = commandNodes.get(args[0]);
@@ -52,12 +77,48 @@ public class CommandRegistry {
 	}
 
 	/**
-	 * Registers a command.
+	 * Registers a command with its associated {@link CommandNode}.
+	 *
 	 * @param name the command name
 	 * @param node the command node
 	 */
 	private void registerCommand(@Nonnull String name, @Nonnull CommandNode node) {
-		CustomCommand customCommand = new CustomCommand(name, node, node);
-		CommandRegistrar.registerCommand(plugin, customCommand);
+		try {
+			Field commandMapField = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+			commandMapField.setAccessible(true);
+
+			CommandMap commandMap = (CommandMap) commandMapField.get(Bukkit.getServer());
+			commandMap.register(plugin.getName(), new CustomCommand(name, node, node));
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * A custom command wrapper around the {@link CommandExecutor} and {@link TabExecutor}
+	 * interfaces, allowing commands to be executed and tab-completed by the Bukkit server.
+	 */
+	private static class CustomCommand extends Command {
+
+		private final CommandExecutor commandExecutor;
+		private final TabExecutor tabExecutor;
+
+		public CustomCommand(@Nonnull String name, @Nonnull CommandExecutor commandExecutor, @Nonnull TabExecutor tabExecutor) {
+			super(name);
+			this.commandExecutor = commandExecutor;
+			this.tabExecutor = tabExecutor;
+		}
+
+		@Override
+		public boolean execute(@Nonnull CommandSender sender, @Nonnull String commandLabel, @Nonnull String[] args) {
+			return commandExecutor.onCommand(sender, this, commandLabel, args);
+		}
+
+		@Nonnull
+		@Override
+		public List<String> tabComplete(@Nonnull CommandSender sender, @Nonnull String alias, @Nonnull String[] args) throws IllegalArgumentException {
+			List<String> list = tabExecutor.onTabComplete(sender, this, alias, args);
+			return list == null ? new ArrayList<>() : list;
+		}
 	}
 }
