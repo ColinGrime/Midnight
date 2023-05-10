@@ -18,11 +18,22 @@ public class Direction implements Serializable {
     private final double pitch;
 
     /**
+     * Constructs a new Direction with default angles.
+     *
+     * @return the direction
+     */
+    @Nonnull
+    public static Direction create() {
+        return new Direction(0, 0);
+    }
+
+    /**
      * Constructs a new Direction with the given yaw and pitch angles.
      *
      * @param yaw   the yaw angle
      * @param pitch the pitch angle
      */
+    @Nonnull
     public static Direction of(double yaw, double pitch) {
         return new Direction(yaw, pitch);
     }

@@ -16,12 +16,24 @@ public class Rotation extends Direction implements Serializable {
     private final double roll;
 
     /**
+     * Constructs a new Rotation with default angles.
+     *
+     * @return the rotation
+     */
+    @Nonnull
+    public static Rotation create() {
+        return new Rotation(0, 0, 0);
+    }
+
+    /**
      * Constructs a new Rotation with the given yaw, pitch, and roll angles.
      *
      * @param yaw   the yaw angle
      * @param pitch the pitch angle
      * @param roll  the roll angle
+     * @return the rotation
      */
+    @Nonnull
     public static Rotation of(double yaw, double pitch, double roll) {
         return new Rotation(yaw, pitch, roll);
     }
