@@ -1,5 +1,6 @@
 package me.colingrimes.midnight.scheduler;
 
+import me.colingrimes.midnight.scheduler.functional.Execution;
 import me.colingrimes.midnight.scheduler.implementation.AsyncScheduler;
 import me.colingrimes.midnight.scheduler.implementation.SyncScheduler;
 import me.colingrimes.midnight.scheduler.task.Task;
@@ -7,7 +8,6 @@ import me.colingrimes.midnight.scheduler.task.Task;
 import javax.annotation.Nonnull;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 
 /**
  * Represents a scheduler for running tasks.
@@ -28,15 +28,17 @@ public interface Scheduler {
 	<T> CompletableFuture<T> call(@Nonnull Callable<T> task);
 
 	/**
-	 * Supplies a value using the given supplier.
+	 * Executes the given execution.
 	 *
-	 * @param task the task to supply a value
-	 * @param <T>  the type of the result
+	 * @param task the task to execute
 	 * @return a future that will be completed when the task is finished
 	 */
 	@Nonnull
-	default <T> CompletableFuture<T> supply(@Nonnull Supplier<T> task) {
-		return call(task::get);
+	default CompletableFuture<Void> execute(@Nonnull Execution task) {
+		return call(() -> {
+			task.execute();
+			return null;
+		});
 	}
 
 	/**
@@ -65,16 +67,18 @@ public interface Scheduler {
 	<T> CompletableFuture<T> callLater(@Nonnull Callable<T> task, long delayTicks);
 
 	/**
-	 * Supplies a value using the given supplier after a delay.
+	 * Executes the given execution after a delay.
 	 *
-	 * @param task       the task to supply a value
+	 * @param task       the task to execute
 	 * @param delayTicks the delay in ticks
-	 * @param <T>        the type of the result
 	 * @return a future that will be completed when the task is finished
 	 */
 	@Nonnull
-	default <T> CompletableFuture<T> supplyLater(@Nonnull Supplier<T> task, long delayTicks) {
-		return callLater(task::get, delayTicks);
+	default CompletableFuture<Void> execute(@Nonnull Execution task, long delayTicks) {
+		return callLater(() -> {
+			task.execute();
+			return null;
+		}, delayTicks);
 	}
 
 	/**
