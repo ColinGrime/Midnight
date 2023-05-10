@@ -1,8 +1,11 @@
 package me.colingrimes.midnight.message;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+import me.colingrimes.midnight.util.Common;
 import me.colingrimes.midnight.util.text.Text;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -15,10 +18,13 @@ import java.util.stream.Collectors;
 /**
  * A utility class designed for managing and applying multiple placeholders
  * within different types of input, including strings, lists of strings, or components.
+ * <p>
+ * In addition, this class also supports the use of PlaceholderAPI placeholders.
  */
 public class Placeholders {
 
 	private final Map<String, String> placeholders = new HashMap<>();
+	private Player player;
 
 	/**
 	 * Creates a new placeholders object.
@@ -28,6 +34,20 @@ public class Placeholders {
 	@Nonnull
 	public static Placeholders create() {
 		return new Placeholders();
+	}
+
+	/**
+	 * Creates a new placeholders object with the specified player.
+	 * This is used for PlaceholderAPI placeholders.
+	 *
+	 * @param player the player
+	 * @return the placeholders object
+	 */
+	@Nonnull
+	public static Placeholders create(@Nullable Player player) {
+		Placeholders placeholders = new Placeholders();
+		placeholders.player = player;
+		return placeholders;
 	}
 
 	/**
@@ -67,6 +87,11 @@ public class Placeholders {
 	public String apply(@Nullable String str) {
 		if (str == null) {
 			return "";
+		}
+
+		// Apply PlaceholderAPI placeholders.
+		if (Common.getPlugin("PlaceholderAPI") != null) {
+			str = PlaceholderAPI.setPlaceholders(player, str.replaceAll("\\{(.+?)}", "%$1%"));
 		}
 
 		// Apply the placeholders in the string.
@@ -127,5 +152,22 @@ public class Placeholders {
 		}
 
 		return mainComponent;
+	}
+
+	/**
+	 * Applies all placeholders in a message.
+	 *
+	 * @param message the message to apply placeholders to
+	 * @return the new message with applied placeholders
+	 */
+	@Nonnull
+	public Message<?> apply(@Nonnull Message<?> message) {
+		if (message.getContent() instanceof String) {
+			return Message.of(apply((String) message.getContent()));
+		} else if (message.getContent() instanceof TextComponent) {
+			return Message.of(apply((TextComponent) message.getContent()));
+		} else {
+			return message;
+		}
 	}
 }

@@ -1,6 +1,9 @@
 package me.colingrimes.midnight.util.text;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+import me.colingrimes.midnight.util.Common;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -97,6 +100,22 @@ public final class Text {
 		}
 
 		return builder.toString();
+	}
+
+	/**
+	 * Replaces all placeholders using the PlaceholderAPI plugin.
+	 *
+	 * @param player the player to replace placeholders for
+	 * @param str    the string to replace placeholders in
+	 * @return the string with placeholders replaced
+	 */
+	@Nonnull
+	public static String placeholders(@Nonnull Player player, @Nonnull String str) {
+		if (Common.getPlugin("PlaceholderAPI") == null) {
+			return str;
+		} else {
+			return PlaceholderAPI.setPlaceholders(player, Text.color(str.replaceAll("\\{(.+?)}", "%$1%")));
+		}
 	}
 
 	private Text() {
