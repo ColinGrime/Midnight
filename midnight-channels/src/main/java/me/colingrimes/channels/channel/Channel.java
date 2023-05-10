@@ -1,8 +1,7 @@
 package me.colingrimes.channels.channel;
 
 import me.colingrimes.channels.channel.filter.ChatFilter;
-import me.colingrimes.channels.channel.permission.ChannelPermission;
-import me.colingrimes.channels.channel.permission.PermissionProvider;
+import me.colingrimes.channels.channel.settings.ChannelPermission;
 import me.colingrimes.channels.channel.settings.ChannelSettings;
 import me.colingrimes.channels.channel.implementation.SimpleChannel;
 import me.colingrimes.midnight.message.Message;
@@ -11,7 +10,6 @@ import me.colingrimes.midnight.util.bukkit.ChatColor;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * Represents a communication channel.
@@ -21,21 +19,12 @@ public interface Channel {
     /**
      * Creates a new channel with the specified name.
      *
-     * @param name               the name of the channel
-     * @param permissionProvider the permission provider for the channel
+     * @param name the name of the channel
      * @return the new channel
      */
-    static Channel of(@Nonnull String name, @Nullable PermissionProvider permissionProvider) {
-        return new SimpleChannel(name, permissionProvider);
+    static Channel of(@Nonnull String name) {
+        return new SimpleChannel(name);
     }
-
-    /**
-     * Gets the channel's unique identifier.
-     *
-     * @return the channel's unique identifier
-     */
-    @Nonnull
-    UUID getID();
 
     /**
      * Gets the channel's display name.
@@ -44,23 +33,6 @@ public interface Channel {
      */
     @Nonnull
     String getName();
-
-    /**
-     * Gets the channel's permission provider.
-     *
-     * @return the channel's permission provider
-     */
-    @Nonnull
-    PermissionProvider getPermissionProvider();
-
-    /**
-     * Checks if a participant has a specific permission in the channel.
-     *
-     * @param participant the participant to check
-     * @param permission  the permission to check for
-     * @return true if the participant has the specified permission, false otherwise
-     */
-    boolean hasPermission(@Nonnull Participant participant, @Nonnull ChannelPermission permission);
 
     /**
      * Gets the channel's settings.
@@ -101,6 +73,14 @@ public interface Channel {
     void broadcast(@Nonnull Message<?> message);
 
     /**
+     * Broadcasts a message to all participants in the channel.
+     * This is to be used for system messages and will bypass all chat filters.
+     *
+     * @param message the message to send
+     */
+    void broadcast(@Nonnull String message);
+
+    /**
      * Sends a message from a {@code Participant} to all participants in the channel.
      * This will fail if the sender has no permission to speak.
      * This is to be used for regular messages.
@@ -109,6 +89,16 @@ public interface Channel {
      * @param message the message to send
      */
     void send(@Nonnull Participant sender, @Nonnull Message<?> message);
+
+    /**
+     * Sends a message from a {@code Participant} to all participants in the channel.
+     * This will fail if the sender has no permission to speak.
+     * This is to be used for regular messages.
+     *
+     * @param sender  the participant sending the message
+     * @param message the message to send
+     */
+    void send(@Nonnull Participant sender, @Nonnull String message);
 
     /**
      * Gets an unmodifiable set of the channel's participants.
@@ -143,6 +133,15 @@ public interface Channel {
      * @return true if the participant is in the channel, false otherwise
      */
     boolean contains(@Nonnull Participant participant);
+
+    /**
+     * Checks if a participant has a specific permission in the channel.
+     *
+     * @param participant the participant to check
+     * @param permission  the permission to check for
+     * @return true if the participant has the specified permission, false otherwise
+     */
+    boolean hasPermission(@Nonnull Participant participant, @Nonnull ChannelPermission permission);
 
     /**
      * Gets the chat color for a participant in the channel.
