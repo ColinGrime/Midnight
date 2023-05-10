@@ -19,7 +19,6 @@ public class SimpleParticipant implements Participant {
     private final List<Channel> channels;
     private final Set<UUID> ignored;
     private final ZonedDateTime joinDate;
-    private Player player;
     private Channel activeChannel;
     private boolean isMuted;
     private ZonedDateTime muteEndTime;
@@ -37,8 +36,6 @@ public class SimpleParticipant implements Participant {
         this.ignored = new HashSet<>();
         this.joinDate = ZonedDateTime.now();
         this.isMuted = false;
-        this.activeChannel = MidnightTemp.getInstance().getGlobalChannel();
-        this.nickname = player.getName();
         this.lastSeen = ZonedDateTime.now();
     }
 
@@ -53,8 +50,6 @@ public class SimpleParticipant implements Participant {
         this.ignored = new HashSet<>();
         this.joinDate = ZonedDateTime.now();
         this.isMuted = false;
-        this.player = player;
-        this.activeChannel = MidnightTemp.getInstance().getGlobalChannel();
         this.nickname = player.getName();
         this.lastSeen = ZonedDateTime.now();
     }
@@ -65,8 +60,7 @@ public class SimpleParticipant implements Participant {
      * @param id the unique identifier of the participant
      * @param channels the channels the participant is in
      * @param ignored the participants the participant is ignoring
-     * @param joinedDate the date the participant joined
-     * @param player the player associated with the participant
+     * @param joinDate the date the participant joined
      * @param activeChannel the participant's active channel
      * @param isMuted whether the participant is muted
      * @param muteEndTime the time the participant's mute ends
@@ -76,18 +70,16 @@ public class SimpleParticipant implements Participant {
     public SimpleParticipant(@Nonnull UUID id,
                              @Nonnull List<Channel> channels,
                              @Nonnull Set<UUID> ignored,
-                             @Nonnull ZonedDateTime joinedDate,
-                             @Nullable Player player,
+                             @Nonnull ZonedDateTime joinDate,
                              @Nonnull Channel activeChannel,
                              boolean isMuted,
-                             @Nonnull ZonedDateTime muteEndTime,
+                             @Nullable ZonedDateTime muteEndTime,
                              @Nonnull String nickname,
                              @Nonnull ZonedDateTime lastSeen) {
         this.id = id;
         this.channels = channels;
         this.ignored = ignored;
-        this.joinDate = joinedDate;
-        this.player = player;
+        this.joinDate = joinDate;
         this.activeChannel = activeChannel;
         this.isMuted = isMuted;
         this.muteEndTime = muteEndTime;
@@ -104,23 +96,27 @@ public class SimpleParticipant implements Participant {
     @Nonnull
     @Override
     public String getName() {
-        return nickname != null ? nickname : player.getName();
+        return nickname != null ? nickname : player().getName();
     }
 
     @Nonnull
     @Override
     public Player player() {
-        if (player != null) {
-            return player;
-        }
-
-        Players.get(id).ifPresent(p -> player = p);
-        return player;
+        return Players.get(id).orElseThrow(() -> new IllegalStateException("Player is not online!"));
     }
 
     @Override
     public void send(@Nonnull Message<?> message) {
-        Scheduler.SYNC.run(() -> message.send(this));
+        if (isOnline()) {
+            Scheduler.SYNC.run(() -> message.send(player()));
+        }
+    }
+
+    @Override
+    public void send(@Nonnull String message) {
+        if (isOnline()) {
+            Scheduler.SYNC.run(() -> player().sendMessage(message));
+        }
     }
 
     @Nonnull
@@ -131,7 +127,9 @@ public class SimpleParticipant implements Participant {
 
     @Override
     public void addChannel(@Nonnull Channel channel) {
-        channels.add(channel);
+        if (!channels.contains(channel)) {
+            channels.add(channel);
+        }
     }
 
     @Override
@@ -139,18 +137,18 @@ public class SimpleParticipant implements Participant {
         channels.remove(channel);
     }
 
-    @Nonnull
+    @Nullable
     @Override
     public Channel getActiveChannel() {
         return activeChannel;
     }
 
     @Override
-    public void setActiveChannel(@Nonnull Channel channel) {
+    public void setActiveChannel(@Nullable Channel channel) {
         this.activeChannel = channel;
     }
 
-    @Nonnull
+    @Nullable
     @Override
     public ZonedDateTime getMuteEndTime() {
         return muteEndTime;
@@ -209,7 +207,7 @@ public class SimpleParticipant implements Participant {
 
     @Override
     public boolean isOnline() {
-        return player.isOnline();
+        return Players.getNullable(id) != null;
     }
 
     @Nonnull
