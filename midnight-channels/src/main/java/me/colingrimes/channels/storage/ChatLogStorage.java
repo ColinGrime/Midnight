@@ -2,7 +2,8 @@ package me.colingrimes.channels.storage;
 
 import me.colingrimes.channels.MidnightChannels;
 import me.colingrimes.channels.channel.Channel;
-import me.colingrimes.channels.channel.Participant;
+import me.colingrimes.channels.channel.chatter.Chatter;
+import me.colingrimes.channels.message.ChannelLog;
 import me.colingrimes.channels.message.ChannelMessage;
 import me.colingrimes.midnight.message.implementation.TextMessage;
 import me.colingrimes.midnight.storage.sql.SqlStorage;
@@ -19,16 +20,16 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class ChatStorage extends SqlStorage<ChannelMessage<?>> {
+public class ChatLogStorage extends SqlStorage<ChannelMessage<?>> {
 
-    private static final String LOGS_SAVE = "INSERT INTO 'channel_logs' (channel_name, participant_id, content, timestamp) VALUES (?, ?, ?, ?)";
-    private static final String LOGS_DELETE = "DELETE FROM 'channel_logs' WHERE channel_name = ? AND participant_id = ? AND timestamp = ?";
+    private static final String LOGS_SAVE = "INSERT INTO 'channel_logs' (channel_name, chatter_id, content, timestamp) VALUES (?, ?, ?, ?)";
+    private static final String LOGS_DELETE = "DELETE FROM 'channel_logs' WHERE channel_name = ? AND chatter_id = ? AND timestamp = ?";
     private static final String LOGS_GET_BY_CHANNEL = "SELECT * FROM 'channel_logs' WHERE channel_name = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp DESC";
-    private static final String LOGS_GET_BY_PARTICIPANT = "SELECT * FROM 'channel_logs' WHERE participant_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp DESC";
+    private static final String LOGS_GET_BY_CHATTER = "SELECT * FROM 'channel_logs' WHERE chatter_id = ? AND timestamp >= ? AND timestamp <= ? ORDER BY timestamp DESC";
 
     private final MidnightChannels plugin;
 
-    public ChatStorage(@Nonnull MidnightChannels plugin, @Nonnull ConnectionProvider connectionProvider) {
+    public ChatLogStorage(@Nonnull MidnightChannels plugin, @Nonnull ConnectionProvider connectionProvider) {
         super(connectionProvider);
         this.plugin = plugin;
     }
@@ -38,7 +39,7 @@ public class ChatStorage extends SqlStorage<ChannelMessage<?>> {
         try (Connection c = provider.getConnection()) {
             try (PreparedStatement ps = c.prepareStatement(processor.apply(LOGS_SAVE))) {
                 ps.setString(1, data.getChannel().getName());
-                ps.setString(2, data.getParticipant() == null ? null : data.getParticipant().getID().toString());
+                ps.setString(2, data.getChatter() == null ? null : data.getChatter().getID().toString());
                 ps.setString(3, data.toText());
                 DatabaseUtils.setTimestamp(ps, 4, data.getTimestamp(), database);
                 ps.executeUpdate();
@@ -51,7 +52,7 @@ public class ChatStorage extends SqlStorage<ChannelMessage<?>> {
         try (Connection c = provider.getConnection()) {
             try (PreparedStatement ps = c.prepareStatement(processor.apply(LOGS_DELETE))) {
                 ps.setString(1, data.getChannel().getName());
-                ps.setString(2, data.getParticipant() == null ? null : data.getParticipant().getID().toString());
+                ps.setString(2, data.getChatter() == null ? null : data.getChatter().getID().toString());
                 DatabaseUtils.setTimestamp(ps, 3, data.getTimestamp(), database);
                 ps.executeUpdate();
             }
@@ -68,8 +69,8 @@ public class ChatStorage extends SqlStorage<ChannelMessage<?>> {
      * @throws Exception if there is an issue retrieving the logs
      */
     @Nonnull
-    public List<ChannelMessage<?>> getLogsByChannel(@Nonnull Channel channel, @Nonnull ZonedDateTime from, @Nonnull ZonedDateTime to) throws Exception {
-        List<ChannelMessage<?>> logs = new ArrayList<>();
+    public List<ChannelLog<?>> getLogsByChannel(@Nonnull Channel channel, @Nonnull ZonedDateTime from, @Nonnull ZonedDateTime to) throws Exception {
+        List<ChannelLog<?>> logs = new ArrayList<>();
         try (Connection c = provider.getConnection()) {
             try (PreparedStatement ps = c.prepareStatement(processor.apply(LOGS_GET_BY_CHANNEL))) {
                 ps.setString(1, channel.getName());
@@ -77,7 +78,7 @@ public class ChatStorage extends SqlStorage<ChannelMessage<?>> {
                 DatabaseUtils.setTimestamp(ps, 3, to, database);
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
-                        logs.add(createChannelMessage(rs));
+                        logs.add(createLog(rs));
                     }
                 }
             }
@@ -86,25 +87,25 @@ public class ChatStorage extends SqlStorage<ChannelMessage<?>> {
     }
 
     /**
-     * Gets logs by {@code Participant} within the specified time range.
+     * Gets logs by {@code Chatter} within the specified time range.
      *
-     * @param participant the participant to filter logs by
-     * @param from        the start time of the range
-     * @param to          the end time of the range
-     * @return a list of logs filtered by the specified participant and time range
+     * @param chatter the chatter to filter logs by
+     * @param from    the start time of the range
+     * @param to      the end time of the range
+     * @return a list of logs filtered by the specified chatter and time range
      * @throws Exception if there is an issue retrieving the logs
      */
     @Nonnull
-    public List<ChannelMessage<?>> getLogsByParticipant(@Nonnull Participant participant, @Nonnull ZonedDateTime from, @Nonnull ZonedDateTime to) throws Exception {
-        List<ChannelMessage<?>> logs = new ArrayList<>();
+    public List<ChannelLog<?>> getLogsByChatter(@Nonnull Chatter chatter, @Nonnull ZonedDateTime from, @Nonnull ZonedDateTime to) throws Exception {
+        List<ChannelLog<?>> logs = new ArrayList<>();
         try (Connection c = provider.getConnection()) {
-            try (PreparedStatement ps = c.prepareStatement(processor.apply(LOGS_GET_BY_PARTICIPANT))) {
-                ps.setString(1, participant.getID().toString());
+            try (PreparedStatement ps = c.prepareStatement(processor.apply(LOGS_GET_BY_CHATTER))) {
+                ps.setString(1, chatter.getID().toString());
                 DatabaseUtils.setTimestamp(ps, 2, from, database);
                 DatabaseUtils.setTimestamp(ps, 3, to, database);
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
-                        logs.add(createChannelMessage(rs));
+                        logs.add(createLog(rs));
                     }
                 }
             }
@@ -113,21 +114,20 @@ public class ChatStorage extends SqlStorage<ChannelMessage<?>> {
     }
 
     /**
-     * Creates a {@code ChannelMessage} instance from a {@code ResultSet}.
+     * Creates a {@code ChannelLog} instance from a {@code ResultSet}.
      *
      * @param rs the ResultSet containing the data
-     * @return a ChannelMessage instance with the data from the ResultSet
-     * @throws Exception if there is an issue creating the ChannelMessage
+     * @return a ChannelLog instance with the data from the ResultSet
+     * @throws Exception if there is an issue creating the ChannelLog
      */
     @Nonnull
-    private ChannelMessage<?> createChannelMessage(ResultSet rs) throws Exception {
+    private ChannelLog<?> createLog(ResultSet rs) throws Exception {
         String channelName = rs.getString("channel_name");
-        UUID participantID = rs.getString("participant_id") != null ? UUID.fromString(rs.getString("participant_id")) : null;
+        UUID chatterID = rs.getString("chatter_id") != null ? UUID.fromString(rs.getString("chatter_id")) : null;
         String content = rs.getString("content");
         ZonedDateTime timestamp = Objects.requireNonNull(DatabaseUtils.getTimestamp(rs, "timestamp", database));
 
-        Channel channel = plugin.getChannelManager().getChannel(channelName).orElseThrow();
-        Participant participant = participantID == null ? null : plugin.getParticipantStorage().load(participantID);
-        return new ChannelMessage<>(channel, participant, new TextMessage(content), timestamp);
+        Chatter chatter = chatterID == null ? null : plugin.getChatterStorage().load(chatterID);
+        return new ChannelLog<>(channelName, chatter, new TextMessage(content), timestamp);
     }
 }

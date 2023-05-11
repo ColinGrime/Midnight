@@ -1,7 +1,5 @@
-package me.colingrimes.channels.channel.implementation;
+package me.colingrimes.channels.channel.chatter;
 
-import me.colingrimes.channels.channel.Channel;
-import me.colingrimes.channels.channel.Participant;
 import me.colingrimes.midnight.message.Message;
 import me.colingrimes.midnight.scheduler.Scheduler;
 import me.colingrimes.midnight.util.bukkit.Players;
@@ -13,78 +11,70 @@ import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.*;
 
-public class SimpleParticipant implements Participant {
+public class StandardChatter implements Chatter {
 
     private final UUID id;
-    private final List<Channel> channels;
     private final Set<UUID> ignored;
     private final ZonedDateTime joinDate;
-    private Channel activeChannel;
     private boolean isMuted;
     private ZonedDateTime muteEndTime;
     private String nickname;
+    private UUID lastMessagedBy;
     private ZonedDateTime lastSeen;
 
     /**
-     * Creates a new participant from the uuid.
+     * Creates a new chatter from the uuid.
      *
-     * @param uuid the uuid to create the participant from
+     * @param uuid the uuid to create the chatter from
      */
-    public SimpleParticipant(@Nonnull UUID uuid) {
+    public StandardChatter(@Nonnull UUID uuid) {
         this.id = uuid;
-        this.channels = new ArrayList<>();
-        this.ignored = new HashSet<>();
-        this.joinDate = ZonedDateTime.now();
         this.isMuted = false;
+        this.ignored = new HashSet<>();
         this.lastSeen = ZonedDateTime.now();
+        this.joinDate = ZonedDateTime.now();
     }
 
     /**
-     * Creates a new participant from a player.
+     * Creates a new chatter from a player.
      *
-     * @param player the player to create the participant from
+     * @param player the player to create the chatter from
      */
-    public SimpleParticipant(@Nonnull Player player) {
+    public StandardChatter(@Nonnull Player player) {
         this.id = player.getUniqueId();
-        this.channels = new ArrayList<>();
-        this.ignored = new HashSet<>();
-        this.joinDate = ZonedDateTime.now();
         this.isMuted = false;
+        this.ignored = new HashSet<>();
         this.nickname = player.getName();
         this.lastSeen = ZonedDateTime.now();
+        this.joinDate = ZonedDateTime.now();
     }
 
     /**
-     * Creates a participant that was stored in a database.
+     * Creates a chatter that was stored in a database.
      *
-     * @param id the unique identifier of the participant
-     * @param channels the channels the participant is in
-     * @param ignored the participants the participant is ignoring
-     * @param joinDate the date the participant joined
-     * @param activeChannel the participant's active channel
-     * @param isMuted whether the participant is muted
-     * @param muteEndTime the time the participant's mute ends
-     * @param nickname the participant's nickname
-     * @param lastSeen the last time the participant was seen
+     * @param id the unique identifier of the chatter
+     * @param muteEndTime the time the chatter's mute ends
+     * @param isMuted whether the chatter is muted
+     * @param nickname the chatter's nickname
+     * @param lastMessagedBy the last person to message the chatter
+     * @param lastSeen the last time the chatter was seen
+     * @param joinDate the date the chatter joined
      */
-    public SimpleParticipant(@Nonnull UUID id,
-                             @Nonnull List<Channel> channels,
-                             @Nonnull Set<UUID> ignored,
-                             @Nonnull ZonedDateTime joinDate,
-                             @Nonnull Channel activeChannel,
-                             boolean isMuted,
-                             @Nullable ZonedDateTime muteEndTime,
-                             @Nonnull String nickname,
-                             @Nonnull ZonedDateTime lastSeen) {
+    public StandardChatter(@Nonnull UUID id,
+                           @Nullable ZonedDateTime muteEndTime,
+                           boolean isMuted,
+                           @Nonnull String nickname,
+                           @Nullable UUID lastMessagedBy,
+                           @Nonnull ZonedDateTime lastSeen,
+                           @Nonnull ZonedDateTime joinDate) {
         this.id = id;
-        this.channels = channels;
-        this.ignored = ignored;
-        this.joinDate = joinDate;
-        this.activeChannel = activeChannel;
-        this.isMuted = isMuted;
+        this.ignored = new HashSet<>();
         this.muteEndTime = muteEndTime;
+        this.isMuted = isMuted;
         this.nickname = nickname;
+        this.lastMessagedBy = lastMessagedBy;
         this.lastSeen = lastSeen;
+        this.joinDate = joinDate;
     }
 
     @Nonnull
@@ -106,46 +96,22 @@ public class SimpleParticipant implements Participant {
     }
 
     @Override
+    public boolean online() {
+        return Players.get(id).isPresent();
+    }
+
+    @Override
     public void send(@Nonnull Message<?> message) {
-        if (isOnline()) {
+        if (online()) {
             Scheduler.SYNC.run(() -> message.send(player()));
         }
     }
 
     @Override
     public void send(@Nonnull String message) {
-        if (isOnline()) {
+        if (online()) {
             Scheduler.SYNC.run(() -> player().sendMessage(message));
         }
-    }
-
-    @Nonnull
-    @Override
-    public List<Channel> getChannels() {
-        return Collections.unmodifiableList(channels);
-    }
-
-    @Override
-    public void addChannel(@Nonnull Channel channel) {
-        if (!channels.contains(channel)) {
-            channels.add(channel);
-        }
-    }
-
-    @Override
-    public void removeChannel(@Nonnull Channel channel) {
-        channels.remove(channel);
-    }
-
-    @Nullable
-    @Override
-    public Channel getActiveChannel() {
-        return activeChannel;
-    }
-
-    @Override
-    public void setActiveChannel(@Nullable Channel channel) {
-        this.activeChannel = channel;
     }
 
     @Nullable
@@ -205,15 +171,21 @@ public class SimpleParticipant implements Participant {
         this.nickname = nickname;
     }
 
+    @Nullable
     @Override
-    public boolean isOnline() {
-        return Players.getNullable(id) != null;
+    public UUID getLastMessagedBy() {
+        return lastMessagedBy;
+    }
+
+    @Override
+    public void setLastMessagedBy(@Nonnull UUID uuid) {
+        this.lastMessagedBy = uuid;
     }
 
     @Nonnull
     @Override
     public ZonedDateTime getLastSeen() {
-        if (isOnline()) {
+        if (online()) {
             lastSeen = ZonedDateTime.now();
         }
         return lastSeen;
