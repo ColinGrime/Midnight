@@ -1,15 +1,11 @@
 package me.colingrimes.channels.channel;
 
-import me.colingrimes.channels.channel.filter.ChatFilter;
-import me.colingrimes.channels.channel.settings.ChannelPermission;
-import me.colingrimes.channels.channel.settings.ChannelSettings;
-import me.colingrimes.channels.channel.implementation.SimpleChannel;
+import me.colingrimes.channels.channel.chatter.Chatter;
+import me.colingrimes.channels.channel.misc.ChannelSettings;
+import me.colingrimes.channels.channel.misc.ChannelType;
 import me.colingrimes.midnight.message.Message;
-import me.colingrimes.midnight.util.bukkit.ChatColor;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Set;
 
 /**
  * Represents a communication channel.
@@ -17,14 +13,12 @@ import java.util.Set;
 public interface Channel {
 
     /**
-     * Creates a new channel with the specified name.
+     * Gets the type of the channel.
      *
-     * @param name the name of the channel
-     * @return the new channel
+     * @return the channel's type
      */
-    static Channel of(@Nonnull String name) {
-        return new SimpleChannel(name);
-    }
+    @Nonnull
+    ChannelType getType();
 
     /**
      * Gets the channel's display name.
@@ -43,120 +37,71 @@ public interface Channel {
     ChannelSettings getSettings();
 
     /**
-     * Gets an unmodifiable set of the channel's chat filters.
-     *
-     * @return an unmodifiable set of chat filters
-     */
-    @Nonnull
-    Set<ChatFilter> getFilters();
-
-    /**
-     * Adds a chat filter to the channel.
-     *
-     * @param filter the chat filter to add
-     */
-    void addFilter(@Nonnull ChatFilter filter);
-
-    /**
-     * Removes a chat filter from the channel.
-     *
-     * @param filter the chat filter to remove
-     */
-    void removeFilter(@Nonnull ChatFilter filter);
-
-    /**
-     * Broadcasts a message to all participants in the channel.
+     * Broadcasts a message to all users with access to the channel.
      * This is to be used for system messages and will bypass all chat filters.
      *
      * @param message the message to send
      */
-    void broadcast(@Nonnull Message<?> message);
+     void broadcast(@Nonnull Message<?> message);
 
     /**
-     * Broadcasts a message to all participants in the channel.
+     * Broadcasts a message to all users with access to the channel.
      * This is to be used for system messages and will bypass all chat filters.
      *
      * @param message the message to send
      */
-    void broadcast(@Nonnull String message);
+    default void broadcast(@Nonnull String message) {
+        broadcast(Message.of(message));
+    }
 
     /**
-     * Sends a message from a {@code Participant} to all participants in the channel.
-     * This will fail if the sender has no permission to speak.
+     * Sends a message from a {@code Chatter} to all users with access to the channel.
      * This is to be used for regular messages.
      *
-     * @param sender  the participant sending the message
+     * @param sender  the chatter sending the message
      * @param message the message to send
+     * @return true if the message was sent, false otherwise
      */
-    void send(@Nonnull Participant sender, @Nonnull Message<?> message);
+    boolean send(@Nonnull Chatter sender, @Nonnull Message<?> message);
+
 
     /**
-     * Sends a message from a {@code Participant} to all participants in the channel.
-     * This will fail if the sender has no permission to speak.
+     * Sends a message from a {@code Chatter} to all users with access to the channel.
      * This is to be used for regular messages.
      *
-     * @param sender  the participant sending the message
+     * @param sender  the chatter sending the message
      * @param message the message to send
+     * @return true if the message was sent, false otherwise
      */
-    void send(@Nonnull Participant sender, @Nonnull String message);
+    default boolean send(@Nonnull Chatter sender, @Nonnull String message) {
+        return send(sender, Message.of(message));
+    }
 
     /**
-     * Gets an unmodifiable set of the channel's participants.
+     * Verifies if a chatter has access to the channel.
      *
-     * @return an unmodifiable set of participants
+     * @param chatter the chatter to check
+     * @return true if the chatter has access to the channel, false otherwise
      */
-    @Nonnull
-    Set<Participant> getParticipants();
+    boolean hasAccess(@Nonnull Chatter chatter);
 
     /**
-     * Adds a participant to the channel.
-     * This will fail if the participant has no permission to join.
+     * Checks if the channel is enabled.
+     * Disabled channels will not send any messages.
      *
-     * @param participant the participant to add
-     * @return true if added successfully, false if already present
+     * @return true if the channel is enabled, false otherwise
      */
-    boolean add(@Nonnull Participant participant);
+    boolean isEnabled();
 
     /**
-     * Removes a participant from the channel.
-     * This will fail if the participant has no permission to leave.
-     *
-     * @param participant the participant to remove
-     * @return true if removed successfully, false if not present
+     * Enables the channel.
+     * This will allow messages to be sent through the channel.
      */
-    boolean remove(@Nonnull Participant participant);
+    void enable();
 
     /**
-     * Verifies if a participant is in the channel.
-     *
-     * @param participant the participant to check
-     * @return true if the participant is in the channel, false otherwise
+     * Disables the channel.
+     * This will prevent messages from being sent through the channel.
      */
-    boolean contains(@Nonnull Participant participant);
-
-    /**
-     * Checks if a participant has a specific permission in the channel.
-     *
-     * @param participant the participant to check
-     * @param permission  the permission to check for
-     * @return true if the participant has the specified permission, false otherwise
-     */
-    boolean hasPermission(@Nonnull Participant participant, @Nonnull ChannelPermission permission);
-
-    /**
-     * Gets the chat color for a participant in the channel.
-     *
-     * @param participant the participant to get the chat color for
-     * @return the chat color, or null if no custom chat color is set
-     */
-    @Nullable
-    ChatColor getChatColor(@Nonnull Participant participant);
-
-    /**
-     * Sets or removes the chat color for a participant in the channel.
-     *
-     * @param participant the participant to modify
-     * @param color       the chat color to set, or null to remove the custom chat color
-     */
-    void setChatColor(@Nonnull Participant participant, @Nullable ChatColor color);
+    void disable();
 }
