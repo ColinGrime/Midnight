@@ -1,8 +1,8 @@
 package me.colingrimes.channels.listener;
 
+import me.colingrimes.channels.ChannelAPI;
 import me.colingrimes.channels.MidnightChannels;
-import me.colingrimes.channels.channel.Channel;
-import me.colingrimes.channels.channel.Participant;
+import me.colingrimes.channels.channel.chatter.Chatter;
 import me.colingrimes.channels.config.Settings;
 import me.colingrimes.midnight.scheduler.Scheduler;
 import me.colingrimes.midnight.util.io.Logger;
@@ -15,6 +15,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
+import java.util.UUID;
 
 public class ChatListeners implements Listener {
 
@@ -26,28 +27,28 @@ public class ChatListeners implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onAsyncPlayerChat(@Nonnull AsyncPlayerChatEvent event) {
-		Optional<Participant> participant = plugin.getChannelManager().getParticipant(event.getPlayer().getUniqueId());
+		Optional<Chatter> chatter = plugin.getChannelManager().getChatter(event.getPlayer().getUniqueId());
 
 		// This should never be called.
-		if (participant.isEmpty()) {
+		if (chatter.isEmpty()) {
 			Settings.PLAYER_NOT_LOADED.send(event.getPlayer());
 			return;
 		}
 
-		// Re-direct to channeling system if active.
-		Channel activeChannel = participant.get().getActiveChannel();
-		if (activeChannel != null) {
-			activeChannel.send(participant.get(), event.getMessage());
+		// Re-direct to global channel if enabled.
+		if (ChannelAPI.global().isEnabled()) {
+			ChannelAPI.global().send(chatter.get(), event.getMessage());
 			event.setCancelled(true);
 		}
 	}
 
 	@EventHandler
 	public void onPlayerJoin(@Nonnull PlayerJoinEvent event) {
+		UUID uuid = event.getPlayer().getUniqueId();
 		Scheduler.ASYNC.execute(() -> {
-			plugin.getParticipantStorage().load(event.getPlayer().getUniqueId());
+			plugin.getChatterStorage().load(uuid);
 		}).exceptionally((e) -> {
-			Logger.severe("Failed to load participant: " + event.getPlayer().getUniqueId());
+			Logger.severe("Failed to load chatter: " + uuid);
 			e.printStackTrace();
 			return null;
 		});
@@ -55,10 +56,11 @@ public class ChatListeners implements Listener {
 
 	@EventHandler
 	public void onPlayerQuit(@Nonnull PlayerQuitEvent event) {
+		Chatter chatter = plugin.getChannelManager().getChatter(event.getPlayer());
 		Scheduler.ASYNC.execute(() -> {
-			plugin.getParticipantStorage().save(plugin.getChannelManager().getParticipant(event.getPlayer()));
+			plugin.getChatterStorage().save(chatter);
 		}).exceptionally((e) -> {
-			Logger.severe("Failed to save participant: " + event.getPlayer().getUniqueId());
+			Logger.severe("Failed to save chatter: " + chatter.getID());
 			e.printStackTrace();
 			return null;
 		});
