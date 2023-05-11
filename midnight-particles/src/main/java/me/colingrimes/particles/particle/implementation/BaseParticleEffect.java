@@ -13,6 +13,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 public abstract class BaseParticleEffect implements ParticleEffect {
@@ -26,7 +27,8 @@ public abstract class BaseParticleEffect implements ParticleEffect {
 
     /**
      * Constructor for creating new particle effects.
-     * @param point the point to spawn the particle effect at
+     *
+     * @param point      the point to spawn the particle effect at
      * @param properties the properties of the particle effect
      */
     public BaseParticleEffect(@Nonnull Point<Rotation> point, @Nonnull ParticleProperties properties) {
@@ -35,9 +37,10 @@ public abstract class BaseParticleEffect implements ParticleEffect {
 
     /**
      * Constructor for deserializing particle effects.
-     * @param uuid the UUID of the particle effect
-     * @param name the name of the particle effect
-     * @param point the point to spawn the particle effect at
+     *
+     * @param uuid       the UUID of the particle effect
+     * @param name       the name of the particle effect
+     * @param point      the point to spawn the particle effect at
      * @param properties the properties of the particle effect
      */
     public BaseParticleEffect(@Nonnull UUID uuid, @Nonnull String name, @Nonnull Point<Rotation> point, @Nonnull ParticleProperties properties) {
@@ -230,7 +233,7 @@ public abstract class BaseParticleEffect implements ParticleEffect {
         return properties.getSpeed();
     }
 
-    @Nonnull
+    @Nullable
     protected Object data() {
         return properties.getData();
     }

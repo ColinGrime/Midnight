@@ -14,7 +14,8 @@ public final class ParticleEffectFactory {
 
     /**
      * Creates a particle effect at the player's location.
-     * @param type the type of particle effect to create
+     *
+     * @param type   the type of particle effect to create
      * @param player the player to create the particle effect at
      * @return the particle effect
      */
@@ -25,11 +26,12 @@ public final class ParticleEffectFactory {
 
     /**
      * Creates a particle effect at the given location.
-     * @param type the type of particle effect to create
+     *
+     * @param type  the type of particle effect to create
      * @param world the world to create the particle effect in
-     * @param x the x coordinate
-     * @param y the y coordinate
-     * @param z the z coordinate
+     * @param x     the x coordinate
+     * @param y     the y coordinate
+     * @param z     the z coordinate
      * @return the particle effect
      */
     @Nonnull
@@ -39,11 +41,12 @@ public final class ParticleEffectFactory {
 
     /**
      * Creates a particle effect at the player's location with the given rotation.
-     * @param type the type of particle effect to create
+     *
+     * @param type   the type of particle effect to create
      * @param player the player to create the particle effect at
-     * @param pitch the pitch
-     * @param yaw the yaw
-     * @param roll the roll
+     * @param pitch  the pitch
+     * @param yaw    the yaw
+     * @param roll   the roll
      * @return the particle effect
      */
     @Nonnull
@@ -53,14 +56,15 @@ public final class ParticleEffectFactory {
 
     /**
      * Creates a particle effect at the given location with the given rotation.
-     * @param type the type of particle effect to create
+     *
+     * @param type  the type of particle effect to create
      * @param world the world to create the particle effect in
-     * @param x the x coordinate
-     * @param y the y coordinate
-     * @param z the z coordinate
+     * @param x     the x coordinate
+     * @param y     the y coordinate
+     * @param z     the z coordinate
      * @param pitch the pitch
-     * @param yaw the yaw
-     * @param roll the roll
+     * @param yaw   the yaw
+     * @param roll  the roll
      * @return the particle effect
      */
     @Nonnull
@@ -69,7 +73,6 @@ public final class ParticleEffectFactory {
 
         return switch (type) {
             case CIRCLE -> new CircleParticleEffect(point);
-            default -> throw new IllegalArgumentException("Unsupported particle effect type: " + type);
         };
     }
 

@@ -21,6 +21,7 @@ public class CircleParticleEffect extends BaseParticleEffect {
 
     /**
      * Constructor for creating simple circle particle effects.
+     *
      * @param point the point to spawn the particle effect at
      */
     public CircleParticleEffect(@Nonnull Point<Rotation> point) {
@@ -29,7 +30,8 @@ public class CircleParticleEffect extends BaseParticleEffect {
 
     /**
      * Constructor for creating more complex circle particle effects.
-     * @param point the point to spawn the particle effect at
+     *
+     * @param point  the point to spawn the particle effect at
      * @param radius the radius of the circle
      * @param points the number of points on the circle
      */
@@ -41,12 +43,13 @@ public class CircleParticleEffect extends BaseParticleEffect {
 
     /**
      * Constructor for deserializing particle effects.
-     * @param uuid the UUID of the particle effect
-     * @param name the name of the particle effect
-     * @param point the point to spawn the particle effect at
+     *
+     * @param uuid       the UUID of the particle effect
+     * @param name       the name of the particle effect
+     * @param point      the point to spawn the particle effect at
      * @param properties the properties of the particle effect
-     * @param radius the radius of the circle
-     * @param points the number of points on the circle
+     * @param radius     the radius of the circle
+     * @param points     the number of points on the circle
      */
     public CircleParticleEffect(@Nonnull UUID uuid, @Nonnull String name, @Nonnull Point<Rotation> point, @Nonnull ParticleProperties properties, double radius, int points) {
         super(uuid, name, point, properties);
@@ -119,6 +122,7 @@ public class CircleParticleEffect extends BaseParticleEffect {
 
     /**
      * Deserialize a CircleParticleEffect from a map.
+     *
      * @param map the serialized map
      * @return the CircleParticleEffect
      */
