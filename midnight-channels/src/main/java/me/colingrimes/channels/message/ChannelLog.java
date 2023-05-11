@@ -1,6 +1,5 @@
 package me.colingrimes.channels.message;
 
-import me.colingrimes.channels.channel.Channel;
 import me.colingrimes.channels.channel.chatter.Chatter;
 import me.colingrimes.midnight.message.Message;
 import me.colingrimes.midnight.message.Placeholders;
@@ -12,14 +11,14 @@ import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
- * Represents a message sent in a {@code Channel} by a {@code Chatter}.
+ * Represents a log sent in a {@code Channel} by a {@code Chatter}.
  * If the {@link Chatter} is {@code null}, then the message was sent by the server.
  *
  * @param <T> the type of the message content
  */
-public class ChannelMessage<T> implements Message<T> {
+public class ChannelLog<T> implements Message<T> {
 
-    private final Channel channel;
+    private final String channelName;
     private final Chatter chatter;
     private final Message<T> message;
     private final ZonedDateTime timestamp;
@@ -27,35 +26,21 @@ public class ChannelMessage<T> implements Message<T> {
     /**
      * Creates a new channel message.
      *
-     * @param channel the channel the message was sent in
-     * @param chatter the chatter that sent the message
-     * @param message the message
+     * @param channelName the name of the channel the message was sent in
+     * @param chatter     the chatter that sent the message
+     * @param message     the message
+     * @param timestamp   the timestamp of the message
      */
-    public ChannelMessage(@Nonnull Channel channel, @Nullable Chatter chatter, @Nonnull Message<T> message) {
-        this.channel = channel;
-        this.chatter = chatter;
-        this.message = message;
-        this.timestamp = ZonedDateTime.now();
-    }
-
-    /**
-     * Creates a new channel message from storage.
-     *
-     * @param channel   the channel the message was sent in
-     * @param chatter   the chatter that sent the message
-     * @param message   the message
-     * @param timestamp the timestamp of the message
-     */
-    public ChannelMessage(@Nonnull Channel channel, @Nullable Chatter chatter, @Nonnull Message<T> message, @Nonnull ZonedDateTime timestamp) {
-        this.channel = channel;
+    public ChannelLog(@Nonnull String channelName, @Nullable Chatter chatter, @Nonnull Message<T> message, @Nonnull ZonedDateTime timestamp) {
+        this.channelName = channelName;
         this.chatter = chatter;
         this.message = message;
         this.timestamp = timestamp;
     }
 
     @Nonnull
-    public Channel getChannel() {
-        return channel;
+    public String getChannelName() {
+        return channelName;
     }
 
     @Nullable
@@ -76,24 +61,20 @@ public class ChannelMessage<T> implements Message<T> {
 
     @Override
     public void send(@Nonnull CommandSender recipient) {
-        if (chatter == null) {
-            message.send(recipient);
-        } else {
-            channel.send(chatter, message);
-        }
+        message.send(recipient);
     }
 
     @Nonnull
     @Override
     public Message<T> replace(@Nonnull Placeholders placeholders) {
-        return new ChannelMessage<>(channel, chatter, message.replace(placeholders));
+        return new ChannelLog<>(channelName, chatter, message.replace(placeholders), timestamp);
     }
 
     @Nonnull
     @Override
     public String toString() {
         return "ChannelMessage{" +
-                "channel=" + channel +
+                "channelName=" + channelName +
                 ", chatter=" + chatter +
                 ", message=" + message +
                 ", timestamp=" + timestamp +
@@ -103,8 +84,8 @@ public class ChannelMessage<T> implements Message<T> {
     @Override
     public boolean equals(@Nullable Object o) {
         if (this == o) return true;
-        if (!(o instanceof ChannelMessage<?> that)) return false;
-        return Objects.equals(getChannel(), that.getChannel())
+        if (!(o instanceof ChannelLog<?> that)) return false;
+        return Objects.equals(getChannelName(), that.getChannelName())
                 && Objects.equals(getChatter(), that.getChatter())
                 && Objects.equals(message, that.message)
                 && Objects.equals(getTimestamp(), that.getTimestamp());
@@ -112,6 +93,6 @@ public class ChannelMessage<T> implements Message<T> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getChannel(), getChatter(), message, getTimestamp());
+        return Objects.hash(getChannelName(), getChatter(), message, getTimestamp());
     }
 }
