@@ -1,6 +1,6 @@
-package me.colingrimes.channels.channel.filter.profanity;
+package me.colingrimes.channels.channel.misc.filter.profanity;
 
-import me.colingrimes.channels.channel.filter.ChatFilter;
+import me.colingrimes.channels.channel.misc.ChatFilter;
 
 /**
  * An abstract chat filter that filters out messages containing profanity.

@@ -1,4 +1,4 @@
-package me.colingrimes.channels.channel.filter.profanity;
+package me.colingrimes.channels.channel.misc.filter.profanity;
 
 import me.colingrimes.channels.config.Filters;
 import me.colingrimes.channels.message.ChannelMessage;
@@ -26,7 +26,7 @@ public class AdvancedProfanityFilter extends ProfanityFilter {
     @Override
     public boolean filter(@Nonnull ChannelMessage<?> message) {
         String content = message.toText();
-        return profanityPatterns.stream().noneMatch(pattern -> pattern.matcher(content).find());
+        return profanityPatterns.stream().anyMatch(pattern -> pattern.matcher(content).find());
     }
 
     /**

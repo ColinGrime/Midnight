@@ -1,4 +1,4 @@
-package me.colingrimes.channels.channel.filter.profanity;
+package me.colingrimes.channels.channel.misc.filter.profanity;
 
 import me.colingrimes.channels.config.Filters;
 import me.colingrimes.channels.message.ChannelMessage;
@@ -16,12 +16,12 @@ public class AggressiveProfanityFilter extends ProfanityFilter {
         String content = message.toText().toLowerCase();
 
         for (String bannedWord : Filters.PROFANITY_LIST.get()) {
-            if (calculateSimilarityDistance(content, bannedWord) <= Filters.PROFANITY_MAX_ALLOWED_SIMILARITY_DISTANCE.get()) {
-                return false;
+            if (calculateSimilarityDistance(content, bannedWord) > Filters.PROFANITY_MAX_ALLOWED_SIMILARITY_DISTANCE.get()) {
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 
     /**

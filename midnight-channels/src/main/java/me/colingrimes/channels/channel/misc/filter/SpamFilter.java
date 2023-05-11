@@ -1,5 +1,6 @@
-package me.colingrimes.channels.channel.filter;
+package me.colingrimes.channels.channel.misc.filter;
 
+import me.colingrimes.channels.channel.misc.ChatFilter;
 import me.colingrimes.channels.config.Filters;
 import me.colingrimes.midnight.cache.ExpiringCache;
 import me.colingrimes.midnight.cache.expiring.SimpleExpiringCache;
@@ -10,7 +11,7 @@ import java.time.Duration;
 import java.util.UUID;
 
 /**
- * A chat filter that prevents spamming by checking if a participant
+ * A chat filter that prevents spamming by checking if a chatter
  * sends the same message within a certain time period.
  */
 public class SpamFilter implements ChatFilter {
@@ -23,19 +24,19 @@ public class SpamFilter implements ChatFilter {
 
     @Override
     public boolean filter(@Nonnull ChannelMessage<?> message) {
-        if (message.getParticipant() == null) {
-            return true;
+        if (message.getChatter() == null) {
+            return false;
         }
 
-        UUID uuid = message.getParticipant().getID();
+        UUID uuid = message.getChatter().getID();
         String content = message.toText();
 
         String lastMessage = messageCache.get(uuid);
         if (lastMessage != null && lastMessage.equals(content)) {
-            return false;
+            return true;
         }
 
         messageCache.put(uuid, content);
-        return true;
+        return false;
     }
 }

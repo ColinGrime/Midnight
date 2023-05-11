@@ -1,5 +1,6 @@
-package me.colingrimes.channels.channel.filter;
+package me.colingrimes.channels.channel.misc.filter;
 
+import me.colingrimes.channels.channel.misc.ChatFilter;
 import me.colingrimes.channels.config.Filters;
 import me.colingrimes.midnight.cache.expiring.RollingWindowCache;
 import me.colingrimes.channels.message.ChannelMessage;
@@ -10,7 +11,7 @@ import java.util.UUID;
 
 /**
  * A chat filter that prevents flooding by limiting the number
- * of messages a participant can send within a certain time period.
+ * of messages a chatter can send within a certain time period.
  */
 public class FloodFilter implements ChatFilter {
 
@@ -22,12 +23,12 @@ public class FloodFilter implements ChatFilter {
 
     @Override
     public boolean filter(@Nonnull ChannelMessage<?> message) {
-        if (message.getParticipant() == null) {
-            return true;
+        if (message.getChatter() == null) {
+            return false;
         }
 
-        UUID uuid = message.getParticipant().getID();
+        UUID uuid = message.getChatter().getID();
         messageCache.increment(uuid);
-        return messageCache.getCount(uuid) <= Filters.FLOOD_MAX_MESSAGES.get();
+        return messageCache.getCount(uuid) > Filters.FLOOD_MAX_MESSAGES.get();
     }
 }

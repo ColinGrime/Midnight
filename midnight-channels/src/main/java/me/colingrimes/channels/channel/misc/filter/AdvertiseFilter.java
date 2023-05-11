@@ -1,5 +1,6 @@
-package me.colingrimes.channels.channel.filter;
+package me.colingrimes.channels.channel.misc.filter;
 
+import me.colingrimes.channels.channel.misc.ChatFilter;
 import me.colingrimes.channels.message.ChannelMessage;
 
 import javax.annotation.Nonnull;
@@ -15,6 +16,6 @@ public class AdvertiseFilter implements ChatFilter {
     @Override
     public boolean filter(@Nonnull ChannelMessage<?> message) {
         String content = message.toText();
-        return !urlPattern.matcher(content).find();
+        return urlPattern.matcher(content).find();
     }
 }
