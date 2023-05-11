@@ -4,7 +4,6 @@ import me.colingrimes.channels.channel.implementation.GlobalChannel;
 import me.colingrimes.channels.channel.implementation.GroupChannel;
 import me.colingrimes.channels.channel.implementation.PrivateChannel;
 import me.colingrimes.channels.channel.implementation.StaffChannel;
-import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import java.util.Set;
@@ -23,20 +22,19 @@ public class ChannelFactory {
      * @return a new global channel
      */
     @Nonnull
-    public Channel createGlobalChannel(@Nonnull String name) {
+    public GlobalChannel createGlobalChannel(@Nonnull String name) {
         return new GlobalChannel(name);
     }
 
     /**
-     * Creates a new private channel with the given name and the UUIDs of the chatters involved.
+     * Creates a new private channel with the given name.
      *
-     * @param player1 the first chatter
-     * @param player2 the second chatter
+     * @param name the name of the channel
      * @return a new private channel
      */
     @Nonnull
-    public Channel createPrivateChannel(@Nonnull Player player1, @Nonnull Player player2) {
-        return new PrivateChannel(player1, player2);
+    public PrivateChannel createPrivateChannel(@Nonnull String name) {
+        return new PrivateChannel(name);
     }
 
     /**
@@ -48,7 +46,7 @@ public class ChannelFactory {
      * @return a new group channel
      */
     @Nonnull
-    public Channel createGroupChannel(@Nonnull String name, @Nonnull Supplier<Set<UUID>> groupMembersSupplier) {
+    public GroupChannel createGroupChannel(@Nonnull String name, @Nonnull Supplier<Set<UUID>> groupMembersSupplier) {
         return new GroupChannel(name, groupMembersSupplier);
     }
 
@@ -60,7 +58,7 @@ public class ChannelFactory {
      * @return a new staff channel
      */
     @Nonnull
-    public Channel createStaffChannel(@Nonnull String name, @Nonnull String permissionNode) {
+    public StaffChannel createStaffChannel(@Nonnull String name, @Nonnull String permissionNode) {
         return new StaffChannel(name, permissionNode);
     }
 }
