@@ -89,14 +89,14 @@ public class Placeholders {
 			return "";
 		}
 
-		// Apply PlaceholderAPI placeholders.
-		if (Common.getPlugin("PlaceholderAPI") != null) {
-			str = PlaceholderAPI.setPlaceholders(player, str.replaceAll("\\{(.+?)}", "%$1%"));
-		}
-
 		// Apply the placeholders in the string.
 		for (Map.Entry<String, String> replacement : placeholders.entrySet()) {
 			str = str.replace(replacement.getKey(), replacement.getValue());
+		}
+
+		// Apply PlaceholderAPI placeholders.
+		if (Common.getPlugin("PlaceholderAPI") != null) {
+			str = PlaceholderAPI.setPlaceholders(player, str.replaceAll("\\{(.+?)}", "%$1%"));
 		}
 
 		return Text.color(str);
