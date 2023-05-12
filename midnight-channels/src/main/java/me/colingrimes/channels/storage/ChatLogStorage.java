@@ -39,7 +39,7 @@ public class ChatLogStorage extends SqlStorage<ChannelMessage<?>> {
         try (Connection c = provider.getConnection()) {
             try (PreparedStatement ps = c.prepareStatement(processor.apply(LOGS_SAVE))) {
                 ps.setString(1, data.getChannel().getName());
-                DatabaseUtils.setUUID(ps, 2, data.getChatter() == null ? null : data.getChatter().getID(), database);
+                DatabaseUtils.setUUID(ps, 2, data.getChatter().isPresent() ? data.getChatter().get().getID() : null, database);
                 ps.setString(3, data.toText());
                 DatabaseUtils.setTimestamp(ps, 4, data.getTimestamp(), database);
                 ps.executeUpdate();
@@ -52,7 +52,7 @@ public class ChatLogStorage extends SqlStorage<ChannelMessage<?>> {
         try (Connection c = provider.getConnection()) {
             try (PreparedStatement ps = c.prepareStatement(processor.apply(LOGS_DELETE))) {
                 ps.setString(1, data.getChannel().getName());
-                DatabaseUtils.setUUID(ps, 2, data.getChatter() == null ? null : data.getChatter().getID(), database);
+                DatabaseUtils.setUUID(ps, 2, data.getChatter().isPresent() ? data.getChatter().get().getID() : null, database);
                 DatabaseUtils.setTimestamp(ps, 3, data.getTimestamp(), database);
                 ps.executeUpdate();
             }

@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Represents a message sent in a {@code Channel} by a {@code Chatter}.
@@ -58,9 +59,9 @@ public class ChannelMessage<T> implements Message<T> {
         return channel;
     }
 
-    @Nullable
-    public Chatter getChatter() {
-        return chatter;
+    @Nonnull
+    public Optional<Chatter> getChatter() {
+        return Optional.ofNullable(chatter);
     }
 
     @Nonnull
