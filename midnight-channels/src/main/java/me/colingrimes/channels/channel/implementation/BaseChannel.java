@@ -3,8 +3,11 @@ package me.colingrimes.channels.channel.implementation;
 import me.colingrimes.channels.channel.Channel;
 import me.colingrimes.channels.channel.chatter.Chatter;
 import me.colingrimes.channels.channel.misc.ChannelSettings;
+import me.colingrimes.channels.config.Settings;
 import me.colingrimes.channels.message.ChannelMessage;
 import me.colingrimes.midnight.message.Message;
+import me.colingrimes.midnight.message.Placeholders;
+import me.colingrimes.midnight.util.bukkit.Players;
 
 import javax.annotation.Nonnull;
 
@@ -51,24 +54,34 @@ public abstract class BaseChannel implements Channel {
         }
 
         ChannelMessage<?> channelMessage = new ChannelMessage<>(this, null, message);
-        broadcast(channelMessage);
         settings.logMessage(channelMessage);
+        broadcast(channelMessage);
     }
 
     @Override
     public boolean send(@Nonnull Chatter sender, @Nonnull Message<?> message) {
-        if (!enabled || !hasAccess(sender) || sender.isMuted()) {
-            return false;
-        }
-
-        ChannelMessage<?> channelMessage = new ChannelMessage<>(this, sender, message);
-        if (!settings.filter(channelMessage)) {
-            send(sender, channelMessage);
-            settings.logMessage(channelMessage);
-            return true;
+        if (!enabled) {
+            Settings.CHANNEL_DISABLED_MESSAGE.send(sender.player());
+        } else if (!hasAccess(sender)) {
+            Settings.CHANNEL_ACCESS_DENIED.send(sender.player());
+        } else if (sender.isMuted()) {
+            Settings.MUTED_MESSAGE.send(sender.player());
         } else {
-            return false;
+            ChannelMessage<?> channelMessage = new ChannelMessage<>(this, sender, message);
+            settings.logMessage(channelMessage);
+            if (!settings.filter(channelMessage)) {
+                send(sender, channelMessage);
+                return true;
+            } else {
+                Placeholders placeholders = Placeholders
+                        .of("{player}", sender.getName())
+                        .add("{message}", message.toText());
+                Players.all().stream()
+                        .filter(p -> p.hasPermission("channels.filtered"))
+                        .forEach(Settings.MESSAGE_FILTERED.replace(placeholders)::send);
+            }
         }
+        return false;
     }
 
     @Override
