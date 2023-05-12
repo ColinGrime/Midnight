@@ -17,13 +17,13 @@ import java.util.UUID;
 public interface Chatter {
 
     /**
-     * Creates a new chatter from a player.
+     * Gets the Chatter associated with the player.
      *
-     * @param player the player to create the chatter from
-     * @return the new chatter
+     * @param player the player to get the chatter from
+     * @return the chatter associated with the player
      */
     static Chatter of(@Nonnull Player player) {
-        return new StandardChatter(player);
+        return ChannelAPI.getManager().getChatter(player);
     }
 
     /**
