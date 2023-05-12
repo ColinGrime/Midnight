@@ -39,7 +39,7 @@ public class ChatLogStorage extends SqlStorage<ChannelMessage<?>> {
         try (Connection c = provider.getConnection()) {
             try (PreparedStatement ps = c.prepareStatement(processor.apply(LOGS_SAVE))) {
                 ps.setString(1, data.getChannel().getName());
-                ps.setString(2, data.getChatter() == null ? null : data.getChatter().getID().toString());
+                DatabaseUtils.setUUID(ps, 2, data.getChatter() == null ? null : data.getChatter().getID(), database);
                 ps.setString(3, data.toText());
                 DatabaseUtils.setTimestamp(ps, 4, data.getTimestamp(), database);
                 ps.executeUpdate();
@@ -52,7 +52,7 @@ public class ChatLogStorage extends SqlStorage<ChannelMessage<?>> {
         try (Connection c = provider.getConnection()) {
             try (PreparedStatement ps = c.prepareStatement(processor.apply(LOGS_DELETE))) {
                 ps.setString(1, data.getChannel().getName());
-                ps.setString(2, data.getChatter() == null ? null : data.getChatter().getID().toString());
+                DatabaseUtils.setUUID(ps, 2, data.getChatter() == null ? null : data.getChatter().getID(), database);
                 DatabaseUtils.setTimestamp(ps, 3, data.getTimestamp(), database);
                 ps.executeUpdate();
             }
@@ -100,7 +100,7 @@ public class ChatLogStorage extends SqlStorage<ChannelMessage<?>> {
         List<ChannelLog<?>> logs = new ArrayList<>();
         try (Connection c = provider.getConnection()) {
             try (PreparedStatement ps = c.prepareStatement(processor.apply(LOGS_GET_BY_CHATTER))) {
-                ps.setString(1, chatter.getID().toString());
+                DatabaseUtils.setUUID(ps, 1, chatter.getID(), database);
                 DatabaseUtils.setTimestamp(ps, 2, from, database);
                 DatabaseUtils.setTimestamp(ps, 3, to, database);
                 try (ResultSet rs = ps.executeQuery()) {
@@ -123,7 +123,7 @@ public class ChatLogStorage extends SqlStorage<ChannelMessage<?>> {
     @Nonnull
     private ChannelLog<?> createLog(ResultSet rs) throws Exception {
         String channelName = rs.getString("channel_name");
-        UUID chatterID = rs.getString("chatter_id") != null ? UUID.fromString(rs.getString("chatter_id")) : null;
+        UUID chatterID = DatabaseUtils.getUUID(rs, "chatter_id", database);
         String content = rs.getString("content");
         ZonedDateTime timestamp = Objects.requireNonNull(DatabaseUtils.getTimestamp(rs, "timestamp", database));
 

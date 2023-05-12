@@ -18,7 +18,7 @@ import java.util.UUID;
 
 public class ChatterStorage extends SqlStorage<Chatter> {
 
-    private static final String CHATTERS_SAVE = "INSERT INTO 'chatters' (id, mute_end_time, is_muted, nickname, last_messaged_by last_seen, join_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT (id) DO UPDATE SET mute_end_time = EXCLUDED.mute_end_time, is_muted = EXCLUDED.is_muted, nickname = EXCLUDED.nickname, last_messaged_by = EXCLUDED.last_messaged_by, last_seen = EXCLUDED.last_seen, join_date = EXCLUDED.join_date";
+    private static final String CHATTERS_SAVE = "INSERT INTO 'chatters' (id, mute_end_time, is_muted, nickname, last_messaged_by, last_seen, join_date) VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT (id) DO UPDATE SET mute_end_time = EXCLUDED.mute_end_time, is_muted = EXCLUDED.is_muted, nickname = EXCLUDED.nickname, last_messaged_by = EXCLUDED.last_messaged_by, last_seen = EXCLUDED.last_seen, join_date = EXCLUDED.join_date";
     private static final String CHATTERS_IGNORED_SAVE = "INSERT INTO 'chatters_ignored' (chatter_id, ignored_id) VALUES (?, ?) ON CONFLICT (chatter_id, ignored_id) DO NOTHING";
     private static final String CHATTERS_DELETE = "DELETE FROM 'chatters' WHERE id = ?";
     private static final String CHATTERS_LOAD = "SELECT * FROM 'chatters' WHERE id = ?";
@@ -36,11 +36,11 @@ public class ChatterStorage extends SqlStorage<Chatter> {
         try (Connection c = provider.getConnection()) {
             // Save to 'chatters' table.
             try (PreparedStatement ps = c.prepareStatement(processor.apply(CHATTERS_SAVE))) {
-                ps.setString(1, data.getID().toString());
+                DatabaseUtils.setUUID(ps, 1, data.getID(), database);
                 DatabaseUtils.setTimestamp(ps, 2, data.getMuteEndTime(), database);
                 ps.setBoolean(3, data.isMuted());
                 ps.setString(4, data.getNickname());
-                ps.setString(5, data.getLastMessagedBy() != null ? data.getLastMessagedBy().toString() : null);
+                DatabaseUtils.setUUID(ps, 5, data.getLastMessagedBy(), database);
                 DatabaseUtils.setTimestamp(ps, 6, data.getLastSeen(), database);
                 DatabaseUtils.setTimestamp(ps, 7, data.getJoinDate(), database);
                 ps.executeUpdate();
@@ -49,8 +49,8 @@ public class ChatterStorage extends SqlStorage<Chatter> {
             // Save to 'chatters_ignored' table
             for (UUID ignored : data.getIgnored()) {
                 try (PreparedStatement ps = c.prepareStatement(processor.apply(CHATTERS_IGNORED_SAVE))) {
-                    ps.setString(1, data.getID().toString());
-                    ps.setString(2, ignored.toString());
+                    DatabaseUtils.setUUID(ps, 1, data.getID(), database);
+                    DatabaseUtils.setUUID(ps, 2, ignored, database);
                     ps.executeUpdate();
                 }
             }
@@ -61,7 +61,7 @@ public class ChatterStorage extends SqlStorage<Chatter> {
     public void delete(@Nonnull Chatter data) throws Exception {
         try (Connection c = provider.getConnection()) {
             try (PreparedStatement ps = c.prepareStatement(processor.apply(CHATTERS_DELETE))) {
-                ps.setString(1, data.getID().toString());
+                DatabaseUtils.setUUID(ps, 1, data.getID(), database);
                 ps.executeUpdate();
             }
         }
@@ -86,6 +86,7 @@ public class ChatterStorage extends SqlStorage<Chatter> {
             loadChatterIgnoredData(c, chatter);
         } catch (ChatterNotFoundException e) {
             chatter = new StandardChatter(uuid);
+            save(chatter);
         }
 
         // Add them to the channel manager.
@@ -103,17 +104,17 @@ public class ChatterStorage extends SqlStorage<Chatter> {
      */
     private Chatter loadChatterData(@Nonnull Connection connection, @Nonnull UUID uuid) throws Exception {
         try (PreparedStatement ps = connection.prepareStatement(processor.apply(CHATTERS_LOAD))) {
-            ps.setString(1, uuid.toString());
+            DatabaseUtils.setUUID(ps, 1, uuid, database);
             try (ResultSet resultSet = ps.executeQuery()) {
                 if (resultSet.next()) {
-                    UUID id = UUID.fromString(resultSet.getString("id"));
+                    UUID id = DatabaseUtils.getUUID(resultSet, "id", database);
                     ZonedDateTime muteEndTime = DatabaseUtils.getTimestamp(resultSet, "mute_end_time", database);
                     boolean isMuted = resultSet.getBoolean("is_muted");
                     String nickname = resultSet.getString("nickname");
-                    UUID lastMessagedBy = UUID.fromString(resultSet.getString("last_messaged_by"));
+                    UUID lastMessagedBy = DatabaseUtils.getUUID(resultSet, "last_messaged_by", database);
                     ZonedDateTime lastSeen = Objects.requireNonNull(DatabaseUtils.getTimestamp(resultSet, "last_seen", database));
                     ZonedDateTime joinDate = Objects.requireNonNull(DatabaseUtils.getTimestamp(resultSet, "join_date", database));
-                    return new StandardChatter(id, muteEndTime, isMuted, nickname, lastMessagedBy, lastSeen, joinDate);
+                    return new StandardChatter(Objects.requireNonNull(id), muteEndTime, isMuted, nickname, lastMessagedBy, lastSeen, joinDate);
                 } else {
                     throw new ChatterNotFoundException("Chatter not found for UUID: " + uuid);
                 }
@@ -130,11 +131,11 @@ public class ChatterStorage extends SqlStorage<Chatter> {
      */
     private void loadChatterIgnoredData(@Nonnull Connection connection, @Nonnull Chatter chatter) throws Exception {
         try (PreparedStatement ps = connection.prepareStatement(processor.apply(CHATTERS_IGNORED_LOAD))) {
-            ps.setString(1, chatter.getID().toString());
+            DatabaseUtils.setUUID(ps, 1, chatter.getID(), database);
             try (ResultSet resultSet = ps.executeQuery()) {
                 while (resultSet.next()) {
-                    UUID ignoredID = UUID.fromString(resultSet.getString("ignored_id"));
-                    chatter.ignore(ignoredID);
+                    UUID ignoredID = DatabaseUtils.getUUID(resultSet, "ignored_id", database);
+                    chatter.ignore(Objects.requireNonNull(ignoredID));
                 }
             }
         }
