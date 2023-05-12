@@ -2,6 +2,7 @@ package me.colingrimes.midnight.storage.sql;
 
 import me.colingrimes.midnight.storage.Storage;
 import me.colingrimes.midnight.storage.sql.connection.ConnectionProvider;
+import me.colingrimes.midnight.util.io.Logger;
 import org.flywaydb.core.Flyway;
 
 import javax.annotation.Nonnull;
@@ -37,6 +38,8 @@ public abstract class SqlStorage<T> implements Storage<T> {
                 .locations("classpath:/migrations/" + provider.getType().getName().toLowerCase())
                 .load()
                 .migrate();
+
+        Logger.log("Database type " + database.getName() + " initialized.");
     }
 
     @Override
