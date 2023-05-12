@@ -1,9 +1,12 @@
 package me.colingrimes.channels.channel.misc.filter;
 
+import me.colingrimes.channels.channel.chatter.Chatter;
 import me.colingrimes.channels.channel.misc.ChatFilter;
+import me.colingrimes.channels.config.Settings;
 import me.colingrimes.channels.message.ChannelMessage;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 /**
@@ -15,7 +18,14 @@ public class AdvertiseFilter implements ChatFilter {
 
     @Override
     public boolean filter(@Nonnull ChannelMessage<?> message) {
+        Optional<Chatter> chatter = message.getChatter();
         String content = message.toText();
-        return urlPattern.matcher(content).find();
+
+        if (chatter.isPresent() && urlPattern.matcher(content).find()) {
+            chatter.filter(Chatter::online).ifPresent(c -> Settings.ADVERTISING_WARNING.send(c.player()));
+            return true;
+        } else {
+            return false;
+        }
     }
 }

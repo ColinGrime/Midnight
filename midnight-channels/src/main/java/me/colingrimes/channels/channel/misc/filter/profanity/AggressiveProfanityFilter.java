@@ -11,17 +11,22 @@ import javax.annotation.Nonnull;
  */
 public class AggressiveProfanityFilter extends ProfanityFilter {
 
-    @Override
-    public boolean filter(@Nonnull ChannelMessage<?> message) {
-        String content = message.toText().toLowerCase();
+    private static final AdvancedProfanityFilter advancedProfanityFilter = new AdvancedProfanityFilter();
 
-        for (String bannedWord : Filters.PROFANITY_LIST.get()) {
-            if (calculateSimilarityDistance(content, bannedWord) > Filters.PROFANITY_MAX_ALLOWED_SIMILARITY_DISTANCE.get()) {
-                return true;
+    @Override
+    public boolean filterProfanity(@Nonnull ChannelMessage<?> message) {
+        String content = message.toText().toLowerCase();
+        String[] words = content.split("\\s+");
+
+        for (String word : words) {
+            for (String bannedWord : Filters.PROFANITY_LIST.get()) {
+                if (calculateSimilarityDistance(word, bannedWord) <= Filters.PROFANITY_MAX_ALLOWED_SIMILARITY_DISTANCE.get()) {
+                    return true;
+                }
             }
         }
 
-        return false;
+        return advancedProfanityFilter.filterProfanity(message);
     }
 
     /**

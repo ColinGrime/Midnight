@@ -24,7 +24,7 @@ public class AdvancedProfanityFilter extends ProfanityFilter {
     }
 
     @Override
-    public boolean filter(@Nonnull ChannelMessage<?> message) {
+    public boolean filterProfanity(@Nonnull ChannelMessage<?> message) {
         String content = message.toText();
         return profanityPatterns.stream().anyMatch(pattern -> pattern.matcher(content).find());
     }

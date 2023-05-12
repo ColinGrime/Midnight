@@ -1,12 +1,15 @@
 package me.colingrimes.channels.channel.misc.filter;
 
+import me.colingrimes.channels.channel.chatter.Chatter;
 import me.colingrimes.channels.channel.misc.ChatFilter;
 import me.colingrimes.channels.config.Filters;
+import me.colingrimes.channels.config.Settings;
 import me.colingrimes.midnight.cache.expiring.RollingWindowCache;
 import me.colingrimes.channels.message.ChannelMessage;
 
 import javax.annotation.Nonnull;
 import java.time.Duration;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -23,12 +26,19 @@ public class FloodFilter implements ChatFilter {
 
     @Override
     public boolean filter(@Nonnull ChannelMessage<?> message) {
-        if (message.getChatter() == null) {
+        Optional<Chatter> chatter = message.getChatter();
+        if (chatter.isEmpty()) {
             return false;
         }
 
-        UUID uuid = message.getChatter().getID();
+        UUID uuid = chatter.get().getID();
         messageCache.increment(uuid);
-        return messageCache.getCount(uuid) > Filters.FLOOD_MAX_MESSAGES.get();
+
+        if (messageCache.getCount(uuid) > Filters.FLOOD_MAX_MESSAGES.get()) {
+            chatter.filter(Chatter::online).ifPresent(c -> Settings.RAPID_FIRE_WARNING.send(c.player()));
+            return true;
+        } else {
+            return false;
+        }
     }
 }

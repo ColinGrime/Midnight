@@ -11,7 +11,7 @@ import javax.annotation.Nonnull;
 public class BasicProfanityFilter extends ProfanityFilter {
 
     @Override
-    public boolean filter(@Nonnull ChannelMessage<?> message) {
+    public boolean filterProfanity(@Nonnull ChannelMessage<?> message) {
         String content = message.toText().toLowerCase();
         return Filters.PROFANITY_LIST.get().stream().anyMatch(content::contains);
     }
