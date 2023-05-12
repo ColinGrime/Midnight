@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS chatters_ignored (
 
 CREATE TABLE IF NOT EXISTS channel_logs (
     channel_name TEXT NOT NULL,
-    chatter_id UUID REFERENCES chatters(id) ON DELETE SET NULL,
+    chatter_id UUID REFERENCES chatters(id),
     content TEXT NOT NULL,
     timestamp TIMESTAMP NOT NULL,
     PRIMARY KEY (channel_name, chatter_id, timestamp)

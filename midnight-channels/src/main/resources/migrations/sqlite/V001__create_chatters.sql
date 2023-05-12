@@ -23,5 +23,5 @@ CREATE TABLE IF NOT EXISTS channel_logs (
     content TEXT NOT NULL,
     timestamp TEXT NOT NULL,
     PRIMARY KEY (channel_name, chatter_id, timestamp),
-    FOREIGN KEY(chatter_id) REFERENCES chatters(id) ON DELETE SET NULL
+    FOREIGN KEY(chatter_id) REFERENCES chatters(id)
 );
