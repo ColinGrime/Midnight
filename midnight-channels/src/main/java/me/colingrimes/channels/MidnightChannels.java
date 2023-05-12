@@ -31,7 +31,6 @@ public class MidnightChannels extends Midnight {
 
 	@Override
 	protected void enable() {
-		saveDefaultConfig();
 		DatabaseCredentials credentials = DatabaseCredentials.fromConfig(getConfig().getConfigurationSection("database"));
 
 		// Credentials must be set.
