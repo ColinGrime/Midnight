@@ -34,7 +34,11 @@ public class GlobalChannel extends BaseChannel {
 
     @Override
     void send(@Nonnull Chatter sender, @Nonnull ChannelMessage<?> message) {
-        Chatter.all().stream().filter(c -> !c.isIgnoring(sender.getID())).forEach(c -> c.send(settings.getFormattedMessage(sender, message)));
+        for (Chatter chatter : Chatter.all()) {
+            if (sender.hasPermission("channels.staff") || chatter.hasPermission("channels.staff") || !chatter.isIgnoring(sender.getID())) {
+                chatter.send(message);
+            }
+        }
     }
 
     @Override

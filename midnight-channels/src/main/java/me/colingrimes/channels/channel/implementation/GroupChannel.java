@@ -47,8 +47,12 @@ public class GroupChannel extends BaseChannel {
     void send(@Nonnull Chatter sender, @Nonnull ChannelMessage<?> message) {
         for (UUID groupMember : groupMembersSupplier.get()) {
             Optional<Chatter> chatter = ChannelAPI.getManager().getChatter(groupMember);
+            if (chatter.isEmpty()) {
+                continue;
+            }
 
-            if (chatter.isPresent() && !chatter.get().isIgnoring(sender.getID())) {
+            Chatter recipient = chatter.get();
+            if (sender.hasPermission("channels.staff") || recipient.hasPermission("channels.staff") || !recipient.isIgnoring(sender.getID())) {
                 chatter.get().send(settings.getFormattedMessage(sender, message));
             }
         }
