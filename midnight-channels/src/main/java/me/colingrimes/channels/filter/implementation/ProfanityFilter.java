@@ -1,12 +1,12 @@
-package me.colingrimes.channels.channel.misc.filter;
+package me.colingrimes.channels.filter.implementation;
 
 import me.colingrimes.channels.channel.chatter.Chatter;
-import me.colingrimes.channels.channel.misc.ChatFilter;
 import me.colingrimes.channels.config.Filters;
 import me.colingrimes.channels.config.Settings;
-import me.colingrimes.channels.message.ChannelMessage;
+import me.colingrimes.channels.filter.ChatFilterType;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -15,27 +15,31 @@ import java.util.regex.Pattern;
  * A chat filter that filters out messages containing banned words,
  * considering variations with leetspeak and special characters.
  */
-public class ProfanityFilter implements ChatFilter {
+public class ProfanityFilter extends BaseFilter {
 
     private final List<Pattern> profanityPatterns = new ArrayList<>();
 
-    public ProfanityFilter() {
-        for (String profanityWord : Filters.PROFANITY_LIST.getContent()) {
-            String pattern = createLeetSpeakPattern(profanityWord);
-            profanityPatterns.add(Pattern.compile(pattern, Pattern.CASE_INSENSITIVE));
-        }
-    }
-
     @Override
-    public boolean filter(@Nonnull ChannelMessage<?> message) {
-        String content = message.toText();
+    boolean filterMessage(@Nonnull String text, @Nonnull Chatter chatter) {
+        if (profanityPatterns.isEmpty()) {
+            for (String profanityWord : Filters.PROFANITY_LIST.getContent()) {
+                String pattern = createLeetSpeakPattern(profanityWord);
+                profanityPatterns.add(Pattern.compile(pattern, Pattern.CASE_INSENSITIVE));
+            }
+        }
 
-        if (profanityPatterns.stream().anyMatch(pattern -> pattern.matcher(content).find())) {
-            message.getChatter().filter(Chatter::online).ifPresent(c -> Settings.PROFANITY_WARNING.send(c.player()));
+        if (profanityPatterns.stream().anyMatch(pattern -> pattern.matcher(text).find())) {
+            chatter.send(Settings.PROFANITY_WARNING);
             return true;
         } else {
             return false;
         }
+    }
+
+    @Nullable
+    @Override
+    public ChatFilterType getType() {
+        return ChatFilterType.PROFANITY;
     }
 
     /**
