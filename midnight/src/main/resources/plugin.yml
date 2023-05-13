@@ -1,0 +1,6 @@
+name: Midnight
+main: me.colingrimes.midnight.plugin.EmptyPlugin
+version: ${version}
+author: Scill
+api-version: 1.19
+load: STARTUP

@@ -1,3 +1,7 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '7.1.1'
+}
+
 group 'me.colingrimes.midnight'
 
 repositories {
@@ -12,4 +16,14 @@ dependencies {
     implementation 'com.zaxxer:HikariCP:5.0.1'
     implementation 'org.postgresql:postgresql:42.3.8'
     implementation 'org.xerial:sqlite-jdbc:3.41.2.1'
+}
+
+shadowJar {
+    archiveFileName = "Midnight-${project.version}.jar"
+    dependencies {
+        include dependency('org.flywaydb:flyway-core:9.8.3')
+        include dependency('com.zaxxer:HikariCP:5.0.1')
+        include dependency('org.postgresql:postgresql:42.3.8')
+        include dependency('org.xerial:sqlite-jdbc:3.41.2.1')
+    }
 }
