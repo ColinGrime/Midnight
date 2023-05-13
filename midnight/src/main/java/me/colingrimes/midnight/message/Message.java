@@ -2,12 +2,14 @@ package me.colingrimes.midnight.message;
 
 import me.colingrimes.midnight.command.handler.util.Sender;
 import me.colingrimes.midnight.message.implementation.ComponentMessage;
+import me.colingrimes.midnight.message.implementation.ListMessage;
 import me.colingrimes.midnight.message.implementation.TextMessage;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 /**
  * A versatile and generic message interface that can be used in various contexts.
@@ -30,6 +32,8 @@ public interface Message<T> {
             return (Message<T>) new TextMessage((String) content);
         } else if (content instanceof TextComponent) {
             return (Message<T>) new ComponentMessage((TextComponent) content);
+        } else if (content instanceof List<?> contentList && contentList.get(0) instanceof String) {
+            return (Message<T>) new ListMessage((List<String>) content);
         } else {
             throw new IllegalArgumentException("Unsupported message content type: " + content.getClass().getName());
         }
