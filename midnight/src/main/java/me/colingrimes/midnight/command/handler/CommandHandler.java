@@ -18,7 +18,7 @@ import java.util.List;
 public interface CommandHandler extends TabExecutor {
 
 	/**
-	 * Creates a new {@link CommandHandler} instance for the specified command.
+	 * Creates a new {@link StandardCommandHandler} instance for the specified command.
 	 *
 	 * @param plugin  the plugin instance
 	 * @param command the custom command to handle
@@ -26,7 +26,7 @@ public interface CommandHandler extends TabExecutor {
 	 * @return a new {@link CommandHandler} instance
 	 */
 	@Nonnull
-	static <T extends Midnight> CommandHandler create(@Nonnull T plugin, @Nonnull me.colingrimes.midnight.command.Command<T> command) {
+	static <T extends Midnight> StandardCommandHandler<T> create(@Nonnull T plugin, @Nonnull me.colingrimes.midnight.command.Command<T> command) {
 		return new StandardCommandHandler<>(plugin, command);
 	}
 

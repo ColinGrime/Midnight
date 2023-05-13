@@ -78,4 +78,14 @@ public class StandardCommandHandler<T extends Midnight> implements CommandHandle
 	public Message<?> getUsage() {
 		return properties.getUsage();
 	}
+
+	/**
+	 * Gets the {@link CommandProperties} for this command.
+	 *
+	 * @return the command properties
+	 */
+	@Nonnull
+	public CommandProperties getProperties() {
+		return properties;
+	}
 }

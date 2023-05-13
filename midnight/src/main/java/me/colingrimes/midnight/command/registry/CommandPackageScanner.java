@@ -3,6 +3,7 @@ package me.colingrimes.midnight.command.registry;
 import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.handler.CommandHandler;
+import me.colingrimes.midnight.command.handler.StandardCommandHandler;
 import me.colingrimes.midnight.util.io.Files;
 import me.colingrimes.midnight.util.io.Logger;
 
@@ -104,7 +105,15 @@ public class CommandPackageScanner {
         }
 
         if (command != null) {
-            commandRegistry.register(commandPath.split(" "), CommandHandler.create(plugin, command));
+            StandardCommandHandler<T> handler = CommandHandler.create(plugin, command);
+            String[] commandPathParts = commandPath.split(" ");
+            commandRegistry.register(commandPathParts, handler);
+
+            // Register the command aliases.
+            for (String alias : handler.getProperties().getAliases()) {
+                commandPathParts[commandPathParts.length - 1] = alias;
+                commandRegistry.register(commandPathParts, handler);
+            }
         }
     }
 }
