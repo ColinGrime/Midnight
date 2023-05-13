@@ -26,7 +26,6 @@ public final class DatabaseUtils {
 	@Nullable
 	public static ZonedDateTime getTimestamp(@Nonnull ResultSet resultSet, @Nonnull String columnName, @Nonnull DatabaseType type) throws SQLException {
 		if (type == DatabaseType.SQLITE) {
-			Logger.log("THIS ONE");
 			String dateTimeStr = resultSet.getString(columnName);
 			return dateTimeStr != null ? ZonedDateTime.parse(dateTimeStr).withZoneSameInstant(ZoneId.systemDefault()) : null;
 		} else {
