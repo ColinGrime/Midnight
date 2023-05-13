@@ -3,3 +3,4 @@ main: me.colingrimes.particles.MidnightParticles
 version: ${version}
 author: Scill
 api-version: 1.19
+depend: [Midnight]
