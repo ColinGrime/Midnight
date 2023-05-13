@@ -53,12 +53,15 @@ public interface Message<T> {
      * @return the plain text representation of the message content
      */
     @Nonnull
+    @SuppressWarnings("unchecked")
     default String toText() {
         T content = getContent();
         if (content instanceof String) {
             return (String) content;
         } else if (content instanceof TextComponent) {
             return ((TextComponent) content).toPlainText();
+        }  else if (content instanceof List<?> && ((List<?>) content).get(0) instanceof String) {
+            return String.join("\n", (List<String>) content);
         } else {
             return "";
         }
