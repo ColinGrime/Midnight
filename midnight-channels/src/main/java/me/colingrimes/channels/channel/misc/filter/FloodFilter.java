@@ -21,7 +21,7 @@ public class FloodFilter implements ChatFilter {
     private final RollingWindowCache<UUID> messageCache;
 
     public FloodFilter() {
-        this.messageCache = new RollingWindowCache<>(Duration.ofMillis(Filters.FLOOD_TIME_WINDOW.get()));
+        this.messageCache = new RollingWindowCache<>(Duration.ofSeconds(Filters.FLOOD_TIME_WINDOW.get()));
     }
 
     @Override

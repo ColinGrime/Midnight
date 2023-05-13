@@ -22,7 +22,7 @@ public class SpamFilter implements ChatFilter {
     private final ExpiringCache<UUID, String> messageCache;
 
     public SpamFilter() {
-        this.messageCache = new SimpleExpiringCache<>(Duration.ofMillis(Filters.SPAM_TIME_WINDOW.get()));
+        this.messageCache = new SimpleExpiringCache<>(Duration.ofSeconds(Filters.SPAM_TIME_WINDOW.get()));
     }
 
     @Override
