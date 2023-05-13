@@ -1,6 +1,7 @@
 package me.colingrimes.midnight.config.option;
 
 import me.colingrimes.midnight.config.adapter.ConfigurationAdapter;
+import me.colingrimes.midnight.message.Message;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -46,7 +47,7 @@ public interface Option<T> {
 	static List<Option<?>> initialize(Class<?> optionClass) {
 		List<Option<?>> options = new ArrayList<>();
 		for (Field field : optionClass.getFields()) {
-			if (Modifier.isStatic(field.getModifiers()) && Option.class.equals(field.getType())) {
+			if (Modifier.isStatic(field.getModifiers()) && (Option.class.equals(field.getType()) || Message.class.equals(field.getType()))) {
 				try {
 					options.add((Option<?>) field.get(null));
 				} catch (IllegalAccessException ex) {
