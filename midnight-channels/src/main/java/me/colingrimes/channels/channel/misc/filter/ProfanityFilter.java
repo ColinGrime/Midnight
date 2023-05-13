@@ -1,6 +1,9 @@
-package me.colingrimes.channels.channel.misc.filter.profanity;
+package me.colingrimes.channels.channel.misc.filter;
 
+import me.colingrimes.channels.channel.chatter.Chatter;
+import me.colingrimes.channels.channel.misc.ChatFilter;
 import me.colingrimes.channels.config.Filters;
+import me.colingrimes.channels.config.Settings;
 import me.colingrimes.channels.message.ChannelMessage;
 
 import javax.annotation.Nonnull;
@@ -9,24 +12,30 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * An advanced profanity filter that filters out messages containing banned words,
+ * A chat filter that filters out messages containing banned words,
  * considering variations with leetspeak and special characters.
  */
-public class AdvancedProfanityFilter extends ProfanityFilter {
+public class ProfanityFilter implements ChatFilter {
 
     private final List<Pattern> profanityPatterns = new ArrayList<>();
 
-    public AdvancedProfanityFilter() {
-        for (String profanityWord : Filters.PROFANITY_LIST.get()) {
+    public ProfanityFilter() {
+        for (String profanityWord : Filters.PROFANITY_LIST.getContent()) {
             String pattern = createLeetSpeakPattern(profanityWord);
             profanityPatterns.add(Pattern.compile(pattern, Pattern.CASE_INSENSITIVE));
         }
     }
 
     @Override
-    public boolean filterProfanity(@Nonnull ChannelMessage<?> message) {
+    public boolean filter(@Nonnull ChannelMessage<?> message) {
         String content = message.toText();
-        return profanityPatterns.stream().anyMatch(pattern -> pattern.matcher(content).find());
+
+        if (profanityPatterns.stream().anyMatch(pattern -> pattern.matcher(content).find())) {
+            message.getChatter().filter(Chatter::online).ifPresent(c -> Settings.PROFANITY_WARNING.send(c.player()));
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -54,7 +63,7 @@ public class AdvancedProfanityFilter extends ProfanityFilter {
                 .replaceAll("p", "[pP]")
                 .replaceAll("q", "[qQ]")
                 .replaceAll("r", "[rR]")
-                .replaceAll("s", "[sS5$]")
+                .replaceAll("s", "[sS5\\$]")
                 .replaceAll("t", "[tT7]")
                 .replaceAll("u", "[uUvV]")
                 .replaceAll("v", "[vVuU]")
