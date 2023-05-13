@@ -6,8 +6,6 @@ import me.colingrimes.channels.channel.misc.ChannelSettings;
 import me.colingrimes.channels.config.Settings;
 import me.colingrimes.channels.message.ChannelMessage;
 import me.colingrimes.midnight.message.Message;
-import me.colingrimes.midnight.message.Placeholders;
-import me.colingrimes.midnight.util.bukkit.Players;
 
 import javax.annotation.Nonnull;
 
@@ -72,13 +70,6 @@ public abstract class BaseChannel implements Channel {
             if (!settings.filter(channelMessage)) {
                 send(sender, channelMessage);
                 return true;
-            } else {
-                Placeholders placeholders = Placeholders
-                        .of("{player}", sender.getName())
-                        .add("{message}", message.toText());
-                Players.all().stream()
-                        .filter(p -> p.hasPermission("channels.filtered"))
-                        .forEach(Settings.MESSAGE_FILTERED.replace(placeholders)::send);
             }
         }
         return false;

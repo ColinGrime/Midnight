@@ -2,6 +2,8 @@ package me.colingrimes.channels.channel.misc;
 
 import me.colingrimes.channels.MidnightChannels;
 import me.colingrimes.channels.channel.chatter.Chatter;
+import me.colingrimes.channels.filter.ChatFilter;
+import me.colingrimes.channels.filter.ChatFilters;
 import me.colingrimes.channels.message.ChannelMessage;
 import me.colingrimes.midnight.message.Message;
 import me.colingrimes.midnight.message.Placeholders;
@@ -9,55 +11,78 @@ import me.colingrimes.midnight.scheduler.Scheduler;
 import me.colingrimes.midnight.util.io.Logger;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.Nullable;
 
 /**
  * Represents the settings for a communication channel.
  */
-public class ChannelSettings {
+public class ChannelSettings implements ChatFilter {
 
-    private final List<ChatFilter> filters = new ArrayList<>();
-    private String messageFormat = "&7<&f&l{vault_prefix}&7> &e{player}&7: &f{message}";
+    private final ChatFilters filters = new ChatFilters();
+    private String messageFormat = "&7<&f&l{vault_prefix}&7> &e{sender}&7: &f{message}";
     private boolean logMessages = false;
 
     /**
-     * Filters a channel message based on its content.
+     * Gets the chat filters for the channel.
      *
-     * @param message the message to filter
-     * @return whether the message should be filtered
+     * @return the chat filters
      */
-    public boolean filter(@Nonnull ChannelMessage<?> message) {
-        for (ChatFilter filter : filters) {
-            if (filter.filter(message)) {
-                return true;
-            }
-        }
-        return false;
+    @Nonnull
+    public ChatFilters getFilters() {
+        return filters;
     }
 
-    /**
-     * Adds a filter to the channel.
-     *
-     * @param filter the filter to add
-     */
-    public void addFilter(@Nonnull ChatFilter filter) {
-        filters.add(filter);
+    @Override
+    public boolean filter(@Nonnull Message<?> message, @Nullable Chatter chatter) {
+        return filters.filter(message, chatter);
     }
 
     /**
      * Gets the formatted message for the channel. The format can include
-     * placeholders like {player} and {message} to be replaced by the
-     * player's name and message, respectively. In addition, this supports
-     * all the placeholders from the PlaceholderAPI plugin.
+     * placeholders like {message} and {sender} to be replaced by the
+     * player's name and message, respectively. In addition, this
+     * supports all the placeholders from the PlaceholderAPI plugin.
      *
      * @return the message format
      */
     @Nonnull
     public String getFormattedMessage(@Nonnull Chatter chatter, @Nonnull Message<?> message) {
         return Placeholders.create(chatter.player())
-                .add("{player}", chatter.getName())
                 .add("{message}", message.toText())
+                .add("{sender}", chatter.getName())
+                .apply(messageFormat);
+    }
+
+    /**
+     * Gets the formatted message for the channel. The format can include
+     * placeholders like {message} and {sender} to be replaced by the
+     * player's name and message, respectively. In addition, this
+     * supports all the placeholders from the PlaceholderAPI plugin.
+     *
+     * @return the message format
+     */
+    @Nonnull
+    public String getFormattedMessage(@Nonnull Chatter chatter, @Nonnull Message<?> message, @Nonnull String sender) {
+        return Placeholders.create(chatter.player())
+                .add("{message}", message.toText())
+                .add("{sender}", sender)
+                .apply(messageFormat);
+    }
+
+    /**
+     * Gets the formatted message for the channel. The format can include
+     * placeholders like {message}, {sender}, {recipient} to be replaced
+     * by the player's name and message, respectively. In addition, this
+     * supports all the placeholders from the PlaceholderAPI plugin.
+     *
+     * @return the message format
+     */
+    @Nonnull
+    public String getFormattedMessage(@Nonnull Chatter chatter, @Nonnull Message<?> message, @Nonnull String sender, @Nonnull String recipient) {
+        return Placeholders.create(chatter.player())
+                .add("{message}", message.toText())
+                .add("{sender}", sender)
+                .add("{recipient}", recipient)
                 .apply(messageFormat);
     }
 
