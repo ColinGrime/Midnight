@@ -2,6 +2,7 @@ package me.colingrimes.midnight.config.adapter;
 
 import me.colingrimes.midnight.config.util.ConfigurableInventory;
 import me.colingrimes.midnight.util.bukkit.Items;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
@@ -12,6 +13,12 @@ import java.util.Optional;
 abstract class BaseConfigurationAdapter implements ConfigurationAdapter {
 
 	FileConfiguration config;
+
+	@Nonnull
+	@Override
+	public Optional<ConfigurationSection> getSection(@Nonnull String path) {
+		return Optional.ofNullable(config.getConfigurationSection(path));
+	}
 
 	@Nonnull
 	@Override
