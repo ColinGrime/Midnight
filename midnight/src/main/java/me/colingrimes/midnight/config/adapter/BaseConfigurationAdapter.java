@@ -22,8 +22,7 @@ abstract class BaseConfigurationAdapter implements ConfigurationAdapter {
 	@Nonnull
 	@Override
 	public Optional<List<String>> getStringList(@Nonnull String path) {
-		List<String> list = config.getStringList(path);
-		return list.isEmpty() ? Optional.empty() : Optional.of(list);
+		return Optional.of(config.getStringList(path));
 	}
 
 	@Nonnull
