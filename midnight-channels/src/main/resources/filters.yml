@@ -4,7 +4,7 @@ spam-filter:
 
 flood-filter:
   # Maximum number of messages allowed in the time window.
-  max-messages: 8
+  max-messages: 5
   # Time window in seconds.
   time-window: 5
 

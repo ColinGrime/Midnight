@@ -1,8 +1,8 @@
 package me.colingrimes.channels.config;
 
 import me.colingrimes.midnight.config.annotation.Configuration;
-import me.colingrimes.midnight.config.option.MessageOption;
 import me.colingrimes.midnight.config.option.Option;
+import me.colingrimes.midnight.message.Message;
 
 import java.util.List;
 
@@ -20,12 +20,12 @@ public interface Filters {
     /**************************************************
      *                 Flood Filter                   *
      **************************************************/
-    Option<Integer> FLOOD_MAX_MESSAGES = option("flood-filter.max-messages", 8);
+    Option<Integer> FLOOD_MAX_MESSAGES = option("flood-filter.max-messages", 5);
     Option<Integer> FLOOD_TIME_WINDOW = option("flood-filter.time-window", 5);
 
     /**************************************************
      *                Profanity Filter                *
      **************************************************/
     Option<Double> PROFANITY_MAX_ALLOWED_SIMILARITY_DISTANCE = option("profanity-filter.max-allowed-similarity-distance", 0.8);
-    MessageOption<List<String>> PROFANITY_LIST = message("profanity-filter.swears");
+    Message<List<String>> PROFANITY_LIST = message("profanity-filter.swears");
 }
