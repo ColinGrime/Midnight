@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class MessageOption<T> implements Option<T>, Message<String> {
+public class MessageOption<T> implements Option<T>, Message<List<String>> {
 
 	private final Function<ConfigurationAdapter, ? extends T> function;
 	private T value;
@@ -48,8 +48,8 @@ public class MessageOption<T> implements Option<T>, Message<String> {
 
 	@Nonnull
 	@Override
-	public String getContent() {
-		return String.join("\n", messages);
+	public List<String> getContent() {
+		return messages;
 	}
 
 	@Override
@@ -59,8 +59,7 @@ public class MessageOption<T> implements Option<T>, Message<String> {
 
 	@Nonnull
 	@Override
-	public Message<String> replace(@Nonnull Placeholders placeholders) {
-		messages = placeholders.apply(messages);
-		return this;
+	public Message<List<String>> replace(@Nonnull Placeholders placeholders) {
+		return Message.of(placeholders.apply(messages));
 	}
 }
