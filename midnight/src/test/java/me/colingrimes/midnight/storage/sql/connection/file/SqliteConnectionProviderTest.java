@@ -28,7 +28,7 @@ class SqliteConnectionProviderTest {
 
 	@Test
 	public void testName() {
-		assertEquals("SQLite", provider.getName(), "SqliteConnectionProvider should return 'SQLite' as its name");
+		assertEquals("SQLite", provider.getType().getName(), "SqliteConnectionProvider should return 'SQLite' as its name");
 	}
 
 	@Test

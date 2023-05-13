@@ -27,7 +27,7 @@ class MySqlConnectionProviderTest {
 
 	@Test
 	public void testName() {
-		assertEquals("MySQL", provider.getName(), "MySqlConnectionProvider should return 'MySQL' as its name");
+		assertEquals("MySQL", provider.getType().getName(), "MySqlConnectionProvider should return 'MySQL' as its name");
 	}
 
 	@Test
