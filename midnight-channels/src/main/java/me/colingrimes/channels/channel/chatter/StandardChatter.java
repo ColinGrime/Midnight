@@ -101,6 +101,15 @@ public class StandardChatter implements Chatter {
     }
 
     @Override
+    public boolean hasPermission(@Nonnull String permission) {
+        if (online()) {
+            return player().hasPermission(permission);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
     public void send(@Nonnull Message<?> message) {
         if (online()) {
             Scheduler.SYNC.run(() -> message.send(player()));

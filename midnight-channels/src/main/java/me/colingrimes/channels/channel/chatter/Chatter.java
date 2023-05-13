@@ -67,6 +67,15 @@ public interface Chatter {
     boolean online();
 
     /**
+     * Checks if the chatter has the specified permission.
+     * If they are not online, this will return false.
+     *
+     * @param permission the permission to check
+     * @return true if the chatter has the permission, false otherwise
+     */
+    boolean hasPermission(@Nonnull String permission);
+
+    /**
      * Sends a message to this chatter.
      *
      * @param message the message to send
