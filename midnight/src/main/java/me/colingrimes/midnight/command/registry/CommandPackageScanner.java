@@ -40,48 +40,55 @@ public class CommandPackageScanner {
      * @param commandPath the command path
      */
     private void scan(@Nonnull String packagePath, @Nonnull String commandPath) {
+        // Get all Command classes.
         List<Class<?>> classes = Files.getClasses(plugin, packagePath, false);
         classes = classes.stream().filter(Command.class::isAssignableFrom).toList();
 
-        // Only 1 command class per package.
+        // Only 1 command class per package is allowed.
         if (classes.size() > 1) {
             Logger.severe("More than one command class found in package: " + packagePath);
             return;
         }
 
-        // Get the new command path based on the next package.
-        commandPath = getCommandPath(packagePath, commandPath);
+        // Get the command to register.
+        String command = getCommand(packagePath);
+        String newCommandPath = commandPath.isEmpty() ? command : commandPath + " " + command;
 
-        // Register the command class.
+        // Register the command class and get the aliases.
+        String[] aliases = new String[]{};
         if (classes.size() == 1) {
-            registerCommand(plugin, commandPath, classes.get(0));
+            aliases = registerCommand(plugin, newCommandPath, classes.get(0));
         } else if (!packagePath.equals(plugin.getRootPackage() + ".command")) {
-            commandRegistry.register(commandPath.split(" "), null);
+            commandRegistry.register(newCommandPath.split(" "), null);
         }
 
         // Recursively check the sub-packages for sub-commands.
         for (String subPackage : Files.getPackageNames(plugin, packagePath)) {
-            scan(packagePath + "." + subPackage, commandPath);
+            scan(packagePath + "." + subPackage, newCommandPath);
+
+            // Register the aliases of the command.
+            for (String alias : aliases) {
+                String aliasPath = commandPath.isEmpty() ? alias : commandPath + " " + alias;
+                scan(packagePath + "." + subPackage, aliasPath);
+            }
         }
     }
 
     /**
-     * Generates and returns the updated command path based on the package path.
+     * Gets the command from the package path.
      *
      * @param packagePath the current package path being processed
-     * @param commandPath the current command path being built
-     * @return the updated command path.
+     * @return the command from the package path
      */
     @Nonnull
-    private String getCommandPath(@Nonnull String packagePath, @Nonnull String commandPath) {
+    private String getCommand(@Nonnull String packagePath) {
         // Ignore the root command package.
         if (packagePath.equals(plugin.getRootPackage() + ".command")) {
-            return commandPath;
+            return "";
         }
 
         String[] packages = packagePath.split("\\.");
-        String command = packages[packages.length - 1].toLowerCase();
-        return commandPath.isEmpty() ? command : commandPath + " " + command;
+        return packages[packages.length - 1].toLowerCase();
     }
 
     /**
@@ -91,8 +98,10 @@ public class CommandPackageScanner {
      * @param commandClass the command class to register
      * @param commandPath  the command path
      * @param <T>          the type of plugin
+     * @return the aliases of the command
      */
-    private <T extends Midnight> void registerCommand(@Nonnull T plugin, @Nonnull String commandPath, @Nonnull Class<?> commandClass) {
+    @Nonnull
+    private <T extends Midnight> String[] registerCommand(@Nonnull T plugin, @Nonnull String commandPath, @Nonnull Class<?> commandClass) {
         Command<T> command = null;
 
         try {
@@ -106,14 +115,18 @@ public class CommandPackageScanner {
 
         if (command != null) {
             StandardCommandHandler<T> handler = CommandHandler.create(plugin, command);
-            String[] commandPathParts = commandPath.split(" ");
-            commandRegistry.register(commandPathParts, handler);
+            String[] args = commandPath.split(" ");
+            commandRegistry.register(args, handler);
 
             // Register the command aliases.
             for (String alias : handler.getProperties().getAliases()) {
-                commandPathParts[commandPathParts.length - 1] = alias;
-                commandRegistry.register(commandPathParts, handler);
+                args[args.length - 1] = alias;
+                commandRegistry.register(args, handler);
             }
+
+            return handler.getProperties().getAliases();
         }
+
+        return new String[]{};
     }
 }
