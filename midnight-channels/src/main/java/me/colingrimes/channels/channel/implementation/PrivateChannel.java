@@ -6,8 +6,6 @@ import me.colingrimes.channels.channel.misc.ChannelType;
 import me.colingrimes.channels.config.Settings;
 import me.colingrimes.channels.message.ChannelMessage;
 import me.colingrimes.midnight.message.Message;
-import me.colingrimes.midnight.message.Placeholders;
-import me.colingrimes.midnight.util.bukkit.Players;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -58,33 +56,7 @@ public class PrivateChannel extends BaseChannel {
      * @return true if the message was sent successfully, false otherwise
      */
     public boolean send(@Nonnull Chatter sender, @Nonnull Chatter recipient, @Nonnull Message<?> message) {
-        if (!enabled) {
-            Settings.CHANNEL_DISABLED_MESSAGE.send(sender.player());
-            return false;
-        } else if (sender.isMuted()) {
-            Settings.MUTED_MESSAGE.send(sender.player());
-            return false;
-        } else if (recipient.isIgnoring(sender.getID())) {
-            return false;
-        }
-
-        ChannelMessage<?> channelMessage = new ChannelMessage<>(this, sender, message);
-        settings.logMessage(channelMessage);
-
-        // Send filtered messages to staff.
-        if (settings.filter(channelMessage)) {
-            Placeholders placeholders = Placeholders
-                    .of("{player}", sender.getName())
-                    .add("{message}", message.toText());
-            Players.all().stream()
-                    .filter(p -> p.hasPermission("channels.filtered"))
-                    .forEach(Settings.MESSAGE_FILTERED.replace(placeholders)::send);
-            return false;
-        }
-
-        recipient.send(settings.getFormattedMessage(sender, channelMessage));
-        recipient.setLastMessagedBy(sender.getID());
-        return true;
+        return sendPrivateMessage(sender, recipient, message);
     }
 
     /**
@@ -96,38 +68,48 @@ public class PrivateChannel extends BaseChannel {
      */
     @Override
     public boolean send(@Nonnull Chatter sender, @Nonnull Message<?> message) {
+        if (sender.getLastMessagedBy() == null) {
+            Settings.REPLY_FAILURE.send(sender.player());
+            return false;
+        }
+
+        Optional<Chatter> recipient = ChannelAPI.getManager().getChatter(sender.getLastMessagedBy());
+        if (recipient.isEmpty()) {
+            Settings.REPLY_FAILURE.send(sender.player());
+            return false;
+        }
+
+        return sendPrivateMessage(sender, recipient.get(), message);
+    }
+
+    /**
+     * Sends a message from the sender to the recipient.
+     *
+     * @param sender    the sender
+     * @param recipient the recipient
+     * @param message   the message
+     * @return true if the message was sent successfully, false otherwise
+     */
+    private boolean sendPrivateMessage(@Nonnull Chatter sender, @Nonnull Chatter recipient, @Nonnull Message<?> message) {
         if (!enabled) {
             Settings.CHANNEL_DISABLED_MESSAGE.send(sender.player());
             return false;
         } else if (sender.isMuted()) {
             Settings.MUTED_MESSAGE.send(sender.player());
             return false;
-        } else if (sender.getLastMessagedBy() == null) {
-            Settings.REPLY_FAILURE.send(sender.player());
-            return false;
-        }
-
-        Optional<Chatter> recipient = ChannelAPI.getManager().getChatter(sender.getLastMessagedBy());
-        if (recipient.isEmpty() || recipient.get().isIgnoring(sender.getID())) {
+        } else if (recipient.isIgnoring(sender.getID()) && !sender.hasPermission("channels.staff") && !recipient.hasPermission("channels.staff")) {
             return false;
         }
 
         ChannelMessage<?> channelMessage = new ChannelMessage<>(this, sender, message);
         settings.logMessage(channelMessage);
-
-        // Send filtered messages to staff.
         if (settings.filter(channelMessage)) {
-            Placeholders placeholders = Placeholders
-                    .of("{player}", sender.getName())
-                    .add("{message}", message.toText());
-            Players.all().stream()
-                    .filter(p -> p.hasPermission("channels.filtered"))
-                    .forEach(Settings.MESSAGE_FILTERED.replace(placeholders)::send);
             return false;
         }
 
-        recipient.get().send(settings.getFormattedMessage(sender, channelMessage));
-        recipient.get().setLastMessagedBy(sender.getID());
+        sender.send(settings.getFormattedMessage(sender, channelMessage, "Me", recipient.getName()));
+        recipient.send(settings.getFormattedMessage(sender, channelMessage, sender.getName(), "Me"));
+        recipient.setLastMessagedBy(sender.getID());
         return true;
     }
 
