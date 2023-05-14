@@ -13,7 +13,6 @@ public class SimpleOption<T> implements Option<T> {
 
 	public SimpleOption(@Nonnull Function<ConfigurationAdapter, ? extends T> function) {
 		this.function = function;
-		this.reload(null);
 	}
 
 	@Nonnull
