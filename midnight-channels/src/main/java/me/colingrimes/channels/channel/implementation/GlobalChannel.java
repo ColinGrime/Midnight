@@ -36,7 +36,7 @@ public class GlobalChannel extends BaseChannel {
     void send(@Nonnull Chatter sender, @Nonnull ChannelMessage<?> message) {
         for (Chatter chatter : Chatter.all()) {
             if (sender.hasPermission("channels.staff") || chatter.hasPermission("channels.staff") || !chatter.isIgnoring(sender.getID())) {
-                chatter.send(message);
+                chatter.send(settings.getFormattedMessage(sender, message));
             }
         }
     }
