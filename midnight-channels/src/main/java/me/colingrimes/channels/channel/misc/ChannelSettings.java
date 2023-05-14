@@ -3,6 +3,7 @@ package me.colingrimes.channels.channel.misc;
 import me.colingrimes.channels.MidnightChannels;
 import me.colingrimes.channels.channel.chatter.Chatter;
 import me.colingrimes.channels.filter.ChatFilter;
+import me.colingrimes.channels.filter.ChatFilterType;
 import me.colingrimes.channels.filter.ChatFilters;
 import me.colingrimes.channels.message.ChannelMessage;
 import me.colingrimes.midnight.message.Message;
@@ -12,6 +13,7 @@ import me.colingrimes.midnight.util.io.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Arrays;
 
 /**
  * Represents the settings for a communication channel.
@@ -22,19 +24,33 @@ public class ChannelSettings implements ChatFilter {
     private String messageFormat = "&7<&f&l{vault_prefix}&7> &e{sender}&7: &f{message}";
     private boolean logMessages = false;
 
-    /**
-     * Gets the chat filters for the channel.
-     *
-     * @return the chat filters
-     */
-    @Nonnull
-    public ChatFilters getFilters() {
-        return filters;
-    }
-
     @Override
     public boolean filter(@Nonnull Message<?> message, @Nullable Chatter chatter) {
         return filters.filter(message, chatter);
+    }
+
+    /**
+     * Adds the chat filters for the channel.
+     *
+     * @param filters the chat filters
+     * @return the channel settings
+     */
+    @Nonnull
+    public ChannelSettings addFilters(@Nonnull ChatFilterType... filters) {
+        Arrays.stream(filters).forEach(this.filters::add);
+        return this;
+    }
+
+    /**
+     * Adds the chat filters for the channel.
+     *
+     * @param filters the chat filters
+     * @return the channel settings
+     */
+    @Nonnull
+    public ChannelSettings addFilters(@Nonnull ChatFilter... filters) {
+        Arrays.stream(filters).forEach(this.filters::add);
+        return this;
     }
 
     /**
@@ -90,9 +106,12 @@ public class ChannelSettings implements ChatFilter {
      * Sets the message format for the channel.
      *
      * @param format the message format
+     * @return the channel settings
      */
-    public void setMessageFormat(@Nonnull String format) {
+    @Nonnull
+    public ChannelSettings setMessageFormat(@Nonnull String format) {
         this.messageFormat = format;
+        return this;
     }
 
     /**
@@ -116,8 +135,11 @@ public class ChannelSettings implements ChatFilter {
      * Sets whether to log messages sent in the channel.
      *
      * @param logMessages whether to log messages
+     * @return the channel settings
      */
-    public void setLogMessages(boolean logMessages) {
+    @Nonnull
+    public ChannelSettings setLogMessages(boolean logMessages) {
         this.logMessages = logMessages;
+        return this;
     }
 }
