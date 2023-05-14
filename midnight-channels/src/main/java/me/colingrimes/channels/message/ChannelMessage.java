@@ -77,11 +77,7 @@ public class ChannelMessage<T> implements Message<T> {
 
     @Override
     public void send(@Nonnull CommandSender recipient) {
-        if (chatter == null) {
-            message.send(recipient);
-        } else {
-            channel.send(chatter, message);
-        }
+        message.send(recipient);
     }
 
     @Nonnull
