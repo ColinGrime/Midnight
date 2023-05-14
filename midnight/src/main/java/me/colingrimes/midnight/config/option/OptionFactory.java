@@ -173,26 +173,31 @@ public interface OptionFactory<T> {
 
 		private final OptionFactory<T> factory;
 		private final String path;
-		private final Optional<T> def;
+		private final T def;
 
 		Bound(@Nonnull OptionFactory<T> factory, @Nonnull String path, @Nullable T def) {
 			this.factory = factory;
 			this.path = path;
-			this.def = Optional.ofNullable(def);
+			this.def = def;
 		}
 
 		@Nonnull
 		@Override
 		public T apply(@Nullable ConfigurationAdapter configurationAdapter) {
 			if (configurationAdapter == null) {
-				if (def.isPresent()) {
-					return def.get();
+				if (def != null) {
+					return def;
 				} else {
-					throw new IllegalStateException("Configuration adapter is null and no default value was provided.");
+					throw new IllegalStateException("ConfigurationAdapter is null and no default value was provided for path: " + path);
 				}
 			}
 
-			return factory.getValue(configurationAdapter, path).orElse(def.orElseThrow(() -> new IllegalStateException("No default value was provided.")));
+			T value = factory.getValue(configurationAdapter, path).orElse(def);
+			if (value == null) {
+				throw new IllegalStateException("Value is null and no default value was provided for path: " + path);
+			} else {
+				return value;
+			}
 		}
 	}
 }
