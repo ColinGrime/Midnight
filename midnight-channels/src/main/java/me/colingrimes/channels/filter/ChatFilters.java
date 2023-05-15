@@ -1,7 +1,7 @@
 package me.colingrimes.channels.filter;
 
 import me.colingrimes.channels.channel.chatter.Chatter;
-import me.colingrimes.channels.config.Settings;
+import me.colingrimes.channels.config.Messages;
 import me.colingrimes.midnight.message.Message;
 import me.colingrimes.midnight.message.Placeholders;
 import me.colingrimes.midnight.util.bukkit.Players;
@@ -61,7 +61,7 @@ public class ChatFilters implements ChatFilter {
                     .add("{message}", message.toText());
             Players.all().stream()
                     .filter(p -> p.hasPermission("channels.filtered"))
-                    .forEach(Settings.MESSAGE_FILTERED.replace(placeholders)::send);
+                    .forEach(Messages.MESSAGE_FILTERED.replace(placeholders)::send);
         }
 
         return true;

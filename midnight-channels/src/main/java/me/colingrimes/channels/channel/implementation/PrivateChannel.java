@@ -3,7 +3,7 @@ package me.colingrimes.channels.channel.implementation;
 import me.colingrimes.channels.ChannelAPI;
 import me.colingrimes.channels.channel.chatter.Chatter;
 import me.colingrimes.channels.channel.misc.ChannelType;
-import me.colingrimes.channels.config.Settings;
+import me.colingrimes.channels.config.Messages;
 import me.colingrimes.channels.message.ChannelMessage;
 import me.colingrimes.midnight.message.Message;
 
@@ -69,13 +69,13 @@ public class PrivateChannel extends BaseChannel {
     @Override
     public boolean send(@Nonnull Chatter sender, @Nonnull Message<?> message) {
         if (sender.getLastMessagedBy() == null) {
-            Settings.REPLY_FAILURE.send(sender.player());
+            Messages.NOBODY_TO_REPLY_TO.send(sender.player());
             return false;
         }
 
         Optional<Chatter> recipient = ChannelAPI.getManager().getChatter(sender.getLastMessagedBy());
         if (recipient.isEmpty()) {
-            Settings.REPLY_FAILURE.send(sender.player());
+            Messages.NOBODY_TO_REPLY_TO.send(sender.player());
             return false;
         }
 
@@ -92,10 +92,13 @@ public class PrivateChannel extends BaseChannel {
      */
     private boolean sendPrivateMessage(@Nonnull Chatter sender, @Nonnull Chatter recipient, @Nonnull Message<?> message) {
         if (!enabled) {
-            Settings.CHANNEL_DISABLED_MESSAGE.send(sender.player());
+            Messages.CHANNEL_DISABLED.send(sender.player());
+            return false;
+        } else if (sender.getID().equals(recipient.getID())) {
+            Messages.MESSAGE_SELF.send(sender.player());
             return false;
         } else if (sender.isMuted()) {
-            Settings.MUTED_MESSAGE.send(sender.player());
+            Messages.CURRENTLY_MUTED.send(sender.player());
             return false;
         } else if (recipient.isIgnoring(sender.getID()) && !sender.hasPermission("channels.staff") && !recipient.hasPermission("channels.staff")) {
             return false;

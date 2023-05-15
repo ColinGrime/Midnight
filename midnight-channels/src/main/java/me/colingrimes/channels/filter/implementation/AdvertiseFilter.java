@@ -1,7 +1,7 @@
 package me.colingrimes.channels.filter.implementation;
 
 import me.colingrimes.channels.channel.chatter.Chatter;
-import me.colingrimes.channels.config.Settings;
+import me.colingrimes.channels.config.Messages;
 import me.colingrimes.channels.filter.ChatFilterType;
 
 import javax.annotation.Nonnull;
@@ -19,7 +19,7 @@ public class AdvertiseFilter extends BaseFilter {
     @Override
     boolean filterMessage(@Nonnull String text, @Nonnull Chatter chatter) {
         if (urlPattern.matcher(text).find() || ipPattern.matcher(text).find()) {
-            chatter.send(Settings.ADVERTISING_WARNING);
+            chatter.send(Messages.ADVERTISING_WARNING);
             return true;
         } else {
             return false;

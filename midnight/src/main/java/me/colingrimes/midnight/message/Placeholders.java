@@ -99,7 +99,7 @@ public class Placeholders {
 			str = PlaceholderAPI.setPlaceholders(player, str.replaceAll("\\{(.+?)}", "%$1%"));
 		}
 
-		return Text.color(str);
+		return Text.color(str.replaceAll("%(.+?)%", "{$1}"));
 	}
 
 	/**

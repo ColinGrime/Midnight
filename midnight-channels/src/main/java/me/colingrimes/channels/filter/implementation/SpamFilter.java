@@ -2,7 +2,7 @@ package me.colingrimes.channels.filter.implementation;
 
 import me.colingrimes.channels.channel.chatter.Chatter;
 import me.colingrimes.channels.config.Filters;
-import me.colingrimes.channels.config.Settings;
+import me.colingrimes.channels.config.Messages;
 import me.colingrimes.channels.filter.ChatFilterType;
 import me.colingrimes.midnight.cache.ExpiringCache;
 import me.colingrimes.midnight.cache.expiring.SimpleExpiringCache;
@@ -30,7 +30,7 @@ public class SpamFilter extends BaseFilter {
         String lastMessage = messageCache.get(uuid);
 
         if (lastMessage != null && lastMessage.equals(text)) {
-            Settings.SPAM_WARNING.send(chatter.player());
+            Messages.SPAM_WARNING.send(chatter.player());
             return true;
         } else {
             messageCache.put(uuid, text);

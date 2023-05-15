@@ -3,7 +3,7 @@ package me.colingrimes.channels.channel.implementation;
 import me.colingrimes.channels.channel.Channel;
 import me.colingrimes.channels.channel.chatter.Chatter;
 import me.colingrimes.channels.channel.misc.ChannelSettings;
-import me.colingrimes.channels.config.Settings;
+import me.colingrimes.channels.config.Messages;
 import me.colingrimes.channels.message.ChannelMessage;
 import me.colingrimes.midnight.message.Message;
 
@@ -59,11 +59,11 @@ public abstract class BaseChannel implements Channel {
     @Override
     public boolean send(@Nonnull Chatter sender, @Nonnull Message<?> message) {
         if (!enabled) {
-            Settings.CHANNEL_DISABLED_MESSAGE.send(sender.player());
+            Messages.CHANNEL_DISABLED.send(sender.player());
         } else if (!hasAccess(sender)) {
-            Settings.CHANNEL_ACCESS_DENIED.send(sender.player());
+            Messages.CHANNEL_ACCESS_DENIED.send(sender.player());
         } else if (sender.isMuted()) {
-            Settings.MUTED_MESSAGE.send(sender.player());
+            Messages.CURRENTLY_MUTED.send(sender.player());
         } else {
             ChannelMessage<?> channelMessage = new ChannelMessage<>(this, sender, message);
             settings.logMessage(channelMessage);

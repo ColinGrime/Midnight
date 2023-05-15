@@ -2,7 +2,7 @@ package me.colingrimes.channels.filter.implementation;
 
 import me.colingrimes.channels.channel.chatter.Chatter;
 import me.colingrimes.channels.config.Filters;
-import me.colingrimes.channels.config.Settings;
+import me.colingrimes.channels.config.Messages;
 import me.colingrimes.channels.filter.ChatFilterType;
 import me.colingrimes.midnight.cache.expiring.RollingWindowCache;
 
@@ -29,7 +29,7 @@ public class FloodFilter extends BaseFilter {
         messageCache.increment(uuid);
 
         if (messageCache.getCount(uuid) > Filters.FLOOD_MAX_MESSAGES.get()) {
-            chatter.send(Settings.RAPID_FIRE_WARNING);
+            chatter.send(Messages.RAPID_FIRE_WARNING);
             return true;
         } else {
             return false;

@@ -2,7 +2,7 @@ package me.colingrimes.channels.filter.implementation;
 
 import me.colingrimes.channels.channel.chatter.Chatter;
 import me.colingrimes.channels.config.Filters;
-import me.colingrimes.channels.config.Settings;
+import me.colingrimes.channels.config.Messages;
 import me.colingrimes.channels.filter.ChatFilterType;
 
 import javax.annotation.Nonnull;
@@ -29,7 +29,7 @@ public class ProfanityFilter extends BaseFilter {
         }
 
         if (profanityPatterns.stream().anyMatch(pattern -> pattern.matcher(text).find())) {
-            chatter.send(Settings.PROFANITY_WARNING);
+            chatter.send(Messages.PROFANITY_WARNING);
             return true;
         } else {
             return false;
