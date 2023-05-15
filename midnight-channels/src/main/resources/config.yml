@@ -6,16 +6,3 @@ database:
   database: minecraft
   username: root
   password: ""
-
-messages:
-  advertising-warning: "&4&l❌ &cAdvertising is not allowed here. Please respect our rules."
-  channel-access-denied: "&4&l❌ &cYou do not have access to this channel."
-  channel-disabled-message: "&4&l❌ &cThis channel is currently disabled. Please try again later."
-  invalid-sender: "&4&l❌ &cSorry, the console can only announce messages, not send them."
-  message-filtered: "&4&l❌ &cMessage from &4{player} &cwas filtered: &7{message}"
-  muted-message: "&4&l❌ &cYou're currently muted and cannot send messages."
-  player-not-loaded: "&4&l❌ &cThis is awkward... Your chat data could not be loaded. Please relog."
-  profanity-warning: "&4&l❌ &cPlease watch your language. Profanity is not tolerated."
-  rapid-fire-warning: "&4&l❌ &cYou're sending messages too quickly. Please slow down."
-  reply-failure: "&4&l❌ &cYou have nobody to reply to."
-  spam-warning: "&4&l❌ &cPlease refrain from spamming the chat."
