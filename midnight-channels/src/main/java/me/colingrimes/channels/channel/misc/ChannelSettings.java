@@ -54,26 +54,33 @@ public class ChannelSettings implements ChatFilter {
     }
 
     /**
-     * Gets the formatted message for the channel. The format can include
-     * placeholders like {message} and {sender} to be replaced by the
-     * player's name and message, respectively. In addition, this
-     * supports all the placeholders from the PlaceholderAPI plugin.
+     * Gets the message format for the channel.
      *
      * @return the message format
      */
     @Nonnull
-    public String getFormattedMessage(@Nonnull Chatter chatter, @Nonnull Message<?> message) {
-        return Placeholders.create(chatter.player())
-                .add("{message}", message.toText())
-                .add("{sender}", chatter.getName())
-                .apply(messageFormat);
+    public String getMessageFormat() {
+        return messageFormat;
     }
 
     /**
      * Gets the formatted message for the channel. The format can include
      * placeholders like {message} and {sender} to be replaced by the
-     * player's name and message, respectively. In addition, this
-     * supports all the placeholders from the PlaceholderAPI plugin.
+     * message and sender, respectively. In addition, this supports
+     * all the placeholders from the PlaceholderAPI plugin.
+     *
+     * @return the message format
+     */
+    @Nonnull
+    public String getFormattedMessage(@Nonnull Chatter chatter, @Nonnull Message<?> message) {
+        return getFormattedMessage(chatter, message, chatter.getName());
+    }
+
+    /**
+     * Gets the formatted message for the channel. The format can include
+     * placeholders like {message} and {sender} to be replaced by the
+     * message and sender, respectively. In addition, this supports
+     * all the placeholders from the PlaceholderAPI plugin.
      *
      * @return the message format
      */
@@ -88,7 +95,7 @@ public class ChannelSettings implements ChatFilter {
     /**
      * Gets the formatted message for the channel. The format can include
      * placeholders like {message}, {sender}, {recipient} to be replaced
-     * by the player's name and message, respectively. In addition, this
+     * by the message, sender, and recipient, respectively. In addition, this
      * supports all the placeholders from the PlaceholderAPI plugin.
      *
      * @return the message format

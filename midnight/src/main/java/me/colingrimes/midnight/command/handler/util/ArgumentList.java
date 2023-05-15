@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.command.handler.util;
 
+import me.colingrimes.midnight.util.bukkit.Players;
 import me.colingrimes.midnight.util.text.Parser;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -167,7 +167,7 @@ public class ArgumentList extends ArrayList<String> {
 			return Optional.empty();
 		}
 
-		return Optional.ofNullable(Bukkit.getPlayer(this.get(index)));
+		return Players.get(this.get(index));
 	}
 
 	/**

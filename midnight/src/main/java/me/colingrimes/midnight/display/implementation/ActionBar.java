@@ -7,8 +7,9 @@ import me.colingrimes.midnight.event.DisplayShowEvent;
 import me.colingrimes.midnight.scheduler.Scheduler;
 import me.colingrimes.midnight.scheduler.task.Task;
 import me.colingrimes.midnight.util.Common;
-import me.colingrimes.midnight.util.bukkit.Players;
 import me.colingrimes.midnight.util.text.Text;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
@@ -86,7 +87,7 @@ public class ActionBar implements Display {
         // Set up the action bar task.
         Task task = Scheduler.SYNC.runRepeating(() -> {
             if (visible) {
-                Players.sendActionBar(player, text);
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(text));
             }
         }, 0L, 20L);
 

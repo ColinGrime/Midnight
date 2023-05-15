@@ -181,7 +181,7 @@ public class ArmorEquipListeners implements Listener {
 	@EventHandler
 	public void onBlockDispense(BlockDispenseEvent event) {
 		ArmorType armorType = ArmorType.fromItem(event.getItem()).orElse(null);
-		Player player = Players.findClosest(event.getBlock().getLocation(), 1).orElse(null);
+		Player player = Players.find(event.getBlock().getLocation(), 1).orElse(null);
 
 		// Player doesn't have the armor type equipped yet.
 		if (armorType == null || player == null || armorType.getFrom(player).isEmpty()) {
