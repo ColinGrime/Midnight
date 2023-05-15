@@ -3,7 +3,8 @@ package me.colingrimes.channels.listener;
 import me.colingrimes.channels.ChannelAPI;
 import me.colingrimes.channels.MidnightChannels;
 import me.colingrimes.channels.channel.chatter.Chatter;
-import me.colingrimes.channels.config.Settings;
+import me.colingrimes.channels.channel.implementation.GlobalChannel;
+import me.colingrimes.channels.config.Messages;
 import me.colingrimes.midnight.scheduler.Scheduler;
 import me.colingrimes.midnight.util.io.Logger;
 import org.bukkit.event.EventHandler;
@@ -25,20 +26,19 @@ public class ChatListeners implements Listener {
 		this.plugin = plugin;
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onAsyncPlayerChat(@Nonnull AsyncPlayerChatEvent event) {
 		Optional<Chatter> chatter = plugin.getChannelManager().getChatter(event.getPlayer().getUniqueId());
 
 		// This should never be called.
 		if (chatter.isEmpty()) {
-			Settings.PLAYER_NOT_LOADED.send(event.getPlayer());
+			Messages.PLAYER_NOT_LOADED.send(event.getPlayer());
 			return;
 		}
 
 		// Re-direct to global channel if enabled.
 		if (ChannelAPI.global().isEnabled()) {
-			ChannelAPI.global().send(chatter.get(), event.getMessage());
-			event.setCancelled(true);
+			((GlobalChannel) ChannelAPI.global()).send(event);
 		}
 	}
 
