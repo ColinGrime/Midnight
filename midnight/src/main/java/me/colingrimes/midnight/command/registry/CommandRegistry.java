@@ -3,6 +3,7 @@ package me.colingrimes.midnight.command.registry;
 import me.colingrimes.midnight.command.handler.CommandHandler;
 import me.colingrimes.midnight.command.registry.node.CommandNode;
 import me.colingrimes.midnight.Midnight;
+import me.colingrimes.midnight.util.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 
@@ -83,6 +84,13 @@ public class CommandRegistry {
 	 * @param node the command node
 	 */
 	private void registerCommand(@Nonnull String name, @Nonnull CommandNode node) {
+		PluginCommand pluginCommand = Common.server().getPluginCommand(name);
+		if (pluginCommand != null) {
+			pluginCommand.setExecutor(node);
+			pluginCommand.setTabCompleter(node);
+			return;
+		}
+
 		try {
 			Field commandMapField = Bukkit.getServer().getClass().getDeclaredField("commandMap");
 			commandMapField.setAccessible(true);
