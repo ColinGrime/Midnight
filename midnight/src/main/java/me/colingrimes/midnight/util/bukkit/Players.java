@@ -1,8 +1,6 @@
 package me.colingrimes.midnight.util.bukkit;
 
 import me.colingrimes.midnight.util.Common;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -10,9 +8,14 @@ import org.bukkit.entity.Player;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class Players {
 
@@ -22,31 +25,9 @@ public final class Players {
 	 * @param uuid the UUID of the player
 	 * @return the player
 	 */
-	@Nullable
-	public static Player getNullable(@Nonnull UUID uuid) {
-		return Common.server().getPlayer(uuid);
-	}
-
-	/**
-	 * Returns the player with the given UUID.
-	 *
-	 * @param uuid the UUID of the player
-	 * @return the player
-	 */
 	@Nonnull
 	public static Optional<Player> get(@Nonnull UUID uuid) {
-		return Optional.ofNullable(getNullable(uuid));
-	}
-
-	/**
-	 * Returns the player with the given name.
-	 *
-	 * @param name the name of the player
-	 * @return the player
-	 */
-	@Nullable
-	public static Player getNullable(@Nonnull String name) {
-		return Common.server().getPlayer(name);
+		return Optional.ofNullable(Common.server().getPlayer(uuid));
 	}
 
 	/**
@@ -80,6 +61,39 @@ public final class Players {
 	}
 
 	/**
+	 * Returns a stream of all online players, filtered by the given predicate.
+	 *
+	 * @param predicate the predicate
+	 * @return the stream of players
+	 */
+	@Nonnull
+	public static Stream<? extends Player> filter(@Nonnull Predicate<? super Player> predicate) {
+		return all().stream().filter(predicate);
+	}
+
+	/**
+	 * Returns a stream of results obtained by applying the given function to each online player.
+	 *
+	 * @param function the function to apply to each player
+	 * @return the stream of results
+	 */
+	@Nonnull
+	public static <R> Stream<R> map(@Nonnull Function<? super Player, ? extends R> function) {
+		return all().stream().map(function);
+	}
+
+	/**
+	 * Applies the given function to each online player and collects the results into a list.
+	 *
+	 * @param function the function to apply to each player
+	 * @return the list of results
+	 */
+	@Nonnull
+	public static <R> List<R> mapList(@Nonnull Function<? super Player, ? extends R> function) {
+		return map(function).collect(Collectors.toList());
+	}
+
+	/**
 	 * Performs the command as the given player.
 	 *
 	 * @param player  the player
@@ -101,24 +115,14 @@ public final class Players {
 	}
 
 	/**
-	 * Sends the given message as an action bar to the given player.
-	 *
-	 * @param player  the player
-	 * @param message the message
-	 */
-	public static void sendActionBar(@Nonnull Player player, @Nonnull String message) {
-		player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
-	}
-
-	/**
 	 * Finds the closest player to the given location within 100 blocks.
 	 *
 	 * @param location the location
 	 * @return the closest player
 	 */
 	@Nonnull
-	public static Optional<Player> findClosest(@Nullable Location location) {
-		return findClosest(location, 100);
+	public static Optional<Player> find(@Nullable Location location) {
+		return find(location, 100);
 	}
 
 	/**
@@ -129,7 +133,7 @@ public final class Players {
 	 * @return the closest player
 	 */
 	@Nonnull
-	public static Optional<Player> findClosest(@Nullable Location location, int blocks) {
+	public static Optional<Player> find(@Nullable Location location, int blocks) {
 		return Locations.findClosest(Player.class, location, blocks);
 	}
 
