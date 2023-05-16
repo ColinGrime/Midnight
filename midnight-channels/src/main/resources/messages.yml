@@ -12,6 +12,8 @@ failure:
   ignore-self: "&4&l❌ &cYou cannot ignore yourself."
   message-filtered: "&4&l❌ &cMessage from &4{player} &cwas filtered: &7{message}"
   message-self: "&4&l❌ &cYou cannot send messages to yourself."
+  nickname-color: "&4&l❌ &cNickname cannot contain color codes."
+  nickname-format: "&4&l❌ &cNickname cannot contain formatting codes."
   nickname-not-alphanumeric: "&4&l❌ &cNickname must be alphanumeric."
   nickname-too-long: "&4&l❌ &cNickname must be less than 16 characters."
   nickname-too-short: "&4&l❌ &cNickname must be more than 3 characters."

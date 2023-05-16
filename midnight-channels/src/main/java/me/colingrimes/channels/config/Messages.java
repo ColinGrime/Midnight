@@ -26,6 +26,8 @@ public interface Messages {
 	Message<?> IGNORE_SELF = message("failure.ignore-self", "&4&l❌ &cYou cannot ignore yourself.");
 	Message<?> MESSAGE_FILTERED = message("failure.message-filtered", "&4&l❌ &cMessage from &4{player} &cwas filtered: &7{message}");
 	Message<?> MESSAGE_SELF = message("failure.message-self", "&4&l❌ &cYou cannot send messages to yourself.");
+	Message<?> NICKNAME_COLOR = message("failure.nickname-color", "&4&l❌ &cNickname cannot contain color codes.");
+	Message<?> NICKNAME_FORMAT = message("failure.nickname-format", "&4&l❌ &cNickname cannot contain formatting codes.");
 	Message<?> NICKNAME_NOT_ALPHANUMERIC = message("failure.nickname-not-alphanumeric", "&4&l❌ &cName must be alphanumeric.");
 	Message<?> NICKNAME_TOO_LONG = message("failure.nickname-too-long", "&4&l❌ &cName must be less than 16 characters.");
 	Message<?> NICKNAME_TOO_SHORT = message("failure.nickname-too-short", "&4&l❌ &cName must be more than 3 characters.");
