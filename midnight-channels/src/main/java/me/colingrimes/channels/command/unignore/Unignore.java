@@ -21,12 +21,17 @@ public class Unignore implements Command<MidnightChannels> {
 
 	@Override
 	public void execute(@Nonnull MidnightChannels plugin, @Nonnull Sender sender, @Nonnull ArgumentList args) {
-		Optional<UUID> uuid = UUIDs.fromName(args.get(0));
-		if (uuid.isPresent()) {
-			Chatter.of(sender.player()).unignore(uuid.get());
-			Messages.UNIGNORED.replace("{player}", args.get(0)).send(sender);
-		} else {
+		String name = args.get(0);
+		Optional<UUID> uuid = UUIDs.fromName(name);
+
+		if (name.equalsIgnoreCase(sender.player().getName())) {
+			Messages.UNIGNORE_SELF.send(sender);
+		} else if (uuid.isEmpty()) {
 			Messages.PLAYER_NOT_FOUND.send(sender);
+		} else if (Chatter.of(sender.player()).unignore(uuid.get())) {
+			Messages.UNIGNORED.replace("{player}", name).send(sender);
+		} else {
+			Messages.NOT_IGNORING.replace("{player}", name).send(sender);
 		}
 	}
 
@@ -42,6 +47,7 @@ public class Unignore implements Command<MidnightChannels> {
 
 	@Override
 	public void configureProperties(@Nonnull CommandProperties properties) {
+		properties.setUsage(Messages.UNIGNORE_USAGE);
 		properties.setArgumentsRequired(1);
 		properties.setPlayerRequired(true);
 	}
