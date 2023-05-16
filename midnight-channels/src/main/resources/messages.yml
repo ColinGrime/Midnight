@@ -5,22 +5,32 @@ success:
 
 failure:
   advertising-warning: "&4&l❌ &cAdvertising is not allowed here. Please respect our rules."
+  already-ignoring: "&4&l❌ &cYou are already ignoring &4{player}&c."
   channel-access-denied: "&4&l❌ &cYou do not have access to this channel."
   channel-disabled: "&4&l❌ &cThis channel is currently disabled. Please try again later."
+  currently-muted: "&4&l❌ &cYou're currently muted and cannot send messages."
+  ignore-self: "&4&l❌ &cYou cannot ignore yourself."
   message-filtered: "&4&l❌ &cMessage from &4{player} &cwas filtered: &7{message}"
   message-self: "&4&l❌ &cYou cannot send messages to yourself."
-  currently-muted: "&4&l❌ &cYou're currently muted and cannot send messages."
   nickname-not-alphanumeric: "&4&l❌ &cNickname must be alphanumeric."
   nickname-too-long: "&4&l❌ &cNickname must be less than 16 characters."
   nickname-too-short: "&4&l❌ &cNickname must be more than 3 characters."
   nobody-to-reply-to: "&4&l❌ &cYou have nobody to reply to."
+  not-ignoring: "&4&l❌ &cYou are not ignoring &4{player}&c."
   player-not-found: "&4&l❌ &cThe specified player was not found."
   player-not-loaded: "&4&l❌ &cThis is awkward... Your chat data could not be loaded. Please relog."
   profanity-warning: "&4&l❌ &cPlease watch your language. Profanity is not tolerated."
   rapid-fire-warning: "&4&l❌ &cYou're sending messages too quickly. Please slow down."
   spam-warning: "&4&l❌ &cPlease refrain from spamming the chat."
+  unignore-self: "&4&l❌ &cYou cannot unignore yourself."
 
 usage:
+  ignore:
+    - "&eUsage: &a/ignore <player>"
+    - "&a► &7Ignore the specified player."
   nickname:
     - "&eUsage: &a/nickname <name>"
     - "&a► &7Set your nickname to the specified name."
+  unignore:
+    - "&eUsage: &a/unignore <player>"
+    - "&a► &7Unignore the specified player."
