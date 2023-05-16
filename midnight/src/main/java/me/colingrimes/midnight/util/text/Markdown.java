@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 import static me.colingrimes.midnight.util.text.Text.color;
 
-public class Markdown {
+public final class Markdown {
 
 	private static final Pattern MARKDOWN = Pattern.compile("\\[(.*?)]\\((.*?)\\)");
 
@@ -26,17 +26,20 @@ public class Markdown {
 	 *
 	 * <p>Where Text is the visible text, and Value determines the event:</p>
 	 * <ul>
-	 *   <li>If it starts with a "/", it's a command.</li>
-	 *   <li>If it starts with a URL, it's a URL you can click on.</li>
+	 *   <li>If it starts with a "/", it's a command. Spaces within the command should be replaced with underscores ("_").
+	 *       If there is text following the command (separated by a space), it will be treated as hoverable text for the command.</li>
+	 *   <li>If it starts with a URL, it's a URL you can click on. If there is text following the URL (separated by a space),
+	 *       it will be treated as hoverable text for the URL.</li>
 	 *   <li>If it starts with anything else, it's just hoverable text.</li>
 	 * </ul>
 	 *
-	 * Additionally, if Value has a URL followed by more text, the additional text acts as hoverable text.
-	 * Color codes using '&' can be used anywhere in the input string.
+	 * <p>Additionally, if Value has a command or a URL followed by more text, the additional text acts as hoverable text.</p>
+	 * <p>Color codes using '&' can be used anywhere in the input string.</p>
 	 *
 	 * @param input the input string with custom markup
 	 * @return a text component with the parsed events and colors
 	 */
+	@Nonnull
 	public static ComponentMessage of(@Nonnull String input) {
 		TextComponent message = new TextComponent();
 		Matcher matcher = MARKDOWN.matcher(input);
@@ -76,12 +79,33 @@ public class Markdown {
 	 */
 	private static void handleEvent(@Nonnull TextComponent eventComponent, @Nonnull String eventValue) {
 		if (eventValue.startsWith("/")) {
-			eventComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, eventValue));
+			handleCommandEvent(eventComponent, eventValue);
 		} else if (eventValue.startsWith("http://") || eventValue.startsWith("https://")) {
 			handleUrlEvent(eventComponent, eventValue);
 		} else {
 			eventComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, getContent(eventValue)));
 		}
+	}
+
+	/**
+	 * Handles command events and sets the appropriate ClickEvent and
+	 * HoverEvent (if applicable) to the provided {@link TextComponent}.
+	 *
+	 * @param eventComponent the text component to apply the event to
+	 * @param eventValue     the event value from the input string
+	 */
+	private static void handleCommandEvent(@Nonnull TextComponent eventComponent, @Nonnull String eventValue) {
+		int spaceIndex = eventValue.indexOf(' ');
+		if (spaceIndex == -1) {
+			String command = eventValue.replace('_', ' ');
+			eventComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
+			return;
+		}
+
+		String command = eventValue.substring(0, spaceIndex).replace('_', ' ');
+		String hoverText = eventValue.substring(spaceIndex + 1);
+		eventComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
+		eventComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, getContent(hoverText)));
 	}
 
 	/**

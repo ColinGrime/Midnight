@@ -10,8 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class MarkdownTest {
 
 	@Test
-	void testMarkdownWithCommand() {
-		String input = "Click [here](/command) to execute the command!";
+	void testMarkdownWithCommandAndHoverText() {
+		String input = "Click [here](/command_with_underscores Hover text) to execute the command!";
 		TextComponent textComponent = Markdown.of(input).getContent();
 
 		assertNotNull(textComponent, "Text component should not be null");
@@ -19,13 +19,17 @@ class MarkdownTest {
 		assertEquals("Click here to execute the command!", textComponent.toPlainText(),
 				"Parsed text component should have the correct plain text");
 
-		assertEquals("/command", textComponent.getExtra().get(1).getClickEvent().getValue(),
+		assertEquals("/command with underscores", textComponent.getExtra().get(1).getClickEvent().getValue(),
 				"Parsed text component should have the correct command in click event");
+
+		Text hoverContent = (Text) textComponent.getExtra().get(1).getHoverEvent().getContents().get(0);
+		assertEquals("Hover text", hoverContent.getValue(),
+				"Parsed text component should have the correct hover text");
 	}
 
 	@Test
-	void testMarkdownWithUrl() {
-		String input = "Click [here](https://example.com) to visit the website!";
+	void testMarkdownWithUrlAndHoverText() {
+		String input = "Click [here](https://example.com Hover text) to visit the website!";
 		TextComponent textComponent = Markdown.of(input).getContent();
 
 		assertNotNull(textComponent, "Text component should not be null");
@@ -35,6 +39,10 @@ class MarkdownTest {
 
 		assertEquals("https://example.com", textComponent.getExtra().get(1).getClickEvent().getValue(),
 				"Parsed text component should have the correct URL in click event");
+
+		Text hoverContent = (Text) textComponent.getExtra().get(1).getHoverEvent().getContents().get(0);
+		assertEquals("Hover text", hoverContent.getValue(),
+				"Parsed text component should have the correct hover text");
 	}
 
 	@Test
