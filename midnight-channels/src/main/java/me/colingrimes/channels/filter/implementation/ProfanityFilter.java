@@ -36,6 +36,17 @@ public class ProfanityFilter extends BaseFilter {
         }
     }
 
+    @Override
+    public boolean filter(@Nonnull String message) {
+        if (profanityPatterns.isEmpty()) {
+            for (String profanityWord : Filters.PROFANITY_LIST.getContent()) {
+                String pattern = createLeetSpeakPattern(profanityWord);
+                profanityPatterns.add(Pattern.compile(pattern, Pattern.CASE_INSENSITIVE));
+            }
+        }
+        return profanityPatterns.stream().anyMatch(pattern -> pattern.matcher(message).find());
+    }
+
     @Nullable
     @Override
     public ChatFilterType getType() {

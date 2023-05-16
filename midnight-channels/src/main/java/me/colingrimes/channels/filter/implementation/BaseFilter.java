@@ -2,19 +2,19 @@ package me.colingrimes.channels.filter.implementation;
 
 import me.colingrimes.channels.channel.chatter.Chatter;
 import me.colingrimes.channels.filter.ChatFilter;
-import me.colingrimes.midnight.message.Message;
+import me.colingrimes.channels.message.ChannelMessage;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public abstract class BaseFilter implements ChatFilter {
 
     @Override
-    public boolean filter(@Nonnull Message<?> message, @Nullable Chatter chatter) {
-        if (chatter == null) {
+    public boolean filter(@Nonnull ChannelMessage<?> message) {
+        if (message.getChatter().isEmpty()) {
             return false;
         }
 
+        Chatter chatter = message.getChatter().get();
         if (getType() != null && chatter.hasPermission(getType().getBypassPermission())) {
             return false;
         }

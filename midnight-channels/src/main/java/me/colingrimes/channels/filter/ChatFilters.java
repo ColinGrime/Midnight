@@ -1,13 +1,11 @@
 package me.colingrimes.channels.filter;
 
-import me.colingrimes.channels.channel.chatter.Chatter;
 import me.colingrimes.channels.config.Messages;
-import me.colingrimes.midnight.message.Message;
+import me.colingrimes.channels.message.ChannelMessage;
 import me.colingrimes.midnight.message.Placeholders;
 import me.colingrimes.midnight.util.bukkit.Players;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,11 +38,11 @@ public class ChatFilters implements ChatFilter {
     }
 
     @Override
-    public boolean filter(@Nonnull Message<?> message, @Nullable Chatter chatter) {
+    public boolean filter(@Nonnull ChannelMessage<?> message) {
         boolean doFilter = false;
 
         for (ChatFilter filter : filters) {
-            if (filter.filter(message, chatter)) {
+            if (filter.filter(message)) {
                 doFilter = true;
                 break;
             }
@@ -55,9 +53,9 @@ public class ChatFilters implements ChatFilter {
         }
 
         // Send the filtered message to all players with the filtered permission.
-        if (chatter != null) {
+        if (message.getChatter().isPresent()) {
             Placeholders placeholders = Placeholders
-                    .of("{player}", chatter.getName())
+                    .of("{player}", message.getChatter().get().getName())
                     .add("{message}", message.toText());
             Players.all().stream()
                     .filter(p -> p.hasPermission("channels.filtered"))

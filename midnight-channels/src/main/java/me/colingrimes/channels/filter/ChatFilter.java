@@ -1,8 +1,6 @@
 package me.colingrimes.channels.filter;
 
-import me.colingrimes.channels.channel.chatter.Chatter;
 import me.colingrimes.channels.message.ChannelMessage;
-import me.colingrimes.midnight.message.Message;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -21,21 +19,23 @@ public interface ChatFilter {
      * @param message the message to filter
      * @return true if the message should be filtered, false otherwise
      */
-    default boolean filter(@Nonnull ChannelMessage<?> message) {
-        return filter(message, message.getChatter().orElse(null));
-    }
+    boolean filter(@Nonnull ChannelMessage<?> message);
 
     /**
      * Filters a message based on its content.
      * <p>
      * Implementations of this method should return true
      * if the message should be blocked or modified.
+     * <p>
+     * This method does not work with {@code SpamFilter}s or {@code FloodFilter}s.
+     * Use {@link #filter(ChannelMessage)} instead for those filters.
      *
      * @param message the message to filter
-     * @param chatter the chatter who sent the message
      * @return true if the message should be filtered, false otherwise
      */
-    boolean filter(@Nonnull Message<?> message, @Nullable Chatter chatter);
+    default boolean filter(@Nonnull String message) {
+        return false;
+    }
 
     /**
      * Gets the type of this filter.

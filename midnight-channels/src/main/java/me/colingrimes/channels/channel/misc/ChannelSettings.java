@@ -12,7 +12,6 @@ import me.colingrimes.midnight.scheduler.Scheduler;
 import me.colingrimes.midnight.util.io.Logger;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Arrays;
 
 /**
@@ -25,8 +24,13 @@ public class ChannelSettings implements ChatFilter {
     private boolean logMessages = false;
 
     @Override
-    public boolean filter(@Nonnull Message<?> message, @Nullable Chatter chatter) {
-        return filters.filter(message, chatter);
+    public boolean filter(@Nonnull ChannelMessage<?> message) {
+        return filters.filter(message);
+    }
+
+    @Override
+    public boolean filter(@Nonnull String message) {
+        return filters.filter(message);
     }
 
     /**

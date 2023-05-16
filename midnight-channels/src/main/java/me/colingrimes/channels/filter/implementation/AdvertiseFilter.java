@@ -26,6 +26,11 @@ public class AdvertiseFilter extends BaseFilter {
         }
     }
 
+    @Override
+    public boolean filter(@Nonnull String message) {
+        return urlPattern.matcher(message).find() || ipPattern.matcher(message).find();
+    }
+
     @Nullable
     @Override
     public ChatFilterType getType() {
