@@ -86,7 +86,7 @@ public class StandardChatter implements Chatter {
     @Nonnull
     @Override
     public String getName() {
-        return nickname != null ? nickname : player().getName();
+        return player().getName();
     }
 
     @Nonnull
@@ -160,13 +160,13 @@ public class StandardChatter implements Chatter {
     }
 
     @Override
-    public void ignore(@Nonnull UUID uuid) {
-        ignored.add(uuid);
+    public boolean ignore(@Nonnull UUID uuid) {
+        return ignored.add(uuid);
     }
 
     @Override
-    public void unignore(@Nonnull UUID uuid) {
-        ignored.remove(uuid);
+    public boolean unignore(@Nonnull UUID uuid) {
+        return ignored.remove(uuid);
     }
 
     @Nonnull

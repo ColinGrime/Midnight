@@ -138,15 +138,17 @@ public interface Chatter {
      * Adds the UUID to the list of ignored players.
      *
      * @param uuid the chatter's uuid to ignore
+     * @return true if the chatter was not already being ignored, false otherwise
      */
-    void ignore(@Nonnull UUID uuid);
+    boolean ignore(@Nonnull UUID uuid);
 
     /**
      * Removes the UUID from the list of ignored players.
      *
      * @param uuid the chatter's uuid to unignore
+     * @return true if the chatter was being ignored, false otherwise
      */
-    void unignore(@Nonnull UUID uuid);
+    boolean unignore(@Nonnull UUID uuid);
 
     /**
      * Gets the chatter's nickname, if any.
