@@ -48,6 +48,7 @@ public class Ignore implements Command<MidnightChannels> {
 	@Override
 	public void configureProperties(@Nonnull CommandProperties properties) {
 		properties.setUsage(Messages.IGNORE_USAGE);
+		properties.setPermission("channels.ignore");
 		properties.setArgumentsRequired(1);
 		properties.setPlayerRequired(true);
 	}

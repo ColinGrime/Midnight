@@ -48,6 +48,7 @@ public class Unignore implements Command<MidnightChannels> {
 	@Override
 	public void configureProperties(@Nonnull CommandProperties properties) {
 		properties.setUsage(Messages.UNIGNORE_USAGE);
+		properties.setPermission("channels.ignore");
 		properties.setArgumentsRequired(1);
 		properties.setPlayerRequired(true);
 	}
