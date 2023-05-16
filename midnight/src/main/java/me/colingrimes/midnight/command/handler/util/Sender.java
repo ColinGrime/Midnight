@@ -40,6 +40,15 @@ public class Sender {
 	}
 
 	/**
+	 * Checks if the sender has a permission.
+	 *
+	 * @param permission the permission to check
+	 */
+	public boolean hasPermission(@Nonnull String permission) {
+		return sender.hasPermission(permission);
+	}
+
+	/**
 	 * Checks if the sender is a player.
 	 *
 	 * @return true if the sender is a player
