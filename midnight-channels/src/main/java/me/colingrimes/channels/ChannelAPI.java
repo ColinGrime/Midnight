@@ -3,8 +3,6 @@ package me.colingrimes.channels;
 import me.colingrimes.channels.channel.Channel;
 import me.colingrimes.channels.channel.ChannelFactory;
 import me.colingrimes.channels.channel.chatter.Chatter;
-import me.colingrimes.channels.filter.ChatFilterType;
-import me.colingrimes.channels.filter.ChatFilters;
 import me.colingrimes.channels.manager.ChatManager;
 import me.colingrimes.channels.message.ChannelLog;
 import me.colingrimes.midnight.scheduler.Scheduler;
@@ -22,17 +20,11 @@ import java.util.concurrent.CompletableFuture;
 public class ChannelAPI {
 
 	private static final Channel GLOBAL_CHANNEL;
-	private static final ChatFilters FILTERS = new ChatFilters();
 	private static final ChannelFactory channelFactory = new ChannelFactory();
 
 	static {
 		GLOBAL_CHANNEL = channelFactory.createGlobalChannel("Global");
 		GLOBAL_CHANNEL.disable();
-
-		FILTERS.add(ChatFilterType.PROFANITY);
-		FILTERS.add(ChatFilterType.ADVERTISE);
-		FILTERS.add(ChatFilterType.SPAM);
-		FILTERS.add(ChatFilterType.FLOOD);
 	}
 
 	/**
@@ -46,17 +38,6 @@ public class ChannelAPI {
 	@Nonnull
 	public static Channel global() {
 		return GLOBAL_CHANNEL;
-	}
-
-	/**
-	 * Returns the {@link ChatFilters} used to filter messages.
-	 * This contains all the default filters.
-	 *
-	 * @return the chat filters
-	 */
-	@Nonnull
-	public static ChatFilters filters() {
-		return FILTERS;
 	}
 
 	/**
