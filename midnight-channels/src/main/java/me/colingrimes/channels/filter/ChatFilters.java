@@ -6,7 +6,9 @@ import me.colingrimes.midnight.message.Placeholders;
 import me.colingrimes.midnight.util.bukkit.Players;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ChatFilters implements ChatFilter {
@@ -14,26 +16,57 @@ public class ChatFilters implements ChatFilter {
     private final Set<ChatFilter> filters = new HashSet<>();
 
     /**
-     * Adds a filter based on filter type.
+     * Creates a new chat filter with all filters enabled.
      *
-     * @param type the type of filter to add
+     * @return the chat filter
+     */
+    @Nonnull
+    public static ChatFilters all() {
+        return ChatFilters.of(List.of("ALL"));
+    }
+
+    /**
+     * Creates a new chat filter based on a list of filter types.
+     * If the list contains "ALL", all filters will be added.
+     *
+     * @param types the types of filters to add
+     * @return the chat filter
+     */
+    @Nonnull
+    public static ChatFilters of(@Nonnull List<String> types) {
+        ChatFilters filters = new ChatFilters();
+        types = types.stream().map(String::toUpperCase).toList();
+
+        if (types.contains("ALL")) {
+            Arrays.stream(ChatFilterType.values()).map(ChatFilterType::getFilter).forEach(filters::add);
+        } else {
+            types.stream().map(ChatFilterType::valueOf).forEach(filters::add);
+        }
+
+        return filters;
+    }
+
+    /**
+     * Adds the specified filter types.
+     *
+     * @param types the types of filters to add
      * @return this instance
      */
     @Nonnull
-    public ChatFilters add(@Nonnull ChatFilterType type) {
-        filters.add(type.getFilter());
+    public ChatFilters add(@Nonnull ChatFilterType... types) {
+        Arrays.stream(types).forEach(t -> filters.add(t.getFilter()));
         return this;
     }
 
     /**
-     * Adds a custom filter.
+     * Adds the specified custom filters.
      *
-     * @param filter the custom filter to add
+     * @param filters the custom filters to add
      * @return this instance
      */
     @Nonnull
-    public ChatFilters add(@Nonnull ChatFilter filter) {
-        filters.add(filter);
+    public ChatFilters add(@Nonnull ChatFilter... filters) {
+        this.filters.addAll(Arrays.asList(filters));
         return this;
     }
 

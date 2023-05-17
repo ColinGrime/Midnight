@@ -12,7 +12,6 @@ import me.colingrimes.midnight.scheduler.Scheduler;
 import me.colingrimes.midnight.util.io.Logger;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
 
 /**
  * Represents the settings for a communication channel.
@@ -34,26 +33,26 @@ public class ChannelSettings implements ChatFilter {
     }
 
     /**
-     * Adds the chat filters for the channel.
+     * Adds the chat filter types for the channel.
      *
-     * @param filters the chat filters
+     * @param types the types of filters to add
      * @return the channel settings
      */
     @Nonnull
-    public ChannelSettings addFilters(@Nonnull ChatFilterType... filters) {
-        Arrays.stream(filters).forEach(this.filters::add);
+    public ChannelSettings addFilters(@Nonnull ChatFilterType... types) {
+        this.filters.add(types);
         return this;
     }
 
     /**
-     * Adds the chat filters for the channel.
+     * Adds the specified custom filters.
      *
-     * @param filters the chat filters
-     * @return the channel settings
+     * @param filters the custom filters to add
+     * @return this instance
      */
     @Nonnull
     public ChannelSettings addFilters(@Nonnull ChatFilter... filters) {
-        Arrays.stream(filters).forEach(this.filters::add);
+        this.filters.add(filters);
         return this;
     }
 
