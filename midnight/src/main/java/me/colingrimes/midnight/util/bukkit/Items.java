@@ -45,6 +45,56 @@ public final class Items {
 	}
 
 	/**
+	 * Renames an item.
+	 *
+	 * @param item the item to rename
+	 * @param name the new name of the item
+	 * @return the renamed item
+	 */
+	@Nonnull
+	public static ItemStack rename(@Nonnull ItemStack item, @Nonnull String name) {
+		ItemMeta meta = item.getItemMeta();
+		if (meta == null) {
+			return item;
+		}
+
+		meta.setDisplayName(name);
+		item.setItemMeta(meta);
+		return item;
+	}
+
+	/**
+	 * Sets the lore of an item.
+	 *
+	 * @param item the item to set the lore of
+	 * @param lore the new lore of the item
+	 * @return the item with the new lore
+	 */
+	@Nonnull
+	public static ItemStack lore(@Nonnull ItemStack item, @Nonnull List<String> lore) {
+		ItemMeta meta = item.getItemMeta();
+		if (meta == null) {
+			return item;
+		}
+
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+		return item;
+	}
+
+	/**
+	 * Sets the lore of an item.
+	 *
+	 * @param item the item to set the lore of
+	 * @param lore the new lore of the item
+	 * @return the item with the new lore
+	 */
+	@Nonnull
+	public static ItemStack lore(@Nonnull ItemStack item, @Nonnull String... lore) {
+		return lore(item, List.of(lore));
+	}
+
+	/**
 	 * Parses a {@link ConfigurationSection} and checks for the following:
 	 * - A "type" or "material" key for materials.
 	 * - A "name" key for the name of the item.
