@@ -4,3 +4,4 @@ version: ${version}
 author: Scill
 api-version: 1.19
 load: STARTUP
+softdepend: [PlaceholderAPI]
