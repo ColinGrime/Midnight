@@ -47,10 +47,9 @@ public class ChatManager {
 	 *
 	 * @param player the player of the chatter
 	 * @return the chatter
-	 * @throws IllegalStateException if the player is not loaded
 	 */
 	@Nonnull
-	public Chatter getChatter(@Nonnull Player player) {
-		return getChatter(player.getUniqueId()).orElseThrow(() -> new IllegalStateException("Player not loaded: " + player.getUniqueId()));
+	public Optional<Chatter> getChatter(@Nonnull Player player) {
+		return getChatter(player.getUniqueId());
 	}
 }

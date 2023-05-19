@@ -10,6 +10,7 @@ import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Represents a chatting player in a channel.
@@ -21,18 +22,21 @@ public interface Chatter {
      *
      * @param player the player to get the chatter from
      * @return the chatter associated with the player
+     * @throws IllegalStateException if the chatter data is not found
      */
+    @Nonnull
     static Chatter of(@Nonnull Player player) {
-        return ChannelAPI.getManager().getChatter(player);
+        return ChannelAPI.getManager().getChatter(player).orElseThrow(() -> new IllegalStateException("Chatter data not found for player " + player.getName()));
     }
 
     /**
-     * Gets an immutable set of all chatters.
+     * Gets an immutable set of all <b>online</b> chatters.
      *
      * @return a set of all chatters
      */
+    @Nonnull
     static Set<Chatter> all() {
-        return ChannelAPI.getManager().getChatters();
+        return ChannelAPI.getManager().getChatters().stream().filter(Chatter::online).collect(Collectors.toSet());
     }
 
     /**

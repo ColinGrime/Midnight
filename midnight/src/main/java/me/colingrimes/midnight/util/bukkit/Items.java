@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -312,8 +313,8 @@ public final class Items {
 			ItemStack item = new ItemStack(Objects.requireNonNullElse(this.material, this.defMaterial));
 			ItemMeta meta = Objects.requireNonNull(item.getItemMeta(), "Meta is null.");
 
-			if (name != null) meta.setDisplayName(placeholders.apply(name));
-			if (lore != null) meta.setLore(placeholders.apply(lore));
+			if (name != null) meta.setDisplayName(placeholders.apply(name).toText());
+			if (lore != null) meta.setLore(Arrays.asList(placeholders.apply(lore).toText().split("\n")));
 			if (hide) meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 			if (glow) {
 				item.addUnsafeEnchantment(Enchantment.ARROW_INFINITE, 1);
