@@ -76,8 +76,8 @@ public class ChatterStorage extends SqlStorage<Chatter> {
      */
     @Nonnull
     public Chatter load(@Nonnull UUID uuid) throws Exception {
-        if (plugin.getChannelManager().getChatter(uuid).isPresent()) {
-            return plugin.getChannelManager().getChatter(uuid).get();
+        if (plugin.getChatManager().getChatter(uuid).isPresent()) {
+            return plugin.getChatManager().getChatter(uuid).get();
         }
 
         Chatter chatter;
@@ -90,7 +90,7 @@ public class ChatterStorage extends SqlStorage<Chatter> {
         }
 
         // Add them to the channel manager.
-        plugin.getChannelManager().registerChatter(chatter);
+        plugin.getChatManager().registerChatter(chatter);
         return chatter;
     }
 

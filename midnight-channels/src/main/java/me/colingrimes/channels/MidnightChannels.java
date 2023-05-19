@@ -19,14 +19,14 @@ import java.util.List;
 public class MidnightChannels extends Midnight {
 
 	private static MidnightChannels instance;
-	private ChatManager channelManager;
+	private ChatManager chatManager;
 	private ChatterStorage chatterStorage;
 	private ChatLogStorage chatLogStorage;
 
 	@Override
 	public void load() {
 		instance = this;
-		channelManager = new ChatManager();
+		chatManager = new ChatManager();
 	}
 
 	@Override
@@ -65,11 +65,11 @@ public class MidnightChannels extends Midnight {
 
 	@Override
 	public void onDisable() {
-		Players.forEach(p -> {
+		chatManager.getChatters().forEach(c -> {
 			try {
-				chatterStorage.save(channelManager.getChatter(p));
+				chatterStorage.save(c);
 			} catch (Exception e) {
-				Logger.severe("Failed to save chatter: " + p.getUniqueId());
+				Logger.severe("Failed to save chatter: " + c.getID());
 				e.printStackTrace();
 			}
 		});
@@ -94,13 +94,13 @@ public class MidnightChannels extends Midnight {
 	}
 
 	/**
-	 * Gets the channel manager.
+	 * Gets the chat manager.
 	 *
-	 * @return channel manager
+	 * @return chat manager
 	 */
 	@Nonnull
-	public ChatManager getChannelManager() {
-		return channelManager;
+	public ChatManager getChatManager() {
+		return chatManager;
 	}
 
 	/**

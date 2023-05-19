@@ -58,7 +58,7 @@ public class ChannelAPI {
 	 */
 	@Nonnull
 	public static ChatManager getManager() {
-		return MidnightChannels.getInstance().getChannelManager();
+		return MidnightChannels.getInstance().getChatManager();
 	}
 
 	/**
