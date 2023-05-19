@@ -2,9 +2,10 @@ package me.colingrimes.channels.channel.implementation;
 
 import me.colingrimes.channels.channel.chatter.Chatter;
 import me.colingrimes.channels.channel.misc.ChannelType;
-import me.colingrimes.channels.message.ChannelMessage;
 
 import javax.annotation.Nonnull;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * This is an implementation of a staff channel.
@@ -31,14 +32,10 @@ public class StaffChannel extends BaseChannel {
         return ChannelType.STAFF;
     }
 
+    @Nonnull
     @Override
-    void broadcast(@Nonnull ChannelMessage<?> message) {
-        Chatter.all().stream().filter(this::hasAccess).forEach(p -> p.send(message));
-    }
-
-    @Override
-    void send(@Nonnull Chatter sender, @Nonnull ChannelMessage<?> message) {
-        Chatter.all().stream().filter(this::hasAccess).forEach(p -> p.send(settings.getFormattedMessage(sender, message)));
+    public Set<Chatter> getRecipients() {
+        return Chatter.all().stream().filter(this::hasAccess).collect(Collectors.toSet());
     }
 
     @Override

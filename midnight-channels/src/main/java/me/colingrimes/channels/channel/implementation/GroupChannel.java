@@ -3,10 +3,9 @@ package me.colingrimes.channels.channel.implementation;
 import me.colingrimes.channels.ChannelAPI;
 import me.colingrimes.channels.channel.chatter.Chatter;
 import me.colingrimes.channels.channel.misc.ChannelType;
-import me.colingrimes.channels.message.ChannelMessage;
 
 import javax.annotation.Nonnull;
-import java.util.Optional;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -36,26 +35,14 @@ public class GroupChannel extends BaseChannel {
         return ChannelType.GROUP;
     }
 
+    @Nonnull
     @Override
-    void broadcast(@Nonnull ChannelMessage<?> message) {
+    public Set<Chatter> getRecipients() {
+        Set<Chatter> recipients = new HashSet<>();
         for (UUID groupMember : groupMembersSupplier.get()) {
-            ChannelAPI.getManager().getChatter(groupMember).ifPresent(c -> c.send(message));
+            ChannelAPI.getManager().getChatter(groupMember).ifPresent(recipients::add);
         }
-    }
-
-    @Override
-    void send(@Nonnull Chatter sender, @Nonnull ChannelMessage<?> message) {
-        for (UUID groupMember : groupMembersSupplier.get()) {
-            Optional<Chatter> chatter = ChannelAPI.getManager().getChatter(groupMember);
-            if (chatter.isEmpty()) {
-                continue;
-            }
-
-            Chatter recipient = chatter.get();
-            if (sender.hasPermission("channels.staff") || recipient.hasPermission("channels.staff") || !recipient.isIgnoring(sender.getID())) {
-                chatter.get().send(settings.getFormattedMessage(sender, message));
-            }
-        }
+        return recipients;
     }
 
     @Override
