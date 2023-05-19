@@ -47,7 +47,6 @@ public class GlobalChannel extends BaseChannel {
      * @return true if the message was sent, otherwise
      */
     public boolean send(@Nonnull AsyncPlayerChatEvent event) {
-        event.setCancelled(true);
         return send(Chatter.of(event.getPlayer()), event.getMessage());
     }
 }

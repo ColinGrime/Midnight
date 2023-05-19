@@ -28,7 +28,7 @@ public class ChatListeners implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onAsyncPlayerChat(@Nonnull AsyncPlayerChatEvent event) {
-		Optional<Chatter> chatter = plugin.getChannelManager().getChatter(event.getPlayer().getUniqueId());
+		Optional<Chatter> chatter = plugin.getChatManager().getChatter(event.getPlayer().getUniqueId());
 
 		// This should never be called.
 		if (chatter.isEmpty()) {
@@ -38,7 +38,8 @@ public class ChatListeners implements Listener {
 
 		// Re-direct to global channel if enabled.
 		if (ChannelAPI.global().isEnabled()) {
-			((GlobalChannel) ChannelAPI.global()).send(event);
+			event.setCancelled(true);
+			Scheduler.SYNC.run(() -> ((GlobalChannel) ChannelAPI.global()).send(event));
 		}
 	}
 
@@ -56,7 +57,7 @@ public class ChatListeners implements Listener {
 
 	@EventHandler
 	public void onPlayerQuit(@Nonnull PlayerQuitEvent event) {
-		Chatter chatter = plugin.getChannelManager().getChatter(event.getPlayer());
+		Chatter chatter = Chatter.of(event.getPlayer());
 		Scheduler.ASYNC.execute(() -> {
 			plugin.getChatterStorage().save(chatter);
 		}).exceptionally((e) -> {
