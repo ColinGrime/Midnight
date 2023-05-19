@@ -6,6 +6,7 @@ import me.colingrimes.channels.channel.misc.ChannelType;
 import me.colingrimes.midnight.message.Message;
 
 import javax.annotation.Nonnull;
+import java.util.Set;
 
 /**
  * Represents a communication channel.
@@ -64,7 +65,6 @@ public interface Channel {
      */
     boolean send(@Nonnull Chatter sender, @Nonnull Message<?> message);
 
-
     /**
      * Sends a message from a {@code Chatter} to all users with access to the channel.
      * This is to be used for regular messages.
@@ -76,6 +76,14 @@ public interface Channel {
     default boolean send(@Nonnull Chatter sender, @Nonnull String message) {
         return send(sender, Message.of(message));
     }
+
+    /**
+     * Gets the set of recipients that would receive the message.
+     *
+     * @return the set of recipients
+     */
+    @Nonnull
+    Set<Chatter> getRecipients();
 
     /**
      * Verifies if a chatter has access to the channel.
