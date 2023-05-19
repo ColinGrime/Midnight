@@ -19,7 +19,7 @@ import javax.annotation.Nonnull;
 public class ChannelSettings implements ChatFilter {
 
     private final ChatFilters filters = new ChatFilters();
-    private String messageFormat = "&7<&f&l{vault_prefix}&7> &e{sender}&7: &f{message}";
+    private Message<?> messageFormat = Message.of("&7<&f&lMember&7> &e{sender}&7: &f{message}");
     private boolean logMessages = false;
 
     @Override
@@ -62,7 +62,7 @@ public class ChannelSettings implements ChatFilter {
      * @return the message format
      */
     @Nonnull
-    public String getMessageFormat() {
+    public Message<?> getMessageFormat() {
         return messageFormat;
     }
 
@@ -75,7 +75,7 @@ public class ChannelSettings implements ChatFilter {
      * @return the message format
      */
     @Nonnull
-    public String getFormattedMessage(@Nonnull Chatter chatter, @Nonnull Message<?> message) {
+    public Message<?> getFormattedMessage(@Nonnull Chatter chatter, @Nonnull Message<?> message) {
         return getFormattedMessage(chatter, message, chatter.getName());
     }
 
@@ -88,7 +88,7 @@ public class ChannelSettings implements ChatFilter {
      * @return the message format
      */
     @Nonnull
-    public String getFormattedMessage(@Nonnull Chatter chatter, @Nonnull Message<?> message, @Nonnull String sender) {
+    public Message<?> getFormattedMessage(@Nonnull Chatter chatter, @Nonnull Message<?> message, @Nonnull String sender) {
         return Placeholders.create(chatter.player())
                 .add("{message}", message.toText())
                 .add("{sender}", sender)
@@ -104,7 +104,7 @@ public class ChannelSettings implements ChatFilter {
      * @return the message format
      */
     @Nonnull
-    public String getFormattedMessage(@Nonnull Chatter chatter, @Nonnull Message<?> message, @Nonnull String sender, @Nonnull String recipient) {
+    public Message<?> getFormattedMessage(@Nonnull Chatter chatter, @Nonnull Message<?> message, @Nonnull String sender, @Nonnull String recipient) {
         return Placeholders.create(chatter.player())
                 .add("{message}", message.toText())
                 .add("{sender}", sender)
@@ -119,7 +119,7 @@ public class ChannelSettings implements ChatFilter {
      * @return the channel settings
      */
     @Nonnull
-    public ChannelSettings setMessageFormat(@Nonnull String format) {
+    public ChannelSettings setMessageFormat(@Nonnull Message<?> format) {
         this.messageFormat = format;
         return this;
     }
