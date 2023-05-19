@@ -1,6 +1,7 @@
 package me.colingrimes.midnight.util.bukkit;
 
 import me.colingrimes.midnight.message.Placeholders;
+import me.colingrimes.midnight.util.text.Text;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -17,7 +18,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Provides various utilties for {@link ItemStack} objects.</p>
+ * Provides various utilities for {@link ItemStack} objects.</p>
  */
 public final class Items {
 
@@ -58,7 +59,7 @@ public final class Items {
 			return item;
 		}
 
-		meta.setDisplayName(name);
+		meta.setDisplayName(Text.color(name));
 		item.setItemMeta(meta);
 		return item;
 	}
@@ -77,7 +78,7 @@ public final class Items {
 			return item;
 		}
 
-		meta.setLore(lore);
+		meta.setLore(Text.color(lore));
 		item.setItemMeta(meta);
 		return item;
 	}
