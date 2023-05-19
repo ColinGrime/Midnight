@@ -101,4 +101,14 @@ public class ChatFilters implements ChatFilter {
 
         return true;
     }
+
+    @Override
+    public boolean filter(@Nonnull String message) {
+        for (ChatFilter filter : filters) {
+            if (filter.filter(message)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
