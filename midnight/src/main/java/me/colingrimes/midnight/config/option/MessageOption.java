@@ -2,7 +2,6 @@ package me.colingrimes.midnight.config.option;
 
 import me.colingrimes.midnight.config.adapter.ConfigurationAdapter;
 import me.colingrimes.midnight.message.Message;
-import me.colingrimes.midnight.message.Placeholders;
 import me.colingrimes.midnight.util.text.Text;
 import org.bukkit.command.CommandSender;
 
@@ -55,11 +54,5 @@ public class MessageOption<T> implements Option<T>, Message<List<String>> {
 	@Override
 	public void send(@Nonnull CommandSender recipient) {
 		messages.forEach(recipient::sendMessage);
-	}
-
-	@Nonnull
-	@Override
-	public Message<List<String>> replace(@Nonnull Placeholders placeholders) {
-		return Message.of(placeholders.apply(messages));
 	}
 }

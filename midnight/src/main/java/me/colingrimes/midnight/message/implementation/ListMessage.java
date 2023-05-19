@@ -1,11 +1,11 @@
 package me.colingrimes.midnight.message.implementation;
 
 import me.colingrimes.midnight.message.Message;
-import me.colingrimes.midnight.message.Placeholders;
 import me.colingrimes.midnight.util.text.Text;
 import org.bukkit.command.CommandSender;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,6 +15,10 @@ import java.util.List;
 public class ListMessage implements Message<List<String>> {
 
     private final List<String> content;
+
+    public ListMessage() {
+        this(new ArrayList<>());
+    }
 
     public ListMessage(@Nonnull List<String> content) {
         this.content = Text.color(content);
@@ -29,11 +33,5 @@ public class ListMessage implements Message<List<String>> {
     @Override
     public void send(@Nonnull CommandSender recipient) {
         content.forEach(recipient::sendMessage);
-    }
-
-    @Nonnull
-    @Override
-    public ListMessage replace(@Nonnull Placeholders placeholders) {
-        return new ListMessage(placeholders.apply(content));
     }
 }

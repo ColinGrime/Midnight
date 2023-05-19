@@ -99,7 +99,10 @@ public interface Message<T> {
      * @return a new message with the placeholders replaced
      */
     @Nonnull
-    Message<T> replace(@Nonnull Placeholders placeholders);
+    default Message<?> replace(@Nonnull Placeholders placeholders) {
+        return placeholders.apply(this);
+    }
+
 
     /**
      * Applies the provided placeholder key-value pair to the message and returns the result.
@@ -109,7 +112,7 @@ public interface Message<T> {
      * @return a new message with the placeholders replaced
      */
     @Nonnull
-    default Message<T> replace(@Nonnull String key1, @Nonnull Object value1) {
+    default Message<?> replace(@Nonnull String key1, @Nonnull Object value1) {
         return replace(Placeholders.of(key1, value1));
     }
 
@@ -123,7 +126,7 @@ public interface Message<T> {
      * @return a new message with the placeholders replaced
      */
     @Nonnull
-    default Message<T> replace(@Nonnull String key1, @Nonnull Object value1,
+    default Message<?> replace(@Nonnull String key1, @Nonnull Object value1,
                                @Nonnull String key2, @Nonnull Object value2) {
         return replace(Placeholders.of(key1, value1).add(key2, value2));
     }
@@ -140,7 +143,7 @@ public interface Message<T> {
      * @return a new message with the placeholders replaced
      */
     @Nonnull
-    default Message<T> replace(@Nonnull String key1, @Nonnull Object value1,
+    default Message<?> replace(@Nonnull String key1, @Nonnull Object value1,
                                @Nonnull String key2, @Nonnull Object value2,
                                @Nonnull String key3, @Nonnull Object value3) {
         return replace(Placeholders.of(key1, value1).add(key2, value2).add(key3, value3));
@@ -160,7 +163,7 @@ public interface Message<T> {
      * @return a new message with the placeholders replaced
      */
     @Nonnull
-    default Message<T> replace(@Nonnull String key1, @Nonnull Object value1,
+    default Message<?> replace(@Nonnull String key1, @Nonnull Object value1,
                                @Nonnull String key2, @Nonnull Object value2,
                                @Nonnull String key3, @Nonnull Object value3,
                                @Nonnull String key4, @Nonnull Object value4) {

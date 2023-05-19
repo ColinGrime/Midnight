@@ -1,6 +1,5 @@
 package me.colingrimes.midnight.message.implementation;
 
-import me.colingrimes.midnight.message.Placeholders;
 import me.colingrimes.midnight.message.Message;
 import me.colingrimes.midnight.util.text.Text;
 import org.bukkit.command.CommandSender;
@@ -28,11 +27,5 @@ public class TextMessage implements Message<String> {
     @Override
     public void send(@Nonnull CommandSender recipient) {
         recipient.sendMessage(content);
-    }
-
-    @Nonnull
-    @Override
-    public TextMessage replace(@Nonnull Placeholders placeholders) {
-        return new TextMessage(placeholders.apply(content));
     }
 }

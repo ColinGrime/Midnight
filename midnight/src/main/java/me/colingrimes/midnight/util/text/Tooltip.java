@@ -1,6 +1,7 @@
 package me.colingrimes.midnight.util.text;
 
 import me.colingrimes.midnight.message.Placeholders;
+import me.colingrimes.midnight.message.implementation.ComponentMessage;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
@@ -38,7 +39,7 @@ public final class Tooltip {
      * @return a TextComponent with the message and hoverable text
      */
     @Nonnull
-    public static TextComponent create(@Nonnull Player player, @Nonnull String message, @Nonnull List<String> tooltips) {
+    public static ComponentMessage create(@Nonnull Player player, @Nonnull String message, @Nonnull List<String> tooltips) {
         TextComponent component = new TextComponent(message);
         component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(String.join("\n", tooltips))));
         return Placeholders.create(player).apply(component);

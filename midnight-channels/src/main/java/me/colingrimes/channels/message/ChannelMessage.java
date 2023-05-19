@@ -3,7 +3,6 @@ package me.colingrimes.channels.message;
 import me.colingrimes.channels.channel.Channel;
 import me.colingrimes.channels.channel.chatter.Chatter;
 import me.colingrimes.midnight.message.Message;
-import me.colingrimes.midnight.message.Placeholders;
 import org.bukkit.command.CommandSender;
 
 import javax.annotation.Nonnull;
@@ -78,12 +77,6 @@ public class ChannelMessage<T> implements Message<T> {
     @Override
     public void send(@Nonnull CommandSender recipient) {
         message.send(recipient);
-    }
-
-    @Nonnull
-    @Override
-    public Message<T> replace(@Nonnull Placeholders placeholders) {
-        return new ChannelMessage<>(channel, chatter, message.replace(placeholders));
     }
 
     @Nonnull
