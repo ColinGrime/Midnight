@@ -4,11 +4,15 @@ import me.colingrimes.channels.ChannelAPI;
 import me.colingrimes.channels.channel.chatter.Chatter;
 import me.colingrimes.channels.channel.misc.ChannelType;
 import me.colingrimes.channels.config.Messages;
+import me.colingrimes.channels.event.ChannelMessageEvent;
 import me.colingrimes.channels.message.ChannelMessage;
 import me.colingrimes.midnight.message.Message;
+import me.colingrimes.midnight.util.Common;
 
 import javax.annotation.Nonnull;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * This is an implementation of a private channel.
@@ -100,8 +104,6 @@ public class PrivateChannel extends BaseChannel {
         } else if (sender.isMuted()) {
             Messages.CURRENTLY_MUTED.send(sender.player());
             return false;
-        } else if (recipient.isIgnoring(sender.getID()) && !sender.hasPermission("channels.staff") && !recipient.hasPermission("channels.staff")) {
-            return false;
         }
 
         ChannelMessage<?> channelMessage = new ChannelMessage<>(this, sender, message);
@@ -110,15 +112,39 @@ public class PrivateChannel extends BaseChannel {
             return false;
         }
 
-        sender.send(settings.getFormattedMessage(sender, channelMessage, "Me", recipient.getName()));
-        recipient.send(settings.getFormattedMessage(sender, channelMessage, sender.getName(), "Me"));
-        recipient.setLastMessagedBy(sender.getID());
-        return true;
+        Set<Chatter> recipients = new HashSet<>(Set.of(sender, recipient));
+
+        // You cannot ignore staff, staff cannot ignore you.
+        if (!sender.hasPermission("channels.staff")) {
+            recipients.removeIf(r -> r.isIgnoring(sender.getID()) && !r.hasPermission("channels.staff"));
+        }
+
+        ChannelMessageEvent channelMessageEvent = new ChannelMessageEvent(this, sender, recipients, message);
+        Common.call(channelMessageEvent);
+        Message<?> newMessage = channelMessageEvent.getMessage();
+
+        if (channelMessageEvent.isCancelled()) {
+            return false;
+        } else if (recipients.size() == 1) {
+            sender.send(settings.getFormattedMessage(sender, newMessage, "Me", recipient.getName()));
+            return true;
+        } else {
+            sender.send(settings.getFormattedMessage(sender, newMessage, "Me", recipient.getName()));
+            recipient.send(settings.getFormattedMessage(sender, newMessage, sender.getName(), "Me"));
+            recipient.setLastMessagedBy(sender.getID());
+            return true;
+        }
     }
 
     @Override
     public void broadcast(@Nonnull Message<?> message) {
         throw new UnsupportedOperationException("Cannot broadcast a message in a PrivateChannel.");
+    }
+
+    @Nonnull
+    @Override
+    public Set<Chatter> getRecipients() {
+        throw new UnsupportedOperationException("Cannot get recipients of a PrivateChannel.");
     }
 
     @Override
