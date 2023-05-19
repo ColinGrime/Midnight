@@ -6,6 +6,7 @@ import me.colingrimes.midnight.message.Placeholders;
 import me.colingrimes.midnight.util.bukkit.Players;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -33,10 +34,13 @@ public class ChatFilters implements ChatFilter {
      * @return the chat filter
      */
     @Nonnull
-    public static ChatFilters of(@Nonnull List<String> types) {
+    public static ChatFilters of(@Nullable List<String> types) {
         ChatFilters filters = new ChatFilters();
-        types = types.stream().map(String::toUpperCase).toList();
+        if (types == null) {
+            return filters;
+        }
 
+        types = types.stream().map(String::toUpperCase).toList();
         if (types.contains("ALL")) {
             Arrays.stream(ChatFilterType.values()).map(ChatFilterType::getFilter).forEach(filters::add);
         } else {
