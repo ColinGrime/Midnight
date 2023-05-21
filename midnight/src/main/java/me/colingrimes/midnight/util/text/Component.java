@@ -63,6 +63,42 @@ public final class Component {
     }
 
     /**
+     * Colors a TextComponent with the specified color codes.
+     *
+     * @param colors the colors to apply to the TextComponent
+     * @param component the TextComponent to color
+     * @return the colored TextComponent
+     */
+    @Nonnull
+    public static TextComponent color(@Nonnull String colors, @Nonnull TextComponent component) {
+        Matcher matcher = COLOR_CODES.matcher(Text.color(colors));
+
+        if (matcher.find()) {
+            String codes = matcher.group();
+
+            for (char codeChar : codes.toCharArray()) {
+                if (codeChar == '§') {
+                    continue;
+                }
+
+                if (ChatColor.getByChar(codeChar) != null) {
+                    component.setColor(ChatColor.getByChar(codeChar));
+                } else {
+                    switch (codeChar) {
+                        case 'k' -> component.setObfuscated(true);
+                        case 'l' -> component.setBold(true);
+                        case 'm' -> component.setStrikethrough(true);
+                        case 'n' -> component.setUnderlined(true);
+                        case 'o' -> component.setItalic(true);
+                    }
+                }
+            }
+        }
+
+        return component;
+    }
+
+    /**
      * Replaces all instances of the placeholder with the value in the specified component.
      *
      * @param component   the component to replace the placeholder in
@@ -90,9 +126,8 @@ public final class Component {
 
             // Create the component to the left of the placeholder.
             if (mainComponent == null) {
-                mainComponent = new TextComponent(component);
-                mainComponent.setText(left);
-                mainComponent.setExtra(new ArrayList<>());
+                mainComponent = new TextComponent(left);
+                mainComponent.copyFormatting(component, true);
             } else {
                 TextComponent leftComponent = Component.of(left);
                 leftComponent.setClickEvent(component.getClickEvent());
@@ -109,9 +144,7 @@ public final class Component {
                 placeholderComponent.setHoverEvent(component.getHoverEvent());
             } else if (value.getContent() instanceof TextComponent content) {
                 TextComponent replacedComponent = replace(content, placeholder, value);
-                placeholderComponent = Component.of(colors + replacedComponent.getText());
-                placeholderComponent.setClickEvent(replacedComponent.getClickEvent());
-                placeholderComponent.setHoverEvent(replacedComponent.getHoverEvent());
+                placeholderComponent = Component.color(colors, replacedComponent);
             } else if (value.getContent() instanceof List && ((List<?>) value.getContent()).get(0) instanceof String) {
                 @SuppressWarnings("unchecked")
                 List<String> content = (List<String>) value.getContent();
@@ -128,7 +161,8 @@ public final class Component {
 
         // Create the main component or add the remaining text to the main component.
         if (mainComponent == null) {
-            mainComponent = new TextComponent(component);
+            mainComponent = new TextComponent(text);
+            mainComponent.copyFormatting(component, true);
         } else if (endOfLastMatch != text.length()) {
             TextComponent lastComponent = Component.of(text.substring(endOfLastMatch));
             lastComponent.setClickEvent(component.getClickEvent());
