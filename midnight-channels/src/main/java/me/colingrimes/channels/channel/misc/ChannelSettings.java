@@ -100,9 +100,8 @@ public class ChannelSettings implements ChatFilter {
     @Nonnull
     public Message<?> getFormattedMessage(@Nonnull Chatter chatter, @Nonnull Message<?> message, @Nonnull String sender) {
         return Placeholders.create(chatter.player())
-                .add("{message}", message.toText())
-                .add("{sender}", Tooltip.create(chatter.player(), sender, senderTooltip, senderClickCommand))
-                .add("{nickname}", chatter.getNickname())
+                .add("{message}", message)
+                .add("{sender}", Tooltip.create(sender, senderTooltip, senderClickCommand))
                 .apply(messageFormat);
     }
 
@@ -117,7 +116,7 @@ public class ChannelSettings implements ChatFilter {
     @Nonnull
     public Message<?> getFormattedMessage(@Nonnull Chatter chatter, @Nonnull Message<?> message, @Nonnull String sender, @Nonnull String recipient) {
         return Placeholders.create(chatter.player())
-                .add("{message}", message.toText())
+                .add("{message}", message)
                 .add("{sender}", sender)
                 .add("{recipient}", recipient)
                 .apply(messageFormat);
@@ -164,9 +163,9 @@ public class ChannelSettings implements ChatFilter {
     }
 
     /**
-     * Gets the command to run when the sender is clicked.
+     * Gets the command to suggest when the sender is clicked.
      *
-     * @return the command to run
+     * @return the command to suggest
      */
     @Nonnull
     public String getSenderClickCommand() {
@@ -174,9 +173,9 @@ public class ChannelSettings implements ChatFilter {
     }
 
     /**
-     * Sets the command to run when the sender is clicked.
+     * Sets the command to suggest when the sender is clicked.
      *
-     * @param senderClickCommand the command to run
+     * @param senderClickCommand the command to suggest
      */
     public void setSenderClickCommand(@Nonnull String senderClickCommand) {
         this.senderClickCommand = senderClickCommand;
