@@ -2,16 +2,19 @@ package me.colingrimes.midnight.message;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.colingrimes.midnight.message.implementation.ComponentMessage;
-import me.colingrimes.midnight.message.implementation.ListMessage;
-import me.colingrimes.midnight.message.implementation.TextMessage;
 import me.colingrimes.midnight.util.Common;
 import me.colingrimes.midnight.util.text.Component;
+import me.colingrimes.midnight.util.text.Text;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Content;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,12 +119,12 @@ public class Placeholders {
 		}
 
 		// Apply the placeholders in the string.
-		TextComponent component = new TextComponent(str);
+		TextComponent component = Component.of(str);
 		for (Map.Entry<String, Message<?>> replacement : placeholders.entrySet()) {
 			component = Component.replace(component, replacement.getKey(), replacement.getValue());
 		}
 
-		// Apply PlaceholderAPI placeholders.
+		// Apply the PlaceholderAPI placeholders.
 		applyPlaceholderAPI(component);
 		return new ComponentMessage(component);
 	}
@@ -190,15 +193,16 @@ public class Placeholders {
 	 * @param message the message to apply placeholders to
 	 * @return the new message with applied placeholders
 	 */
-	@SuppressWarnings("unchecked")
 	@Nonnull
 	public ComponentMessage apply(@Nonnull Message<?> message) {
-		if (message instanceof TextMessage) {
-			return apply((String) message.getContent());
-		} else if (message instanceof ComponentMessage) {
-			return apply((TextComponent) message.getContent());
-		} else if (message instanceof ListMessage) {
-			return apply((List<String>) message.getContent());
+		if (message.getContent() instanceof String content) {
+			return apply(content);
+		} else if (message.getContent() instanceof TextComponent component) {
+			return apply(component);
+		} else if (message.getContent() instanceof List && ((List<?>) message.getContent()).get(0) instanceof String) {
+			@SuppressWarnings("unchecked")
+			List<String> strList = (List<String>) message.getContent();
+			return apply(strList);
 		} else {
 			throw new IllegalArgumentException("Invalid message content type: " + message.getContent().getClass().getName());
 		}
@@ -214,8 +218,46 @@ public class Placeholders {
 			return;
 		}
 
-		component.setText(PlaceholderAPI.setPlaceholders(player, component.getText().replaceAll("\\{(.+?)}", "%$1%")));
-		component.setText(component.getText().replaceAll("%(.+?)%", "{$1}"));
+		component.setText(Text.color(PlaceholderAPI.setPlaceholders(player, component.getText().replaceAll("\\{(.+?)}", "%$1%"))));
+
+		// Replace the placeholder in the hover event.
+		if (component.getHoverEvent() != null) {
+			HoverEvent hoverEvent = component.getHoverEvent();
+			List<Content> contents = new ArrayList<>();
+
+			for (Content content : hoverEvent.getContents()) {
+				if (!(content instanceof net.md_5.bungee.api.chat.hover.content.Text text)) {
+					contents.add(content);
+					continue;
+				} else if (text.getValue() instanceof String str) {
+					String replaced = Text.color(PlaceholderAPI.setPlaceholders(player, str.replaceAll("\\{(.+?)}", "%$1%")));
+					contents.add(new net.md_5.bungee.api.chat.hover.content.Text(replaced));
+					continue;
+				} else if (!(text.getValue() instanceof BaseComponent[])) {
+					contents.add(content);
+					continue;
+				}
+
+				BaseComponent[] baseComponents = (BaseComponent[]) text.getValue();
+				for (BaseComponent baseComponent : baseComponents) {
+					if (baseComponent instanceof TextComponent textComponent) {
+						applyPlaceholderAPI(textComponent);
+					}
+				}
+				contents.add(new net.md_5.bungee.api.chat.hover.content.Text(baseComponents));
+			}
+
+			component.setHoverEvent(new HoverEvent(hoverEvent.getAction(), contents));
+		}
+
+		// Replace the placeholder in the click event.
+		if (component.getClickEvent() != null) {
+			ClickEvent clickEvent = component.getClickEvent();
+			if (clickEvent.getAction() == ClickEvent.Action.RUN_COMMAND || clickEvent.getAction() == ClickEvent.Action.SUGGEST_COMMAND) {
+				String replaced = PlaceholderAPI.setPlaceholders(player, clickEvent.getValue().replaceAll("\\{(.+?)}", "%$1%"));
+				component.setClickEvent(new ClickEvent(clickEvent.getAction(), replaced));
+			}
+		}
 
 		// Recursively replace placeholders in the extras of the original component.
 		if (component.getExtra() != null) {
