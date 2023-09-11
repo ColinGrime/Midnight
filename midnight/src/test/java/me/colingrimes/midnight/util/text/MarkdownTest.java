@@ -10,53 +10,45 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class MarkdownTest {
 
 	@Test
-	void testMarkdownWithCommandAndHoverText() {
+	void testCommandAndHover() {
 		String input = "Click [here](/command_with_underscores Hover text) to execute the command!";
 		TextComponent textComponent = Markdown.of(input).getContent();
+		assertNotNull(textComponent);
 
-		assertNotNull(textComponent, "Text component should not be null");
+		var plainText = textComponent.toPlainText();
+		var commandText = textComponent.getExtra().get(1).getClickEvent().getValue();
+		var hoverText = ((Text) textComponent.getExtra().get(1).getHoverEvent().getContents().get(0)).getValue();
 
-		assertEquals("Click here to execute the command!", textComponent.toPlainText(),
-				"Parsed text component should have the correct plain text");
-
-		assertEquals("/command with underscores", textComponent.getExtra().get(1).getClickEvent().getValue(),
-				"Parsed text component should have the correct command in click event");
-
-		Text hoverContent = (Text) textComponent.getExtra().get(1).getHoverEvent().getContents().get(0);
-		assertEquals("Hover text", hoverContent.getValue(),
-				"Parsed text component should have the correct hover text");
+		assertEquals("Click here to execute the command!", plainText);
+		assertEquals("/command with underscores", commandText);
+		assertEquals("Hover text", hoverText);
 	}
 
 	@Test
-	void testMarkdownWithUrlAndHoverText() {
+	void testUrlAndHover() {
 		String input = "Click [here](https://example.com Hover text) to visit the website!";
 		TextComponent textComponent = Markdown.of(input).getContent();
+		assertNotNull(textComponent);
 
-		assertNotNull(textComponent, "Text component should not be null");
+		var plainText = textComponent.toPlainText();
+		var urlText = textComponent.getExtra().get(1).getClickEvent().getValue();
+		var hoverText = ((Text) textComponent.getExtra().get(1).getHoverEvent().getContents().get(0)).getValue();
 
-		assertEquals("Click here to visit the website!", textComponent.toPlainText(),
-				"Parsed text component should have the correct plain text");
-
-		assertEquals("https://example.com", textComponent.getExtra().get(1).getClickEvent().getValue(),
-				"Parsed text component should have the correct URL in click event");
-
-		Text hoverContent = (Text) textComponent.getExtra().get(1).getHoverEvent().getContents().get(0);
-		assertEquals("Hover text", hoverContent.getValue(),
-				"Parsed text component should have the correct hover text");
+		assertEquals("Click here to visit the website!", plainText);
+		assertEquals("https://example.com", urlText);
+		assertEquals("Hover text", hoverText);
 	}
 
 	@Test
-	void testMarkdownWithHoverText() {
+	void testHover() {
 		String input = "Hover [here](Hover text) to see the text!";
 		TextComponent textComponent = Markdown.of(input).getContent();
+		assertNotNull(textComponent);
 
-		assertNotNull(textComponent, "Text component should not be null");
+		var plainText = textComponent.toPlainText();
+		var hoverText = ((Text) textComponent.getExtra().get(1).getHoverEvent().getContents().get(0)).getValue();
 
-		assertEquals("Hover here to see the text!", textComponent.toPlainText(),
-				"Parsed text component should have the correct plain text");
-
-		Text hoverContent = (Text) textComponent.getExtra().get(1).getHoverEvent().getContents().get(0);
-		assertEquals("Hover text", hoverContent.getValue(),
-				"Parsed text component should have the correct hover text");
+		assertEquals("Hover here to see the text!", plainText);
+		assertEquals("Hover text", hoverText);
 	}
 }

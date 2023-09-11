@@ -10,34 +10,31 @@ class StorageTypeTest {
 
 	@Test
 	public void testGetName() {
-		assertEquals("YAML", StorageType.YAML.getName(), "StorageType YAML should have the name 'YAML'");
-		assertEquals("JSON", StorageType.JSON.getName(), "StorageType JSON should have the name 'JSON'");
-		assertEquals("MySQL", StorageType.MYSQL.getName(), "StorageType MYSQL should have the name 'MySQL'");
-		assertEquals("SQLite", StorageType.SQLITE.getName(), "StorageType SQLITE should have the name 'SQLite'");
+		assertEquals("YAML", StorageType.YAML.getName());
+		assertEquals("JSON", StorageType.JSON.getName());
+		assertEquals("MySQL", StorageType.MYSQL.getName());
+		assertEquals("SQLite", StorageType.SQLITE.getName());
 	}
 
 	@Test
 	public void testFromString() {
-		Optional<StorageType> yamlOpt = StorageType.fromString("YAML");
-		assertTrue(yamlOpt.isPresent(), "Optional should not be empty");
-		assertEquals(StorageType.YAML, yamlOpt.get(), "fromString('YAML') should return StorageType.YAML");
+		Optional<StorageType> yaml = StorageType.fromString("YAML");
+		assertTrue(yaml.isPresent());
+		assertEquals(StorageType.YAML, yaml.get());
 
-		Optional<StorageType> jsonOpt = StorageType.fromString("JSON");
-		assertTrue(jsonOpt.isPresent(), "Optional should not be empty");
-		assertEquals(StorageType.JSON, jsonOpt.get(), "fromString('JSON') should return StorageType.JSON");
+		Optional<StorageType> json = StorageType.fromString("JSON");
+		assertTrue(json.isPresent());
+		assertEquals(StorageType.JSON, json.get());
 
-		Optional<StorageType> mysqlOpt = StorageType.fromString("MySQL");
-		assertTrue(mysqlOpt.isPresent(), "Optional should not be empty");
-		assertEquals(StorageType.MYSQL, mysqlOpt.get(), "fromString('MySQL') should return StorageType.MYSQL");
+		Optional<StorageType> mysql = StorageType.fromString("MySQL");
+		assertTrue(mysql.isPresent());
+		assertEquals(StorageType.MYSQL, mysql.get());
 
-		Optional<StorageType> sqliteOpt = StorageType.fromString("SQLite");
-		assertTrue(sqliteOpt.isPresent(), "Optional should not be empty");
-		assertEquals(StorageType.SQLITE, sqliteOpt.get(), "fromString('SQLite') should return StorageType.SQLITE");
-	}
+		Optional<StorageType> sqlite = StorageType.fromString("SQLite");
+		assertTrue(sqlite.isPresent());
+		assertEquals(StorageType.SQLITE, sqlite.get());
 
-	@Test
-	public void testFromStringNotFound() {
-		Optional<StorageType> notFoundOpt = StorageType.fromString("NonExistentStorageType");
-		assertFalse(notFoundOpt.isPresent(), "Optional should be empty for a non-existent storage type");
+		Optional<StorageType> nonExistent = StorageType.fromString("NonExistentStorageType");
+		assertFalse(nonExistent.isPresent());
 	}
 }

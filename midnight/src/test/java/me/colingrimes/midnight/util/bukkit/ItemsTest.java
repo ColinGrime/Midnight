@@ -1,6 +1,5 @@
 package me.colingrimes.midnight.util.bukkit;
 
-import me.colingrimes.midnight.util.bukkit.Items;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -18,73 +17,42 @@ import static org.mockito.Mockito.when;
 class ItemsTest {
 
 	private Player player;
-	private PlayerInventory inventory;
 	private ItemStack itemStack1;
 	private ItemStack itemStack2;
-	private ItemStack[] items;
+	private ItemStack itemStack3;
 
 	@BeforeEach
 	void setUp() {
 		player = mock(Player.class);
-		inventory = mock(PlayerInventory.class);
 		itemStack1 = mock(ItemStack.class);
 		itemStack2 = mock(ItemStack.class);
+		itemStack3 = mock(ItemStack.class);
 
 		when(itemStack1.getType()).thenReturn(Material.DIAMOND);
 		when(itemStack2.getType()).thenReturn(Material.GOLD_INGOT);
+		when(itemStack3.getType()).thenReturn(Material.DIAMOND);
 
-		items = new ItemStack[]{null, itemStack1, null, itemStack2};
-		when(inventory.getContents()).thenReturn(items);
+		var inventory = mock(PlayerInventory.class);
+		when(inventory.getContents()).thenReturn(new ItemStack[]{ null, itemStack1, null, itemStack2 });
 		when(player.getInventory()).thenReturn(inventory);
 	}
 
 	@Test
-	void findSlot_nullPlayer() {
-		assertEquals(Optional.empty(), Items.findSlot((Player) null, itemStack1), "Result should be empty Optional when Player is null");
+	void testFindSlot() {
+		assertEquals(Optional.empty(), Items.findSlot((Player) null, itemStack1));
+		assertEquals(Optional.empty(), Items.findSlot((Inventory) null, itemStack1));
+		assertEquals(Optional.empty(), Items.findSlot(player, null));
+		assertEquals(Optional.empty(), Items.findSlot(player, mock(ItemStack.class)));
+		assertEquals(Optional.of(1), Items.findSlot(player, itemStack1));
+
 	}
 
 	@Test
-	void findSlot_nullInventory() {
-		assertEquals(Optional.empty(), Items.findSlot((Inventory) null, itemStack1), "Result should be empty Optional when Inventory is null");
-	}
-
-	@Test
-	void findSlot_nullItemStack() {
-		assertEquals(Optional.empty(), Items.findSlot(player, null), "Result should be empty Optional when ItemStack is null");
-	}
-
-	@Test
-	void findSlot_itemExists() {
-		assertEquals(Optional.of(1), Items.findSlot(player, itemStack1), "Result should be the correct slot when ItemStack exists");
-	}
-
-	@Test
-	void findSlot_itemDoesNotExist() {
-		ItemStack itemStack3 = mock(ItemStack.class);
-		when(itemStack3.getType()).thenReturn(Material.IRON_INGOT);
-		assertEquals(Optional.empty(), Items.findSlot(player, itemStack3), "Result should be empty Optional when ItemStack does not exist");
-	}
-
-	@Test
-	void isSameType_bothNull() {
-		assertFalse(Items.isSameType(null, null), "Result should be false when both ItemStacks are null");
-	}
-
-	@Test
-	void isSameType_oneNull() {
-		assertFalse(Items.isSameType(itemStack1, null), "Result should be false when one ItemStack is null");
-		assertFalse(Items.isSameType(null, itemStack2), "Result should be false when one ItemStack is null");
-	}
-
-	@Test
-	void isSameType_sameType() {
-		ItemStack anotherItemStack1 = mock(ItemStack.class);
-		when(anotherItemStack1.getType()).thenReturn(Material.DIAMOND);
-		assertTrue(Items.isSameType(itemStack1, anotherItemStack1), "Result should be true when both ItemStacks are of the same type");
-	}
-
-	@Test
-	void isSameType_differentType() {
-		assertFalse(Items.isSameType(itemStack1, itemStack2), "Result should be false when both ItemStacks are of different types");
+	void testIsSameType() {
+		assertFalse(Items.isSameType(null, null));
+		assertFalse(Items.isSameType(itemStack1, null));
+		assertFalse(Items.isSameType(null, itemStack2));
+		assertFalse(Items.isSameType(itemStack1, itemStack2));
+		assertTrue(Items.isSameType(itemStack1, itemStack3));
 	}
 }

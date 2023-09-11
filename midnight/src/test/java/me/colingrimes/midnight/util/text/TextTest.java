@@ -3,7 +3,6 @@ package me.colingrimes.midnight.util.text;
 import org.bukkit.ChatColor;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,38 +10,24 @@ import static org.junit.jupiter.api.Assertions.*;
 class TextTest {
 
 	@Test
-	void testColorString() {
-		String input = "&6Hello &cworld!";
-		String expected = ChatColor.GOLD + "Hello " + ChatColor.RED + "world!";
+	void testColor() {
+		String expectedString = ChatColor.GOLD + "Hello " + ChatColor.RED + "world!";
+		String resultString = Text.color("&6Hello &cworld!");
+		assertEquals(expectedString, resultString);
 
-		String result = Text.color(input);
-		assertEquals(expected, result, "Colored text should match the expected format");
+		List<String> expectedList = List.of(ChatColor.GOLD + "Hello", ChatColor.RED + "world!");
+		List<String> resultList = Text.color(List.of("&6Hello", "&cworld!"));
+		assertEquals(expectedList, resultList);
 	}
 
 	@Test
-	void testColorList() {
-		List<String> input = Arrays.asList("&6Hello", "&cworld!");
-		List<String> expected = Arrays.asList(ChatColor.GOLD + "Hello", ChatColor.RED + "world!");
+	void testFormats() {
+		String expectedFormat = "Hello World Test Format";
+		String resultFormat = Text.format("hello_world:test-format");
+		assertEquals(expectedFormat, resultFormat);
 
-		List<String> result = Text.color(input);
-		assertEquals(expected, result, "Colored list of strings should match the expected format");
-	}
-
-	@Test
-	void testFormat() {
-		String input = "hello_world:test-format";
-		String expected = "Hello World Test Format";
-
-		String result = Text.format(input);
-		assertEquals(expected, result, "Formatted text should match the expected format");
-	}
-
-	@Test
-	void testUnformat() {
-		String input = "Hello World Test Format";
-		String expected = "hello_world_test_format";
-
-		String result = Text.unformat(input);
-		assertEquals(expected, result, "Unformatted text should match the expected format");
+		String expectedUnformat = "hello_world_test_format";
+		String resultUnformat = Text.unformat("Hello World Test Format");
+		assertEquals(expectedUnformat, resultUnformat);
 	}
 }

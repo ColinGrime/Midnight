@@ -27,33 +27,33 @@ class SqliteConnectionProviderTest {
 	}
 
 	@Test
-	public void testName() {
-		assertEquals("SQLite", provider.getType().getName(), "SqliteConnectionProvider should return 'SQLite' as its name");
-	}
-
-	@Test
-	public void testStatementProcessor() {
-		String input = "CREATE TABLE 'test_table' ('id' INT PRIMARY KEY)";
-		String expectedOutput = "CREATE TABLE `test_table` (`id` INT PRIMARY KEY)";
-		String actualOutput = provider.getStatementProcessor().apply(input);
-		assertEquals(expectedOutput, actualOutput, "SqliteConnectionProvider statement processor should replace single quotes with backticks");
+	public void testGetType() {
+		assertEquals("SQLite", provider.getType().getName());
 	}
 
 	@Test
 	public void testInit() throws Exception {
-		assertFalse(new File(plugin.getDataFolder(), "test_database.db").exists(), "Database file should not exist before initialization");
+		assertFalse(new File(plugin.getDataFolder(), "test_database.db").exists());
 		provider.init();
-		assertTrue(new File(plugin.getDataFolder(), "test_database.db").exists(), "Database file should be created after initialization");
+		assertTrue(new File(plugin.getDataFolder(), "test_database.db").exists());
 	}
 
 	@Test
 	public void testGetConnection() throws Exception {
 		provider.init();
+
 		try (Connection connection = provider.getConnection()) {
-			assertNotNull(connection, "Connection should not be null");
-			assertFalse(connection.isClosed(), "Connection should not be closed");
+			assertNotNull(connection);
+			assertFalse(connection.isClosed());
 		} catch (SQLException e) {
-			fail("Should not throw SQLException when getting a connection");
+			fail("Should not throw SQLException when getting a connection.");
 		}
+	}
+
+	@Test
+	public void testStatementProcessor() {
+		String input = "CREATE TABLE 'test_table' ('id' INT PRIMARY KEY)";
+		String expectedOutput = input.replace('\'', '`');
+		assertEquals(expectedOutput, provider.getStatementProcessor().apply(input));
 	}
 }
