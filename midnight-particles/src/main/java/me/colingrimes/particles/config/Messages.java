@@ -35,7 +35,7 @@ public interface Messages {
 	Message<?> PARTICLE_DETACH_SELF = message("success.particle-detach-self", "&2&l✓ &aParticle has been detached from &2yourself&a.");
 	Message<?> PARTICLE_MODIFY = message("success.particle-modify", "&2&l✓ &aParticle property &2{property}&a has been set to &2{value}&a.");
 	Message<?> PARTICLE_MOVE = message("success.particle-move", "&2&l✓ &aParticle has been moved to &2{location}&a.");
-	Message<?> PARTICLE_ROTATE = message("success.particle-rotate", "&2&l✓ &aParticle has been rotated.&a.");
+	Message<?> PARTICLE_ROTATE = message("success.particle-rotate", "&2&l✓ &aParticle has been rotated.");
 	Message<?> PARTICLE_SAVE = message("success.particle-save", "&2&l✓ &aParticle has been saved with the name: &2{name}&a.");
 	Message<?> PARTICLE_SELECT = message("success.particle-select", "&2&l✓ &aParticle has been selected with the name: &2{name}&a.");
 	Message<?> PARTICLE_SPAWN = message("success.particle-spawn", "&2&l✓ &aParticle has been spawned.");

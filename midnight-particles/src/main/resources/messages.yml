@@ -20,7 +20,7 @@ success:
   particle-detach-self: "&2&l✓ &aParticle has been detached from &2yourself&a."
   particle-modify: "&2&l✓ &aParticle property &2{property}&a has been set to &2{value}&a."
   particle-move: "&2&l✓ &aParticle has been moved to &2{location}&a."
-  particle-rotate: "&2&l✓ &aParticle has been rotated.&a."
+  particle-rotate: "&2&l✓ &aParticle has been rotated."
   particle-save: "&2&l✓ &aParticle has been saved with the name: &2{name}&a."
   particle-select: "&2&l✓ &aParticle has been selected with the name: &2{name}&a."
   particle-spawn: "&2&l✓ &aParticle has been spawned."
