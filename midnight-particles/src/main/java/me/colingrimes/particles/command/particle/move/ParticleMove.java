@@ -1,11 +1,10 @@
 package me.colingrimes.particles.command.particle.move;
 
 import me.colingrimes.midnight.command.Command;
+import me.colingrimes.midnight.command.handler.util.ArgumentList;
 import me.colingrimes.midnight.command.handler.util.CommandProperties;
 import me.colingrimes.midnight.command.handler.util.Sender;
-import me.colingrimes.midnight.command.handler.util.ArgumentList;
 import me.colingrimes.midnight.geometry.Point;
-import me.colingrimes.midnight.geometry.Rotation;
 import me.colingrimes.midnight.util.bukkit.Locations;
 import me.colingrimes.particles.MidnightParticles;
 import me.colingrimes.particles.config.Messages;
@@ -29,7 +28,7 @@ public class ParticleMove implements Command<MidnightParticles> {
 
 		// Move the particle to the player's location if no coordinates are specified.
 		if (args.size() == 0) {
-			particle.get().setPoint(Point.of(sender.player(), Rotation.create()));
+			particle.get().setPoint(Point.of(sender.location(), particle.get().getPoint().getDirection()));
 			Messages.PARTICLE_MOVE.replace("{location}", Locations.toString(sender.location())).send(sender);
 			return;
 		}
@@ -40,7 +39,7 @@ public class ParticleMove implements Command<MidnightParticles> {
 
 		if (x.isPresent() && y.isPresent() && z.isPresent()) {
 			Location location = new Location(sender.world(), x.get(), y.get(), z.get());
-			particle.get().setPoint(Point.of(location, Rotation.create()));
+			particle.get().setPoint(Point.of(location, particle.get().getPoint().getDirection()));
 			Messages.PARTICLE_MOVE.replace("{location}", Locations.toString(location)).send(sender);
 		} else {
 			Messages.INVALID_LOCATION.send(sender);
