@@ -8,14 +8,14 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public enum ParticleProperty {
-
 	TYPE(Parser::parseParticle),
 	COUNT(Integer::parseInt),
 	OFFSET(Parser::parseVector),
 	SPEED(Double::parseDouble),
 	COLOR(Parser::parseColor),
 	RADIUS(Double::parseDouble), // Specific to CircleParticleEffect
-	POINTS(Integer::parseInt);   // Specific to CircleParticleEffect
+	POINTS(Integer::parseInt),   // Specific to CircleParticleEffect, SquareParticleEffect
+	LENGTH(Double::parseDouble); // Specific to SquareParticleEffect
 
 	private final Function<String, Object> valueParser;
 
@@ -36,16 +36,6 @@ public enum ParticleProperty {
 	 */
 	@Nonnull
 	public static Optional<ParticleProperty> fromString(@Nullable String value) {
-		if (value == null || value.isEmpty()) {
-			return Optional.empty();
-		}
-
-		for (ParticleProperty type : values()) {
-			if (type.name().equalsIgnoreCase(value)) {
-				return Optional.of(type);
-			}
-		}
-
-		return Optional.empty();
+		return Parser.parse(ParticleProperty.class, value);
 	}
 }

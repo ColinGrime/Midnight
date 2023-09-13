@@ -8,8 +8,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,6 +28,32 @@ public final class Parser {
         UNIT_PATTERNS.put(Pattern.compile("w(?:ee)?ks?", Pattern.CASE_INSENSITIVE), ChronoUnit.WEEKS);
         UNIT_PATTERNS.put(Pattern.compile("mo(?:nth)?s?", Pattern.CASE_INSENSITIVE), ChronoUnit.MONTHS);
         UNIT_PATTERNS.put(Pattern.compile("y(?:ea)?rs?", Pattern.CASE_INSENSITIVE), ChronoUnit.YEARS);
+    }
+
+    /**
+     * Parses the provided string to the corresponding Enum value.
+     *
+     * @param enumType the Class of the Enum to parse into
+     * @param value    the string value to parse
+     * @param <E>      the type of the Enum
+     * @return an Optional containing the Enum value matching the provided string
+     */
+    @Nonnull
+    public static <E extends Enum<E>> Optional<E> parse(@Nonnull Class<E> enumType, @Nullable String value) {
+        return Arrays.stream(enumType.getEnumConstants()).filter(e -> e.name().equalsIgnoreCase(value)).findFirst();
+    }
+
+    /**
+     * Parses the provided string to the corresponding Enum value.
+     *
+     * @param enumType the Class of the Enum to parse into
+     * @param value    the string value to parse
+     * @param <E>      the type of the Enum
+     * @return the Enum value matching the provided string
+     */
+    @Nullable
+    public static <E extends Enum<E>> E parseNullable(@Nonnull Class<E> enumType, @Nullable String value) {
+        return Parser.parse(enumType, value).orElse(null);
     }
 
     /**
@@ -53,19 +81,14 @@ public final class Parser {
     }
 
     /**
-     * Parses a vector from a string.
+     * Parses a particle type from a string.
      *
      * @param value the string to parse
-     * @return the parsed vector
+     * @return the parsed particle
      */
     @Nullable
-    public static Particle parseParticle(@Nonnull String value) {
-        for (Particle particle : Particle.values()) {
-            if (particle.name().equalsIgnoreCase(value)) {
-                return particle;
-            }
-        }
-        return null;
+    public static Particle parseParticle(@Nullable String value) {
+        return Parser.parseNullable(Particle.class, value);
     }
 
     /**
