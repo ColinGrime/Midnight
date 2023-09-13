@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import me.colingrimes.midnight.geometry.Point;
 import me.colingrimes.midnight.geometry.Rotation;
 import me.colingrimes.particles.particle.implementation.type.CircleParticleEffect;
+import me.colingrimes.particles.particle.implementation.type.SquareParticleEffect;
 import me.colingrimes.particles.particle.util.ParticleEffectType;
 import me.colingrimes.particles.particle.util.ParticleProperties;
 import me.colingrimes.particles.particle.util.ParticleProperty;
@@ -150,6 +151,7 @@ public interface ParticleEffect extends Serializable {
 
         return switch (type) {
             case CIRCLE -> CircleParticleEffect.deserialize(map);
+            case SQUARE -> SquareParticleEffect.deserialize(map);
         };
     }
 }

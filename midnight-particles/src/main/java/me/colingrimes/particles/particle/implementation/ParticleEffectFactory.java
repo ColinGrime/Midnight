@@ -4,6 +4,7 @@ import me.colingrimes.midnight.geometry.Point;
 import me.colingrimes.midnight.geometry.Rotation;
 import me.colingrimes.particles.particle.ParticleEffect;
 import me.colingrimes.particles.particle.implementation.type.CircleParticleEffect;
+import me.colingrimes.particles.particle.implementation.type.SquareParticleEffect;
 import me.colingrimes.particles.particle.util.ParticleEffectType;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -73,6 +74,7 @@ public final class ParticleEffectFactory {
 
         return switch (type) {
             case CIRCLE -> new CircleParticleEffect(point);
+            case SQUARE -> new SquareParticleEffect(point);
         };
     }
 
