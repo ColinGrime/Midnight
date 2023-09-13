@@ -3,13 +3,16 @@ package me.colingrimes.particles.particle.implementation;
 import me.colingrimes.midnight.geometry.Point;
 import me.colingrimes.midnight.geometry.Position;
 import me.colingrimes.midnight.geometry.Rotation;
-import me.colingrimes.midnight.plugin.MidnightPlugin;
+import me.colingrimes.midnight.scheduler.Scheduler;
+import me.colingrimes.midnight.scheduler.task.Task;
 import me.colingrimes.particles.particle.ParticleEffect;
 import me.colingrimes.particles.particle.util.ParticleProperties;
 import me.colingrimes.particles.particle.util.ParticleProperty;
-import org.bukkit.*;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import javax.annotation.Nonnull;
@@ -23,7 +26,7 @@ public abstract class BaseParticleEffect implements ParticleEffect {
     private Point<Rotation> point;
     private ParticleProperties properties;
     private Entity entity;
-    private BukkitTask task;
+    private Task task;
 
     /**
      * Constructor for creating new particle effects.
@@ -58,7 +61,7 @@ public abstract class BaseParticleEffect implements ParticleEffect {
     @Override
     public void spawn() {
         // If the entity has moved, update the point's position.
-        if (entity != null && !point.getPosition().toLocation().equals(entity.getLocation())) {
+        if (entity != null && !entity.getLocation().equals(point.getPosition().toLocation())) {
             setPoint(point.setPosition(Position.of(entity.getLocation())));
         }
 
@@ -74,13 +77,13 @@ public abstract class BaseParticleEffect implements ParticleEffect {
         }
 
         // Start the particle spawning task.
-        task = Bukkit.getScheduler().runTaskTimer(MidnightPlugin.get(), this::spawn, 0L, 10L);
+        task = Scheduler.SYNC.runRepeating(this::spawn, 0L, 10L);
     }
 
     @Override
     public void stopSpawning() {
         if (task != null) {
-            task.cancel();
+            task.stop();
             task = null;
         }
     }
@@ -137,16 +140,25 @@ public abstract class BaseParticleEffect implements ParticleEffect {
     @Override
     public void updateProperty(@Nonnull ParticleProperty property, @Nonnull String value) {
         Object parsedValue = property.parseValue(value);
-        if (parsedValue == null) {
-            return;
+        if (parsedValue != null) {
+            updatePropertyValue(property, parsedValue);
         }
+    }
 
+    /**
+     * Updates the property of the particle effect with the specified value.
+     *
+     * @param property the property to update
+     * @param value    the new value for the property
+     * @throws UnsupportedOperationException if the property is not supported by the particle effect
+     */
+    protected void updatePropertyValue(@Nonnull ParticleProperty property, @Nonnull Object value) {
         switch (property) {
-            case TYPE -> properties.setParticle((Particle) parsedValue);
-            case COUNT -> properties.setCount((int) parsedValue);
-            case OFFSET -> properties.setOffset((Vector) parsedValue);
-            case SPEED -> properties.setSpeed((double) parsedValue);
-            case COLOR -> properties.setColor((Color) parsedValue);
+            case TYPE -> properties.setParticle((Particle) value);
+            case COUNT -> properties.setCount((int) value);
+            case OFFSET -> properties.setOffset((Vector) value);
+            case SPEED -> properties.setSpeed((double) value);
+            case COLOR -> properties.setColor((Color) value);
             default -> throw new UnsupportedOperationException("This property is not supported by this particle effect.");
         }
     }

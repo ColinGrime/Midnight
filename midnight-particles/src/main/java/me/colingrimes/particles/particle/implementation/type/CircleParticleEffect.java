@@ -8,7 +8,6 @@ import me.colingrimes.particles.particle.implementation.BaseParticleEffect;
 import me.colingrimes.particles.particle.util.ParticleEffectType;
 import me.colingrimes.particles.particle.util.ParticleProperties;
 import me.colingrimes.particles.particle.util.ParticleProperty;
-import org.bukkit.Location;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
@@ -67,7 +66,7 @@ public class CircleParticleEffect extends BaseParticleEffect {
     public void spawnParticle() {
         double increment = 2 * Math.PI / points;
 
-        for (int i = 0; i < points; i++) {
+        for (int i=0; i<points; i++) {
             double angle = i * increment;
             double x = radius * Math.cos(angle);
             double z = radius * Math.sin(angle);
@@ -82,22 +81,16 @@ public class CircleParticleEffect extends BaseParticleEffect {
             Position finalPosition = position().add(rotatedPosition.getX(), rotatedPosition.getY(), rotatedPosition.getZ());
 
             // Spawn each particle.
-            Location location = finalPosition.toLocation();
-            spawnParticle(location);
+            spawnParticle(finalPosition.toLocation());
         }
     }
 
     @Override
-    public void updateProperty(@Nonnull ParticleProperty property, @Nonnull String value) {
-        Object parsedValue = property.parseValue(value);
-        if (parsedValue == null) {
-            return;
-        }
-
+    protected void updatePropertyValue(@Nonnull ParticleProperty property, @Nonnull Object value) {
         switch (property) {
-            case RADIUS -> radius = (double) parsedValue;
-            case POINTS -> points = (int) parsedValue;
-            default -> super.updateProperty(property, value);
+            case RADIUS -> radius = (double) value;
+            case POINTS -> points = (int) value;
+            default -> super.updatePropertyValue(property, value);
         }
     }
 
@@ -134,9 +127,7 @@ public class CircleParticleEffect extends BaseParticleEffect {
         Preconditions.checkArgument(map.containsKey("point"));
         Preconditions.checkArgument(map.containsKey("properties"));
         Preconditions.checkArgument(map.containsKey("radius"));
-        Preconditions.checkArgument(map.containsKey("point"));
-        Preconditions.checkArgument(map.get("point") instanceof Map);
-        Preconditions.checkArgument(map.get("properties") instanceof Map);
+        Preconditions.checkArgument(map.containsKey("points"));
 
         UUID uuid = UUID.fromString((String) map.get("uuid"));
         String name = (String) map.get("name");
