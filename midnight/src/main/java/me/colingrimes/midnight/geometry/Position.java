@@ -8,10 +8,7 @@ import org.bukkit.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Represents a 3D position in the form of x, y, and z coordinates.
@@ -101,39 +98,39 @@ public class Position implements Serializable {
     @Nonnull
     public Position rotate(@Nonnull Rotation rotation) {
         // Convert angles to radians.
-        double pitchRadians = Math.toRadians(rotation.getPitch());
         double yawRadians = Math.toRadians(rotation.getYaw());
+        double pitchRadians = Math.toRadians(rotation.getPitch());
         double rollRadians = Math.toRadians(rotation.getRoll());
 
-        // Calculate sin and cos values for each angle.
-        double sinPitch = Math.sin(pitchRadians);
-        double cosPitch = Math.cos(pitchRadians);
+        // Calculate sin and cos values for each angle
         double sinYaw = Math.sin(yawRadians);
         double cosYaw = Math.cos(yawRadians);
+        double sinPitch = Math.sin(pitchRadians);
+        double cosPitch = Math.cos(pitchRadians);
         double sinRoll = Math.sin(rollRadians);
         double cosRoll = Math.cos(rollRadians);
 
-        // Calculate the rotation matrices for pitch, yaw, and roll.
-        double[][] pitchMatrix = {
-                {1, 0, 0},
-                {0, cosPitch, -sinPitch},
-                {0, sinPitch, cosPitch}
+        // Calculate the rotation matrices for yaw, pitch, and roll.
+        double[][] yawMatrix = {
+                {cosYaw, 0, -sinYaw},
+                {0, 1, 0},
+                {sinYaw, 0, cosYaw}
         };
 
-        double[][] yawMatrix = {
-                {cosYaw, 0, sinYaw},
-                {0, 1, 0},
-                {-sinYaw, 0, cosYaw}
+        double[][] pitchMatrix = {
+                {1, 0, 0},
+                {0, cosPitch, sinPitch},
+                {0, -sinPitch, cosPitch}
         };
 
         double[][] rollMatrix = {
-                {cosRoll, -sinRoll, 0},
-                {sinRoll, cosRoll, 0},
+                {cosRoll, sinRoll, 0},
+                {-sinRoll, cosRoll, 0},
                 {0, 0, 1}
         };
 
         // Multiply pitch, yaw, and roll matrices to get the final rotation matrix.
-        double[][] combinedMatrix = multiplyMatrices(multiplyMatrices(pitchMatrix, yawMatrix), rollMatrix);
+        double[][] combinedMatrix = multiplyMatrices(multiplyMatrices(yawMatrix, pitchMatrix), rollMatrix);
 
         // Apply the rotation matrix to the input position vector.
         double newX = combinedMatrix[0][0] * x + combinedMatrix[0][1] * y + combinedMatrix[0][2] * z;
