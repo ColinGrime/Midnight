@@ -2,6 +2,7 @@ group 'me.colingrimes.midnight-particles'
 
 dependencies {
     compileOnly project(':midnight')
+    testImplementation project(':midnight')
 }
 
 jar {
