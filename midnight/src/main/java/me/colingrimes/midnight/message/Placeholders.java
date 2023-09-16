@@ -3,6 +3,7 @@ package me.colingrimes.midnight.message;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.colingrimes.midnight.message.implementation.ComponentMessage;
 import me.colingrimes.midnight.util.Common;
+import me.colingrimes.midnight.util.misc.Types;
 import me.colingrimes.midnight.util.text.Component;
 import me.colingrimes.midnight.util.text.Text;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -199,10 +200,8 @@ public class Placeholders {
 			return apply(content);
 		} else if (message.getContent() instanceof TextComponent component) {
 			return apply(component);
-		} else if (message.getContent() instanceof List && ((List<?>) message.getContent()).get(0) instanceof String) {
-			@SuppressWarnings("unchecked")
-			List<String> strList = (List<String>) message.getContent();
-			return apply(strList);
+		} else if (Types.asStringList(message.getContent()).isPresent()) {
+			return apply(Types.asStringList(message.getContent()).get());
 		} else {
 			throw new IllegalArgumentException("Invalid message content type: " + message.getContent().getClass().getName());
 		}

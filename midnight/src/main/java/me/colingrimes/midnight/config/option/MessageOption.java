@@ -2,6 +2,7 @@ package me.colingrimes.midnight.config.option;
 
 import me.colingrimes.midnight.config.adapter.ConfigurationAdapter;
 import me.colingrimes.midnight.message.Message;
+import me.colingrimes.midnight.util.misc.Types;
 import me.colingrimes.midnight.util.text.Text;
 import org.bukkit.command.CommandSender;
 
@@ -38,10 +39,8 @@ public class MessageOption<T> implements Option<T>, Message<List<String>> {
 		}
 
 		// Convert list of string messages.
-		if (value instanceof List<?> list) {
-			if (list.stream().allMatch(item -> item instanceof String)) {
-				messages = list.stream().map(String.class::cast).map(Text::color).collect(Collectors.toList());
-			}
+		if (Types.asStringList(value).isPresent()) {
+			messages = Types.asStringList(value).get().stream().map(Text::color).collect(Collectors.toList());
 		}
 	}
 

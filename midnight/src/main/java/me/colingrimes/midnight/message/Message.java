@@ -4,12 +4,12 @@ import me.colingrimes.midnight.command.handler.util.Sender;
 import me.colingrimes.midnight.message.implementation.ComponentMessage;
 import me.colingrimes.midnight.message.implementation.ListMessage;
 import me.colingrimes.midnight.message.implementation.TextMessage;
+import me.colingrimes.midnight.util.misc.Types;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 /**
  * A versatile and generic message interface that can be used in various contexts.
@@ -32,8 +32,8 @@ public interface Message<T> {
             return (Message<T>) new TextMessage((String) content);
         } else if (content instanceof TextComponent) {
             return (Message<T>) new ComponentMessage((TextComponent) content);
-        } else if (content instanceof List<?> contentList && contentList.get(0) instanceof String) {
-            return (Message<T>) new ListMessage((List<String>) content);
+        } else if (Types.asStringList(content).isPresent()) {
+            return (Message<T>) new ListMessage(Types.asStringList(content).get());
         } else {
             throw new IllegalArgumentException("Unsupported message content type: " + content.getClass().getName());
         }
@@ -53,15 +53,14 @@ public interface Message<T> {
      * @return the plain text representation of the message content
      */
     @Nonnull
-    @SuppressWarnings("unchecked")
     default String toText() {
         T content = getContent();
         if (content instanceof String) {
             return (String) content;
         } else if (content instanceof TextComponent) {
             return ((TextComponent) content).toPlainText();
-        }  else if (content instanceof List<?> && ((List<?>) content).get(0) instanceof String) {
-            return String.join("\n", (List<String>) content);
+        }  else if (Types.asStringList(content).isPresent()) {
+            return String.join("\n", Types.asStringList(content).get());
         } else {
             return "";
         }
