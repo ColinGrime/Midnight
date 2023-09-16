@@ -115,19 +115,11 @@ public class Placeholders {
 	 */
 	@Nonnull
 	public ComponentMessage apply(@Nullable String str) {
-		if (str == null) {
+		if (str != null) {
+			return apply(Component.of(str));
+		} else {
 			return new ComponentMessage();
 		}
-
-		// Apply the placeholders in the string.
-		TextComponent component = Component.of(str);
-		for (Map.Entry<String, Message<?>> replacement : placeholders.entrySet()) {
-			component = Component.replace(component, replacement.getKey(), replacement.getValue());
-		}
-
-		// Apply the PlaceholderAPI placeholders.
-		applyPlaceholderAPI(component);
-		return new ComponentMessage(component);
 	}
 
 	/**
@@ -138,15 +130,11 @@ public class Placeholders {
 	 */
 	@Nonnull
 	public ComponentMessage apply(@Nullable List<String> strList) {
-		if (strList == null) {
+		if (strList != null) {
+			return apply(Component.of(String.join("\n", strList)));
+		} else {
 			return new ComponentMessage();
 		}
-
-		ComponentMessage component = apply(strList.get(0));
-		for (int i=1; i<strList.size(); i++) {
-			component.getContent().addExtra(apply(strList.get(i)).getContent());
-		}
-		return component;
 	}
 
 	/**
@@ -161,31 +149,12 @@ public class Placeholders {
 			return new ComponentMessage();
 		}
 
-		// Apply the placeholders in the main component.
-		ComponentMessage message = apply(component.getText());
-		TextComponent mainComponent = message.getContent();
-		mainComponent.setClickEvent(component.getClickEvent());
-		mainComponent.setHoverEvent(component.getHoverEvent());
-
-		if (component.getExtra() == null) {
-			return message;
+		for (Map.Entry<String, Message<?>> replacement : placeholders.entrySet()) {
+			component = Component.replace(component, replacement.getKey(), replacement.getValue());
 		}
 
-		// Apply the placeholders in the extra components.
-		for (BaseComponent baseComponent : component.getExtra()) {
-			if (!(baseComponent instanceof TextComponent)) {
-				mainComponent.addExtra(baseComponent);
-				continue;
-			}
-
-			ComponentMessage extraMessage = apply(((TextComponent) baseComponent).getText());
-			TextComponent extraComponent = extraMessage.getContent();
-			extraComponent.setClickEvent(extraComponent.getClickEvent());
-			extraComponent.setHoverEvent(extraComponent.getHoverEvent());
-			mainComponent.addExtra(extraComponent);
-		}
-
-		return message;
+		applyPlaceholderAPI(component);
+		return new ComponentMessage(component);
 	}
 
 	/**
