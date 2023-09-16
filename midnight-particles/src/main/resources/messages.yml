@@ -1,5 +1,5 @@
 general:
-  particle-page-header: "&a&lParticle Effects &r&7(Page {page}/{totalPages})"
+  particle-page-header: "&a&lParticle Effects &r&7(Page {page}/{total})"
   particle-page-entry: "&7- &a{name} &7| &eType: &a{type} &7| &eLocation: &a{location}"
   particle-properties:
     - "&7&m-------------&r &e&lParticle &aProperties &7&m------------"

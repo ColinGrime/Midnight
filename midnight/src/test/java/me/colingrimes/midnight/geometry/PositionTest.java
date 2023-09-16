@@ -14,8 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 public class PositionTest {
 
-    @Mock World world;
-    @InjectMocks Position position = Position.of(world, 1, 1, 1);
+    private @Mock World world;
+    private @InjectMocks Position position = Position.of(world, 1, 1, 1);
 
     @Test
     public void testYawRotation() {

@@ -32,10 +32,7 @@ public class ParticleRotate implements Command<MidnightParticles> {
 			case "yaw" -> rotation = Rotation.of(value, rotation.getPitch(), rotation.getRoll());
 			case "pitch" -> rotation = Rotation.of(rotation.getYaw(), value, rotation.getRoll());
 			case "roll" -> rotation = Rotation.of(rotation.getYaw(), rotation.getPitch(), value);
-			default -> {
-				Messages.INVALID_ROTATION.send(sender);
-				return;
-			}
+			default -> Messages.INVALID_ROTATION.send(sender);
 		}
 
 		effect.get().setPoint(Point.of(effect.get().getPoint().getPosition(), rotation));

@@ -119,8 +119,8 @@ public interface OptionFactory<T> {
 	}
 
 	/**
-	 * Creates a {@link String> message.
-	 * }
+	 * Creates a {@link String} message.
+	 *
 	 * @param path the path to the message
 	 * @param def the default value
 	 * @return the message option
