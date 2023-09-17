@@ -73,18 +73,18 @@ public class ArmorEquipListeners implements Listener {
 
 		// Accounts for KEYPADDING armor (all).
 		if (event.getSpecificAction() == InventoryAction.HOTBAR_SWAP) {
-			Optional<ArmorType> armorType = ArmorType.fromItem(clicked);
-			if (armorType.isEmpty()) {
-				return;
-			}
-
 			cursor = player.getInventory().getItem(event.getHotbarButton());
 
-			if (cursor != null && clicked != null) {
+			// The "clicked" is the item in the slot you are swapping with.
+			// The "cursor" is the item in the hotbar slot.
+			boolean isClickedArmor = ArmorType.fromItem(clicked).isPresent();
+			boolean isCursorArmor = ArmorType.fromItem(cursor).isPresent();
+
+			if (isClickedArmor && isCursorArmor) {
 				Common.call(new ArmorEquipEvent(player, EquipAction.SWAP, cursor, clicked));
-			} else if (cursor != null) {
+			} else if (isCursorArmor) {
 				Common.call(new ArmorEquipEvent(player, EquipAction.EQUIP, cursor, null));
-			} else if (clicked != null) {
+			} else if (isClickedArmor) {
 				Common.call(new ArmorEquipEvent(player, EquipAction.UNEQUIP, null, clicked));
 			}
 		}

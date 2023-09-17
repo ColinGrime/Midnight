@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -98,5 +99,17 @@ public class ArmorEquipEvent extends Event implements Cancellable {
     @Nonnull
     public static HandlerList getHandlerList() {
         return handlers;
+    }
+
+    @Override
+    public boolean equals(@Nonnull Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ArmorEquipEvent that)) return false;
+        return isCancelled() == that.isCancelled() && Objects.equals(getPlayer(), that.getPlayer()) && getAction() == that.getAction() && Objects.equals(getNewArmor(), that.getNewArmor()) && Objects.equals(getOldArmor(), that.getOldArmor());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPlayer(), getAction(), getNewArmor(), getOldArmor(), isCancelled());
     }
 }

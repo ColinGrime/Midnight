@@ -19,7 +19,7 @@ public enum SimpleAction {
      */
     PLACE,
     /**
-     * Player drops an item from the cursor.
+     * Player drops an item from the cursor or from the clicked slot.
      * This includes dropping the entire stack or a single item.
      */
     DROP,

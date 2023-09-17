@@ -20,6 +20,11 @@ public enum ArmorType {
 		this.index = index;
 	}
 
+	/**
+	 * Gets the index of the armor type.
+	 *
+	 * @return the index of the armor type
+	 */
 	public int getIndex() {
 		return index;
 	}
