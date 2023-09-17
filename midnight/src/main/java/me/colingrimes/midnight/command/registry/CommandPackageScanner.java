@@ -41,7 +41,7 @@ public class CommandPackageScanner {
      */
     private void scan(@Nonnull String packagePath, @Nonnull String commandPath) {
         // Get all Command classes.
-        List<Class<?>> classes = Files.getClasses(plugin, packagePath, false);
+        List<Class<?>> classes = Files.getClasses(plugin.getClass().getClassLoader(), packagePath, false);
         classes = classes.stream().filter(Command.class::isAssignableFrom).toList();
 
         // Only 1 command class per package is allowed.
@@ -63,7 +63,7 @@ public class CommandPackageScanner {
         }
 
         // Recursively check the sub-packages for sub-commands.
-        for (String subPackage : Files.getPackageNames(plugin, packagePath)) {
+        for (String subPackage : Files.getPackageNames(plugin.getClass().getClassLoader(), packagePath)) {
             scan(packagePath + "." + subPackage, newCommandPath);
 
             // Register the aliases of the command.
