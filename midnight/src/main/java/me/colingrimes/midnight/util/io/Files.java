@@ -1,7 +1,5 @@
 package me.colingrimes.midnight.util.io;
 
-import me.colingrimes.midnight.Midnight;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
@@ -19,29 +17,31 @@ public final class Files {
 	/**
 	 * Gets all classes in the given package, recursively.
 	 *
+	 * @param classLoader the class loader that is getting the classes
 	 * @param packageName the package name
 	 * @return the list of classes
 	 */
 	@Nonnull
-	public static List<Class<?>> getClasses(@Nonnull Midnight plugin, @Nonnull String packageName) {
-		return getClasses(plugin, packageName, true);
+	public static List<Class<?>> getClasses(@Nonnull ClassLoader classLoader, @Nonnull String packageName) {
+		return getClasses(classLoader, packageName, true);
 	}
 
 	/**
 	 * Gets all classes in the given package.
 	 *
+	 * @param classLoader the class loader that is getting the classes
 	 * @param packageName the package name
 	 * @param recursive   whether to recursively search sub-packages
 	 * @return the list of classes
 	 */
 	@Nonnull
-	public static List<Class<?>> getClasses(@Nonnull Midnight plugin, @Nonnull String packageName, boolean recursive) {
+	public static List<Class<?>> getClasses(@Nonnull ClassLoader classLoader, @Nonnull String packageName, boolean recursive) {
 		List<Class<?>> classes = new ArrayList<>();
 		String path = packageName.replace('.', '/');
 		int maxDepth = recursive ? Integer.MAX_VALUE : 1;
 
 		try {
-			URI uri = getUri(plugin.getClass().getClassLoader(), path);
+			URI uri = getUri(classLoader, path);
 			if (uri == null) {
 				return classes;
 			}
@@ -49,14 +49,14 @@ public final class Files {
 			// If the URI is not a JAR, walk the directory.
 			if (!uri.getScheme().equals("jar")) {
 				Path packagePath = Paths.get(uri);
-				walkFileTree(packagePath, Set.of(FileVisitOption.FOLLOW_LINKS), maxDepth, new CustomFileVisitor(plugin, packageName, packagePath, classes));
+				walkFileTree(packagePath, Set.of(FileVisitOption.FOLLOW_LINKS), maxDepth, new CustomFileVisitor(classLoader, packageName, packagePath, classes));
 				return classes;
 			}
 
 			// If the URI is a JAR, walk the JAR.
 			try (FileSystem fileSystem = FileSystems.newFileSystem(uri, new HashMap<>())) {
 				Path packagePath = fileSystem.getPath(path);
-				walkFileTree(packagePath, Set.of(FileVisitOption.FOLLOW_LINKS), maxDepth, new CustomFileVisitor(plugin, packageName, packagePath, classes));
+				walkFileTree(packagePath, Set.of(FileVisitOption.FOLLOW_LINKS), maxDepth, new CustomFileVisitor(classLoader, packageName, packagePath, classes));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -68,17 +68,17 @@ public final class Files {
 	/**
 	 * Gets all package names in the given package, one level deep.
 	 *
-	 * @param plugin      the plugin
+	 * @param classLoader the class loader that is getting the package names
 	 * @param packageName the package name
 	 * @return the list of package names
 	 */
 	@Nonnull
-	public static List<String> getPackageNames(@Nonnull Midnight plugin, @Nonnull String packageName) {
+	public static List<String> getPackageNames(@Nonnull ClassLoader classLoader, @Nonnull String packageName) {
 		List<String> subPackages = new ArrayList<>();
 		String path = packageName.replace('.', '/');
 
 		try {
-			URI uri = getUri(plugin.getClass().getClassLoader(), path);
+			URI uri = getUri(classLoader, path);
 			if (uri == null) {
 				return subPackages;
 			}
@@ -128,15 +128,18 @@ public final class Files {
 		}
 	}
 
-	private static class CustomFileVisitor extends SimpleFileVisitor<Path> {
+	/**
+	 * A custom file visitor that adds each valid class to the given list.
+	 */
+	public static class CustomFileVisitor extends SimpleFileVisitor<Path> {
 
-		private final Midnight plugin;
+		private final ClassLoader classLoader;
 		private final String packageName;
 		private final Path packagePath;
 		private final List<Class<?>> classes;
 
-		public CustomFileVisitor(@Nonnull Midnight plugin, @Nonnull String packageName, @Nonnull Path packagePath, @Nonnull List<Class<?>> classes) {
-			this.plugin = plugin;
+		public CustomFileVisitor(@Nonnull ClassLoader classLoader, @Nonnull String packageName, @Nonnull Path packagePath, @Nonnull List<Class<?>> classes) {
+			this.classLoader = classLoader;
 			this.packageName = packageName;
 			this.packagePath = packagePath;
 			this.classes = classes;
@@ -156,7 +159,7 @@ public final class Files {
 
 			try {
 				// Must use the ClassLoader of the plugin to load the class to avoid incorrect dependency warnings.
-				classes.add(Class.forName(packageName + className, true, plugin.getClass().getClassLoader()));
+				classes.add(Class.forName(packageName + className, true, classLoader));
 			} catch (ClassNotFoundException e) {
 				throw new RuntimeException(e);
 			}
