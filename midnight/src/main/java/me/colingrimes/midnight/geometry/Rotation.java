@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.geometry;
 
-import com.google.common.base.Preconditions;
 import me.colingrimes.midnight.serialize.Serializable;
+import me.colingrimes.midnight.util.misc.Validate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -83,18 +83,9 @@ public class Rotation extends Direction implements Serializable {
         return map;
     }
 
-    /**
-     * Deserializes a rotation from a map.
-     *
-     * @param map the map to deserialize from
-     * @return the deserialized rotation
-     */
     @Nonnull
     public static Rotation deserialize(@Nonnull Map<String, Object> map) {
-        Preconditions.checkArgument(map.containsKey("yaw"));
-        Preconditions.checkArgument(map.containsKey("pitch"));
-        Preconditions.checkArgument(map.containsKey("roll"));
-
+        Validate.checkMap(map, "yaw", "pitch", "roll");
         return of(
                 (double) map.get("yaw"),
                 (double) map.get("pitch"),

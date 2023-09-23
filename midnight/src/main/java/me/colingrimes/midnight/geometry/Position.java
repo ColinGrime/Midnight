@@ -3,6 +3,7 @@ package me.colingrimes.midnight.geometry;
 import com.google.common.base.Preconditions;
 import me.colingrimes.midnight.serialize.Serializable;
 import me.colingrimes.midnight.util.Common;
+import me.colingrimes.midnight.util.misc.Validate;
 import org.bukkit.Location;
 import org.bukkit.World;
 
@@ -231,18 +232,9 @@ public class Position implements Serializable {
         return map;
     }
 
-    /**
-     * Deserializes a position from a map.
-     *
-     * @param map the map to deserialize from
-     * @return the deserialized position
-     */
     @Nonnull
     public static Position deserialize(@Nonnull Map<String, Object> map) {
-        Preconditions.checkArgument(map.containsKey("world"));
-        Preconditions.checkArgument(map.containsKey("x"));
-        Preconditions.checkArgument(map.containsKey("y"));
-        Preconditions.checkArgument(map.containsKey("z"));
+        Validate.checkMap(map, "world", "x", "y", "z");
 
         Optional<World> world = Common.world((String) map.get("world"));
         Preconditions.checkArgument(world.isPresent());

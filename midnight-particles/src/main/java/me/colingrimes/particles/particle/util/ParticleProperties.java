@@ -1,7 +1,7 @@
 package me.colingrimes.particles.particle.util;
 
-import com.google.common.base.Preconditions;
 import me.colingrimes.midnight.serialize.Serializable;
+import me.colingrimes.midnight.util.misc.Validate;
 import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.util.Vector;
@@ -194,20 +194,10 @@ public class ParticleProperties implements Serializable {
         return map;
     }
 
-    /**
-     * Deserializes a map into a ParticleProperties object.
-     *
-     * @param map the serialized map
-     * @return the particle properties
-     */
     @SuppressWarnings("unchecked")
     @Nonnull
     public static ParticleProperties deserialize(@Nonnull Map<String, Object> map) {
-        Preconditions.checkArgument(map.containsKey("particle"));
-        Preconditions.checkArgument(map.containsKey("count"));
-        Preconditions.checkArgument(map.containsKey("offset"));
-        Preconditions.checkArgument(map.containsKey("speed"));
-        Preconditions.checkArgument(map.get("offset") instanceof Map);
+        Validate.checkMap(map, "particle", "count", "offset", "speed");
 
         ParticleProperties properties = ParticleProperties.of(
                 Particle.valueOf((String) map.get("particle")),

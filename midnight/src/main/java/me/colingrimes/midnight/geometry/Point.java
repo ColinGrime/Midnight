@@ -2,6 +2,7 @@ package me.colingrimes.midnight.geometry;
 
 import com.google.common.base.Preconditions;
 import me.colingrimes.midnight.serialize.Serializable;
+import me.colingrimes.midnight.util.misc.Validate;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -186,19 +187,10 @@ public class Point<T extends Direction> implements Serializable {
 		return map;
 	}
 
-	/**
-	 * Deserializes a point from a map.
-	 *
-	 * @param map the map to deserialize from
-	 * @return the deserialized point
-	 */
 	@SuppressWarnings("unchecked")
 	@Nonnull
 	public static <T extends Direction> Point<T> deserialize(@Nonnull Map<String, Object> map) {
-		Preconditions.checkArgument(map.containsKey("position"));
-		Preconditions.checkArgument(map.containsKey("direction"));
-		Preconditions.checkArgument(map.get("position") instanceof Map);
-		Preconditions.checkArgument(map.get("direction") instanceof Map);
+		Validate.checkMap(map, "position", "direction");
 
 		Position position = Position.deserialize((Map<String, Object>) map.get("position"));
 		Map<String, Object> direction = (Map<String, Object>) map.get("direction");

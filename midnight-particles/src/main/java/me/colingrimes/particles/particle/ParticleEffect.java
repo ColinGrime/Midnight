@@ -3,6 +3,7 @@ package me.colingrimes.particles.particle;
 import com.google.common.base.Preconditions;
 import me.colingrimes.midnight.geometry.Point;
 import me.colingrimes.midnight.geometry.Rotation;
+import me.colingrimes.midnight.util.misc.Validate;
 import me.colingrimes.particles.particle.implementation.type.CircleParticleEffect;
 import me.colingrimes.particles.particle.implementation.type.SquareParticleEffect;
 import me.colingrimes.particles.particle.util.ParticleEffectType;
@@ -137,19 +138,12 @@ public interface ParticleEffect extends Serializable {
         return map;
     }
 
-    /**
-     * Deserializes a particle effect from the specified map.
-     *
-     * @param map the map to deserialize from
-     * @return the deserialized particle effect
-     */
     @Nonnull
     static ParticleEffect deserialize(@Nonnull Map<String, Object> map) {
-        Preconditions.checkArgument(map.containsKey("type"));
+        Validate.checkMap(map, "type");
         Preconditions.checkArgument(ParticleEffectType.fromString((String) map.get("type")).isPresent());
-        ParticleEffectType type = ParticleEffectType.fromString((String) map.get("type")).get();
 
-        return switch (type) {
+        return switch (ParticleEffectType.fromString((String) map.get("type")).get()) {
             case CIRCLE -> CircleParticleEffect.deserialize(map);
             case SQUARE -> SquareParticleEffect.deserialize(map);
         };

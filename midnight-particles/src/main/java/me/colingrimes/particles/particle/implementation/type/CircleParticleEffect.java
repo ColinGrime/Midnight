@@ -1,9 +1,9 @@
 package me.colingrimes.particles.particle.implementation.type;
 
-import com.google.common.base.Preconditions;
 import me.colingrimes.midnight.geometry.Point;
 import me.colingrimes.midnight.geometry.Position;
 import me.colingrimes.midnight.geometry.Rotation;
+import me.colingrimes.midnight.util.misc.Validate;
 import me.colingrimes.particles.particle.implementation.BaseParticleEffect;
 import me.colingrimes.particles.particle.util.ParticleEffectType;
 import me.colingrimes.particles.particle.util.ParticleProperties;
@@ -113,21 +113,10 @@ public class CircleParticleEffect extends BaseParticleEffect {
         return map;
     }
 
-    /**
-     * Deserialize a CircleParticleEffect from a map.
-     *
-     * @param map the serialized map
-     * @return the CircleParticleEffect
-     */
     @SuppressWarnings("unchecked")
     @Nonnull
     public static CircleParticleEffect deserialize(@Nonnull Map<String, Object> map) {
-        Preconditions.checkArgument(map.containsKey("uuid"));
-        Preconditions.checkArgument(map.containsKey("name"));
-        Preconditions.checkArgument(map.containsKey("point"));
-        Preconditions.checkArgument(map.containsKey("properties"));
-        Preconditions.checkArgument(map.containsKey("radius"));
-        Preconditions.checkArgument(map.containsKey("points"));
+        Validate.checkMap(map, "uuid", "name", "point", "properties", "radius", "points");
 
         UUID uuid = UUID.fromString((String) map.get("uuid"));
         String name = (String) map.get("name");

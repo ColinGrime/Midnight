@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.geometry;
 
-import com.google.common.base.Preconditions;
 import me.colingrimes.midnight.serialize.Serializable;
+import me.colingrimes.midnight.util.misc.Validate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -92,23 +92,12 @@ public class Direction implements Serializable {
         return map;
     }
 
-    /**
-     * Deserializes a direction from a map.
-     *
-     * @param map the map to deserialize from
-     * @return the deserialized direction
-     */
     @Nonnull
     public static Direction deserialize(@Nonnull Map<String, Object> map) {
-        Preconditions.checkArgument(map.containsKey("yaw"));
-        Preconditions.checkArgument(map.containsKey("pitch"));
-
+        Validate.checkMap(map, "yaw", "pitch");
         return of(
                 (double) map.get("yaw"),
                 (double) map.get("pitch")
         );
     }
 }
-
-
-
