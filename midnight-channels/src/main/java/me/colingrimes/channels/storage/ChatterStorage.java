@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -108,12 +108,12 @@ public class ChatterStorage extends SqlStorage<Chatter> {
             try (ResultSet resultSet = ps.executeQuery()) {
                 if (resultSet.next()) {
                     UUID id = DatabaseUtils.getUUID(resultSet, "id", database);
-                    ZonedDateTime muteEndTime = DatabaseUtils.getTimestamp(resultSet, "mute_end_time", database);
+                    Instant muteEndTime = DatabaseUtils.getTimestamp(resultSet, "mute_end_time", database);
                     boolean isMuted = resultSet.getBoolean("is_muted");
                     String nickname = resultSet.getString("nickname");
                     UUID lastMessagedBy = DatabaseUtils.getUUID(resultSet, "last_messaged_by", database);
-                    ZonedDateTime lastSeen = Objects.requireNonNull(DatabaseUtils.getTimestamp(resultSet, "last_seen", database));
-                    ZonedDateTime joinDate = Objects.requireNonNull(DatabaseUtils.getTimestamp(resultSet, "join_date", database));
+                    Instant lastSeen = Objects.requireNonNull(DatabaseUtils.getTimestamp(resultSet, "last_seen", database));
+                    Instant joinDate = Objects.requireNonNull(DatabaseUtils.getTimestamp(resultSet, "join_date", database));
                     return new StandardChatter(Objects.requireNonNull(id), muteEndTime, isMuted, nickname, lastMessagedBy, lastSeen, joinDate);
                 } else {
                     throw new ChatterNotFoundException("Chatter not found for UUID: " + uuid);

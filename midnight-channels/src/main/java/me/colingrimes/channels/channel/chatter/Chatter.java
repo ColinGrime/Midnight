@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -101,7 +101,7 @@ public interface Chatter {
      * @return the time the chatter is muted until
      */
     @Nullable
-    ZonedDateTime getMuteEndTime();
+    Instant getMuteEndTime();
 
     /**
      * Checks if the chatter is muted in the chat.
@@ -190,7 +190,7 @@ public interface Chatter {
      * @return the timestamp when the chatter was last seen online
      */
     @Nonnull
-    ZonedDateTime getLastSeen();
+    Instant getLastSeen();
 
     /**
      * Gets the timestamp when the chatter first joined the server.
@@ -198,5 +198,5 @@ public interface Chatter {
      * @return the timestamp when the chatter first joined the server
      */
     @Nonnull
-    ZonedDateTime getJoinDate();
+    Instant getJoinDate();
 }

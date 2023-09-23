@@ -8,19 +8,19 @@ import org.bukkit.entity.Player;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.*;
 
 public class StandardChatter implements Chatter {
 
     private final UUID id;
     private final Set<UUID> ignored;
-    private final ZonedDateTime joinDate;
+    private final Instant joinDate;
     private boolean isMuted;
-    private ZonedDateTime muteEndTime;
+    private Instant muteEndTime;
     private String nickname;
     private UUID lastMessagedBy;
-    private ZonedDateTime lastSeen;
+    private Instant lastSeen;
 
     /**
      * Creates a new chatter from the uuid.
@@ -31,8 +31,8 @@ public class StandardChatter implements Chatter {
         this.id = uuid;
         this.isMuted = false;
         this.ignored = new HashSet<>();
-        this.lastSeen = ZonedDateTime.now();
-        this.joinDate = ZonedDateTime.now();
+        this.lastSeen = Instant.now();
+        this.joinDate = Instant.now();
     }
 
     /**
@@ -45,8 +45,8 @@ public class StandardChatter implements Chatter {
         this.isMuted = false;
         this.ignored = new HashSet<>();
         this.nickname = player.getName();
-        this.lastSeen = ZonedDateTime.now();
-        this.joinDate = ZonedDateTime.now();
+        this.lastSeen = Instant.now();
+        this.joinDate = Instant.now();
     }
 
     /**
@@ -61,12 +61,12 @@ public class StandardChatter implements Chatter {
      * @param joinDate the date the chatter joined
      */
     public StandardChatter(@Nonnull UUID id,
-                           @Nullable ZonedDateTime muteEndTime,
+                           @Nullable Instant muteEndTime,
                            boolean isMuted,
                            @Nonnull String nickname,
                            @Nullable UUID lastMessagedBy,
-                           @Nonnull ZonedDateTime lastSeen,
-                           @Nonnull ZonedDateTime joinDate) {
+                           @Nonnull Instant lastSeen,
+                           @Nonnull Instant joinDate) {
         this.id = id;
         this.ignored = new HashSet<>();
         this.muteEndTime = muteEndTime;
@@ -125,13 +125,13 @@ public class StandardChatter implements Chatter {
 
     @Nullable
     @Override
-    public ZonedDateTime getMuteEndTime() {
+    public Instant getMuteEndTime() {
         return muteEndTime;
     }
 
     @Override
     public boolean isMuted() {
-        if (isMuted && muteEndTime.isBefore(ZonedDateTime.now())) {
+        if (isMuted && muteEndTime.isBefore(Instant.now())) {
             isMuted = false;
         }
         return isMuted;
@@ -140,7 +140,7 @@ public class StandardChatter implements Chatter {
     @Override
     public void mute(@Nonnull Duration duration) {
         isMuted = true;
-        muteEndTime = ZonedDateTime.now().plus(duration);
+        muteEndTime = Instant.now().plus(duration);
     }
 
     @Override
@@ -193,16 +193,16 @@ public class StandardChatter implements Chatter {
 
     @Nonnull
     @Override
-    public ZonedDateTime getLastSeen() {
+    public Instant getLastSeen() {
         if (online()) {
-            lastSeen = ZonedDateTime.now();
+            lastSeen = Instant.now();
         }
         return lastSeen;
     }
 
     @Nonnull
     @Override
-    public ZonedDateTime getJoinDate() {
+    public Instant getJoinDate() {
         return joinDate;
     }
 }

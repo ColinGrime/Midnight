@@ -8,7 +8,8 @@ import me.colingrimes.channels.message.ChannelLog;
 import me.colingrimes.midnight.scheduler.Scheduler;
 
 import javax.annotation.Nonnull;
-import java.time.ZonedDateTime;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -72,7 +73,7 @@ public class ChannelAPI {
 	 */
 	@Nonnull
 	public static CompletableFuture<List<ChannelLog<?>>> getLogsByChannel(@Nonnull Channel channel) {
-		return getLogsByChannel(channel, ZonedDateTime.now().minusDays(1));
+		return getLogsByChannel(channel, Instant.now().minus(Duration.ofDays(1)));
 	}
 
 	/**
@@ -86,8 +87,8 @@ public class ChannelAPI {
 	 * @return a {@link CompletableFuture} that, when completed, contains the requested logs
 	 */
 	@Nonnull
-	public static CompletableFuture<List<ChannelLog<?>>> getLogsByChannel(@Nonnull Channel channel, @Nonnull ZonedDateTime from) {
-		return getLogsByChannel(channel, from, ZonedDateTime.now());
+	public static CompletableFuture<List<ChannelLog<?>>> getLogsByChannel(@Nonnull Channel channel, @Nonnull Instant from) {
+		return getLogsByChannel(channel, from, Instant.now());
 	}
 
 	/**
@@ -102,7 +103,7 @@ public class ChannelAPI {
 	 * @return a {@link CompletableFuture} that, when completed, contains the requested logs
 	 */
 	@Nonnull
-	public static CompletableFuture<List<ChannelLog<?>>> getLogsByChannel(@Nonnull Channel channel, @Nonnull ZonedDateTime from, @Nonnull ZonedDateTime to) {
+	public static CompletableFuture<List<ChannelLog<?>>> getLogsByChannel(@Nonnull Channel channel, @Nonnull Instant from, @Nonnull Instant to) {
 		return Scheduler.ASYNC.call(() -> MidnightChannels.getInstance().getChatLogStorage().getLogsByChannel(channel, from, to));
 	}
 
@@ -117,7 +118,7 @@ public class ChannelAPI {
 	 */
 	@Nonnull
 	public static CompletableFuture<List<ChannelLog<?>>> getLogsByChatter(@Nonnull Chatter chatter) {
-		return getLogsByChatter(chatter, ZonedDateTime.now().minusDays(1));
+		return getLogsByChatter(chatter, Instant.now().minus(Duration.ofDays(1)));
 	}
 
 	/**
@@ -131,8 +132,8 @@ public class ChannelAPI {
 	 * @return a {@link CompletableFuture} that, when completed, contains the requested logs
 	 */
 	@Nonnull
-	public static CompletableFuture<List<ChannelLog<?>>> getLogsByChatter(@Nonnull Chatter chatter, @Nonnull ZonedDateTime from) {
-		return getLogsByChatter(chatter, from, ZonedDateTime.now());
+	public static CompletableFuture<List<ChannelLog<?>>> getLogsByChatter(@Nonnull Chatter chatter, @Nonnull Instant from) {
+		return getLogsByChatter(chatter, from, Instant.now());
 	}
 
 	/**
@@ -147,7 +148,7 @@ public class ChannelAPI {
 	 * @return a {@link CompletableFuture} that, when completed, contains the requested logs
 	 */
 	@Nonnull
-	public static CompletableFuture<List<ChannelLog<?>>> getLogsByChatter(@Nonnull Chatter chatter, @Nonnull ZonedDateTime from, @Nonnull ZonedDateTime to) {
+	public static CompletableFuture<List<ChannelLog<?>>> getLogsByChatter(@Nonnull Chatter chatter, @Nonnull Instant from, @Nonnull Instant to) {
 		return Scheduler.ASYNC.call(() -> MidnightChannels.getInstance().getChatLogStorage().getLogsByChatter(chatter, from, to));
 	}
 }

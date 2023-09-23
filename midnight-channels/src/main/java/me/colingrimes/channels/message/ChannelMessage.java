@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -22,7 +22,7 @@ public class ChannelMessage<T> implements Message<T> {
     private final Channel channel;
     private final Chatter chatter;
     private final Message<T> message;
-    private final ZonedDateTime timestamp;
+    private final Instant timestamp;
 
     /**
      * Creates a new channel message.
@@ -35,7 +35,7 @@ public class ChannelMessage<T> implements Message<T> {
         this.channel = channel;
         this.chatter = chatter;
         this.message = message;
-        this.timestamp = ZonedDateTime.now();
+        this.timestamp = Instant.now();
     }
 
     /**
@@ -46,7 +46,7 @@ public class ChannelMessage<T> implements Message<T> {
      * @param message   the message
      * @param timestamp the timestamp of the message
      */
-    public ChannelMessage(@Nonnull Channel channel, @Nullable Chatter chatter, @Nonnull Message<T> message, @Nonnull ZonedDateTime timestamp) {
+    public ChannelMessage(@Nonnull Channel channel, @Nullable Chatter chatter, @Nonnull Message<T> message, @Nonnull Instant timestamp) {
         this.channel = channel;
         this.chatter = chatter;
         this.message = message;
@@ -70,7 +70,7 @@ public class ChannelMessage<T> implements Message<T> {
     }
 
     @Nonnull
-    public ZonedDateTime getTimestamp() {
+    public Instant getTimestamp() {
         return timestamp;
     }
 

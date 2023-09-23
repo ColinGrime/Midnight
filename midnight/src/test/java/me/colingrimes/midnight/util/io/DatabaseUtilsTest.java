@@ -1,22 +1,21 @@
 package me.colingrimes.midnight.util.io;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.*;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.UUID;
-
 import me.colingrimes.midnight.storage.sql.DatabaseType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class DatabaseUtilsTest {
@@ -33,17 +32,17 @@ public class DatabaseUtilsTest {
 		when(resultSet.getTimestamp("timestamp")).thenReturn(timestamp);
 
 		// SQLite Test
-		ZonedDateTime result1 = DatabaseUtils.getTimestamp(resultSet, "timestamp", DatabaseType.SQLITE);
-		assertEquals(ZonedDateTime.parse(stringTime).withZoneSameInstant(ZoneId.systemDefault()), result1);
+		Instant result1 = DatabaseUtils.getTimestamp(resultSet, "timestamp", DatabaseType.SQLITE);
+		assertEquals(Instant.parse(stringTime), result1);
 
 		// PostgreSQL Test
-		ZonedDateTime result2 = DatabaseUtils.getTimestamp(resultSet, "timestamp", DatabaseType.POSTGRESQL);
-		assertEquals(ZonedDateTime.ofInstant(timestamp.toInstant(), ZoneId.systemDefault()), result2);
+		Instant result2 = DatabaseUtils.getTimestamp(resultSet, "timestamp", DatabaseType.POSTGRESQL);
+		assertEquals(timestamp.toInstant(), result2);
 	}
 
 	@Test
 	public void testSetTimestamp() throws SQLException {
-		ZonedDateTime dateTime = ZonedDateTime.now();
+		Instant dateTime = Instant.now();
 
 		// SQLite Test
 		DatabaseUtils.setTimestamp(preparedStatement, 1, dateTime, DatabaseType.SQLITE);

@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -69,7 +69,7 @@ public class ChatLogStorage extends SqlStorage<ChannelMessage<?>> {
      * @throws Exception if there is an issue retrieving the logs
      */
     @Nonnull
-    public List<ChannelLog<?>> getLogsByChannel(@Nonnull Channel channel, @Nonnull ZonedDateTime from, @Nonnull ZonedDateTime to) throws Exception {
+    public List<ChannelLog<?>> getLogsByChannel(@Nonnull Channel channel, @Nonnull Instant from, @Nonnull Instant to) throws Exception {
         List<ChannelLog<?>> logs = new ArrayList<>();
         try (Connection c = provider.getConnection()) {
             try (PreparedStatement ps = c.prepareStatement(processor.apply(LOGS_GET_BY_CHANNEL))) {
@@ -96,7 +96,7 @@ public class ChatLogStorage extends SqlStorage<ChannelMessage<?>> {
      * @throws Exception if there is an issue retrieving the logs
      */
     @Nonnull
-    public List<ChannelLog<?>> getLogsByChatter(@Nonnull Chatter chatter, @Nonnull ZonedDateTime from, @Nonnull ZonedDateTime to) throws Exception {
+    public List<ChannelLog<?>> getLogsByChatter(@Nonnull Chatter chatter, @Nonnull Instant from, @Nonnull Instant to) throws Exception {
         List<ChannelLog<?>> logs = new ArrayList<>();
         try (Connection c = provider.getConnection()) {
             try (PreparedStatement ps = c.prepareStatement(processor.apply(LOGS_GET_BY_CHATTER))) {
@@ -125,7 +125,7 @@ public class ChatLogStorage extends SqlStorage<ChannelMessage<?>> {
         String channelName = rs.getString("channel_name");
         UUID chatterID = DatabaseUtils.getUUID(rs, "chatter_id", database);
         String content = rs.getString("content");
-        ZonedDateTime timestamp = Objects.requireNonNull(DatabaseUtils.getTimestamp(rs, "timestamp", database));
+        Instant timestamp = Objects.requireNonNull(DatabaseUtils.getTimestamp(rs, "timestamp", database));
 
         Chatter chatter = chatterID == null ? null : plugin.getChatterStorage().load(chatterID);
         return new ChannelLog<>(channelName, chatter, new TextMessage(content), timestamp);

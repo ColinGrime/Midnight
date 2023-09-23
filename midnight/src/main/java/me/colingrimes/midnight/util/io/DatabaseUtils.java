@@ -3,7 +3,7 @@ package me.colingrimes.midnight.util.io;
 import me.colingrimes.midnight.storage.sql.DatabaseType;
 
 import java.sql.*;
-import java.time.*;
+import java.time.Instant;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -20,17 +20,17 @@ public final class DatabaseUtils {
 	 * @param resultSet  the ResultSet from which to get the timestamp
 	 * @param columnName the name of the column from which to get the timestamp
 	 * @param type       the type of the database
-	 * @return the ZonedDateTime represented by the timestamp, may be null
+	 * @return the Instant represented by the timestamp, may be null
 	 * @throws SQLException if a database access error occurs.
 	 */
 	@Nullable
-	public static ZonedDateTime getTimestamp(@Nonnull ResultSet resultSet, @Nonnull String columnName, @Nonnull DatabaseType type) throws SQLException {
+	public static Instant getTimestamp(@Nonnull ResultSet resultSet, @Nonnull String columnName, @Nonnull DatabaseType type) throws SQLException {
 		if (type == DatabaseType.SQLITE) {
 			String dateTimeStr = resultSet.getString(columnName);
-			return dateTimeStr != null ? ZonedDateTime.parse(dateTimeStr).withZoneSameInstant(ZoneId.systemDefault()) : null;
+			return dateTimeStr != null ? Instant.parse(dateTimeStr) : null;
 		} else {
 			Timestamp timestamp = resultSet.getTimestamp(columnName);
-			return timestamp != null ? ZonedDateTime.ofInstant(timestamp.toInstant(), ZoneId.systemDefault()) : null;
+			return timestamp != null ? timestamp.toInstant() : null;
 		}
 	}
 
@@ -39,11 +39,11 @@ public final class DatabaseUtils {
 	 *
 	 * @param ps             the preparedStatement in which to set the timestamp
 	 * @param parameterIndex the index in the PreparedStatement at which to set the timestamp
-	 * @param dateTime       the ZonedDateTime to set, may be null
+	 * @param dateTime       the Instant to set, may be null
 	 * @param type           the type of the database
 	 * @throws SQLException if a database access error occurs.
 	 */
-	public static void setTimestamp(@Nonnull PreparedStatement ps, int parameterIndex, @Nullable ZonedDateTime dateTime, @Nonnull DatabaseType type) throws SQLException {
+	public static void setTimestamp(@Nonnull PreparedStatement ps, int parameterIndex, @Nullable Instant dateTime, @Nonnull DatabaseType type) throws SQLException {
 		if (dateTime == null) {
 			if (type == DatabaseType.SQLITE) {
 				ps.setString(parameterIndex, null);
@@ -51,9 +51,9 @@ public final class DatabaseUtils {
 				ps.setNull(parameterIndex, java.sql.Types.TIMESTAMP);
 			}
 		} else if (type == DatabaseType.SQLITE) {
-			ps.setString(parameterIndex, dateTime.withZoneSameInstant(ZoneId.of("UTC")).toInstant().toString());
+			ps.setString(parameterIndex, dateTime.toString());
 		} else {
-			ps.setTimestamp(parameterIndex, Timestamp.from(dateTime.withZoneSameInstant(ZoneId.of("UTC")).toInstant()));
+			ps.setTimestamp(parameterIndex, Timestamp.from(dateTime));
 		}
 	}
 
