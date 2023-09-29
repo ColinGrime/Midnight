@@ -116,7 +116,10 @@ public class MultiPattern {
                 if (c != '0') {
                     Slot slot = gui.getSlot(i * 9 + j);
                     slot.setItem(items.computeIfAbsent(c, __ -> Items.of(Material.STONE).name("&cNo item mapped.").build()));
-                    handlers.get(c).forEach((type, handlers) -> handlers.forEach(h -> slot.bind(type, h)));
+
+                    if (handlers.get(c) != null) {
+                        handlers.get(c).forEach((type, handlers) -> handlers.forEach(h -> slot.bind(type, h)));
+                    }
                 }
             }
         }

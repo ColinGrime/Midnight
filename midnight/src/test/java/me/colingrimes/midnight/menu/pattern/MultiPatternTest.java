@@ -27,16 +27,17 @@ public class MultiPatternTest {
 		MultiPattern.create()
 				.mask("AAAABAAAA")
 				.mask("A000B000A")
-				.mask("A000B000A")
+				.mask("A000BC00A")
 				.item('A', mockItem1)
 				.item('B', mockItem2)
+				.item('C', mockItem2)
 				.bind('A', ClickType.LEFT, event -> {})
 				.bind('B', ClickType.RIGHT, event -> {})
 				.fill(mockGui);
 
-		verify(mockGui, times(15)).getSlot(anyInt());
+		verify(mockGui, times(16)).getSlot(anyInt());
 		verify(mockSlot, times(12)).setItem(mockItem1);
-		verify(mockSlot, times(3)).setItem(mockItem2);
+		verify(mockSlot, times(4)).setItem(mockItem2);
 		verify(mockSlot, times(12)).bind(eq(ClickType.LEFT), any());
 		verify(mockSlot, times(3)).bind(eq(ClickType.RIGHT), any());
 	}
