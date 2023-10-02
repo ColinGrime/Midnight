@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.util.bukkit;
+package me.colingrimes.midnight.util.text;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Represents a set of custom chat colors with RGB values.
+ * Represents a set of custom colors with RGB values.
  */
-public enum ChatColor {
+public enum Color {
     BLACK        ('0', "000000"),
     DARK_BLUE    ('1', "000080"),
     GREEN        ('2', "008000"),
@@ -26,10 +26,10 @@ public enum ChatColor {
     YELLOW       ('e', "FFFF40"),
     WHITE        ('f', "FFFFFF");
 
-    private static final Map<Character, ChatColor> CODE_MAP = new HashMap<>();
+    private static final Map<Character, Color> CODE_MAP = new HashMap<>();
 
     static {
-        for (ChatColor chatColor : values()) {
+        for (Color chatColor : values()) {
             CODE_MAP.put(chatColor.code, chatColor);
         }
     }
@@ -38,12 +38,12 @@ public enum ChatColor {
     private final String hexColor;
 
     /**
-     * Constructs a new ChatColor.
+     * Constructs a new Color.
      *
      * @param code     the color code
      * @param hexColor the hex color
      */
-    ChatColor(char code, @Nonnull String hexColor) {
+    Color(char code, @Nonnull String hexColor) {
         this.code = code;
         this.hexColor = hexColor;
     }
@@ -68,13 +68,13 @@ public enum ChatColor {
     }
 
     /**
-     * Parses a {@link ChatColor} from a string (name or '&' code).
+     * Parses a {@link Color} from a string (name or '&' code).
      *
      * @param value the string to parse
-     * @return the parsed custom chat color or null if the input is invalid
+     * @return the parsed custom color or null if the input is invalid
      */
     @Nullable
-    public static ChatColor fromString(@Nullable String value) {
+    public static Color fromString(@Nullable String value) {
         if (value == null || value.isEmpty()) {
             return null;
         }
@@ -85,7 +85,7 @@ public enum ChatColor {
         }
 
         try {
-            return ChatColor.valueOf(value.toUpperCase());
+            return Color.valueOf(value.toUpperCase());
         } catch (IllegalArgumentException ignored) {
             return null;
         }
