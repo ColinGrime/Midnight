@@ -1,5 +1,8 @@
 package me.colingrimes.midnight.display;
 
+import me.colingrimes.midnight.display.implementation.ActionBar;
+import me.colingrimes.midnight.display.implementation.BossBar;
+import me.colingrimes.midnight.display.implementation.Title;
 import me.colingrimes.midnight.display.type.DisplayType;
 import me.colingrimes.midnight.scheduler.Scheduler;
 import org.bukkit.entity.Player;
@@ -15,9 +18,53 @@ import java.util.concurrent.TimeUnit;
 public interface Display {
 
     /**
-     * The default priority value for display elements.
+     * Creates a {@code Display} based on the provided {@code DisplayType} and text.
+     *
+     * @param displayType the type of display to create
+     * @param text        the text to display
+     * @return the created display
      */
-    int DEFAULT_PRIORITY = 1;
+    @Nonnull
+    static Display create(DisplayType displayType, @Nonnull String text) {
+        return switch (displayType) {
+            case BOSS_BAR -> bossBar(text);
+            case ACTION_BAR -> actionBar(text);
+            case TITLE -> title(text);
+        };
+    }
+
+    /**
+     * Creates a {@code BossBar} with the provided text.
+     *
+     * @param text the text to display
+     * @return the created bossbar
+     */
+    @Nonnull
+    static BossBar bossBar(@Nonnull String text) {
+        return new BossBar(text);
+    }
+
+    /**
+     * Creates an {@code ActionBar} with the provided text.
+     *
+     * @param text the text to display
+     * @return the created actionbar
+     */
+    @Nonnull
+    static ActionBar actionBar(@Nonnull String text) {
+        return new ActionBar(text);
+    }
+
+    /**
+     * Creates a {@code Title} with the provided text.
+     *
+     * @param text the text to display
+     * @return the created title
+     */
+    @Nonnull
+    static Title title(@Nonnull String text) {
+        return new Title(text);
+    }
 
     /**
      * Gets the priority of the display element.
