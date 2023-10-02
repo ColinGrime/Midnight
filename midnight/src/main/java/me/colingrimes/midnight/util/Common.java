@@ -68,17 +68,6 @@ public final class Common {
 	}
 
 	/**
-	 * Gets a world by name.
-	 *
-	 * @param name the name of the world
-	 * @return the world, if it exists
-	 */
-	@Nonnull
-	public static Optional<World> world(@Nonnull String name) {
-		return Optional.ofNullable(Bukkit.getWorld(name));
-	}
-
-	/**
 	 * Broadcasts a message to all players.
 	 *
 	 * @param msg the message to broadcast
