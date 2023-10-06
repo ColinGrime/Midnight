@@ -41,7 +41,7 @@ public class PlaceholdersTest {
     @BeforeEach
     public void setUp() {
         mockCommon = mockStatic(Common.class);
-        mockCommon.when(() -> Common.getPlugin(any())).thenReturn(null);
+        mockCommon.when(() -> Common.plugin(any())).thenReturn(null);
     }
 
     @AfterEach

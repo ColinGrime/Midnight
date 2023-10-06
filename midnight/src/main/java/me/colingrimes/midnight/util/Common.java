@@ -3,10 +3,10 @@ package me.colingrimes.midnight.util;
 import me.colingrimes.midnight.Midnight;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
-import org.bukkit.World;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -33,8 +33,17 @@ public final class Common {
 	 * @return the plugin instance, if it exists
 	 */
 	@Nullable
-	public static Plugin getPlugin(@Nonnull String name) {
+	public static Plugin plugin(@Nonnull String name) {
 		return Bukkit.getPluginManager().getPlugin(name);
+	}
+
+	/**
+	 * Disables the specified plugin.
+	 *
+	 * @param plugin the plugin to disable
+	 */
+	public static void disable(@Nonnull Plugin plugin) {
+		Bukkit.getPluginManager().disablePlugin(plugin);
 	}
 
 	/**
@@ -59,12 +68,20 @@ public final class Common {
 	}
 
 	/**
-	 * Disables the specified plugin.
+	 * Loads the specified service, if available.
 	 *
-	 * @param plugin the plugin to disable
+	 * @param clazz the service class to load
+	 * @param <T>   the type of the service
+	 * @return an Optional containing the service provider if registered, otherwise an empty Optional
 	 */
-	public static void disable(@Nonnull Plugin plugin) {
-		Bukkit.getPluginManager().disablePlugin(plugin);
+	@Nonnull
+	public static <T> Optional<T> service(@Nonnull Class<T> clazz) {
+		RegisteredServiceProvider<T> rsp = Bukkit.getServicesManager().getRegistration(clazz);
+		if (rsp == null) {
+			return Optional.empty();
+		} else {
+			return Optional.of(rsp.getProvider());
+		}
 	}
 
 	/**
