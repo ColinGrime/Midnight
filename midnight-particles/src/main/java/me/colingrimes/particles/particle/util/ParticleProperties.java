@@ -1,7 +1,7 @@
 package me.colingrimes.particles.particle.util;
 
 import me.colingrimes.midnight.serialize.Serializable;
-import me.colingrimes.midnight.util.misc.Validate;
+import me.colingrimes.midnight.util.misc.Validator;
 import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.util.Vector;
@@ -197,7 +197,7 @@ public class ParticleProperties implements Serializable {
     @SuppressWarnings("unchecked")
     @Nonnull
     public static ParticleProperties deserialize(@Nonnull Map<String, Object> map) {
-        Validate.checkMap(map, "particle", "count", "offset", "speed");
+        Validator.checkMap(map, "particle", "count", "offset", "speed");
 
         ParticleProperties properties = ParticleProperties.of(
                 Particle.valueOf((String) map.get("particle")),

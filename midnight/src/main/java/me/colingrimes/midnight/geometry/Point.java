@@ -2,7 +2,7 @@ package me.colingrimes.midnight.geometry;
 
 import com.google.common.base.Preconditions;
 import me.colingrimes.midnight.serialize.Serializable;
-import me.colingrimes.midnight.util.misc.Validate;
+import me.colingrimes.midnight.util.misc.Validator;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -190,7 +190,7 @@ public class Point<T extends Direction> implements Serializable {
 	@SuppressWarnings("unchecked")
 	@Nonnull
 	public static <T extends Direction> Point<T> deserialize(@Nonnull Map<String, Object> map) {
-		Validate.checkMap(map, "position", "direction");
+		Validator.checkMap(map, "position", "direction");
 
 		Position position = Position.deserialize((Map<String, Object>) map.get("position"));
 		Map<String, Object> direction = (Map<String, Object>) map.get("direction");

@@ -4,7 +4,7 @@ import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.config.ConfigurationState;
 import me.colingrimes.midnight.config.adapter.ConfigurationAdapter;
 import me.colingrimes.midnight.config.option.Option;
-import me.colingrimes.midnight.util.io.Files;
+import me.colingrimes.midnight.util.io.Introspector;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -26,7 +26,7 @@ public class ConfigurationProcessor {
 	 * Only classes in the "config" package will be processed.
 	 */
 	public void process() {
-		for (Class<?> clazz : Files.getClasses(plugin.getClass().getClassLoader(), plugin.getRootPackage() + ".config")) {
+		for (Class<?> clazz : Introspector.getClasses(plugin.getClass().getClassLoader(), plugin.getRootPackage() + ".config")) {
 			if (clazz.isAnnotationPresent(Configuration.class)) {
 				String configName = clazz.getAnnotation(Configuration.class).value();
 				ConfigurationAdapter adapter = ConfigurationAdapter.of(plugin, configName);

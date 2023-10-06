@@ -3,7 +3,7 @@ package me.colingrimes.particles.particle.implementation.type;
 import me.colingrimes.midnight.geometry.Point;
 import me.colingrimes.midnight.geometry.Position;
 import me.colingrimes.midnight.geometry.Rotation;
-import me.colingrimes.midnight.util.misc.Validate;
+import me.colingrimes.midnight.util.misc.Validator;
 import me.colingrimes.particles.particle.implementation.BaseParticleEffect;
 import me.colingrimes.particles.particle.util.ParticleEffectType;
 import me.colingrimes.particles.particle.util.ParticleProperties;
@@ -111,7 +111,7 @@ public class SquareParticleEffect extends BaseParticleEffect {
     @SuppressWarnings("unchecked")
     @Nonnull
     public static SquareParticleEffect deserialize(@Nonnull Map<String, Object> map) {
-        Validate.checkMap(map, "uuid", "name", "point", "properties", "length", "pointsPerSide");
+        Validator.checkMap(map, "uuid", "name", "point", "properties", "length", "pointsPerSide");
 
         UUID uuid = UUID.fromString((String) map.get("uuid"));
         String name = (String) map.get("name");

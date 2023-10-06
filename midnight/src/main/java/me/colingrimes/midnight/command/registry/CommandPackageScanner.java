@@ -4,7 +4,7 @@ import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.command.Command;
 import me.colingrimes.midnight.command.handler.CommandHandler;
 import me.colingrimes.midnight.command.handler.StandardCommandHandler;
-import me.colingrimes.midnight.util.io.Files;
+import me.colingrimes.midnight.util.io.Introspector;
 import me.colingrimes.midnight.util.io.Logger;
 
 import javax.annotation.Nonnull;
@@ -41,7 +41,7 @@ public class CommandPackageScanner {
      */
     private void scan(@Nonnull String packagePath, @Nonnull String commandPath) {
         // Get all Command classes.
-        List<Class<?>> classes = Files.getClasses(plugin.getClass().getClassLoader(), packagePath, false);
+        List<Class<?>> classes = Introspector.getClasses(plugin.getClass().getClassLoader(), packagePath, false);
         classes = classes.stream().filter(Command.class::isAssignableFrom).toList();
 
         // Only 1 command class per package is allowed.
@@ -63,7 +63,7 @@ public class CommandPackageScanner {
         }
 
         // Recursively check the sub-packages for sub-commands.
-        for (String subPackage : Files.getPackageNames(plugin.getClass().getClassLoader(), packagePath)) {
+        for (String subPackage : Introspector.getPackages(plugin.getClass().getClassLoader(), packagePath)) {
             scan(packagePath + "." + subPackage, newCommandPath);
 
             // Register the aliases of the command.

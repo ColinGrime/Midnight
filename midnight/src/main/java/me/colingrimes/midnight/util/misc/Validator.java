@@ -5,7 +5,7 @@ import com.google.common.base.Preconditions;
 import java.util.Map;
 import javax.annotation.Nonnull;
 
-public final class Validate {
+public final class Validator {
 
     /**
      * Checks if the provided map contains the specified keys.
@@ -21,7 +21,7 @@ public final class Validate {
         }
     }
 
-    private Validate() {
+    private Validator() {
         throw new UnsupportedOperationException("This class cannot be instantiated.");
     }
 }

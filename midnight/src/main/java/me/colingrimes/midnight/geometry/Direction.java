@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.geometry;
 
 import me.colingrimes.midnight.serialize.Serializable;
-import me.colingrimes.midnight.util.misc.Validate;
+import me.colingrimes.midnight.util.misc.Validator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -94,7 +94,7 @@ public class Direction implements Serializable {
 
     @Nonnull
     public static Direction deserialize(@Nonnull Map<String, Object> map) {
-        Validate.checkMap(map, "yaw", "pitch");
+        Validator.checkMap(map, "yaw", "pitch");
         return of(
                 (double) map.get("yaw"),
                 (double) map.get("pitch")

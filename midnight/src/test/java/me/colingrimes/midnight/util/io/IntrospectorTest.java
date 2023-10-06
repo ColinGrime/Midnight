@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class FilesTest {
+public class IntrospectorTest {
 
 	@Mock private ClassLoader mockClassLoader;
 	private Path packagePath;
@@ -49,9 +49,9 @@ public class FilesTest {
 	public void testGetClasses() throws Exception {
 		// Mocking walkFileTree to simulate that it's finding classes.
 		MockedStatic<java.nio.file.Files> mockFiles = mockStatic(java.nio.file.Files.class);
-		mockFiles.when(() -> java.nio.file.Files.walkFileTree(eq(packagePath), anySet(), anyInt(), any())).thenAnswer(invocation -> {
+		mockFiles.when(() -> Files.walkFileTree(eq(packagePath), anySet(), anyInt(), any())).thenAnswer(invocation -> {
 			try {
-				Field field = Files.CustomFileVisitor.class.getDeclaredField("classes");
+				Field field = Introspector.CustomFileVisitor.class.getDeclaredField("classes");
 				field.setAccessible(true);
 
 				List<Class<?>> classes = (List<Class<?>>) field.get(invocation.getArgument(3));
@@ -69,12 +69,12 @@ public class FilesTest {
 
 		// Non-JAR case.
 		when(mockClassLoader.getResource(path)).thenReturn(new URI("file://some/path").toURL());
-		assertEquals(expected, Files.getClasses(mockClassLoader, packageName));
+		assertEquals(expected, Introspector.getClasses(mockClassLoader, packageName));
 
 		// JAR case.
 		when(mockClassLoader.getResource(path)).thenReturn(new URI("jar:file:/path/to/jar.jar!/some/path").toURL());
 		when(mockFileSystem.getPath(path)).thenReturn(packagePath);
-		assertEquals(expected, Files.getClasses(mockClassLoader, packageName));
+		assertEquals(expected, Introspector.getClasses(mockClassLoader, packageName));
 
 		mockFiles.close();
 	}
@@ -98,17 +98,17 @@ public class FilesTest {
 
 		// Mocking the directory calls.
 		MockedStatic<java.nio.file.Files> mockFiles = mockStatic(java.nio.file.Files.class);
-		mockFiles.when(() -> java.nio.file.Files.newDirectoryStream(packagePath)).thenReturn(mockDirectoryStream);
-		mockFiles.when(() -> java.nio.file.Files.isDirectory(any())).thenReturn(true);
+		mockFiles.when(() -> Files.newDirectoryStream(packagePath)).thenReturn(mockDirectoryStream);
+		mockFiles.when(() -> Files.isDirectory(any())).thenReturn(true);
 
 		// Non-JAR case.
 		when(mockClassLoader.getResource(path)).thenReturn(new URI("file://some/path").toURL());
-		assertEquals(expectedSubPackages, Files.getPackageNames(mockClassLoader, packageName));
+		assertEquals(expectedSubPackages, Introspector.getPackages(mockClassLoader, packageName));
 
 		// JAR case.
 		when(mockClassLoader.getResource(path)).thenReturn(new URI("jar:file:/path/to/jar.jar!/some/path").toURL());
 		when(mockFileSystem.getPath(path)).thenReturn(packagePath);
-		assertEquals(expectedSubPackages, Files.getPackageNames(mockClassLoader, packageName));
+		assertEquals(expectedSubPackages, Introspector.getPackages(mockClassLoader, packageName));
 
 		mockFiles.close();
 	}

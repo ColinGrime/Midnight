@@ -3,7 +3,7 @@ package me.colingrimes.particles.particle;
 import com.google.common.base.Preconditions;
 import me.colingrimes.midnight.geometry.Point;
 import me.colingrimes.midnight.geometry.Rotation;
-import me.colingrimes.midnight.util.misc.Validate;
+import me.colingrimes.midnight.util.misc.Validator;
 import me.colingrimes.particles.particle.implementation.type.CircleParticleEffect;
 import me.colingrimes.particles.particle.implementation.type.SquareParticleEffect;
 import me.colingrimes.particles.particle.util.ParticleEffectType;
@@ -140,7 +140,7 @@ public interface ParticleEffect extends Serializable {
 
     @Nonnull
     static ParticleEffect deserialize(@Nonnull Map<String, Object> map) {
-        Validate.checkMap(map, "type");
+        Validator.checkMap(map, "type");
         Preconditions.checkArgument(ParticleEffectType.fromString((String) map.get("type")).isPresent());
 
         return switch (ParticleEffectType.fromString((String) map.get("type")).get()) {

@@ -10,9 +10,7 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
 
-import static java.nio.file.Files.*;
-
-public final class Files {
+public final class Introspector {
 
 	/**
 	 * Gets all classes in the given package, recursively.
@@ -49,14 +47,14 @@ public final class Files {
 			// If the URI is not a JAR, walk the directory.
 			if (!uri.getScheme().equals("jar")) {
 				Path packagePath = Paths.get(uri);
-				walkFileTree(packagePath, Set.of(FileVisitOption.FOLLOW_LINKS), maxDepth, new CustomFileVisitor(classLoader, packageName, packagePath, classes));
+				Files.walkFileTree(packagePath, Set.of(FileVisitOption.FOLLOW_LINKS), maxDepth, new CustomFileVisitor(classLoader, packageName, packagePath, classes));
 				return classes;
 			}
 
 			// If the URI is a JAR, walk the JAR.
 			try (FileSystem fileSystem = FileSystems.newFileSystem(uri, new HashMap<>())) {
 				Path packagePath = fileSystem.getPath(path);
-				walkFileTree(packagePath, Set.of(FileVisitOption.FOLLOW_LINKS), maxDepth, new CustomFileVisitor(classLoader, packageName, packagePath, classes));
+				Files.walkFileTree(packagePath, Set.of(FileVisitOption.FOLLOW_LINKS), maxDepth, new CustomFileVisitor(classLoader, packageName, packagePath, classes));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -73,7 +71,7 @@ public final class Files {
 	 * @return the list of package names
 	 */
 	@Nonnull
-	public static List<String> getPackageNames(@Nonnull ClassLoader classLoader, @Nonnull String packageName) {
+	public static List<String> getPackages(@Nonnull ClassLoader classLoader, @Nonnull String packageName) {
 		List<String> subPackages = new ArrayList<>();
 		String path = packageName.replace('.', '/');
 
@@ -85,9 +83,9 @@ public final class Files {
 
 			// If the URI is not a JAR, walk the directory.
 			if (!uri.getScheme().equals("jar")) {
-				try (DirectoryStream<Path> stream = newDirectoryStream(Paths.get(uri))) {
+				try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(uri))) {
 					for (Path subPath : stream) {
-						if (isDirectory(subPath)) {
+						if (Files.isDirectory(subPath)) {
 							subPackages.add(subPath.getFileName().toString());
 						}
 					}
@@ -98,9 +96,9 @@ public final class Files {
 			// If the URI is a JAR, walk the JAR.
 			try (FileSystem fileSystem = FileSystems.newFileSystem(uri, new HashMap<>())) {
 				Path packagePath = fileSystem.getPath(path);
-				try (DirectoryStream<Path> stream = newDirectoryStream(packagePath)) {
+				try (DirectoryStream<Path> stream = Files.newDirectoryStream(packagePath)) {
 					for (Path subPath : stream) {
-						if (isDirectory(subPath)) {
+						if (Files.isDirectory(subPath)) {
 							subPackages.add(subPath.getFileName().toString());
 						}
 					}
@@ -168,7 +166,7 @@ public final class Files {
 		}
 	}
 
-	private Files() {
+	private Introspector() {
 		throw new UnsupportedOperationException("This class cannot be instantiated.");
 	}
 }
