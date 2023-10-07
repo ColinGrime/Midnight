@@ -26,7 +26,7 @@ public class ConfigurationProcessor {
 	 * Only classes in the "config" package will be processed.
 	 */
 	public void process() {
-		for (Class<?> clazz : Introspector.getClasses(plugin.getClass().getClassLoader(), plugin.getRootPackage() + ".config")) {
+		for (Class<?> clazz : Introspector.getClassesRecursively(plugin.getClass().getClassLoader(), plugin.getRootPackage() + ".config")) {
 			if (clazz.isAnnotationPresent(Configuration.class)) {
 				String configName = clazz.getAnnotation(Configuration.class).value();
 				ConfigurationAdapter adapter = ConfigurationAdapter.of(plugin, configName);

@@ -1,168 +1,150 @@
 package me.colingrimes.midnight.util.io;
 
+import com.google.common.base.Preconditions;
+import me.colingrimes.midnight.util.io.visitor.BaseFileVisitor;
+import me.colingrimes.midnight.util.io.visitor.ClassFileVisitor;
+import me.colingrimes.midnight.util.io.visitor.PackageFileVisitor;
+
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
 
 public final class Introspector {
+
+	private enum FileVisitorType {
+		CLASS,
+		PACKAGE
+	}
+
+	/**
+	 * Gets all classes in the given package, one level deep.
+	 *
+	 * @param classLoader the class loader that is getting the classes
+	 * @param packageName the fully qualified package name
+	 * @return the list of classes
+	 */
+	@Nonnull
+	public static List<Class<?>> getClasses(@Nonnull ClassLoader classLoader, @Nonnull String packageName) {
+		return walkFileSystem(classLoader, packageName, false, FileVisitorType.CLASS);
+	}
 
 	/**
 	 * Gets all classes in the given package, recursively.
 	 *
 	 * @param classLoader the class loader that is getting the classes
-	 * @param packageName the package name
+	 * @param packageName the fully qualified package name
 	 * @return the list of classes
 	 */
 	@Nonnull
-	public static List<Class<?>> getClasses(@Nonnull ClassLoader classLoader, @Nonnull String packageName) {
-		return getClasses(classLoader, packageName, true);
-	}
-
-	/**
-	 * Gets all classes in the given package.
-	 *
-	 * @param classLoader the class loader that is getting the classes
-	 * @param packageName the package name
-	 * @param recursive   whether to recursively search sub-packages
-	 * @return the list of classes
-	 */
-	@Nonnull
-	public static List<Class<?>> getClasses(@Nonnull ClassLoader classLoader, @Nonnull String packageName, boolean recursive) {
-		List<Class<?>> classes = new ArrayList<>();
-		String path = packageName.replace('.', '/');
-		int maxDepth = recursive ? Integer.MAX_VALUE : 1;
-
-		try {
-			URI uri = getUri(classLoader, path);
-			if (uri == null) {
-				return classes;
-			}
-
-			// If the URI is not a JAR, walk the directory.
-			if (!uri.getScheme().equals("jar")) {
-				Path packagePath = Paths.get(uri);
-				Files.walkFileTree(packagePath, Set.of(FileVisitOption.FOLLOW_LINKS), maxDepth, new CustomFileVisitor(classLoader, packageName, packagePath, classes));
-				return classes;
-			}
-
-			// If the URI is a JAR, walk the JAR.
-			try (FileSystem fileSystem = FileSystems.newFileSystem(uri, new HashMap<>())) {
-				Path packagePath = fileSystem.getPath(path);
-				Files.walkFileTree(packagePath, Set.of(FileVisitOption.FOLLOW_LINKS), maxDepth, new CustomFileVisitor(classLoader, packageName, packagePath, classes));
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return classes;
+	public static List<Class<?>> getClassesRecursively(@Nonnull ClassLoader classLoader, @Nonnull String packageName) {
+		return walkFileSystem(classLoader, packageName, true, FileVisitorType.CLASS);
 	}
 
 	/**
 	 * Gets all package names in the given package, one level deep.
 	 *
 	 * @param classLoader the class loader that is getting the package names
-	 * @param packageName the package name
+	 * @param packageName the fully qualified package name
 	 * @return the list of package names
 	 */
 	@Nonnull
 	public static List<String> getPackages(@Nonnull ClassLoader classLoader, @Nonnull String packageName) {
-		List<String> subPackages = new ArrayList<>();
-		String path = packageName.replace('.', '/');
-
-		try {
-			URI uri = getUri(classLoader, path);
-			if (uri == null) {
-				return subPackages;
-			}
-
-			// If the URI is not a JAR, walk the directory.
-			if (!uri.getScheme().equals("jar")) {
-				try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(uri))) {
-					for (Path subPath : stream) {
-						if (Files.isDirectory(subPath)) {
-							subPackages.add(subPath.getFileName().toString());
-						}
-					}
-				}
-				return subPackages;
-			}
-
-			// If the URI is a JAR, walk the JAR.
-			try (FileSystem fileSystem = FileSystems.newFileSystem(uri, new HashMap<>())) {
-				Path packagePath = fileSystem.getPath(path);
-				try (DirectoryStream<Path> stream = Files.newDirectoryStream(packagePath)) {
-					for (Path subPath : stream) {
-						if (Files.isDirectory(subPath)) {
-							subPackages.add(subPath.getFileName().toString());
-						}
-					}
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return subPackages;
+		return walkFileSystem(classLoader, packageName, false, FileVisitorType.PACKAGE);
 	}
 
 	/**
-	 * Gets the URI of the given path.
+	 * Gets all package names in the given package, recursively.
 	 *
-	 * @param path the path
-	 * @return the URI
+	 * @param classLoader the class loader that is getting the package names
+	 * @param packageName the fully qualified package name
+	 * @return the list of package names
 	 */
-	@Nullable
-	private static URI getUri(@Nonnull ClassLoader classLoader, @Nonnull String path) {
-		try {
-			return Objects.requireNonNull(classLoader.getResource(path)).toURI();
-		} catch (NullPointerException | URISyntaxException e) {
-			return null;
+	@Nonnull
+	public static List<String> getPackagesRecursively(@Nonnull ClassLoader classLoader, @Nonnull String packageName) {
+		return walkFileSystem(classLoader, packageName, true, FileVisitorType.PACKAGE);
+	}
+
+	/**
+	 * Walks the file system starting from a package, retrieving either classes or packages
+	 * based on the specified {@link FileVisitorType}. This method differentiates between
+	 * JAR files and directories and adjusts its behavior accordingly.
+	 *
+	 * @param classLoader     the class loader used to locate and retrieve classes
+	 * @param packageName     the fully qualified package name
+	 * @param recursive       whether the method should search recursively
+	 * @param fileVisitorType determines whether the method should retrieve classes or packages
+	 * @return a list of either classes or package names, depending on {@link FileVisitorType}
+	 */
+	@Nonnull
+	private static <T> List<T> walkFileSystem(@Nonnull ClassLoader classLoader, @Nonnull String packageName, boolean recursive, @Nonnull FileVisitorType fileVisitorType) {
+		String packagePath = packageName.replace('.', '/');
+		URI uri = getUri(classLoader, packagePath);
+
+		// If the URI is a file, walk the directory.
+		if (uri.getScheme().equals("file")) {
+			Path startingPath = Paths.get(uri);
+			return walkFileSystem(classLoader, packageName, recursive, fileVisitorType, startingPath);
+		} else if (!uri.getScheme().equals("jar")) {
+			throw new IllegalArgumentException("Unsupported URI scheme: " + uri.getScheme());
+		}
+
+		// If the URI is a JAR, walk the JAR.
+		try (FileSystem fileSystem = FileSystems.newFileSystem(uri, new HashMap<>())) {
+			Path startingPath = fileSystem.getPath(packagePath);
+			return walkFileSystem(classLoader, packageName, recursive, fileVisitorType, startingPath);
+		} catch (IOException e) {
+			throw new RuntimeException("Error creating the JAR file system.", e);
 		}
 	}
 
 	/**
-	 * A custom file visitor that adds each valid class to the given list.
+	 * Walks the file system from a starting path, retrieving either classes or packages
+	 * based on the specified {@link FileVisitorType}.
+	 *
+	 * @param classLoader     the class loader used to locate and retrieve classes
+	 * @param packageName     the fully qualified package name
+	 * @param recursive       whether the method should search recursively
+	 * @param fileVisitorType determines whether the method should retrieve classes or packages
+	 * @param startingPath    the starting path from which to begin the search
+	 * @return a list of either classes or package names, depending on {@link FileVisitorType}
 	 */
-	public static class CustomFileVisitor extends SimpleFileVisitor<Path> {
+	@Nonnull
+	private static <T> List<T> walkFileSystem(@Nonnull ClassLoader classLoader, @Nonnull String packageName, boolean recursive, @Nonnull FileVisitorType fileVisitorType, @Nonnull Path startingPath) {
+		@SuppressWarnings("unchecked")
+		BaseFileVisitor<T> fileVisitor = switch (fileVisitorType) {
+			case CLASS -> (BaseFileVisitor<T>) new ClassFileVisitor(startingPath, packageName, classLoader);
+			case PACKAGE -> (BaseFileVisitor<T>) new PackageFileVisitor(startingPath, packageName);
+		};
 
-		private final ClassLoader classLoader;
-		private final String packageName;
-		private final Path packagePath;
-		private final List<Class<?>> classes;
-
-		public CustomFileVisitor(@Nonnull ClassLoader classLoader, @Nonnull String packageName, @Nonnull Path packagePath, @Nonnull List<Class<?>> classes) {
-			this.classLoader = classLoader;
-			this.packageName = packageName;
-			this.packagePath = packagePath;
-			this.classes = classes;
+		try {
+			Files.walkFileTree(startingPath, Set.of(FileVisitOption.FOLLOW_LINKS), recursive ? Integer.MAX_VALUE : 1, fileVisitor);
+			return fileVisitor.getList();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
+	}
 
-		@Nonnull
-		@Override
-		public FileVisitResult visitFile(@Nonnull Path file, @Nonnull BasicFileAttributes attrs) {
-			if (!file.toString().endsWith(".class")) {
-				return FileVisitResult.CONTINUE;
-			}
+	/**
+	 * Retrieves the URI of a resource based on its path, using the provided class loader.
+	 * This method is useful for distinguishing resources located inside JAR files from those in directories.
+	 *
+	 * @param classLoader the class loader used to locate the resource
+	 * @param path        the path of the resource to be located
+	 * @return the URI of the resource
+	 */
+	@Nonnull
+	private static URI getUri(@Nonnull ClassLoader classLoader, @Nonnull String path) {
+		URL resourceUrl = classLoader.getResource(path);
+		Preconditions.checkArgument(resourceUrl != null, "Resource not found for path: " + path);
 
-			String className = file.toString();
-			className = className.substring(packagePath.toString().length());
-			className = className.replace(".class", "");
-			className = className.replace(File.separator, ".");
-
-			try {
-				// Must use the ClassLoader of the plugin to load the class to avoid incorrect dependency warnings.
-				classes.add(Class.forName(packageName + className, true, classLoader));
-			} catch (ClassNotFoundException e) {
-				throw new RuntimeException(e);
-			}
-
-			return FileVisitResult.CONTINUE;
+		try {
+			return resourceUrl.toURI();
+		} catch (URISyntaxException e) {
+			throw new RuntimeException("Invalid URI syntax for resource path: " + path, e);
 		}
 	}
 
