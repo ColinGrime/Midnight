@@ -18,23 +18,23 @@ public final class MidnightPlugin {
 
 	/**
 	 * Gets the loading plugin that extends {@link Midnight}.
-	 * Implements the Singleton pattern to ensure only the first plugin that calls this method is returned.
+	 * The loading plugin should be the actual Midnight jar that is loaded by the server.
 	 *
 	 * @return the loading Midnight plugin
 	 * @throws IllegalStateException if the plugin does not extend Midnight
 	 */
 	@Nonnull
 	public static synchronized Midnight get() {
-		if (plugin == null) {
-			JavaPlugin javaPlugin = JavaPlugin.getProvidingPlugin(MidnightPlugin.class);
-			if (!(javaPlugin instanceof Midnight midnight)) {
-				throw new IllegalStateException("Loading plugin does not use the Midnight library.");
-			} else {
-				plugin = midnight;
-				MidnightRegistrar.register(plugin);
-			}
+		if (plugin != null) {
+			return plugin;
 		}
 
+		JavaPlugin javaPlugin = JavaPlugin.getProvidingPlugin(MidnightPlugin.class);
+		if (!(javaPlugin instanceof Midnight midnight)) {
+			throw new IllegalStateException("Loading plugin does not use the Midnight library.");
+		}
+
+		plugin = midnight;
 		return plugin;
 	}
 

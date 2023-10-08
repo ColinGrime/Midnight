@@ -1,6 +1,5 @@
 package me.colingrimes.midnight.util;
 
-import me.colingrimes.midnight.Midnight;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.event.Event;
@@ -53,7 +52,7 @@ public final class Common {
 	 * @param listener the listener class
 	 * @param <T>      any type that extends listener
 	 */
-	public static <T extends Listener> void register(@Nonnull Midnight plugin, @Nonnull T listener) {
+	public static <T extends Listener> void register(@Nonnull Plugin plugin, @Nonnull T listener) {
 		Bukkit.getPluginManager().registerEvents(listener, plugin);
 	}
 
