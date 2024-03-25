@@ -66,24 +66,6 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
         process(getDeserializationFunction().apply(rawData));
     }
 
-    /**
-     * Recursively converts a memory section to a map.
-     * @param section the memory section
-     * @return the map
-     */
-    private Map<String, Object> convertToRawData(@Nonnull ConfigurationSection section) {
-        Map<String, Object> map = new HashMap<>();
-        for (String key : section.getKeys(false)) {
-            Object value = section.get(key);
-            if (value instanceof ConfigurationSection) {
-                map.put(key, convertToRawData((ConfigurationSection) value));
-            } else {
-                map.put(key, value);
-            }
-        }
-        return map;
-    }
-
     @Override
     public void save(@Nonnull T data) throws IOException {
         CompositeIdentifier identifier = getIdentifier(data);
@@ -126,9 +108,26 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
     }
 
     /**
-     * Converts a raw data map from the YAML configuration to a data map with the appropriate types.
-     * This method calls the deserialize method with the deserialization function provided by the
-     * getDeserializationFunction() method.
+     * Recursively converts a memory section to a map.
+     * @param section the memory section
+     * @return the map
+     */
+    private Map<String, Object> convertToRawData(@Nonnull ConfigurationSection section) {
+        Map<String, Object> map = new HashMap<>();
+        for (String key : section.getKeys(false)) {
+            Object value = section.get(key);
+            if (value instanceof ConfigurationSection) {
+                map.put(key, convertToRawData((ConfigurationSection) value));
+            } else {
+                map.put(key, value);
+            }
+        }
+        return map;
+    }
+
+    /**
+     * Converts a raw data map from the YAML configuration to a data map with the appropriate
+     * types by calling the {@link YamlStorage#getDeserializationFunction()} method.
      *
      * @param map the raw data map from the YAML configuration
      * @return the converted data map with appropriate types
