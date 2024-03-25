@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.util.io;
 
 import me.colingrimes.midnight.Midnight;
-import org.bukkit.Bukkit;
+import me.colingrimes.midnight.util.Common;
 
 import javax.annotation.Nonnull;
 import java.util.logging.Level;
@@ -27,7 +27,7 @@ public final class Logger {
 	 * @param msg the info message to log
 	 */
 	public static void log(@Nonnull String msg) {
-		Bukkit.getLogger().log(Level.INFO, msg);
+		Common.logger().log(Level.INFO, msg);
 	}
 
 	/**
@@ -46,7 +46,7 @@ public final class Logger {
 	 * @param msg the warning message to log
 	 */
 	public static void warn(@Nonnull String msg) {
-		Bukkit.getLogger().log(Level.WARNING, msg);
+		Common.logger().log(Level.WARNING, msg);
 	}
 
 	/**
@@ -65,7 +65,7 @@ public final class Logger {
 	 * @param msg the severe message to log
 	 */
 	public static void severe(@Nonnull String msg) {
-		Bukkit.getLogger().log(Level.SEVERE, msg);
+		Common.logger().log(Level.SEVERE, msg);
 	}
 
 	private Logger() {
