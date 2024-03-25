@@ -1,53 +1,43 @@
 package me.colingrimes.midnight.util.bukkit;
 
-import org.bukkit.entity.Player;
-import org.junit.jupiter.api.BeforeEach;
+import me.colingrimes.midnight.MockSetup;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ExperienceTest {
-
-	@Mock private Player player;
-
-	@BeforeEach
-	void setUp() {
-		player = Mockito.mock(Player.class);
-	}
+class ExperienceTest extends MockSetup {
 
 	@Test
 	void testAddExperience() {
-		when(player.getLevel()).thenReturn(10);
-		when(player.getExp()).thenReturn(0.5f);
+		when(bukkit.player.getLevel()).thenReturn(10);
+		when(bukkit.player.getExp()).thenReturn(0.5f);
 
-		Experience.add(player, 500);
+		Experience.add(bukkit.player, 500);
 
-		verify(player).setLevel(anyInt());
-		verify(player).setExp(anyFloat());
+		verify(bukkit.player).setLevel(anyInt());
+		verify(bukkit.player).setExp(anyFloat());
 	}
 
 	@Test
 	void testRemoveExperience() {
-		when(player.getLevel()).thenReturn(15);
-		when(player.getExp()).thenReturn(0.5f);
+		when(bukkit.player.getLevel()).thenReturn(15);
+		when(bukkit.player.getExp()).thenReturn(0.5f);
 
-		Experience.remove(player, 500);
+		Experience.remove(bukkit.player, 500);
 
-		verify(player).setLevel(anyInt());
-		verify(player).setExp(anyFloat());
+		verify(bukkit.player).setLevel(anyInt());
+		verify(bukkit.player).setExp(anyFloat());
 	}
 
 	@Test
 	void testFromPlayer() {
-		when(player.getLevel()).thenReturn(5);
+		when(bukkit.player.getLevel()).thenReturn(5);
 
-		int totalExp = Experience.fromPlayer(player);
+		int totalExp = Experience.fromPlayer(bukkit.player);
 		assertEquals(55, totalExp);
 	}
 

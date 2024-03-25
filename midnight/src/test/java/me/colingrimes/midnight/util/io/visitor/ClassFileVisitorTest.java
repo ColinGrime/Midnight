@@ -1,82 +1,42 @@
 package me.colingrimes.midnight.util.io.visitor;
 
-import org.junit.jupiter.api.BeforeEach;
+import me.colingrimes.midnight.MockSetup;
 import org.junit.jupiter.api.Test;
 
-import javax.annotation.Nonnull;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
-public class ClassFileVisitorTest {
+class ClassFileVisitorTest extends MockSetup {
 
-	private TestableClassFileVisitor classFileVisitor;
+	private final Path startingPath = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "test");
 
-	@BeforeEach
-	public void setUp() {
-		Path mockStartingPath = mock(Path.class);
-		when(mockStartingPath.toString()).thenReturn("file:/path/to/start/some/package");
-		classFileVisitor = new TestableClassFileVisitor(mockStartingPath, "some.package");
+	@Test
+	void testConstructor() {
+		assertDoesNotThrow(() -> new ClassFileVisitor(startingPath, "me.colingrimes.midnight.test", null));
+		assertThrows(IllegalArgumentException.class, () -> new ClassFileVisitor(startingPath, "me.colingrimes.midnight.test2", null));
 	}
 
 	@Test
-	public void testConstructor() {
-		Path mockStartingPath = mock(Path.class);
-		when(mockStartingPath.toString()).thenReturn("file:/path/to/start/some/package");
-		assertDoesNotThrow(() -> new TestableClassFileVisitor(mockStartingPath, "some.package"));
-		assertThrows(IllegalArgumentException.class, () -> new TestableClassFileVisitor(mockStartingPath, "some.other.package"));
-	}
+	void testVisitFile() {
+		ClassFileVisitor classFileVisitor = new ClassFileVisitor(startingPath, "me.colingrimes.midnight.test", null);
+		Path invalidPath = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "test", "Test");
+		Path invalidPath2 = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "test", "Invalid.class");
+		Path invalidPath3 = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "test2", "Test.class");
+		Path invalidPath4 = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "extra", "test", "Test.class");
+		Path invalidPath5 = Paths.get("src", "test", "java", "me", "colingrimes", "extra", "midnight", "test", "Test.class");
+		Path validPath = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "test", "Test.class");
 
-	@Test
-	public void testVisitFile() {
-		Path validStringPath = mock(Path.class);
-		Path invalidDoublePath = mock(Path.class);
-		Path invalidFloatPath = mock(Path.class);
-		Path validIntegerPath = mock(Path.class);
-		Path invalidCharacterPath = mock(Path.class);
+		classFileVisitor.visitFile(invalidPath, null);
+		assertThrows(RuntimeException.class, () -> classFileVisitor.visitFile(invalidPath2, null));
+		assertThrows(IllegalArgumentException.class, () -> classFileVisitor.visitFile(invalidPath3, null));
+		assertThrows(IllegalArgumentException.class, () -> classFileVisitor.visitFile(invalidPath4, null));
+		assertThrows(IllegalArgumentException.class, () -> classFileVisitor.visitFile(invalidPath5, null));
+		assertEquals(0, classFileVisitor.getList().size());
 
-		when(validStringPath.toString()).thenReturn("file:/path/to/start/some/package/String.class");
-		when(invalidDoublePath.toString()).thenReturn("file:/path/to/start/fake/some/package/Double.class");
-		when(invalidFloatPath.toString()).thenReturn("file:/path/to/start/some/package/extra/Float.class");
-		when(validIntegerPath.toString()).thenReturn("file:/path/to/start/some/package/Integer.class");
-		when(invalidCharacterPath.toString()).thenReturn("file:/path/to/start/some/package/Character");
-
-		classFileVisitor.visitFile(validStringPath, null);
+		classFileVisitor.visitFile(validPath, null);
 		assertEquals(1, classFileVisitor.getList().size());
-		assertTrue(classFileVisitor.getList().contains(String.class));
-
-		assertThrows(IllegalArgumentException.class, () -> classFileVisitor.visitFile(invalidDoublePath, null));
-
-		classFileVisitor.visitFile(invalidFloatPath, null);
-		assertEquals(1, classFileVisitor.getList().size());
-		assertFalse(classFileVisitor.getList().contains(Float.class));
-
-		classFileVisitor.visitFile(validIntegerPath, null);
-		assertEquals(2, classFileVisitor.getList().size());
-		assertTrue(classFileVisitor.getList().contains(Integer.class));
-
-		classFileVisitor.visitFile(invalidCharacterPath, null);
-		assertEquals(2, classFileVisitor.getList().size());
-		assertFalse(classFileVisitor.getList().contains(Character.class));
-	}
-
-	private static class TestableClassFileVisitor extends ClassFileVisitor {
-
-		public TestableClassFileVisitor(@Nonnull Path startingPath, @Nonnull String packageName) {
-			super(startingPath, packageName, TestableClassFileVisitor.class.getClassLoader());
-		}
-
-		@Override
-		protected void addClass(@Nonnull String className) {
-			switch (className) {
-				case "some.package.String" -> getList().add(String.class);
-				case "some.package.Integer" -> getList().add(Integer.class);
-				case "some.package.Double" -> getList().add(Double.class);
-				case "some.package.Float" -> getList().add(Float.class);
-				case "some.package.Character" -> getList().add(Character.class);
-			}
-		}
+		assertEquals("me.colingrimes.midnight.test.Test", classFileVisitor.getList().get(0).getName());
 	}
 }

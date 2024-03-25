@@ -8,10 +8,10 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TypesTest {
+class TypesTest {
 
 	@Test
-	public void testAsStringList() {
+	void testAsStringList() {
 		Optional<List<String>> stringList = Types.asStringList(Arrays.asList("a", "b", "c"));
 		assertTrue(stringList.isPresent());
 		assertEquals(Arrays.asList("a", "b", "c"), stringList.get());

@@ -7,10 +7,10 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ValidatorTest {
+class ValidatorTest {
 
 	@Test
-	public void testCheckMap() {
+	void testCheckMap() {
 		Map<String, Object> validMap = Map.of("key1", new Object(), "key2", new Object());
 		Map<String, Object> invalidMap = Collections.emptyMap();
 

@@ -14,7 +14,7 @@ class MySqlConnectionProviderTest {
 	private MySqlConnectionProvider provider;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		credentials = mock(DatabaseCredentials.class);
 		when(credentials.getHost()).thenReturn("localhost");
 		when(credentials.getPort()).thenReturn(3306);
@@ -25,19 +25,19 @@ class MySqlConnectionProviderTest {
 	}
 
 	@Test
-	public void testGetType() {
+	void testGetType() {
 		assertEquals("MySQL", provider.getType().getName());
 	}
 
 	@Test
-	public void testStatementProcessor() {
+	void testStatementProcessor() {
 		String input = "CREATE TABLE 'test_table' ('id' INT PRIMARY KEY)";
 		String expectedOutput = input.replace('\'', '`');
 		assertEquals(expectedOutput, provider.getStatementProcessor().apply(input));
 	}
 
 	@Test
-	public void testConfigureDatabase() {
+	void testConfigureDatabase() {
 		HikariConfig config = mock(HikariConfig.class);
 		provider.configureDatabase(config, credentials);
 

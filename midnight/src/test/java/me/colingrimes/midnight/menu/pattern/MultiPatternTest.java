@@ -21,7 +21,7 @@ public class MultiPatternTest {
 	@Mock private ItemStack mockItem2;
 
 	@Test
-	public void testValidPatterns() {
+	void testValidPatterns() {
 		when(mockGui.getSlot(anyInt())).thenReturn(mockSlot);
 
 		MultiPattern.create()
@@ -43,7 +43,7 @@ public class MultiPatternTest {
 	}
 
 	@Test
-	public void testMaskExceptions() {
+	void testMaskExceptions() {
 		assertThrows(IllegalArgumentException.class, () -> MultiPattern.create().mask("1111111111"));
 		assertThrows(IllegalStateException.class, () ->
 				MultiPattern.create()

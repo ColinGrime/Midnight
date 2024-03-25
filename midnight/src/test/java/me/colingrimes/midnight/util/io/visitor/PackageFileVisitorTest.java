@@ -1,51 +1,37 @@
 package me.colingrimes.midnight.util.io.visitor;
 
-import org.junit.jupiter.api.BeforeEach;
+import me.colingrimes.midnight.MockSetup;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
-public class PackageFileVisitorTest {
+class PackageFileVisitorTest extends MockSetup {
 
-	private PackageFileVisitor packageFileVisitor;
+	private final Path startingPath = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "test");
 
-	@BeforeEach
-	public void setUp() {
-		Path mockStartingPath = mock(Path.class);
-		when(mockStartingPath.toString()).thenReturn("file:/path/to/start/some/package");
-		packageFileVisitor = new PackageFileVisitor(mockStartingPath, "some.package");
+	@Test
+	void testConstructor() {
+		assertDoesNotThrow(() -> new PackageFileVisitor(startingPath, "me.colingrimes.midnight.test"));
+		assertThrows(IllegalArgumentException.class, () -> new PackageFileVisitor(startingPath, "me.colingrimes.midnight.test2"));
 	}
 
 	@Test
-	public void testConstructor() {
-		Path mockStartingPath = mock(Path.class);
-		when(mockStartingPath.toString()).thenReturn("file:/path/to/start/some/package");
-		assertDoesNotThrow(() -> new PackageFileVisitor(mockStartingPath, "some.package"));
-		assertThrows(IllegalArgumentException.class, () -> new PackageFileVisitor(mockStartingPath, "some.other.package"));
-	}
+	void testPreVisitDirectory() {
+		PackageFileVisitor packageFileVisitor = new PackageFileVisitor(startingPath, "me.colingrimes.midnight.test");
+		Path invalidPath = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "test2");
+		Path invalidPath2 = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "extra", "test");
+		Path invalidPath3 = Paths.get("src", "test", "java", "me", "colingrimes", "extra", "midnight", "test");
+		Path validPath = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "test", "test2");
 
-	@Test
-	public void testPreVisitDirectory() {
-		Path validPackagePath = mock(Path.class);
-		Path invalidPackagePath = mock(Path.class);
-		Path validPackagePathLong = mock(Path.class);
+		assertThrows(IllegalArgumentException.class, () -> packageFileVisitor.preVisitDirectory(invalidPath, null));
+		assertThrows(IllegalArgumentException.class, () -> packageFileVisitor.preVisitDirectory(invalidPath2, null));
+		assertThrows(IllegalArgumentException.class, () -> packageFileVisitor.preVisitDirectory(invalidPath3, null));
 
-		when(validPackagePath.toString()).thenReturn("file:/path/to/start/some/package/subpackage");
-		when(invalidPackagePath.toString()).thenReturn("file:/path/to/start/fake/some/package");
-		when(validPackagePathLong.toString()).thenReturn("file:/path/to/start/some/package/subpackage/longer");
-
-		packageFileVisitor.preVisitDirectory(validPackagePath, null);
+		packageFileVisitor.preVisitDirectory(validPath, null);
 		assertEquals(1, packageFileVisitor.getList().size());
-		assertTrue(packageFileVisitor.getList().contains("some.package.subpackage"));
-
-		assertThrows(IllegalArgumentException.class, () -> packageFileVisitor.preVisitDirectory(invalidPackagePath, null));
-
-		packageFileVisitor.preVisitDirectory(validPackagePathLong, null);
-		assertEquals(2, packageFileVisitor.getList().size());
-		assertTrue(packageFileVisitor.getList().contains("some.package.subpackage.longer"));
+		assertEquals("me.colingrimes.midnight.test.test2", packageFileVisitor.getList().get(0));
 	}
 }

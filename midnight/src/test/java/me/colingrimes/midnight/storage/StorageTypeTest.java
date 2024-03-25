@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class StorageTypeTest {
 
 	@Test
-	public void testGetName() {
+	void testGetName() {
 		assertEquals("YAML", StorageType.YAML.getName());
 		assertEquals("JSON", StorageType.JSON.getName());
 		assertEquals("MySQL", StorageType.MYSQL.getName());
@@ -17,7 +17,7 @@ class StorageTypeTest {
 	}
 
 	@Test
-	public void testFromString() {
+	void testFromString() {
 		Optional<StorageType> yaml = StorageType.fromString("YAML");
 		assertTrue(yaml.isPresent());
 		assertEquals(StorageType.YAML, yaml.get());

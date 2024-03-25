@@ -17,7 +17,7 @@ class DatabaseCredentialsTest {
 	private ConfigurationSection config;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		String yamlConfig =
 				"""
                 host: example.com
@@ -31,7 +31,7 @@ class DatabaseCredentialsTest {
 	}
 
 	@Test
-	public void testOf() {
+	void testOf() {
 		DatabaseCredentials credentials = DatabaseCredentials.of(
 				DatabaseType.MYSQL,
 				"example.com",
@@ -50,7 +50,7 @@ class DatabaseCredentialsTest {
 	}
 
 	@Test
-	public void testFromConfig() {
+	void testFromConfig() {
 		DatabaseCredentials credentials = DatabaseCredentials.fromConfig(config);
 		assertNotNull(credentials);
 		assertEquals("example.com", credentials.getHost());
@@ -61,7 +61,7 @@ class DatabaseCredentialsTest {
 	}
 
 	@Test
-	public void testToString() {
+	void testToString() {
 		DatabaseCredentials credentials = DatabaseCredentials.of(
 				DatabaseType.MYSQL,
 				"example.com",

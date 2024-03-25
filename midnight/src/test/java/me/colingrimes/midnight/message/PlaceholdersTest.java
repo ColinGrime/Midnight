@@ -1,22 +1,17 @@
 package me.colingrimes.midnight.message;
 
+import me.colingrimes.midnight.MockSetup;
 import me.colingrimes.midnight.message.implementation.ComponentMessage;
-import me.colingrimes.midnight.util.Common;
 import me.colingrimes.midnight.util.text.Component;
 import me.colingrimes.midnight.util.text.Tooltip;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mockStatic;
 
-public class PlaceholdersTest {
+class PlaceholdersTest extends MockSetup {
 
     private static final Placeholders stringPlaceholders = Placeholders
             .of("{food}", "Apple")
@@ -36,21 +31,8 @@ public class PlaceholdersTest {
             .add("{look}", Tooltip.create("Look here!", List.of("This is a secret")))
             .add("{letters}", Message.of(List.of("D", "E", "F")));
 
-    private MockedStatic<Common> mockCommon;
-
-    @BeforeEach
-    public void setUp() {
-        mockCommon = mockStatic(Common.class);
-        mockCommon.when(() -> Common.plugin(any())).thenReturn(null);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        mockCommon.close();
-    }
-
     @Test
-    public void testStringPlaceholders() {
+    void testStringPlaceholders() {
         String expected1 = "I like Apple and my favorite letter is C with Blue color.";
         String expected2 = "I like Apple.\nThe C letter is nice.\nBlue is awesome.";
 
@@ -80,7 +62,7 @@ public class PlaceholdersTest {
     }
 
     @Test
-    public void testComponentPlaceholders() {
+    void testComponentPlaceholders() {
         String expected1 = "Hello, Player! Hope you're doing well.";
         String expected2 = "You are the Player\nPlayer is cool.";
 
@@ -107,7 +89,7 @@ public class PlaceholdersTest {
     }
 
     @Test
-    public void testStringListPlaceholders() {
+    void testStringListPlaceholders() {
         String expected1 = "I like Banana Cherry and my favorite letters are A B C with Red Green colors.";
         String expected2 = "I like Banana Cherry.\nThe letters are A B C.\nThe colors are Red Green.";
 
@@ -136,7 +118,7 @@ public class PlaceholdersTest {
     }
 
     @Test
-    public void testAllPlaceholders() {
+    void testAllPlaceholders() {
         String expected1 = "I like Orange and Look here! with D E F colors.";
         String expected2 = "The Orange is good.\nLook at Look here!.\nLetters are D E F.";
 

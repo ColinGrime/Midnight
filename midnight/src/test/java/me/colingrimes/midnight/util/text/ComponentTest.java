@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ComponentTest {
+class ComponentTest {
 
     private static final TextComponent basicComponent = new TextComponent("Hello, {name}!");
     private static final TextComponent complexComponent;
@@ -33,7 +33,7 @@ public class ComponentTest {
     }
 
     @Test
-    public void testOfAndColor() {
+    void testOfAndColor() {
         TextComponent result1 = Component.of("&aThis is a test!");
         assertEquals("This is a test!", result1.getText());
         assertEquals(ChatColor.GREEN, result1.getColor());
@@ -50,7 +50,7 @@ public class ComponentTest {
     }
 
     @Test
-    public void testReplaceWithString() {
+    void testReplaceWithString() {
         TextMessage nameValue = new TextMessage("John");
         TextMessage colorValue = new TextMessage("Blue");
         TextMessage ageValue = new TextMessage("8");
@@ -68,7 +68,7 @@ public class ComponentTest {
     }
 
     @Test
-    public void testReplaceWithComponent() {
+    void testReplaceWithComponent() {
         ComponentMessage nameValue = new ComponentMessage(new TextComponent("John"));
         ComponentMessage colorValue = new ComponentMessage(new TextComponent("Blue"));
         ComponentMessage ageValue = new ComponentMessage(new TextComponent("8"));
@@ -95,7 +95,7 @@ public class ComponentTest {
     }
 
     @Test
-    public void testReplaceWithStringList() {
+    void testReplaceWithStringList() {
         ListMessage nameValue = new ListMessage(Arrays.asList("John", "Doe"));
         ListMessage colorValue = new ListMessage(Arrays.asList("Blue", "Red"));
         ListMessage ageValue = new ListMessage(Arrays.asList("8", "4"));
@@ -113,7 +113,7 @@ public class ComponentTest {
     }
 
     @Test
-    public void testReplaceWithNoPlaceholder() {
+    void testReplaceWithNoPlaceholder() {
         var component = new TextComponent("Hello, World!");
         var value = Message.of("John");
 

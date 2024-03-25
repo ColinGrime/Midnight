@@ -18,13 +18,13 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class DatabaseUtilsTest {
+class DatabaseUtilsTest {
 
 	@Mock private ResultSet resultSet;
 	@Mock private PreparedStatement preparedStatement;
 
 	@Test
-	public void testGetTimestamp() throws SQLException {
+	void testGetTimestamp() throws SQLException {
 		String stringTime = "2023-09-16T12:00:00Z";
 		Timestamp timestamp = Timestamp.valueOf("2023-09-16 12:00:00");
 
@@ -41,7 +41,7 @@ public class DatabaseUtilsTest {
 	}
 
 	@Test
-	public void testSetTimestamp() throws SQLException {
+	void testSetTimestamp() throws SQLException {
 		Instant dateTime = Instant.now();
 
 		// SQLite Test
@@ -54,7 +54,7 @@ public class DatabaseUtilsTest {
 	}
 
 	@Test
-	public void testGetUUID() throws SQLException {
+	void testGetUUID() throws SQLException {
 		UUID expectedUUID = UUID.randomUUID();
 
 		// SQLite Test
@@ -69,7 +69,7 @@ public class DatabaseUtilsTest {
 	}
 
 	@Test
-	public void testSetUUID() throws SQLException {
+	void testSetUUID() throws SQLException {
 		UUID uuid = UUID.randomUUID();
 
 		// SQLite Test
@@ -82,7 +82,7 @@ public class DatabaseUtilsTest {
 	}
 
 	@Test
-	public void testNullsAreHandled() throws SQLException {
+	void testNullsAreHandled() throws SQLException {
 		// Setting nulls for SQLite.
 		DatabaseUtils.setTimestamp(preparedStatement, 1, null, DatabaseType.SQLITE);
 		DatabaseUtils.setUUID(preparedStatement, 1, null, DatabaseType.SQLITE);

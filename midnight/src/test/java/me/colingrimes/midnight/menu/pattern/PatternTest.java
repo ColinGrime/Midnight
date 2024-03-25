@@ -13,14 +13,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class PatternTest {
+class PatternTest {
 
 	@Mock private Gui mockGui;
 	@Mock private Slot mockSlot;
 	@Mock private ItemStack mockItem;
 
 	@Test
-	public void testValidPatterns() {
+	void testValidPatterns() {
 		when(mockGui.getSlot(anyInt())).thenReturn(mockSlot);
 
 		Pattern.create()
@@ -52,7 +52,7 @@ public class PatternTest {
 	}
 
 	@Test
-	public void testMaskExceptions() {
+	void testMaskExceptions() {
 		assertThrows(IllegalArgumentException.class, () -> Pattern.create().mask("1111111111"));
 		assertThrows(IllegalArgumentException.class, () -> Pattern.create().mask("1112"));
 		assertThrows(IllegalStateException.class, () ->
