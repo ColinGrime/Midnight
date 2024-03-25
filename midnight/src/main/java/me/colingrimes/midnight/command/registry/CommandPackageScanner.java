@@ -51,7 +51,7 @@ public class CommandPackageScanner {
         }
 
         // Get the command to register.
-        String command = getCommand(packageName);
+        String command = getCommandName(packageName);
         String newCommandPath = commandPath.isEmpty() ? command : commandPath + " " + command;
 
         // Register the command class and get the aliases.
@@ -66,7 +66,8 @@ public class CommandPackageScanner {
         for (String subPackage : Introspector.getPackages(plugin.getClass().getClassLoader(), packageName)) {
             scan(subPackage, newCommandPath);
 
-            // Register the aliases of the command.
+            // Scan the aliases of the command.
+            // This is done to allow for sub-commands to be registered with both the command and its aliases.
             for (String alias : aliases) {
                 String aliasPath = commandPath.isEmpty() ? alias : commandPath + " " + alias;
                 scan(subPackage, aliasPath);
@@ -75,13 +76,18 @@ public class CommandPackageScanner {
     }
 
     /**
-     * Gets the command from the package path.
+     * Gets the name of the command (or subcommand) from the package path:
+     * <ul>
+     *     <li>me.colingrimes.midnight.command -> ""</li>
+     *     <li>me.colingrimes.midnight.command.admin -> "admin"</li>
+     *     <li>me.colingrimes.midnight.command.admin.mute -> "mute"</li>
+     * </ul>
      *
      * @param packagePath the current package path being processed
      * @return the command from the package path
      */
     @Nonnull
-    private String getCommand(@Nonnull String packagePath) {
+    private String getCommandName(@Nonnull String packagePath) {
         // Ignore the root command package.
         if (packagePath.equals(plugin.getRootPackage() + ".command")) {
             return "";
@@ -108,25 +114,27 @@ public class CommandPackageScanner {
             @SuppressWarnings("unchecked")
             Class<? extends Command<T>> clazz = (Class<? extends Command<T>>) commandClass;
             command = clazz.getDeclaredConstructor().newInstance();
-        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
+                 IllegalAccessException e) {
             Logger.severe("Failed to register command: " + commandClass.getSimpleName());
             e.printStackTrace();
         }
 
-        if (command != null) {
-            StandardCommandHandler<T> handler = CommandHandler.create(plugin, command);
-            String[] args = commandPath.split(" ");
-            commandRegistry.register(args, handler);
-
-            // Register the command aliases.
-            for (String alias : handler.getProperties().getAliases()) {
-                args[args.length - 1] = alias;
-                commandRegistry.register(args, handler);
-            }
-
-            return handler.getProperties().getAliases();
+        // If the command was never found, then no aliases can be found.
+        if (command == null) {
+            return new String[]{};
         }
 
-        return new String[]{};
+        StandardCommandHandler<T> handler = CommandHandler.create(plugin, command);
+        String[] args = commandPath.split(" ");
+        commandRegistry.register(args, handler);
+
+        // Register the command aliases.
+        for (String alias : handler.getProperties().getAliases()) {
+            args[args.length - 1] = alias;
+            commandRegistry.register(args, handler);
+        }
+
+        return handler.getProperties().getAliases();
     }
 }

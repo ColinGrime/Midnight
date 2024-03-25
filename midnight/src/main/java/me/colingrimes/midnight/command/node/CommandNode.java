@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.command.registry.node;
+package me.colingrimes.midnight.command.node;
 
 import me.colingrimes.midnight.command.handler.CommandHandler;
 import me.colingrimes.midnight.message.Message;
@@ -60,12 +60,8 @@ public final class CommandNode implements TabExecutor {
         if (child != null) {
             child.onCommand(sender, cmd, label, Arrays.copyOfRange(args, 1, args.length));
         } else if (commandHandler == null || !commandHandler.onCommand(sender, cmd, label, args)) {
-            Optional<Message<?>> usageMessage = findUsageMessage();
-            if (usageMessage.isPresent()) {
-                usageMessage.get().send(sender);
-            } else {
-                sender.sendMessage("Unknown command. Type \"/help\" for help.");
-            }
+            String commandFailed = "Unknown command. Type \"/help\" for help.";
+            findUsageMessage().ifPresentOrElse(m -> m.send(sender), () -> sender.sendMessage(commandFailed));
         }
 
         return true;

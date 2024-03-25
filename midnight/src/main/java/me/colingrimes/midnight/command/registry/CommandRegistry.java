@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.command.registry;
 
 import me.colingrimes.midnight.command.handler.CommandHandler;
-import me.colingrimes.midnight.command.registry.node.CommandNode;
+import me.colingrimes.midnight.command.node.CommandNode;
 import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.util.Common;
 import org.bukkit.Bukkit;
@@ -84,6 +84,7 @@ public class CommandRegistry {
 	 * @param node the command node
 	 */
 	private void registerCommand(@Nonnull String name, @Nonnull CommandNode node) {
+		// Override the existing command if it already exists.
 		PluginCommand pluginCommand = Common.server().getPluginCommand(name);
 		if (pluginCommand != null) {
 			pluginCommand.setExecutor(node);
