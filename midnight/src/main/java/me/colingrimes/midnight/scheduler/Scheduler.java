@@ -14,8 +14,30 @@ import java.util.concurrent.CompletableFuture;
  */
 public interface Scheduler {
 
-	Scheduler SYNC = new SyncScheduler();
-	Scheduler ASYNC = new AsyncScheduler();
+	class Holder {
+		private static final Scheduler SYNC = new SyncScheduler();
+		private static final Scheduler ASYNC = new AsyncScheduler();
+	}
+
+	/**
+	 * Gets the sync scheduler.
+	 *
+	 * @return the sync scheduler
+	 */
+	@Nonnull
+	static Scheduler sync() {
+		return Holder.SYNC;
+	}
+
+	/**
+	 * Gets the async scheduler.
+	 *
+	 * @return the async scheduler
+	 */
+	@Nonnull
+	static Scheduler async() {
+		return Holder.ASYNC;
+	}
 
 	/**
 	 * Calls the given callable.
@@ -74,7 +96,7 @@ public interface Scheduler {
 	 * @return a future that will be completed when the task is finished
 	 */
 	@Nonnull
-	default CompletableFuture<Void> execute(@Nonnull Execution task, long delayTicks) {
+	default CompletableFuture<Void> executeLater(@Nonnull Execution task, long delayTicks) {
 		return callLater(() -> {
 			task.execute();
 			return null;

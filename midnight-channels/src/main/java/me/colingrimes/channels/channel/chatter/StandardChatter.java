@@ -112,14 +112,14 @@ public class StandardChatter implements Chatter {
     @Override
     public void send(@Nonnull Message<?> message) {
         if (online()) {
-            Scheduler.SYNC.run(() -> message.send(player()));
+            Scheduler.sync().run(() -> message.send(player()));
         }
     }
 
     @Override
     public void send(@Nonnull String message) {
         if (online()) {
-            Scheduler.SYNC.run(() -> player().sendMessage(message));
+            Scheduler.sync().run(() -> player().sendMessage(message));
         }
     }
 

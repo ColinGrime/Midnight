@@ -39,14 +39,14 @@ public class ChatListeners implements Listener {
 		// Re-direct to global channel if enabled.
 		if (ChannelAPI.global().isEnabled()) {
 			event.setCancelled(true);
-			Scheduler.SYNC.run(() -> ((GlobalChannel) ChannelAPI.global()).send(event));
+			Scheduler.sync().run(() -> ((GlobalChannel) ChannelAPI.global()).send(event));
 		}
 	}
 
 	@EventHandler
 	public void onPlayerJoin(@Nonnull PlayerJoinEvent event) {
 		UUID uuid = event.getPlayer().getUniqueId();
-		Scheduler.ASYNC.execute(() -> {
+		Scheduler.async().execute(() -> {
 			plugin.getChatterStorage().load(uuid);
 		}).exceptionally((e) -> {
 			Logger.severe("Failed to load chatter: " + uuid);
@@ -58,7 +58,7 @@ public class ChatListeners implements Listener {
 	@EventHandler
 	public void onPlayerQuit(@Nonnull PlayerQuitEvent event) {
 		Chatter chatter = Chatter.of(event.getPlayer());
-		Scheduler.ASYNC.execute(() -> {
+		Scheduler.async().execute(() -> {
 			plugin.getChatterStorage().save(chatter);
 		}).exceptionally((e) -> {
 			Logger.severe("Failed to save chatter: " + chatter.getID());

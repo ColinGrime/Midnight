@@ -85,7 +85,7 @@ public class ActionBar implements Display {
         stopTask(player);
 
         // Set up the action bar task.
-        Task task = Scheduler.SYNC.runRepeating(() -> {
+        Task task = Scheduler.sync().runRepeating(() -> {
             if (visible) {
                 player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(text));
             }

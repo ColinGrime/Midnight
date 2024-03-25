@@ -26,7 +26,7 @@ public class ParticleDelete implements Command<MidnightParticles> {
 			return;
 		}
 
-		Scheduler.ASYNC.call(() -> {
+		Scheduler.async().call(() -> {
 			plugin.getParticleStorage().delete(particle.get());
 			return null;
 		}).thenRun(() -> {

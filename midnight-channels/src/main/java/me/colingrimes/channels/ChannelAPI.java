@@ -104,7 +104,7 @@ public class ChannelAPI {
 	 */
 	@Nonnull
 	public static CompletableFuture<List<ChannelLog<?>>> getLogsByChannel(@Nonnull Channel channel, @Nonnull Instant from, @Nonnull Instant to) {
-		return Scheduler.ASYNC.call(() -> MidnightChannels.getInstance().getChatLogStorage().getLogsByChannel(channel, from, to));
+		return Scheduler.async().call(() -> MidnightChannels.getInstance().getChatLogStorage().getLogsByChannel(channel, from, to));
 	}
 
 	/**
@@ -149,6 +149,6 @@ public class ChannelAPI {
 	 */
 	@Nonnull
 	public static CompletableFuture<List<ChannelLog<?>>> getLogsByChatter(@Nonnull Chatter chatter, @Nonnull Instant from, @Nonnull Instant to) {
-		return Scheduler.ASYNC.call(() -> MidnightChannels.getInstance().getChatLogStorage().getLogsByChatter(chatter, from, to));
+		return Scheduler.async().call(() -> MidnightChannels.getInstance().getChatLogStorage().getLogsByChatter(chatter, from, to));
 	}
 }

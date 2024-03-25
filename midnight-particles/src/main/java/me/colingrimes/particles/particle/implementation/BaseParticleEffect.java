@@ -77,7 +77,7 @@ public abstract class BaseParticleEffect implements ParticleEffect {
         }
 
         // Start the particle spawning task.
-        task = Scheduler.SYNC.runRepeating(this::spawn, 0L, 10L);
+        task = Scheduler.sync().runRepeating(this::spawn, 0L, 10L);
     }
 
     @Override

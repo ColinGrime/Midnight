@@ -107,7 +107,7 @@ public abstract class Gui {
 		}
 
 		// Delay the opening by 1 tick to ensure inventory is ready.
-		Scheduler.SYNC.run(() -> {
+		Scheduler.sync().run(() -> {
 			players.put(getPlayer(), this);
 			getPlayer().openInventory(getHandle());
 		});

@@ -189,7 +189,7 @@ public class ChannelSettings implements ChatFilter {
             return;
         }
 
-        Scheduler.ASYNC.execute(() -> {
+        Scheduler.async().execute(() -> {
             MidnightChannels.getInstance().getChatLogStorage().save(message);
         }).exceptionally((e) -> {
             Logger.severe("Failed to save message to database: " + message.toText());

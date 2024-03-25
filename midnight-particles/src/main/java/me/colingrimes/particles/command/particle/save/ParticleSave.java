@@ -33,7 +33,7 @@ public class ParticleSave implements Command<MidnightParticles> {
 			particle.get().setName(name);
 		}
 
-		Scheduler.ASYNC.call(() -> {
+		Scheduler.async().call(() -> {
 			plugin.getParticleStorage().save(particle.get());
 			return null;
 		}).thenRun(() -> {

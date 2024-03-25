@@ -189,7 +189,7 @@ public class ArmorEquipListeners implements Listener {
 		}
 
 		// Check if armor was equipped through dispenser (1 tick delay is needed).
-		Scheduler.SYNC.run(() -> {
+		Scheduler.sync().run(() -> {
 			if (armorType.getFrom(player).isPresent()) {
 				Common.call(new ArmorEquipEvent(player, EquipAction.EQUIP, event.getItem(), null));
 			}
