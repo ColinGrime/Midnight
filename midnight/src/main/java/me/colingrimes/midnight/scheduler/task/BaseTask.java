@@ -11,10 +11,16 @@ abstract class BaseTask implements Task {
     private final Runnable runnable;
     private final BukkitTask task;
 
-    BaseTask(@Nonnull Runnable runnable, @Nonnull BukkitTask task) {
+    BaseTask(@Nonnull Runnable runnable, long delayTicks, long periodTicks) {
         this.runnable = runnable;
-        this.task = task;
+        this.task = schedule(delayTicks, periodTicks);
     }
+
+    /**
+     * Schedules the task.
+     */
+    @Nonnull
+    public abstract BukkitTask schedule(long delayTicks, long periodTicks);
 
     @Override
     public void run() {
