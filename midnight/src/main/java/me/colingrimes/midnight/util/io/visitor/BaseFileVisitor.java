@@ -44,7 +44,7 @@ public abstract class BaseFileVisitor<T> extends SimpleFileVisitor<Path> {
      */
     @Nonnull
     String toQualifiedName(@Nonnull Path path) {
-        if (!path.toString().startsWith(startingPath.toString())) {
+        if (!path.normalize().toUri().toString().startsWith(startingPath.normalize().toUri().toString())) {
             throw new IllegalArgumentException("Path " + path + " is not a child of " + startingPath);
         }
 

@@ -1,5 +1,7 @@
 package me.colingrimes.midnight.util.io.visitor;
 
+import me.colingrimes.midnight.util.io.Logger;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.nio.file.FileVisitResult;
@@ -8,9 +10,9 @@ import java.nio.file.attribute.BasicFileAttributes;
 
 public class ClassFileVisitor extends BaseFileVisitor<Class<?>> {
 
-    private final ClassLoader classLoader;
+    private ClassLoader classLoader;
 
-    public ClassFileVisitor(@Nonnull Path startingPath, @Nonnull String packageName, @Nonnull ClassLoader classLoader) {
+    public ClassFileVisitor(@Nonnull Path startingPath, @Nonnull String packageName, @Nullable ClassLoader classLoader) {
         super(startingPath, packageName);
         this.classLoader = classLoader;
     }
@@ -33,10 +35,15 @@ public class ClassFileVisitor extends BaseFileVisitor<Class<?>> {
      * @param className the fully qualified class name
      */
     protected void addClass(@Nonnull String className) {
+        if (classLoader == null) {
+            classLoader = getClass().getClassLoader();
+            Logger.warn("No class loader provided, attempting to use system class loader.");
+        }
+
         try {
             getList().add(Class.forName(className, true, classLoader));
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Class could not be found: " + className, e);
         }
     }
 }
