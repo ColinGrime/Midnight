@@ -10,6 +10,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 /**
  * Provides various common utility methods.
@@ -90,6 +91,15 @@ public final class Common {
 	 */
 	public static void broadcast(@Nonnull String msg) {
 		Bukkit.broadcastMessage(msg);
+	}
+
+	/**
+	 * Gets the server logger.
+	 *
+	 * @return the server logger
+	 */
+	public static Logger logger() {
+		return server().getLogger();
 	}
 
 	private Common() {
