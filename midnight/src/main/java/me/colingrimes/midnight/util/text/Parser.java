@@ -21,13 +21,20 @@ public final class Parser {
     private static final Map<Pattern, ChronoUnit> UNIT_PATTERNS = new HashMap<>();
 
     static {
+        // s sec secs second seconds
         UNIT_PATTERNS.put(Pattern.compile("s(?:ec(?:ond)?s?)?", Pattern.CASE_INSENSITIVE), ChronoUnit.SECONDS);
+        // m min mins minute minutes
         UNIT_PATTERNS.put(Pattern.compile("m(?:in(?:ute)?s?)?", Pattern.CASE_INSENSITIVE), ChronoUnit.MINUTES);
-        UNIT_PATTERNS.put(Pattern.compile("h(?:ou?rs?)?", Pattern.CASE_INSENSITIVE), ChronoUnit.HOURS);
+        // h hr hrs hour hours
+        UNIT_PATTERNS.put(Pattern.compile("h(?:rs?|ours?)?", Pattern.CASE_INSENSITIVE), ChronoUnit.HOURS);
+        // d day days
         UNIT_PATTERNS.put(Pattern.compile("d(?:ays?)?", Pattern.CASE_INSENSITIVE), ChronoUnit.DAYS);
-        UNIT_PATTERNS.put(Pattern.compile("w(?:ee)?ks?", Pattern.CASE_INSENSITIVE), ChronoUnit.WEEKS);
-        UNIT_PATTERNS.put(Pattern.compile("mo(?:nth)?s?", Pattern.CASE_INSENSITIVE), ChronoUnit.MONTHS);
-        UNIT_PATTERNS.put(Pattern.compile("y(?:ea)?rs?", Pattern.CASE_INSENSITIVE), ChronoUnit.YEARS);
+        // w wk wks week weeks
+        UNIT_PATTERNS.put(Pattern.compile("w(?:ks?|eeks?)?", Pattern.CASE_INSENSITIVE), ChronoUnit.WEEKS);
+        // mo mos month months
+        UNIT_PATTERNS.put(Pattern.compile("mo(?:s?|nths?)?", Pattern.CASE_INSENSITIVE), ChronoUnit.MONTHS);
+        // y yr yrs year years
+        UNIT_PATTERNS.put(Pattern.compile("y(?:rs?|ears?)?", Pattern.CASE_INSENSITIVE), ChronoUnit.YEARS);
     }
 
     /**
@@ -77,7 +84,12 @@ public final class Parser {
             return null;
         }
 
-        return Duration.of(amount, unit);
+        return switch(unit) {
+            case WEEKS -> Duration.ofDays(amount * 7);
+            case MONTHS -> Duration.ofDays(amount * 30);
+            case YEARS -> Duration.ofDays(amount * 365);
+            default -> Duration.of(amount, unit);
+        };
     }
 
     /**
