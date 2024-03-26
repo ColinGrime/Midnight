@@ -4,6 +4,7 @@ import me.colingrimes.midnight.scheduler.Scheduler;
 import me.colingrimes.midnight.scheduler.implementation.AsyncScheduler;
 import me.colingrimes.midnight.scheduler.implementation.SyncScheduler;
 import me.colingrimes.midnight.util.Common;
+import me.colingrimes.midnight.util.bukkit.Players;
 import org.bukkit.Server;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,8 @@ import javax.annotation.Nonnull;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -38,6 +41,7 @@ public abstract class MockSetup {
 
 	// Common static mocks for all tests.
 	@Mock protected MockedStatic<Common> common;
+	@Mock protected MockedStatic<Players> players;
 	@Mock protected MockedStatic<Scheduler> scheduler;
 	protected MockedStatic<Instant> instant;
 
@@ -52,6 +56,16 @@ public abstract class MockSetup {
 		common.when(Common::server).thenReturn(mock(Server.class));
 		common.when(() -> Common.plugin(any())).thenReturn(null);
 		common.when(Common::logger).thenReturn(mock(Logger.class));
+
+		// Mock the Players.get() call to return the player mock.
+		players.when(() -> Players.get((String) any())).thenAnswer(invocation -> {
+			String name = invocation.getArgument(0);
+			return name.equalsIgnoreCase(bukkit.player.getName()) ? Optional.of(bukkit.player) : Optional.empty();
+		});
+		players.when(() -> Players.get((UUID) any())).thenAnswer(invocation -> {
+			UUID uuid = invocation.getArgument(0);
+			return uuid.equals(bukkit.player.getUniqueId()) ? Optional.of(bukkit.player) : Optional.empty();
+		});
 
 		// Mock the Scheduler.sync() and Scheduler.async() calls.
 		scheduler.when(Scheduler::sync).thenReturn(syncScheduler);
