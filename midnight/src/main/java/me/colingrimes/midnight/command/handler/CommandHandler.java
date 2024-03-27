@@ -8,7 +8,6 @@ import org.bukkit.command.TabExecutor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.List;
 
 /**
  * Represents a handler for executing and providing tab completion for custom commands.
@@ -31,18 +30,18 @@ public interface CommandHandler extends TabExecutor {
 	}
 
 	/**
-	 * Provides tab completion suggestions for the specified command.
+	 * Executes the command.
+	 * If nothing executes or no message was sent to the sender, {@code false} is
+	 * returned so that a parent usage message or unknown command message can be sent.
 	 *
-	 * @param sender  the command sender
-	 * @param command the command being executed
-	 * @param label   the command label
-	 * @param args    the command arguments
-	 * @return a list of tab completion suggestions or {@code null} if no suggestions are provided
+	 * @param commandSender the sender of the command
+	 * @param command 	    the command that was executed
+	 * @param s 		    the label of the command
+	 * @param strings 	    the arguments provided with the command
+	 * @return {@code true} if the command was executed successfully or some message was sent, {@code false} if nothing occurred
 	 */
 	@Override
-	default List<String> onTabComplete(@Nonnull CommandSender sender, @Nonnull Command command, @Nonnull String label, @Nonnull String[] args) {
-		return null;
-	}
+	boolean onCommand(@Nonnull CommandSender commandSender, @Nonnull Command command, @Nonnull String s, @Nonnull String[] strings);
 
 	/**
 	 * Gets the usage message for the command.
