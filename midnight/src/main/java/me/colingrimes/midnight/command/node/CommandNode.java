@@ -9,7 +9,6 @@ import org.bukkit.command.TabExecutor;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Represents a node in a tree-like structure for managing command hierarchies,
@@ -69,22 +68,24 @@ public final class CommandNode implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(@Nonnull CommandSender sender, @Nonnull Command cmd, @Nonnull String label, @Nonnull String[] args) {
-        List<String> completions = commandHandler == null ? null : commandHandler.onTabComplete(sender, cmd, label, args);
-        if (completions != null) {
-            return completions;
-        }
-
-        if (args.length == 1) {
-            return children.keySet().stream()
-                    .filter(child -> child.startsWith(args[0].toLowerCase()))
-                    .collect(Collectors.toList());
-        }
-
+        // At least 2 arguments are needed so that it makes sense to tab complete the sub command.
         if (args.length > 1) {
             CommandNode child = children.get(args[0].toLowerCase());
             if (child != null) {
                 return child.onTabComplete(sender, cmd, label, Arrays.copyOfRange(args, 1, args.length));
             }
+        }
+
+        // Delegate tab completion to the command handler if it exists.
+        List<String> completions = commandHandler == null ? null : commandHandler.onTabComplete(sender, cmd, label, args);
+        if (completions != null) {
+            return completions;
+        }
+
+        // Tab complete with the child command nodes if nothing else is found.
+        if (args.length == 1) {
+            List<String> found = children.keySet().stream().filter(c -> c.startsWith(args[0].toLowerCase())).toList();
+            return found.isEmpty() ? null : found;
         }
 
         return null;
@@ -99,6 +100,16 @@ public final class CommandNode implements TabExecutor {
     @Nonnull
     public Map<String, CommandNode> getChildren() {
         return children;
+    }
+
+    /**
+     * Retrieves the command handler associated with this command node.
+     *
+     * @return the command handler
+     */
+    @Nullable
+    public CommandHandler getHandler() {
+        return commandHandler;
     }
 
     /**
