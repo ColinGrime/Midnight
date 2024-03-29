@@ -2,7 +2,8 @@ package me.colingrimes.midnight.storage.file;
 
 import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.serialize.Serializable;
-import me.colingrimes.midnight.storage.file.composite.CompositeIdentifier;
+import me.colingrimes.midnight.storage.file.composite.Identifier;
+import me.colingrimes.midnight.storage.file.exception.FileNotSpecifiedException;
 import me.colingrimes.midnight.util.io.Logger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -20,14 +21,6 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
     public YamlStorage(@Nonnull Midnight plugin) {
         super(plugin);
     }
-
-    /**
-     * Returns the deserialization function for the specific data type.
-     *
-     * @return the deserialization function
-     */
-    @Nonnull
-    protected abstract Function<Map<String, Object>, T> getDeserializationFunction();
 
     @Override
     public void loadAll() throws IOException {
@@ -49,8 +42,8 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
     }
 
     @Override
-    public void load(@Nonnull CompositeIdentifier identifier) throws IOException {
-        File file = getFile(getFilePath(identifier), false);
+    public void load(@Nonnull Identifier identifier) throws Exception {
+        File file = getFile(getFileName(identifier), false);
         if (!file.exists()) {
             return;
         }
@@ -67,14 +60,12 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
     }
 
     @Override
-    public void save(@Nonnull T data) throws IOException {
-        CompositeIdentifier identifier = getIdentifier(data);
-        if (identifier == null) {
-            return;
-        }
+    public void save(@Nonnull T data) throws Exception {
+        Identifier identifier = Identifier.create();
+        configureIdentifier(identifier, data);
 
         // Gets the file and internal path.
-        File file = getFile(getFilePath(identifier), true);
+        File file = getFile(getFileName(identifier), true);
         String path = getInternalPath(identifier);
 
         // Serialize the data.
@@ -87,13 +78,12 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
     }
 
     @Override
-    public void delete(@Nonnull T data) throws IOException {
-        CompositeIdentifier identifier = getIdentifier(data);
-        if (identifier == null) {
-            return;
-        }
+    public void delete(@Nonnull T data) throws Exception {
+        Identifier identifier = Identifier.create();
+        configureIdentifier(identifier, data);
 
-        File file = getFile(getFilePath(identifier), false);
+        // Gets the file and internal path.
+        File file = getFile(getFileName(identifier), false);
         String path = identifier.getInternalPath();
 
         // Delete the file if it is a unique file.
@@ -160,14 +150,25 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
     }
 
     /**
-     * Gets the file for the specified identifier.
+     * Gets the name of the YAML file for the specified identifier.
+     * <p>
+     * If the file name is not specified, the default file name is set and used.
      *
      * @param identifier the identifier
-     * @return the file
+     * @return the YAML file name
      */
-    private String getFilePath(@Nonnull CompositeIdentifier identifier) {
-        String filePath = identifier.getFilePath();
-        return filePath.endsWith(".yml") ? filePath : filePath + ".yml";
+    @Nonnull
+    private String getFileName(@Nonnull Identifier identifier) throws FileNotSpecifiedException {
+        if (identifier.getFileName() == null) {
+            identifier.setFileName(getDefaultFileName());
+        }
+
+        String fileName = identifier.getFileName();
+        if (fileName == null) {
+            throw new FileNotSpecifiedException();
+        } else {
+            return fileName.endsWith(".yml") ? fileName : fileName + ".yml";
+        }
     }
 
     /**
@@ -176,7 +177,7 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
      * @param identifier the identifier
      * @return the internal path
      */
-    private String getInternalPath(@Nonnull CompositeIdentifier identifier) {
+    private String getInternalPath(@Nonnull Identifier identifier) {
         String internalPath = identifier.getInternalPath();
         return internalPath.isEmpty() ? "" : internalPath + ".";
     }
