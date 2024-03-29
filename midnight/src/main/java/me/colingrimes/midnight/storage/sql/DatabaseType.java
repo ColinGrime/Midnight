@@ -2,7 +2,6 @@ package me.colingrimes.midnight.storage.sql;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Optional;
 
 /**
  * Represents various types of database systems.

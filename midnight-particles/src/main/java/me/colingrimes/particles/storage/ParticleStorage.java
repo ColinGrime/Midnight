@@ -1,7 +1,7 @@
 package me.colingrimes.particles.storage;
 
 import me.colingrimes.midnight.storage.file.YamlStorage;
-import me.colingrimes.midnight.storage.file.composite.CompositeIdentifier;
+import me.colingrimes.midnight.storage.file.composite.Identifier;
 import me.colingrimes.particles.MidnightParticles;
 import me.colingrimes.particles.particle.ParticleEffect;
 
@@ -26,12 +26,13 @@ public class ParticleStorage extends YamlStorage<ParticleEffect> {
 
 	@Nullable
 	@Override
-	protected CompositeIdentifier getIdentifier(@Nullable ParticleEffect data) {
-		if (data == null) {
-			return CompositeIdentifier.of("particles.yml");
-		} else {
-			return CompositeIdentifier.of("particles.yml", data.getUUID().toString());
-		}
+	protected String getDefaultFileName() {
+		return "particles.yml";
+	}
+
+	@Override
+	protected void configureIdentifier(@Nonnull Identifier identifier, @Nonnull ParticleEffect data) {
+		identifier.setInternalPath(data.getUUID().toString());
 	}
 
 	@Nonnull
