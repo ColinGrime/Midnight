@@ -68,6 +68,29 @@ public final class Logger {
 		Common.logger().log(Level.SEVERE, msg);
 	}
 
+	/**
+	 * Logs a debug message.
+	 *
+	 * @param msg the debug message to log
+	 */
+	public static void debug(@Nonnull String msg) {
+		if (Midnight.DEBUG) {
+			log("[Midnight-DEBUG] " + msg);
+		}
+	}
+
+	/**
+	 * Logs a debug message with arguments.
+	 *
+	 * @param msg the debug message to log
+	 * @param args the arguments to format the message with
+	 */
+	public static void debug(@Nonnull String msg, Object... args) {
+		if (Midnight.DEBUG) {
+			log("[Midnight-DEBUG] " + String.format(msg, args));
+		}
+	}
+
 	private Logger() {
 		throw new UnsupportedOperationException("This class cannot be instantiated.");
 	}

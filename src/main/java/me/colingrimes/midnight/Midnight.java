@@ -16,6 +16,7 @@ import java.util.List;
 
 public abstract class Midnight extends JavaPlugin {
 
+	public static final boolean DEBUG = false;
 	private final ConfigurationManager configurationManager = new ConfigurationManager();
 
 	// Override these methods to add functionality to your plugin.

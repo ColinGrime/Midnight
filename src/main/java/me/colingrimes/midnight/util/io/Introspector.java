@@ -1,17 +1,20 @@
 package me.colingrimes.midnight.util.io;
 
-import com.google.common.base.Preconditions;
 import me.colingrimes.midnight.util.io.visitor.BaseFileVisitor;
 import me.colingrimes.midnight.util.io.visitor.ClassFileVisitor;
 import me.colingrimes.midnight.util.io.visitor.PackageFileVisitor;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 public final class Introspector {
 
@@ -83,6 +86,9 @@ public final class Introspector {
 	private static <T> List<T> walkFileSystem(@Nonnull ClassLoader classLoader, @Nonnull String packageName, boolean recursive, @Nonnull FileVisitorType fileVisitorType) {
 		String packagePath = packageName.replace('.', '/');
 		URI uri = getUri(classLoader, packagePath);
+		if (uri == null) {
+			return new ArrayList<>();
+		}
 
 		// If the URI is a file, walk the directory.
 		if (uri.getScheme().equals("file")) {
@@ -121,7 +127,8 @@ public final class Introspector {
 		};
 
 		try {
-			Files.walkFileTree(startingPath, Set.of(FileVisitOption.FOLLOW_LINKS), recursive ? Integer.MAX_VALUE : 1, fileVisitor);
+			Logger.debug("walkFileSystem() -> startingPath(%s), fileVisitorType(%s), recursive(%s)", startingPath, fileVisitorType, recursive);
+			Files.walkFileTree(startingPath, Set.of(FileVisitOption.FOLLOW_LINKS), recursive ? Integer.MAX_VALUE : 2, fileVisitor);
 			return fileVisitor.getList();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -136,10 +143,12 @@ public final class Introspector {
 	 * @param path        the path of the resource to be located
 	 * @return the URI of the resource
 	 */
-	@Nonnull
+	@Nullable
 	private static URI getUri(@Nonnull ClassLoader classLoader, @Nonnull String path) {
 		URL resourceUrl = classLoader.getResource(path);
-		Preconditions.checkArgument(resourceUrl != null, "Resource not found for path: " + path);
+		if (resourceUrl == null) {
+			return null;
+		}
 
 		try {
 			return resourceUrl.toURI();

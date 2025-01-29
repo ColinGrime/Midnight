@@ -40,6 +40,8 @@ public class CommandPackageScanner {
      * @param commandPath the command path
      */
     private void scan(@Nonnull String packageName, @Nonnull String commandPath) {
+        Logger.debug("scan() -> packageName(%s), commandPath(%s)", packageName, commandPath);
+
         // Get all Command classes.
         List<Class<?>> classes = Introspector.getClasses(plugin.getClass().getClassLoader(), packageName);
         classes = classes.stream().filter(Command.class::isAssignableFrom).toList();
@@ -57,13 +59,18 @@ public class CommandPackageScanner {
         // Register the command class and get the aliases.
         String[] aliases = new String[]{};
         if (classes.size() == 1) {
+            Logger.debug("Registering command path: %s", newCommandPath);
             aliases = registerCommand(plugin, newCommandPath, classes.get(0));
         } else if (!packageName.equals(plugin.getRootPackage() + ".command")) {
+            Logger.debug("No command class found. Registering handlerless command path: %s", newCommandPath);
             commandRegistry.register(newCommandPath.split(" "), null);
         }
 
+        List<String> subPackages = Introspector.getPackages(plugin.getClass().getClassLoader(), packageName);
+        Logger.debug("Scanning sub-packages: %s", subPackages);
+
         // Recursively check the sub-packages for sub-commands.
-        for (String subPackage : Introspector.getPackages(plugin.getClass().getClassLoader(), packageName)) {
+        for (String subPackage : subPackages) {
             scan(subPackage, newCommandPath);
 
             // Scan the aliases of the command.
