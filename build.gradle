@@ -1,47 +1,68 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'maven-publish'
-    version '1.2.0'
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
 
-    java {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
-    }
+group 'me.colingrimes.midnight'
+version '1.2.0'
 
-    repositories {
-        mavenCentral()
-        maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-        maven { url 'https://repo.papermc.io/repository/maven-public/' }
-    }
+java {
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+}
 
+repositories {
+    mavenCentral()
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url 'https://repo.papermc.io/repository/maven-public/' }
+    maven { url 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+}
+
+dependencies {
+    implementation 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT'
+    implementation 'me.clip:placeholderapi:2.11.6'
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+
+    // Databases:
+    implementation 'org.flywaydb:flyway-core:9.8.3'
+    implementation 'com.zaxxer:HikariCP:5.0.1'
+    implementation 'org.postgresql:postgresql:42.3.8'
+    implementation 'org.xerial:sqlite-jdbc:3.41.2.1'
+
+    // Testing:
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testImplementation 'org.mockito:mockito-core:5.3.1'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.5.0'
+    testImplementation 'org.xerial:sqlite-jdbc:3.36.0.3'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+processResources {
+    filter ReplaceTokens, beginToken: '${', endToken: '}', tokens: ['version': version]
+}
+
+shadowJar {
+    archiveFileName = "Midnight-${project.version}.jar"
     dependencies {
-        implementation 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT'
-        implementation 'com.google.code.findbugs:jsr305:3.0.2'
-
-        // Testing:
-        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
-        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
-        testImplementation 'org.mockito:mockito-core:5.3.1'
-        testImplementation 'org.mockito:mockito-junit-jupiter:5.5.0'
-        testImplementation 'org.xerial:sqlite-jdbc:3.36.0.3'
+        include dependency('org.flywaydb:flyway-core:9.8.3')
+        include dependency('com.zaxxer:HikariCP:5.0.1')
+        include dependency('org.postgresql:postgresql:42.3.8')
+        include dependency('org.xerial:sqlite-jdbc:3.41.2.1')
     }
+}
 
-    test {
-        useJUnitPlatform()
-    }
-
-    processResources {
-        filter ReplaceTokens, beginToken: '${', endToken: '}', tokens: ['version': version]
-    }
-
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                from components.java
-            }
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
         }
     }
 }
