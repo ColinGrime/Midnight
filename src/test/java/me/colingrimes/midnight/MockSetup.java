@@ -36,6 +36,7 @@ public abstract class MockSetup {
 	// Common mocks for all tests.
 	protected BukkitMocks bukkit;
 	@Mock protected Midnight plugin;
+	@Mock protected Server server;
 	@Mock protected SyncScheduler syncScheduler;
 	@Mock protected AsyncScheduler asyncScheduler;
 
@@ -52,8 +53,11 @@ public abstract class MockSetup {
 		// For testing file-related operations (config, storage, etc).
 		lenient().when(plugin.getDataFolder()).thenReturn(tempDir.toFile());
 
+		// For testing the server-related operations.
+		lenient().when(server.getPluginCommand(any())).thenReturn(null);
+
 		// Mock the Common.server(), Common.plugin(), and Common.logger() calls.
-		common.when(Common::server).thenReturn(mock(Server.class));
+		common.when(Common::server).thenReturn(server);
 		common.when(() -> Common.plugin(any())).thenReturn(null);
 		common.when(Common::logger).thenReturn(mock(Logger.class));
 

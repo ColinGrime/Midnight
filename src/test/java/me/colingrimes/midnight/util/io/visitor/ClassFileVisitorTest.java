@@ -21,12 +21,12 @@ class ClassFileVisitorTest extends MockSetup {
 	@Test
 	void testVisitFile() {
 		ClassFileVisitor classFileVisitor = new ClassFileVisitor(startingPath, "me.colingrimes.midnight.test", null);
-		Path invalidPath = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "test", "Test");
+		Path invalidPath = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "test", "TestCommand");
 		Path invalidPath2 = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "test", "Invalid.class");
-		Path invalidPath3 = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "test2", "Test.class");
-		Path invalidPath4 = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "extra", "test", "Test.class");
-		Path invalidPath5 = Paths.get("src", "test", "java", "me", "colingrimes", "extra", "midnight", "test", "Test.class");
-		Path validPath = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "test", "Test.class");
+		Path invalidPath3 = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "test2", "TestCommand.class");
+		Path invalidPath4 = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "extra", "test", "TestCommand.class");
+		Path invalidPath5 = Paths.get("src", "test", "java", "me", "colingrimes", "extra", "midnight", "test", "TestCommand.class");
+		Path validPath = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "test", "TestCommand.class");
 
 		classFileVisitor.visitFile(invalidPath, null);
 		assertThrows(RuntimeException.class, () -> classFileVisitor.visitFile(invalidPath2, null));
@@ -37,6 +37,6 @@ class ClassFileVisitorTest extends MockSetup {
 
 		classFileVisitor.visitFile(validPath, null);
 		assertEquals(1, classFileVisitor.getList().size());
-		assertEquals("me.colingrimes.midnight.test.Test", classFileVisitor.getList().get(0).getName());
+		assertEquals("me.colingrimes.midnight.test.TestCommand", classFileVisitor.getList().get(0).getName());
 	}
 }

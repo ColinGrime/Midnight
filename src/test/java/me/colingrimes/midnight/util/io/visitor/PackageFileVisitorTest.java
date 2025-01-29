@@ -24,6 +24,7 @@ class PackageFileVisitorTest extends MockSetup {
 		Path invalidPath = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "test2");
 		Path invalidPath2 = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "extra", "test");
 		Path invalidPath3 = Paths.get("src", "test", "java", "me", "colingrimes", "extra", "midnight", "test");
+		Path invalidPath4 = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "test");
 		Path validPath = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "test", "test2");
 
 		assertThrows(IllegalArgumentException.class, () -> packageFileVisitor.preVisitDirectory(invalidPath, null));
@@ -33,5 +34,8 @@ class PackageFileVisitorTest extends MockSetup {
 		packageFileVisitor.preVisitDirectory(validPath, null);
 		assertEquals(1, packageFileVisitor.getList().size());
 		assertEquals("me.colingrimes.midnight.test.test2", packageFileVisitor.getList().get(0));
+
+		packageFileVisitor.preVisitDirectory(invalidPath4, null);
+		assertEquals(1, packageFileVisitor.getList().size());
 	}
 }

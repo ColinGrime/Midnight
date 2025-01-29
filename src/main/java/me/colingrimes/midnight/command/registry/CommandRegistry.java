@@ -4,7 +4,6 @@ import me.colingrimes.midnight.command.handler.CommandHandler;
 import me.colingrimes.midnight.command.node.CommandNode;
 import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.util.Common;
-import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 
 import javax.annotation.Nonnull;
@@ -36,6 +35,16 @@ public class CommandRegistry {
 	}
 
 	/**
+	 * Gets a map of all command nodes registered with the registry.
+	 *
+	 * @return the command nodes
+	 */
+	@Nonnull
+	public Map<String, CommandNode> getCommandNodes() {
+		return commandNodes;
+	}
+
+	/**
 	 * Scans and registers command classes within the root command package of the plugin.
 	 */
 	public void scanPackages() {
@@ -45,6 +54,7 @@ public class CommandRegistry {
 
 	/**
 	 * Registers a command with its associated {@link CommandHandler}.
+	 * The command handler is only associated with the last argument in the command.
 	 *
 	 * @param args    the command arguments, where the first element is the command name,
 	 *                and any subsequent elements are subcommand names
@@ -93,10 +103,10 @@ public class CommandRegistry {
 		}
 
 		try {
-			Field commandMapField = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+			Field commandMapField = Common.server().getClass().getDeclaredField("commandMap");
 			commandMapField.setAccessible(true);
 
-			CommandMap commandMap = (CommandMap) commandMapField.get(Bukkit.getServer());
+			CommandMap commandMap = (CommandMap) commandMapField.get(Common.server());
 			commandMap.register(plugin.getName(), new CustomCommand(name, node, node));
 		} catch (NoSuchFieldException | IllegalAccessException e) {
 			e.printStackTrace();
