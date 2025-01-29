@@ -1,9 +1,0 @@
-group 'me.colingrimes.midnight-channels'
-
-dependencies {
-    compileOnly project(':midnight')
-}
-
-jar {
-    archiveFileName = "MidnightChannels-${project.version}.jar"
-}
