@@ -317,7 +317,7 @@ public final class Items {
 			if (lore != null) meta.setLore(Arrays.asList(placeholders.apply(lore).toText().split("\n")));
 			if (hide) meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 			if (glow) {
-				item.addUnsafeEnchantment(Enchantment.ARROW_INFINITE, 1);
+				item.addUnsafeEnchantment(Enchantment.INFINITY, 1);
 				meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 			}
 
