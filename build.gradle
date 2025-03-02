@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'me.colingrimes.midnight'
-version '1.2.0'
+version '1.2.0.2'
 
 java {
     sourceCompatibility JavaVersion.VERSION_17
@@ -23,22 +23,22 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT'
+    implementation 'org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT'
     implementation 'me.clip:placeholderapi:2.11.6'
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
     // Databases:
     implementation 'org.flywaydb:flyway-core:9.8.3'
     implementation 'com.zaxxer:HikariCP:5.0.1'
-    implementation 'org.postgresql:postgresql:42.3.8'
-    implementation 'org.xerial:sqlite-jdbc:3.41.2.1'
+    implementation 'org.postgresql:postgresql:42.7.2'
+    implementation 'org.xerial:sqlite-jdbc:3.41.2.2'
 
     // Testing:
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testImplementation 'org.mockito:mockito-core:5.3.1'
     testImplementation 'org.mockito:mockito-junit-jupiter:5.5.0'
-    testImplementation 'org.xerial:sqlite-jdbc:3.36.0.3'
+    testImplementation 'org.xerial:sqlite-jdbc:3.41.2.2'
 }
 
 test {
