@@ -71,8 +71,8 @@ class ParserTest {
 
 	@Test
 	void testParseParticle() {
-		assertEquals(Parser.parseParticle("REDSTONE"), Particle.REDSTONE);
-		assertEquals(Parser.parseParticle("redstone"), Particle.REDSTONE);
+		assertEquals(Parser.parseParticle("DUST"), Particle.DUST);
+		assertEquals(Parser.parseParticle("dust"), Particle.DUST);
 		assertNull(Parser.parseParticle("INVALID_PARTICLE"));
 	}
 
