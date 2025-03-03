@@ -26,6 +26,7 @@ class ClassFileVisitorTest extends MockSetup {
 		Path invalidPath3 = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "test2", "TestCommand.class");
 		Path invalidPath4 = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "extra", "test", "TestCommand.class");
 		Path invalidPath5 = Paths.get("src", "test", "java", "me", "colingrimes", "extra", "midnight", "test", "TestCommand.class");
+		Path invalidPath6 = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "test", "TestCommand$Test.class");
 		Path validPath = Paths.get("src", "test", "java", "me", "colingrimes", "midnight", "test", "TestCommand.class");
 
 		classFileVisitor.visitFile(invalidPath, null);
@@ -33,6 +34,7 @@ class ClassFileVisitorTest extends MockSetup {
 		assertThrows(IllegalArgumentException.class, () -> classFileVisitor.visitFile(invalidPath3, null));
 		assertThrows(IllegalArgumentException.class, () -> classFileVisitor.visitFile(invalidPath4, null));
 		assertThrows(IllegalArgumentException.class, () -> classFileVisitor.visitFile(invalidPath5, null));
+		classFileVisitor.visitFile(invalidPath6, null);
 		assertEquals(0, classFileVisitor.getList().size());
 
 		classFileVisitor.visitFile(validPath, null);

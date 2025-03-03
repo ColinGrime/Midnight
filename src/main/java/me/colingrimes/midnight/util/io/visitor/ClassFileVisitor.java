@@ -20,7 +20,7 @@ public class ClassFileVisitor extends BaseFileVisitor<Class<?>> {
     @Nonnull
     @Override
     public FileVisitResult visitFile(@Nonnull Path file, @Nullable BasicFileAttributes attrs) {
-        if (!file.toString().endsWith(".class")) {
+        if (!file.toString().endsWith(".class") || file.toString().contains("$")) {
             return FileVisitResult.CONTINUE;
         }
 
