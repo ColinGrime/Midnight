@@ -1,5 +1,6 @@
 package me.colingrimes.midnight.util.bukkit;
 
+import com.google.common.collect.HashMultimap;
 import me.colingrimes.midnight.message.Placeholders;
 import me.colingrimes.midnight.util.text.Text;
 import org.bukkit.Material;
@@ -13,10 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Provides various utilities for {@link ItemStack} objects.</p>
@@ -179,6 +177,7 @@ public final class Items {
 	public static class Builder {
 
 		private final Placeholders placeholders = Placeholders.create();
+		private final Map<String, String> nbt = new HashMap<>();
 		private final Material defMaterial;
 
 		private Material material;
@@ -295,11 +294,24 @@ public final class Items {
 		 * @param placeholder the placeholder you want to add
 		 * @param replacement the value you want to replace the placeholder with
 		 * @param <T>         any type
-		 * @return the placeholders object
+		 * @return the itembuilder object
 		 */
 		@Nonnull
 		public <T> Builder placeholder(@Nonnull String placeholder, @Nonnull T replacement) {
 			placeholders.add(placeholder, replacement);
+			return this;
+		}
+
+		/**
+		 * Adds a NBT tag (key-value pair) on an item.
+		 *
+		 * @param key  the key of the tag
+		 * @param value the value corresponding to the key
+		 * @return the itembuilder object
+		 */
+		@Nonnull
+		public Builder nbt(@Nonnull String key, @Nonnull String value) {
+			nbt.put(key, value);
 			return this;
 		}
 
@@ -315,13 +327,17 @@ public final class Items {
 
 			if (name != null) meta.setDisplayName(placeholders.apply(name).toText());
 			if (lore != null) meta.setLore(Arrays.asList(placeholders.apply(lore).toText().split("\n")));
-			if (hide) meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+			if (hide) {
+				meta.setAttributeModifiers(HashMultimap.create());
+				meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+			}
 			if (glow) {
-				item.addUnsafeEnchantment(Enchantment.INFINITY, 1);
+				meta.addEnchant(Enchantment.INFINITY, 1, true);
 				meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 			}
 
 			item.setItemMeta(meta);
+			nbt.forEach((key, value) -> NBT.setTag(item, key, value));
 			return item;
 		}
 
