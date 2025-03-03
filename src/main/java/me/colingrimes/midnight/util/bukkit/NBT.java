@@ -40,8 +40,10 @@ public final class NBT {
 	 * @param item the item to set the tag on
 	 * @param key  the key of the tag
 	 * @param value the value corresponding to the key
+	 * @return the item with the tag added
 	 */
-	public static void setTag(@Nonnull ItemStack item, @Nonnull String key, @Nonnull String value) {
+	@Nonnull
+	public static ItemStack setTag(@Nonnull ItemStack item, @Nonnull String key, @Nonnull String value) {
 		Objects.requireNonNull(item, "Item is null.");
 		Objects.requireNonNull(item.getItemMeta(), "Meta is null.");
 		Objects.requireNonNull(key, "Key is null.");
@@ -51,6 +53,7 @@ public final class NBT {
 		NamespacedKey namespacedKey = new NamespacedKey(MidnightPlugin.get(), key);
 		meta.getPersistentDataContainer().set(namespacedKey, PersistentDataType.STRING, value);
 		item.setItemMeta(meta);
+		return item;
 	}
 
 	private NBT() {
