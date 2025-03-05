@@ -128,7 +128,8 @@ public final class Introspector {
 
 		try {
 			Logger.debug("walkFileSystem() -> startingPath(%s), fileVisitorType(%s), recursive(%s)", startingPath, fileVisitorType, recursive);
-			Files.walkFileTree(startingPath, Set.of(FileVisitOption.FOLLOW_LINKS), recursive ? Integer.MAX_VALUE : 2, fileVisitor);
+			int maxDepth = recursive ? Integer.MAX_VALUE : (fileVisitorType == FileVisitorType.CLASS ? 1 : 2);
+			Files.walkFileTree(startingPath, Set.of(FileVisitOption.FOLLOW_LINKS), maxDepth, fileVisitor);
 			return fileVisitor.getList();
 		} catch (IOException e) {
 			throw new RuntimeException(e);

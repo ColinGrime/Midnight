@@ -45,6 +45,7 @@ public class CommandPackageScanner {
         // Get all Command classes.
         List<Class<?>> classes = Introspector.getClasses(plugin.getClass().getClassLoader(), packageName);
         classes = classes.stream().filter(Command.class::isAssignableFrom).toList();
+        Logger.debug("Classes found: %s", classes.toString());
 
         // Only 1 command class per package is allowed.
         if (classes.size() > 1) {
