@@ -7,14 +7,12 @@ import me.colingrimes.midnight.util.io.visitor.PackageFileVisitor;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public final class Introspector {
 
@@ -69,6 +67,33 @@ public final class Introspector {
 	@Nonnull
 	public static List<String> getPackagesRecursively(@Nonnull ClassLoader classLoader, @Nonnull String packageName) {
 		return walkFileSystem(classLoader, packageName, true, FileVisitorType.PACKAGE);
+	}
+
+	/**
+	 * Instantiates the classes and converts them into the given class.
+	 *
+	 * @param classes the classes to instantiate
+	 * @param type the class type to convert the classes to
+	 * @param args optional args to pass into the constructor
+	 * @return the instantiated classes
+	 */
+	@Nonnull
+	public static <T> List<T> instantiateClasses(@Nonnull List<Class<?>> classes, @Nonnull Class<T> type, Object...args) {
+		List<T> instances = new ArrayList<>();
+		for (Class<?> clazz : classes) {
+			try {
+				if (args.length == 0) {
+					instances.add(type.cast(clazz.getConstructor().newInstance()));
+				} else {
+					Class<?>[] parameters = Arrays.stream(args).map(Object::getClass).toArray(Class<?>[]::new);
+					instances.add(type.cast(clazz.getConstructor(parameters).newInstance(args)));
+				}
+			} catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+					 NoSuchMethodException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return instances;
 	}
 
 	/**
