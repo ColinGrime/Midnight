@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import javax.annotation.Nonnull;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 public class SyncScheduler implements Scheduler {
 
@@ -42,7 +43,13 @@ public class SyncScheduler implements Scheduler {
 
     @Nonnull
     @Override
-    public Task runRepeating(@Nonnull Runnable task, long delay, long period) {
-        return new SyncTask(task, delay, period);
+    public Task runRepeating(@Nonnull Runnable task, long delay, long period, long cancelTicks) {
+        return new SyncTask(task, delay, period, cancelTicks);
+    }
+
+    @Nonnull
+    @Override
+    public Task runRepeating(@Nonnull Consumer<Task> task, long delay, long period, long cancelTicks) {
+        return new SyncTask(task, delay, period, cancelTicks);
     }
 }

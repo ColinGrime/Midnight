@@ -1,19 +1,35 @@
 package me.colingrimes.midnight.scheduler.task;
 
+import me.colingrimes.midnight.scheduler.Scheduler;
 import org.bukkit.scheduler.BukkitTask;
 
 import javax.annotation.Nonnull;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 abstract class BaseTask implements Task {
 
     private final AtomicInteger timesRan = new AtomicInteger(0);
     private final Runnable runnable;
+    private final Consumer<Task> consumer;
     private final BukkitTask task;
 
-    BaseTask(@Nonnull Runnable runnable, long delayTicks, long periodTicks) {
+    BaseTask(@Nonnull Runnable runnable, long delayTicks, long periodTicks, long cancelTicks) {
         this.runnable = runnable;
+        this.consumer = null;
         this.task = schedule(delayTicks, periodTicks);
+        if (cancelTicks != -1) {
+            Scheduler.async().runLater(this::stop, cancelTicks);
+        }
+    }
+
+    BaseTask(@Nonnull Consumer<Task> consumer, long delayTicks, long periodTicks, long cancelTicks) {
+        this.runnable = null;
+        this.consumer = consumer;
+        this.task = schedule(delayTicks, periodTicks);
+        if (cancelTicks != -1) {
+            Scheduler.async().runLater(this::stop, cancelTicks);
+        }
     }
 
     /**
@@ -24,10 +40,14 @@ abstract class BaseTask implements Task {
 
     @Override
     public void run() {
-        if (!isCancelled()) {
+        if (isCancelled()) {
+            return;
+        } else if (runnable != null) {
             runnable.run();
-            timesRan.incrementAndGet();
+        } else if (consumer != null) {
+            consumer.accept(this);
         }
+        timesRan.incrementAndGet();
     }
 
     @Override

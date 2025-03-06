@@ -8,6 +8,7 @@ import me.colingrimes.midnight.scheduler.task.Task;
 import javax.annotation.Nonnull;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 /**
  * Represents a scheduler for running tasks.
@@ -127,5 +128,44 @@ public interface Scheduler {
 	 * @return a task that can be used to cancel the task
 	 */
 	@Nonnull
-	Task runRepeating(@Nonnull Runnable task, long delayTicks, long periodTicks);
+	default Task runRepeating(@Nonnull Runnable task, long delayTicks, long periodTicks) {
+		return runRepeating(task, delayTicks, periodTicks, -1);
+	}
+
+	/**
+	 * Runs a task repeatedly.
+	 *
+	 * @param task        the task to run
+	 * @param delayTicks  the delay in ticks
+	 * @param periodTicks the period in ticks
+	 * @param cancelTicks the amount of ticks until the task is cancelled (or -1 to never cancel it)
+	 * @return a task that can be used to cancel the task
+	 */
+	@Nonnull
+	Task runRepeating(@Nonnull Runnable task, long delayTicks, long periodTicks, long cancelTicks);
+
+	/**
+	 * Runs a task repeatedly.
+	 *
+	 * @param task        the task to run
+	 * @param delayTicks  the delay in ticks
+	 * @param periodTicks the period in ticks
+	 * @return a task that can be used to cancel the task
+	 */
+	@Nonnull
+	default Task runRepeating(@Nonnull Consumer<Task> task, long delayTicks, long periodTicks) {
+		return runRepeating(task, delayTicks, periodTicks, -1);
+	}
+
+	/**
+	 * Runs a task repeatedly.
+	 *
+	 * @param task        the task to run
+	 * @param delayTicks  the delay in ticks
+	 * @param periodTicks the period in ticks
+	 * @param cancelTicks the amount of ticks until the task is cancelled (or -1 to never cancel it)
+	 * @return a task that can be used to cancel the task
+	 */
+	@Nonnull
+	Task runRepeating(@Nonnull Consumer<Task> task, long delayTicks, long periodTicks, long cancelTicks);
 }

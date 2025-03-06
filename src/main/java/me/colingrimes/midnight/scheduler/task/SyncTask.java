@@ -5,11 +5,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
 
 import javax.annotation.Nonnull;
+import java.util.function.Consumer;
 
 public class SyncTask extends BaseTask {
 
-	public SyncTask(@Nonnull Runnable runnable, long delayTicks, long periodTicks) {
-		super(runnable, delayTicks, periodTicks);
+	public SyncTask(@Nonnull Runnable runnable, long delayTicks, long periodTicks, long cancelTicks) {
+		super(runnable, delayTicks, periodTicks, cancelTicks);
+	}
+
+	public SyncTask(@Nonnull Consumer<Task> consumer, long delayTicks, long periodTicks, long cancelTicks) {
+		super(consumer, delayTicks, periodTicks, cancelTicks);
 	}
 
 	@Nonnull
