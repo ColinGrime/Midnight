@@ -1,5 +1,8 @@
 package me.colingrimes.midnight.util.misc;
 
+import javax.annotation.Nonnull;
+import java.util.List;
+
 public final class Random {
 
 	private final static java.util.Random random = new java.util.Random();
@@ -54,6 +57,28 @@ public final class Random {
 	 */
 	public static boolean chance(double num) {
 		return num >= decimal(0.0, 100.0);
+	}
+
+	/**
+	 * Gets a random item from the provided list.
+	 *
+	 * @param list the list
+	 * @return a random item
+	 */
+	@Nonnull
+	public static <T> T item(@Nonnull List<T> list) {
+		return list.get(Random.number(list.size()));
+	}
+
+	/**
+	 * Gets a random item from the provided array.
+	 *
+	 * @param array the array
+	 * @return a random item
+	 */
+	@Nonnull
+	public static <T> T item(@Nonnull T[] array) {
+		return array[Random.number(array.length)];
 	}
 
 	private Random() {
