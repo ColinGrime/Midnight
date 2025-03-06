@@ -1,6 +1,9 @@
 package me.colingrimes.midnight.util.misc;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public final class Random {
@@ -79,6 +82,66 @@ public final class Random {
 	@Nonnull
 	public static <T> T item(@Nonnull T[] array) {
 		return array[Random.number(array.length)];
+	}
+
+	/**
+	 * Gets a list of random items from the provided list (repeated elements are not allowed).
+	 *
+	 * @param list the list
+	 * @param count the number of random items
+	 * @return the random items
+	 */
+	@Nonnull
+	public static <T> List<T> items(@Nonnull List<T> list, int count) {
+		return items(list, count, false);
+	}
+
+	/**
+	 * Gets a list of random items from the provided list.
+	 *
+	 * @param list the list
+	 * @param count the number of random items
+	 * @param repeat whether repeating elements are allowed
+	 * @return the random items
+	 */
+	@Nonnull
+	public static <T> List<T> items(@Nonnull List<T> list, int count, boolean repeat) {
+		if (!repeat) {
+			List<T> copy = new ArrayList<>(list);
+			Collections.shuffle(copy);
+			return copy.subList(0, count);
+		}
+
+		List<T> random = new ArrayList<>();
+		for (int i=0; i<count; i++) {
+			random.add(item(list));
+		}
+		return random;
+	}
+
+	/**
+	 * Gets an array of random items from the provided array (repeated elements are not allowed).
+	 *
+	 * @param array the array
+	 * @param count the number of random items
+	 * @return the random items
+	 */
+	@Nonnull
+	public static <T> T[] items(@Nonnull T[] array, int count) {
+		return items(array, count, false);
+	}
+
+	/**
+	 * Gets an array of random items from the provided array.
+	 *
+	 * @param array the array
+	 * @param count the number of random items
+	 * @param repeat whether repeating elements are allowed
+	 * @return the random items
+	 */
+	@Nonnull
+	public static <T> T[] items(@Nonnull T[] array, int count, boolean repeat) {
+		return items(Arrays.asList(array), count, repeat).toArray(Arrays.copyOf(array, count));
 	}
 
 	private Random() {
