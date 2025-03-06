@@ -185,6 +185,7 @@ public final class Items {
 		private List<String> lore;
 		private boolean hide = false;
 		private boolean glow = false;
+		private boolean unbreakable = false;
 
 		public Builder(@Nonnull Material def) {
 			this.defMaterial = Objects.requireNonNull(def, "material");
@@ -237,8 +238,34 @@ public final class Items {
 		 * @return the itembuilder object
 		 */
 		@Nonnull
+		public Builder lore(@Nullable String[] lore) {
+			if (lore == null) {
+				return this;
+			} else {
+				return lore(List.of(lore));
+			}
+		}
+
+		/**
+		 * Sets the lore of the item.
+		 *
+		 * @param lore the lore you want the item to have
+		 * @return the itembuilder object
+		 */
+		@Nonnull
 		public Builder lore(@Nullable List<String> lore) {
 			this.lore = lore;
+			return this;
+		}
+
+		/**
+		 * Hides the attributes of the item.
+		 *
+		 * @return the itembuilder object
+		 */
+		@Nonnull
+		public Builder hide() {
+			hide(true);
 			return this;
 		}
 
@@ -259,8 +286,41 @@ public final class Items {
 		 * @return the itembuilder object
 		 */
 		@Nonnull
+		public Builder glow() {
+			glow(true);
+			return this;
+		}
+
+		/**
+		 * Makes the item glow.
+		 *
+		 * @return the itembuilder object
+		 */
+		@Nonnull
 		public Builder glow(boolean glow) {
 			this.glow = glow;
+			return this;
+		}
+
+		/**
+		 * Makes the item unbreakable.
+		 *
+		 * @return the itembuilder object
+		 */
+		@Nonnull
+		public Builder unbreakable() {
+			unbreakable(true);
+			return this;
+		}
+
+		/**
+		 * Makes the item unbreakable.
+		 *
+		 * @return the itembuilder object
+		 */
+		@Nonnull
+		public Builder unbreakable(boolean unbreakable) {
+			this.unbreakable = unbreakable;
 			return this;
 		}
 
@@ -285,6 +345,7 @@ public final class Items {
 			parse(sec, "name").ifPresent(this::name);
 			parse(sec, "lore", List.class).ifPresent(this::lore);
 			parse(sec, "glow", Boolean.class).ifPresent(this::glow);
+			parse(sec, "unbreakable", Boolean.class).ifPresent(this::glow);
 			return this;
 		}
 
@@ -334,6 +395,10 @@ public final class Items {
 			if (glow) {
 				meta.addEnchant(Enchantment.INFINITY, 1, true);
 				meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+			}
+			if (unbreakable) {
+				meta.setUnbreakable(true);
+				meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
 			}
 
 			item.setItemMeta(meta);
