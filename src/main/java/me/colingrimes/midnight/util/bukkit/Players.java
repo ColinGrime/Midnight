@@ -134,7 +134,7 @@ public final class Players {
 	 */
 	@Nonnull
 	public static Optional<Player> find(@Nullable Location location, int blocks) {
-		return Locations.findClosest(Player.class, location, blocks);
+		return Entities.find(Player.class, location, blocks);
 	}
 
 	private Players() {

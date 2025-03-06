@@ -1,70 +1,68 @@
 package me.colingrimes.midnight.util.bukkit;
 
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
+import org.bukkit.util.Vector;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class Locations {
 
 	/**
-	 * Converts a location to a very readable string.
+	 * Retrieves all locations between two locations.
+	 *
+	 * @param corner1 the first corner
+	 * @param corner2 the second corner
+	 * @return all blocks between the two locations
+	 */
+	public static List<Location> between(Location corner1, Location corner2) {
+		double lowX = Math.min(corner1.getX(), corner2.getX());
+		double lowY = Math.min(corner1.getY(), corner2.getY());
+		double lowZ = Math.min(corner1.getZ(), corner2.getZ());
+
+		List<Location> locations = new ArrayList<>();
+		for (int blockY = Math.abs(corner1.getBlockY() - corner2.getBlockY()); blockY >= 0; blockY--) {
+			for (int blockX = 0; blockX < Math.abs(corner1.getBlockX() - corner2.getBlockX()); blockX++) {
+				for (int blockZ = 0; blockZ < Math.abs(corner1.getBlockZ() - corner2.getBlockZ()); blockZ++) {
+					locations.add(new Location(corner1.getWorld(), lowX + blockX, lowY + blockY, lowZ + blockZ));
+				}
+			}
+		}
+		return locations;
+	}
+
+	/**
+	 * Gets the direction from the source location to the target location.
+	 *
+	 * @param source the source location
+	 * @param target the target location
+	 * @return the resulting unit vector
+	 */
+	@Nonnull
+	public static Vector direction(@Nonnull Location source, @Nonnull Location target) {
+		return target.toVector().subtract(source.toVector()).normalize();
+	}
+
+	/**
+	 * Checks if the two locations have equal X, Y, Z block coordinates.
+	 *
+	 * @param location1 the first location
+	 * @param location2 the second location
+	 * @return true if the locations are equal
+	 */
+	public static boolean equal(@Nonnull Location location1, @Nonnull Location location2) {
+		return location1.getBlock().equals(location2.getBlock());
+	}
+
+	/**
+	 * Converts a location to a readable string.
 	 *
 	 * @param location the location
 	 * @return the string
 	 */
 	public static String toString(Location location) {
 		return "X=" + location.getBlockX() + " Y=" + location.getBlockY() + " Z=" + location.getBlockZ();
-	}
-
-	/**
-	 * Finds the closest entity of the specified type to the given location within the given number of blocks.
-	 *
-	 * @param entityType the class of the desired entity type
-	 * @param location   the location
-	 * @param blocks     the number of blocks
-	 * @param <T>        the type of the entity
-	 * @return the closest entity of the specified type
-	 */
-	@Nonnull
-	public static <T extends Entity> Optional<T> findClosest(@Nonnull Class<T> entityType, @Nullable Location location, int blocks) {
-		if (location == null || location.getWorld() == null) {
-			return Optional.empty();
-		}
-
-		Collection<T> entities;
-		T closestEntity = null;
-		double closestDistance = Double.MAX_VALUE;
-
-		// Only check nearby entities if there's less than 100 blocks to check.
-		if (blocks <= 100) {
-			entities = location.getWorld().getNearbyEntities(location, blocks, blocks, blocks)
-					.stream()
-					.filter(entityType::isInstance)
-					.map(entityType::cast)
-					.toList();
-		} else {
-			entities = location.getWorld().getEntitiesByClass(entityType);
-		}
-
-		// If the list exceeds the threshold, return an empty optional.
-		if (entities.size() > 1000) {
-			return Optional.empty();
-		}
-
-		// Find the closest entity.
-		for (T entity : entities) {
-			double distance = entity.getLocation().distanceSquared(location);
-			if (distance < closestDistance) {
-				closestEntity = entity;
-				closestDistance = distance;
-			}
-		}
-
-		return Optional.ofNullable(closestEntity);
 	}
 
 	private Locations() {
