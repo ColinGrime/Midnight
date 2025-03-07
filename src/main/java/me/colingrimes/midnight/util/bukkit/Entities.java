@@ -15,12 +15,14 @@ public final class Entities {
 	/**
 	 * Spawns the entity type at the given location.
 	 *
-	 * @param location the location to spawn the entity
 	 * @param entityType the entity type to spawn
+	 * @param location the location to spawn the entity
+	 * @return the spawned in entity
 	 */
-	public static void spawn(@Nonnull Location location, @Nonnull EntityType entityType) {
+	@Nonnull
+	public static Entity spawn(@Nonnull EntityType entityType, @Nonnull Location location) {
 		Preconditions.checkNotNull(location.getWorld(), "World is null.");
-		location.getWorld().spawnEntity(location, entityType);
+		return location.getWorld().spawnEntity(location, entityType);
 	}
 
 	/**
@@ -48,6 +50,42 @@ public final class Entities {
 	public static Collection<Entity> nearby(@Nonnull Location location, double x, double y, double z) {
 		Preconditions.checkNotNull(location.getWorld(), "World is null.");
 		return location.getWorld().getNearbyEntities(location, x, y, z);
+	}
+
+	/**
+	 * Gets all nearby entities of the specified type.
+	 *
+	 * @param entityType the type of entity to filter by
+	 * @param location the location
+	 * @param distance the distance
+	 * @return all nearby entities of the specified type
+	 */
+	@Nonnull
+	public static <T extends Entity> Collection<T> nearby(@Nonnull Class<T> entityType, @Nonnull Location location, double distance) {
+		return nearby(location, distance)
+				.stream()
+				.filter(entityType::isInstance)
+				.map(entityType::cast)
+				.toList();
+	}
+
+	/**
+	 * Gets all nearby entities of the specified type.
+	 *
+	 * @param entityType the type of entity to filter by
+	 * @param location the location
+	 * @param x the x coordinate
+	 * @param y the y coordinate
+	 * @param z the z coordinate
+	 * @return all nearby entities of the specified type
+	 */
+	@Nonnull
+	public static <T extends Entity> Collection<T> nearby(@Nonnull Class<T> entityType, @Nonnull Location location, double x, double y, double z) {
+		return nearby(location, x, y, z)
+				.stream()
+				.filter(entityType::isInstance)
+				.map(entityType::cast)
+				.toList();
 	}
 
 	/**
