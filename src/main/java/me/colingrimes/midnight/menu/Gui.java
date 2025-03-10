@@ -72,7 +72,7 @@ public abstract class Gui {
 	}
 
 	/**
-	 * Gets whether the {@link Gui} is valid (opened).
+	 * Gets whether the {@link Gui} is valid.
 	 *
 	 * @return true if valid
 	 */

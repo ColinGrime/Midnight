@@ -14,6 +14,7 @@ public class DefaultConfigurationAdapter extends BaseConfigurationAdapter {
 	public DefaultConfigurationAdapter(@Nonnull Midnight plugin) {
 		this.plugin = plugin;
 		this.plugin.saveDefaultConfig();
+		this.reload();
 	}
 
 	@Override

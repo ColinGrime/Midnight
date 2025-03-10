@@ -1,6 +1,7 @@
 package me.colingrimes.midnight.config.adapter;
 
 import me.colingrimes.midnight.Midnight;
+import me.colingrimes.midnight.util.io.Logger;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import javax.annotation.Nonnull;
@@ -19,6 +20,9 @@ public class CustomConfigurationAdapter extends BaseConfigurationAdapter {
 			file.getParentFile().mkdirs();
 			plugin.saveResource(configName, false);
 		}
+
+		Logger.debug("Custom configuration file found: %s", file.getAbsoluteFile());
+		reload();
 	}
 
 	@Override
