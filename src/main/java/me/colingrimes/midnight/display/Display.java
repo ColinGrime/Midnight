@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Represents a display element in Minecraft, such as boss bars, action bars, and titles.
+ * Represents a display element (e.g. action bars, boss bars, titles).
  * Display elements can show text or other information to the player.
  */
 public interface Display {
@@ -37,7 +37,7 @@ public interface Display {
      * Creates a {@code BossBar} with the provided text.
      *
      * @param text the text to display
-     * @return the created bossbar
+     * @return the created boss bar
      */
     @Nonnull
     static BossBar bossBar(@Nonnull String text) {
@@ -48,7 +48,7 @@ public interface Display {
      * Creates an {@code ActionBar} with the provided text.
      *
      * @param text the text to display
-     * @return the created actionbar
+     * @return the created action bar
      */
     @Nonnull
     static ActionBar actionBar(@Nonnull String text) {
@@ -67,9 +67,9 @@ public interface Display {
     }
 
     /**
-     * Gets the priority of the display element.
+     * Gets the type of display element.
      *
-     * @return the priority of the display element
+     * @return the display type
      */
     @Nonnull
     DisplayType getType();
@@ -77,7 +77,7 @@ public interface Display {
     /**
      * Gets the text of the display element.
      *
-     * @return the text of the display element
+     * @return the display text
      */
     @Nonnull
     String getText();
@@ -85,14 +85,14 @@ public interface Display {
     /**
      * Sets the text of the display element.
      *
-     * @param text the new text for the display element
+     * @param text the new display text
      */
     void setText(@Nonnull String text);
 
     /**
-     * Gets the set of players currently watching the display element.
+     * Gets the list of players currently watching the display element.
      *
-     * @return a list of players watching the display element
+     * @return the list of watching players
      */
     @Nonnull
     List<Player> players();
