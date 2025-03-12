@@ -4,6 +4,7 @@ import me.colingrimes.midnight.display.Display;
 import me.colingrimes.midnight.display.type.DisplayType;
 import me.colingrimes.midnight.event.DisplayHideEvent;
 import me.colingrimes.midnight.event.DisplayShowEvent;
+import me.colingrimes.midnight.scheduler.Scheduler;
 import me.colingrimes.midnight.util.Common;
 import me.colingrimes.midnight.util.text.Text;
 import org.bukkit.Bukkit;
@@ -69,16 +70,7 @@ public class BossBar implements Display {
 
     @Override
     public void setVisible(boolean visible) {
-        bossBar.setVisible(true);
-    }
-
-    /**
-     * Sets the color of the boss bar.
-     *
-     * @param color the new color of the boss bar
-     */
-    public void setColor(@Nonnull BarColor color) {
-        bossBar.setColor(color);
+        bossBar.setVisible(visible);
     }
 
     /**
@@ -92,12 +84,12 @@ public class BossBar implements Display {
     }
 
     /**
-     * Sets the style of the boss bar.
+     * Sets the color of the boss bar.
      *
-     * @param style the new style of the boss bar
+     * @param color the new color of the boss bar
      */
-    public void setStyle(@Nonnull BarStyle style) {
-        bossBar.setStyle(style);
+    public void setColor(@Nonnull BarColor color) {
+        bossBar.setColor(color);
     }
 
     /**
@@ -111,12 +103,12 @@ public class BossBar implements Display {
     }
 
     /**
-     * Sets the progress of the boss bar.
+     * Sets the style of the boss bar.
      *
-     * @param progress the new progress of the boss bar
+     * @param style the new style of the boss bar
      */
-    public void setProgress(double progress) {
-        bossBar.setProgress(progress);
+    public void setStyle(@Nonnull BarStyle style) {
+        bossBar.setStyle(style);
     }
 
     /**
@@ -126,6 +118,57 @@ public class BossBar implements Display {
      */
     public double getProgress() {
         return bossBar.getProgress();
+    }
+
+    /**
+     * Sets the progress of the boss bar.
+     *
+     * @param progress the new progress of the boss bar
+     */
+    public void setProgress(double progress) {
+        bossBar.setProgress(progress);
+    }
+
+    /**
+     * Animates the progress of the boss bar.
+     * This sets the progress to 0.0 (empty) to 1.0 (full) over the specified number of ticks.
+     * The boss bar will become invisible after the animation is complete.
+     *
+     * @param ticks the number of ticks to animate the boss bar
+     */
+    public void animateProgress(int ticks) {
+        animateProgress(ticks, true);
+    }
+
+    /**
+     * Animates the progress of the boss bar.
+     * This sets the progress to 0.0 (empty) to 1.0 (full) over the specified number of ticks.
+     *
+     * @param ticks the number of ticks to animate the boss bar
+     * @param hideAfterAnimated true if the boss bar should disappear after the animation is complete
+     */
+    public void animateProgress(int ticks, boolean hideAfterAnimated) {
+        bossBar.setProgress(0.0);
+        Scheduler.sync().runRepeating((task) -> {
+            double progress = bossBar.getProgress() + (1.0 / ticks);
+            if (progress < 1.0) {
+                bossBar.setProgress(progress);
+            } else {
+                bossBar.setProgress(1.0);
+                Scheduler.sync().runLater(() -> setVisible(!hideAfterAnimated), 3L);
+                task.stop();
+            }
+        }, 1L, 1L);
+    }
+
+    /**
+     * Checks if the boss bar has a flag.
+     *
+     * @param flag the flag to check for
+     * @return true if the boss bar has the flag
+     */
+    public boolean hasFlag(@Nonnull BarFlag flag) {
+        return bossBar.hasFlag(flag);
     }
 
     /**
@@ -144,15 +187,5 @@ public class BossBar implements Display {
      */
     public void removeFlag(@Nonnull BarFlag flag) {
         bossBar.removeFlag(flag);
-    }
-
-    /**
-     * Checks if the boss bar has a flag.
-     *
-     * @param flag the flag to check for
-     * @return true if the boss bar has the flag
-     */
-    public boolean hasFlag(@Nonnull BarFlag flag) {
-        return bossBar.hasFlag(flag);
     }
 }
