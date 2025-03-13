@@ -62,9 +62,12 @@ public final class Common {
 	 *
 	 * @param event the event class
 	 * @param <T>   any type that extends event
+	 * @return      the event that was called
 	 */
-	public static <T extends Event> void call(@Nonnull T event) {
+	@Nonnull
+	public static <T extends Event> T call(@Nonnull T event) {
 		Bukkit.getPluginManager().callEvent(event);
+		return event;
 	}
 
 	/**
