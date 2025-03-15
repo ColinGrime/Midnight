@@ -1,9 +1,7 @@
 package me.colingrimes.midnight.util.bukkit;
 
 import me.colingrimes.midnight.util.io.Filer;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
+import org.bukkit.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -229,6 +227,21 @@ public final class Worlds {
 	public static File worldFolder(@Nonnull String name) {
 		File file = new File(container(), name);
 		return exists(file) ? file : null;
+	}
+
+	/**
+	 * Creates a new world border with the specified center and size.
+	 *
+	 * @param center the center location
+	 * @param size the size of the world border
+	 * @return the new world border
+	 */
+	@Nonnull
+	public static WorldBorder border(@Nonnull Location center, int size) {
+		WorldBorder border = Bukkit.createWorldBorder();
+		border.setCenter(center);
+		border.setSize(size);
+		return border;
 	}
 
 	private Worlds() {
