@@ -111,6 +111,19 @@ public class Cooldown<K> {
         return entry.expiration.isAfter(Instant.now());
     }
 
+    /**
+     * Gets the amount of time left for the specified key.
+     *
+     * @param key the key to check
+     * @return the duration left of the key
+     */
+    @Nonnull
+    public Duration getTimeLeft(@Nonnull K key) {
+        CooldownEntry<K> entry = cooldowns.get(key);
+        if (entry == null || entry.expiration == null || entry.expiration.isBefore(Instant.now())) return Duration.ZERO;
+        return Duration.between(Instant.now(), entry.expiration);
+    }
+
     private static class CooldownEntry<K> {
         Instant expiration;
         Consumer<K> action;
