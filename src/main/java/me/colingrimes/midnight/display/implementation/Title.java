@@ -9,20 +9,26 @@ import me.colingrimes.midnight.util.text.Text;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Title implements Display {
 
-    private String titleText;
-    private String subtitleText;
+    private String id;
+    private String title;
+    private String subtitle;
     private int fadeInTime;
     private int stayTime;
     private int fadeOutTime;
 
-    public Title(@Nonnull String titleText) {
-        this.titleText = Text.color(titleText);
-        this.subtitleText = "";
+    public Title(@Nullable String title) {
+        this(title, null);
+    }
+
+    public Title(@Nullable String title, @Nullable String subtitle) {
+        this.title = Text.color(title);
+        this.subtitle = Text.color(subtitle);
         this.fadeInTime = 20;  // Default 1 second.
         this.stayTime = 60;    // Default 3 seconds.
         this.fadeOutTime = 20; // Default 1 second.
@@ -37,12 +43,12 @@ public class Title implements Display {
     @Nonnull
     @Override
     public String getText() {
-        return titleText;
+        return title;
     }
 
     @Override
     public void setText(@Nonnull String text) {
-        this.titleText = Text.color(text);
+        this.title = Text.color(text);
     }
 
     @Override
@@ -50,14 +56,25 @@ public class Title implements Display {
         DisplayShowEvent displayShowEvent = new DisplayShowEvent(this, player);
         Common.call(displayShowEvent);
         if (!displayShowEvent.isCancelled()) {
-            player.sendTitle(titleText, subtitleText, fadeInTime, stayTime, fadeOutTime);
+            player.sendTitle(title, subtitle, fadeInTime, stayTime, fadeOutTime);
         }
     }
 
     @Override
     public void show(@Nonnull Player player, long duration, @Nonnull TimeUnit unit) {
         Common.call(new DisplayHideEvent(this, player));
-        player.sendTitle(titleText, subtitleText, fadeInTime, (int) unit.toMillis(duration) / 50, fadeOutTime);
+        player.sendTitle(title, subtitle, fadeInTime, (int) unit.toMillis(duration) / 50, fadeOutTime);
+    }
+
+    @Nullable
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(@Nullable String id) {
+        this.id = id;
     }
 
     /**
@@ -67,7 +84,7 @@ public class Title implements Display {
      */
     @Nonnull
     public String getSubtitle() {
-        return subtitleText;
+        return subtitle;
     }
 
     /**
@@ -76,7 +93,7 @@ public class Title implements Display {
      * @param subtitleText the subtitle text
      */
     public void setSubtitle(@Nonnull String subtitleText) {
-        this.subtitleText = Text.color(subtitleText);
+        this.subtitle = Text.color(subtitleText);
     }
 
     /**
@@ -136,21 +153,21 @@ public class Title implements Display {
     @Nonnull
     @Override
     public List<Player> players() {
-        return List.of(); // no-op
+        throw new UnsupportedOperationException("This method has no operations.");
     }
 
     @Override
     public void hide(@Nonnull Player player) {
-        // no-op
+        throw new UnsupportedOperationException("This method has no operations.");
     }
 
     @Override
     public boolean isVisible() {
-        return false; // no-op
+        throw new UnsupportedOperationException("This method has no operations.");
     }
 
     @Override
     public void setVisible(boolean visible) {
-        // no-op
+        throw new UnsupportedOperationException("This method has no operations.");
     }
 }

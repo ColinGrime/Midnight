@@ -13,6 +13,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import java.util.Map;
 public class ActionBar implements Display {
 
     private final Map<Player, Task> tasks = new HashMap<>();
+    private String id;
     private String text;
     private boolean visible;
 
@@ -36,6 +38,12 @@ public class ActionBar implements Display {
 
     @Nonnull
     @Override
+    public List<Player> players() {
+        return tasks.keySet().stream().toList();
+    }
+
+    @Nonnull
+    @Override
     public String getText() {
         return text;
     }
@@ -43,12 +51,6 @@ public class ActionBar implements Display {
     @Override
     public void setText(@Nonnull String text) {
         this.text = Text.color(text);
-    }
-
-    @Nonnull
-    @Override
-    public List<Player> players() {
-        return tasks.keySet().stream().toList();
     }
 
     @Override
@@ -74,6 +76,17 @@ public class ActionBar implements Display {
     @Override
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    @Nullable
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(@Nullable String id) {
+        this.id = id;
     }
 
     /**

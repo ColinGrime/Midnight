@@ -14,11 +14,13 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class BossBar implements Display {
 
     private final org.bukkit.boss.BossBar bossBar;
+    private String id;
 
     public BossBar(@Nonnull String text) {
         this.bossBar = Bukkit.createBossBar(Text.color(text), BarColor.PURPLE, BarStyle.SOLID);
@@ -33,6 +35,12 @@ public class BossBar implements Display {
 
     @Nonnull
     @Override
+    public List<Player> players() {
+        return bossBar.getPlayers();
+    }
+
+    @Nonnull
+    @Override
     public String getText() {
         return bossBar.getTitle();
     }
@@ -40,12 +48,6 @@ public class BossBar implements Display {
     @Override
     public void setText(@Nonnull String text) {
         bossBar.setTitle(Text.color(text));
-    }
-
-    @Nonnull
-    @Override
-    public List<Player> players() {
-        return bossBar.getPlayers();
     }
 
     @Override
@@ -71,6 +73,17 @@ public class BossBar implements Display {
     @Override
     public void setVisible(boolean visible) {
         bossBar.setVisible(visible);
+    }
+
+    @Nullable
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(@Nullable String id) {
+        this.id = id;
     }
 
     /**
@@ -132,7 +145,7 @@ public class BossBar implements Display {
     /**
      * Animates the progress of the boss bar.
      * This sets the progress to 0.0 (empty) to 1.0 (full) over the specified number of ticks.
-     * The boss bar will become invisible after the animation is complete.
+     * The boss bar will be hidden for all players after the animation is complete.
      *
      * @param ticks the number of ticks to animate the boss bar
      */
@@ -145,7 +158,7 @@ public class BossBar implements Display {
      * This sets the progress to 0.0 (empty) to 1.0 (full) over the specified number of ticks.
      *
      * @param ticks the number of ticks to animate the boss bar
-     * @param hideAfterAnimated true if the boss bar should disappear after the animation is complete
+     * @param hideAfterAnimated true if the boss bar should be hidden for all players after the animation is complete
      */
     public void animateProgress(int ticks, boolean hideAfterAnimated) {
         bossBar.setProgress(0.0);
@@ -155,8 +168,10 @@ public class BossBar implements Display {
                 bossBar.setProgress(progress);
             } else {
                 bossBar.setProgress(1.0);
-                Scheduler.sync().runLater(() -> setVisible(!hideAfterAnimated), 3L);
                 task.stop();
+                if (hideAfterAnimated) {
+                    Scheduler.sync().runLater(this::hideAll, 3L);
+                }
             }
         }, 1L, 1L);
     }

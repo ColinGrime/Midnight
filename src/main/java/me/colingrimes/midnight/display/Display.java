@@ -8,6 +8,7 @@ import me.colingrimes.midnight.scheduler.Scheduler;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -56,14 +57,26 @@ public interface Display {
     }
 
     /**
-     * Creates a {@code Title} with the provided text.
+     * Creates a {@code Title} with the provided title.
      *
-     * @param text the text to display
+     * @param title the title to display
      * @return the created title
      */
     @Nonnull
-    static Title title(@Nonnull String text) {
-        return new Title(text);
+    static Title title(@Nullable String title) {
+        return new Title(title);
+    }
+
+    /**
+     * Creates a {@code Title} with the provided title and subtitle.
+     *
+     * @param title the title to display
+     * @param subtitle the subtitle to display
+     * @return the created title
+     */
+    @Nonnull
+    static Title title(@Nullable String title, @Nullable String subtitle) {
+        return new Title(title, subtitle);
     }
 
     /**
@@ -73,6 +86,14 @@ public interface Display {
      */
     @Nonnull
     DisplayType getType();
+
+    /**
+     * Gets the list of players currently watching the display element.
+     *
+     * @return the list of watching players
+     */
+    @Nonnull
+    List<Player> players();
 
     /**
      * Gets the text of the display element.
@@ -88,14 +109,6 @@ public interface Display {
      * @param text the new display text
      */
     void setText(@Nonnull String text);
-
-    /**
-     * Gets the list of players currently watching the display element.
-     *
-     * @return the list of watching players
-     */
-    @Nonnull
-    List<Player> players();
 
     /**
      * Shows the display element to the specified player indefinitely.
@@ -153,4 +166,21 @@ public interface Display {
      * @param visible true if the display element should be visible
      */
     void setVisible(boolean visible);
+
+    /**
+     * Gets the ID of the display element.
+     * <p>
+     * You can optionally set an ID by using {@link Display#setId(String)}.
+     *
+     * @return the ID of the display element
+     */
+    @Nullable
+    String getId();
+
+    /**
+     * Sets the ID of the display element.
+     *
+     * @param id the ID of the display element
+     */
+    void setId(@Nullable String id);
 }
