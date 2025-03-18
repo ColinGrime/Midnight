@@ -144,30 +144,76 @@ public class BossBar implements Display {
 
     /**
      * Animates the progress of the boss bar.
-     * This sets the progress to 0.0 (empty) to 1.0 (full) over the specified number of ticks.
+     * This moves the bar from 0.0 to 1.0 over the specified number of ticks.
+     * <p>
      * The boss bar will be hidden for all players after the animation is complete.
      *
      * @param ticks the number of ticks to animate the boss bar
      */
     public void animateProgress(int ticks) {
-        animateProgress(ticks, true);
+        animateProgress(ticks, 0.0);
     }
 
     /**
      * Animates the progress of the boss bar.
-     * This sets the progress to 0.0 (empty) to 1.0 (full) over the specified number of ticks.
+     * This moves the bar from {@code startProgress} to 1.0 over the specified number of ticks.
+     * Progress bounds is [0, 1.0].
+     * <p>
+     * The boss bar will be hidden for all players after the animation is complete.
      *
      * @param ticks the number of ticks to animate the boss bar
+     * @param startProgress the starting progress of the boss bar
+     */
+    public void animateProgress(int ticks, double startProgress) {
+        animateProgress(ticks, startProgress, 1.0);
+    }
+
+    /**
+     * Animates the progress of the boss bar.
+     * This moves the bar from {@code startProgress} to {@code endProgress} over the specified number of ticks.
+     * Progress bounds is [0, 1.0].
+     * <p>
+     * If {@code startProgress} is higher than {@code endProgress}, the bar will animate backwards.
+     * <p>
+     * The boss bar will be hidden for all players after the animation is complete.
+     *
+     * @param ticks the number of ticks to animate the boss bar
+     * @param startProgress the starting progress of the boss bar
+     * @param endProgress the ending progress of the boss bar
+     */
+    public void animateProgress(int ticks, double startProgress, double endProgress) {
+        animateProgress(ticks, startProgress, endProgress, true);
+    }
+
+    /**
+     * Animates the progress of the boss bar.
+     * This moves the bar from {@code startProgress} to {@code endProgress} over the specified number of ticks.
+     * Progress bounds is [0, 1.0].
+     * <p>
+     * If {@code startProgress} is higher than {@code endProgress}, the bar will animate backwards.
+     *
+     * @param ticks the number of ticks to animate the boss bar
+     * @param startProgress the starting progress of the boss bar
+     * @param endProgress the ending progress of the boss bar
      * @param hideAfterAnimated true if the boss bar should be hidden for all players after the animation is complete
      */
-    public void animateProgress(int ticks, boolean hideAfterAnimated) {
-        bossBar.setProgress(0.0);
+    public void animateProgress(int ticks, double startProgress, double endProgress, boolean hideAfterAnimated) {
+        double difference = endProgress - startProgress;
+        double increment = difference / ticks;
+
+        // The progress difference is too small, don't proceed.
+        if (Math.abs(difference) < Math.abs(increment)) {
+            bossBar.setVisible(false);
+            return;
+        }
+
+        bossBar.setProgress(startProgress);
         Scheduler.sync().runRepeating((task) -> {
-            double progress = bossBar.getProgress() + (1.0 / ticks);
-            if (progress < 1.0) {
+            double progress = bossBar.getProgress() + increment;
+            if (Math.abs(progress - endProgress) > Math.abs(increment)) {
                 bossBar.setProgress(progress);
             } else {
-                bossBar.setProgress(1.0);
+                bossBar.setProgress(endProgress);
                 task.stop();
                 if (hideAfterAnimated) {
                     Scheduler.sync().runLater(this::hideAll, 3L);
