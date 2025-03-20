@@ -14,6 +14,7 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 /**
@@ -53,6 +54,16 @@ public class SimpleClickEvent extends Event implements Cancellable {
     @Nonnull
     public Inventory getInventory() {
         return event.getInventory();
+    }
+
+    /**
+     * Gets the clicked inventory.
+     *
+     * @return the inventory
+     */
+    @Nullable
+    public Inventory getClickedInventory() {
+        return event.getClickedInventory();
     }
 
     /**
