@@ -7,13 +7,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.server.PluginDisableEvent;
+import org.bukkit.inventory.Inventory;
 
 import javax.annotation.Nonnull;
 
@@ -27,18 +26,23 @@ public class MenuListeners implements Listener {
 
     @EventHandler
     public void onInventoryClick(@Nonnull InventoryClickEvent event) {
+        // Allow editing your own inventory while having a custom one open.
+        Inventory clicked = event.getClickedInventory();
+        if (clicked == null || (clicked.getType() == InventoryType.PLAYER && event.getAction() != InventoryAction.MOVE_TO_OTHER_INVENTORY)) {
+            return;
+        }
+
         Player player = (Player) event.getWhoClicked();
         Gui gui = Gui.players.get(player);
+        if (gui == null) {
+            return;
+        }
 
-        if (gui != null) {
-            event.setCancelled(true);
-
-            if (!gui.isValid()) {
-                gui.close();
-                return;
-            }
-
+        event.setCancelled(true);
+        if (gui.isValid()) {
             gui.getSlot(event.getRawSlot()).handle(event);
+        } else {
+            gui.close();
         }
     }
 
@@ -46,13 +50,14 @@ public class MenuListeners implements Listener {
     public void onInventoryDrag(@Nonnull InventoryDragEvent event) {
         Player player = (Player) event.getWhoClicked();
         Gui gui = Gui.players.get(player);
+        boolean playerInventoryDrag = event.getRawSlots().stream().allMatch(slot -> slot >= event.getInventory().getSize());
+        if (gui == null || playerInventoryDrag) {
+            return;
+        }
 
-        if (gui != null) {
-            event.setCancelled(true);
-
-            if (!gui.isValid()) {
-                gui.close();
-            }
+        event.setCancelled(true);
+        if (!gui.isValid()) {
+            gui.close();
         }
     }
 
