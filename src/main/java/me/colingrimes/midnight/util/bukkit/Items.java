@@ -390,7 +390,7 @@ public final class Items {
 			if (lore != null) meta.setLore(Arrays.asList(placeholders.apply(lore).toText().split("\n")));
 			if (hide) {
 				meta.setAttributeModifiers(HashMultimap.create());
-				meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+				meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
 			}
 			if (glow) {
 				meta.addEnchant(Enchantment.INFINITY, 1, true);
