@@ -344,6 +344,7 @@ public final class Items {
 			parse(sec, "material").ifPresent(this::material);
 			parse(sec, "name").ifPresent(this::name);
 			parse(sec, "lore", List.class).ifPresent(this::lore);
+			parse(sec, "hide", Boolean.class).ifPresent(this::hide);
 			parse(sec, "glow", Boolean.class).ifPresent(this::glow);
 			parse(sec, "unbreakable", Boolean.class).ifPresent(this::glow);
 			return this;
