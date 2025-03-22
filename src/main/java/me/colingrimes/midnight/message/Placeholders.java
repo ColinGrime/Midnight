@@ -187,6 +187,7 @@ public class Placeholders {
 		}
 
 		component.setText(Text.color(PlaceholderAPI.setPlaceholders(player, component.getText().replaceAll("\\{(.+?)}", "%$1%"))));
+		component.setText(component.getText().replaceAll("%(.+?)%", "{$1}"));
 
 		// Replace the placeholder in the hover event.
 		if (component.getHoverEvent() != null) {
@@ -199,6 +200,7 @@ public class Placeholders {
 					continue;
 				} else if (text.getValue() instanceof String str) {
 					String replaced = Text.color(PlaceholderAPI.setPlaceholders(player, str.replaceAll("\\{(.+?)}", "%$1%")));
+					replaced = replaced.replaceAll("%(.+?)%", "{$1}");
 					contents.add(new net.md_5.bungee.api.chat.hover.content.Text(replaced));
 					continue;
 				} else if (!(text.getValue() instanceof BaseComponent[])) {
@@ -223,6 +225,7 @@ public class Placeholders {
 			ClickEvent clickEvent = component.getClickEvent();
 			if (clickEvent.getAction() == ClickEvent.Action.RUN_COMMAND || clickEvent.getAction() == ClickEvent.Action.SUGGEST_COMMAND) {
 				String replaced = PlaceholderAPI.setPlaceholders(player, clickEvent.getValue().replaceAll("\\{(.+?)}", "%$1%"));
+				replaced = replaced.replaceAll("%(.+?)%", "{$1}");
 				component.setClickEvent(new ClickEvent(clickEvent.getAction(), replaced));
 			}
 		}
