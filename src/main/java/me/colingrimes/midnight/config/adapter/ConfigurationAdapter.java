@@ -64,6 +64,15 @@ public interface ConfigurationAdapter {
 	Optional<Integer> getInteger(@Nonnull String path);
 
 	/**
+	 * Gets a long from the configuration.
+	 *
+	 * @param path the path to the integer
+	 * @return the long, if present
+	 */
+	@Nonnull
+	Optional<Long> getLong(@Nonnull String path);
+
+	/**
 	 * Gets a double from the configuration.
 	 *
 	 * @param path the path to the double
