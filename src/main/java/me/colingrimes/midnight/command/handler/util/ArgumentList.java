@@ -87,6 +87,39 @@ public class ArgumentList extends ArrayList<String> {
 	}
 
 	/**
+	 * Gets the argument at the specified index as an {@link Optional} of {@link Long}.
+	 *
+	 * @param index the index of the argument to retrieve
+	 * @return an {@link Optional} containing the parsed long,
+	 * 		   or an empty {@link Optional} if the index is out of bounds
+	 * 		   or the argument cannot be parsed as a long
+	 */
+	@Nonnull
+	public Optional<Long> getLong(int index) {
+		if (isIndexOutOfBounds(index)) {
+			return Optional.empty();
+		}
+
+		try {
+			return Optional.of(Long.parseLong(this.get(index)));
+		} catch (NumberFormatException e) {
+			return Optional.empty();
+		}
+	}
+
+	/**
+	 * Gets the argument at the specified index as a long,
+	 * or returns the default value if the argument cannot be parsed as a long.
+	 *
+	 * @param index        the index of the argument to retrieve
+	 * @param defaultValue the default value to return if the argument cannot be parsed as a long
+	 * @return the parsed long, or the default value
+	 */
+	public long getLongOrDefault(int index, long defaultValue) {
+		return getLong(index).orElse(defaultValue);
+	}
+
+	/**
 	 * Gets the argument at the specified index as an {@link Optional} of {@link Double}.
 	 *
 	 * @param index the index of the argument to retrieve
