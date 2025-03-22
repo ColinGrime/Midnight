@@ -1,5 +1,6 @@
 package me.colingrimes.midnight.util.bukkit;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import me.colingrimes.midnight.message.Placeholders;
 import me.colingrimes.midnight.util.text.Text;
@@ -42,6 +43,19 @@ public final class Items {
 	@Nonnull
 	public static Builder of(@Nonnull Material material) {
 		return new Builder(material);
+	}
+
+	/**
+	 * Creates a new {@link Builder} object.
+	 * <p>
+	 * This will use the provided item as a base for the item builder.
+	 *
+	 * @param item the item stack
+	 * @return the item builder object
+	 */
+	@Nonnull
+	public static Builder of(@Nonnull ItemStack item) {
+		return new Builder(item);
 	}
 
 	/**
@@ -170,8 +184,11 @@ public final class Items {
 	 * Provides a simple way to build {@link ItemStack} objects:
 	 * <ul>
 	 *   <li>Supports parsing of {@link Material} enums from string formats.</li>
+	 *   <li>Supports setting the colored name and lore of the item.</li>
+	 *   <li>Supports hiding item attributes, glowing the item, and making it unbreakable. </li>
 	 *   <li>Supports parsing of {@link ConfigurationSection} objects.</li>
 	 *   <li>Supports replacing {@link Placeholders} from the name/lore.</li>
+	 *   <li>Supports setting {@link NBT} tags on the built item.</li>
 	 * </ul>
 	 */
 	public static class Builder {
@@ -179,6 +196,7 @@ public final class Items {
 		private final Placeholders placeholders = Placeholders.create();
 		private final Map<String, String> nbt = new HashMap<>();
 		private final Material defMaterial;
+		private final ItemStack baseItem;
 
 		private Material material;
 		private String name;
@@ -189,13 +207,22 @@ public final class Items {
 
 		public Builder(@Nonnull Material def) {
 			this.defMaterial = Objects.requireNonNull(def, "material");
+			this.baseItem = null;
+		}
+
+		public Builder(@Nonnull ItemStack base) {
+			Preconditions.checkNotNull(base.getItemMeta(), "Item meta is null.");
+			this.defMaterial = null;
+			this.baseItem = base;
+			this.name = base.getItemMeta().getDisplayName();
+			this.lore = base.getItemMeta().getLore();
 		}
 
 		/**
 		 * Sets the {@link Material} of the item.
 		 *
 		 * @param material the material you want the item to be
-		 * @return the itembuilder object
+		 * @return the item builder object
 		 */
 		@Nonnull
 		public Builder material(@Nullable Material material) {
@@ -207,7 +234,7 @@ public final class Items {
 		 * Sets the {@link Material} of the item.
 		 *
 		 * @param str the string containing the material name
-		 * @return the itembuilder object
+		 * @return the item builder object
 		 */
 		@Nonnull
 		public Builder material(@Nullable String str) {
@@ -223,7 +250,7 @@ public final class Items {
 		 * Sets the name of the item.
 		 *
 		 * @param name the name you want the item to be
-		 * @return the itembuilder object
+		 * @return the item builder object
 		 */
 		@Nonnull
 		public Builder name(@Nullable String name) {
@@ -235,7 +262,7 @@ public final class Items {
 		 * Sets the lore of the item.
 		 *
 		 * @param lore the lore you want the item to have
-		 * @return the itembuilder object
+		 * @return the item builder object
 		 */
 		@Nonnull
 		public Builder lore(@Nullable String[] lore) {
@@ -250,7 +277,7 @@ public final class Items {
 		 * Sets the lore of the item.
 		 *
 		 * @param lore the lore you want the item to have
-		 * @return the itembuilder object
+		 * @return the item builder object
 		 */
 		@Nonnull
 		public Builder lore(@Nullable List<String> lore) {
@@ -261,7 +288,7 @@ public final class Items {
 		/**
 		 * Hides the attributes of the item.
 		 *
-		 * @return the itembuilder object
+		 * @return the item builder object
 		 */
 		@Nonnull
 		public Builder hide() {
@@ -272,7 +299,7 @@ public final class Items {
 		/**
 		 * Hides the attributes of the item.
 		 *
-		 * @return the itembuilder object
+		 * @return the item builder object
 		 */
 		@Nonnull
 		public Builder hide(boolean hide) {
@@ -283,7 +310,7 @@ public final class Items {
 		/**
 		 * Makes the item glow.
 		 *
-		 * @return the itembuilder object
+		 * @return the item builder object
 		 */
 		@Nonnull
 		public Builder glow() {
@@ -294,7 +321,7 @@ public final class Items {
 		/**
 		 * Makes the item glow.
 		 *
-		 * @return the itembuilder object
+		 * @return the item builder object
 		 */
 		@Nonnull
 		public Builder glow(boolean glow) {
@@ -305,7 +332,7 @@ public final class Items {
 		/**
 		 * Makes the item unbreakable.
 		 *
-		 * @return the itembuilder object
+		 * @return the item builder object
 		 */
 		@Nonnull
 		public Builder unbreakable() {
@@ -316,7 +343,7 @@ public final class Items {
 		/**
 		 * Makes the item unbreakable.
 		 *
-		 * @return the itembuilder object
+		 * @return the item builder object
 		 */
 		@Nonnull
 		public Builder unbreakable(boolean unbreakable) {
@@ -332,7 +359,7 @@ public final class Items {
 		 * - A "glowing" key for whether the item should be glowing or not.
 		 *
 		 * @param sec the section of the configuration file
-		 * @return the itembuilder object
+		 * @return the item builder object
 		 */
 		@Nonnull
 		public Builder config(@Nullable ConfigurationSection sec) {
@@ -356,7 +383,7 @@ public final class Items {
 		 * @param placeholder the placeholder you want to add
 		 * @param replacement the value you want to replace the placeholder with
 		 * @param <T>         any type
-		 * @return the itembuilder object
+		 * @return the item builder object
 		 */
 		@Nonnull
 		public <T> Builder placeholder(@Nonnull String placeholder, @Nonnull T replacement) {
@@ -369,7 +396,7 @@ public final class Items {
 		 *
 		 * @param key  the key of the tag
 		 * @param value the value corresponding to the key
-		 * @return the itembuilder object
+		 * @return the item builder object
 		 */
 		@Nonnull
 		public Builder nbt(@Nonnull String key, @Nonnull String value) {
@@ -384,8 +411,9 @@ public final class Items {
 		 */
 		@Nonnull
 		public ItemStack build() {
-			ItemStack item = new ItemStack(Objects.requireNonNullElse(this.material, this.defMaterial));
-			ItemMeta meta = Objects.requireNonNull(item.getItemMeta(), "Meta is null.");
+			Material type = material != null ? material : defMaterial;
+			ItemStack item = baseItem != null ? baseItem : new ItemStack(Objects.requireNonNull(type, "Material is null."));
+			ItemMeta meta = Objects.requireNonNull(item.getItemMeta(), "Item meta is null.");
 
 			if (name != null) meta.setDisplayName(placeholders.apply(name).toText());
 			if (lore != null) meta.setLore(Arrays.asList(placeholders.apply(lore).toText().split("\n")));
