@@ -46,6 +46,12 @@ abstract class BaseConfigurationAdapter implements ConfigurationAdapter {
 
 	@Nonnull
 	@Override
+	public Optional<Long> getLong(@Nonnull String path) {
+		return Optional.ofNullable(config.getObject(path, Long.class));
+	}
+
+	@Nonnull
+	@Override
 	public Optional<Double> getDouble(@Nonnull String path) {
 		return Optional.ofNullable(config.getObject(path, Double.class));
 	}
