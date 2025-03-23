@@ -28,7 +28,7 @@ class CooldownTest extends MockSetup {
 	@BeforeEach
 	void setUp() {
 		// Capture the Scheduler.sync().runRepeating() Runnable argument.
-		when(syncScheduler.runRepeating(any(), anyLong(), anyLong())).thenAnswer(invocation -> {
+		when(syncScheduler.runRepeating(any(Runnable.class), anyLong(), anyLong())).thenAnswer(invocation -> {
 			task = invocation.getArgument(0);
 			return null;
 		});
