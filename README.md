@@ -1,14 +1,16 @@
-<img src="images/Midnight_Cat.png" alt="Midnight Cat">
+<div align="center">
+    <img src="images/Midnight_Cat.png" alt="Midnight Cat" />
+</div>
 
-# Midnight Library
-Midnight is a powerful library for Spigot plugins that simplifies the creation and management of various plugin features.
+<div align="center">
+    <a href="https://github.com/ColinGrime/Midnight/actions">
+        <img src="https://github.com/ColinGrime/Midnight/workflows/Main/badge.svg"/>
+    </a>
+    <h3>Midnight Library</h3>
+    <p>Simplifies the creation and management of various plugin features.</p>
+</div>
 
-## Modules
-* [`Midnight`](https://github.com/ColinGrime/Midnight/tree/master/midnight) - Main library with the majority of the features listed below.
-* [`Midnight Channels`](https://github.com/ColinGrime/Midnight/tree/master/midnight-channels) - API for all chat-related actions.
-* [`Midnight Particles`](https://github.com/ColinGrime/Midnight/tree/master/midnight-particles) - Contains all particle-related features.
-
-## Feature List
+## Features
 * [`Channels`](https://github.com/ColinGrime/Midnight/wiki/Midnight-Channels)
 * [`Commands`](https://github.com/ColinGrime/Midnight/wiki/Package-Commands)
 * `Configuration`
