@@ -17,15 +17,17 @@ java {
 repositories {
     mavenCentral()
     maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     maven { url 'https://repo.papermc.io/repository/maven-public/' }
     maven { url 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+    maven { url 'https://jitpack.io/' }
 }
 
 dependencies {
-    implementation 'org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT'
-    implementation 'me.clip:placeholderapi:2.11.6'
-    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+    compileOnly 'org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT'
+    compileOnly 'me.clip:placeholderapi:2.11.6'
+    compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
+    compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
 
     // Databases:
     implementation 'org.flywaydb:flyway-core:9.8.3'

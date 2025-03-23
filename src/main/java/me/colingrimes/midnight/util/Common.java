@@ -1,5 +1,6 @@
 package me.colingrimes.midnight.util;
 
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.event.Event;
@@ -9,6 +10,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -84,6 +86,33 @@ public final class Common {
 			return Optional.empty();
 		} else {
 			return Optional.of(rsp.getProvider());
+		}
+	}
+
+	/**
+	 * Checks if there is a valid Vault Economy provider.
+	 *
+	 * @return true if vault exists and an economy plugin is registered
+	 */
+	public static boolean hasEconomy() {
+		return plugin("Vault") != null && service(Economy.class).isPresent();
+	}
+
+	/**
+	 * Returns the registered Vault Economy provider.
+	 * <p>
+	 * It is recommended to fail early with {@link Common#hasEconomy()} in your plugin enable method,
+	 * as this will throw an error if no economy provider is present.
+	 *
+	 * @return the economy provider
+	 * @throws NoSuchElementException if vault is not present or if no economy plugin is registered
+	 */
+	@Nonnull
+	public static Economy economy() {
+		if (plugin("Vault") == null) {
+			throw new NoSuchElementException("Vault is not present.");
+		} else {
+			return service(Economy.class).orElseThrow(() -> new NoSuchElementException("Vault is present, but no Economy provider is registered."));
 		}
 	}
 
