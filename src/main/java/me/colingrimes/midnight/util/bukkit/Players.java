@@ -114,59 +114,6 @@ public final class Players {
 		player.playSound(player.getLocation(), sound, 1F, 1F);
 	}
 
-	/**
-	 * Removes all the specified item from the player's inventory.
-	 *
-	 * @param player the player
-	 * @param item the item to remove
-	 * @return true if at least 1 item was removed
-	 */
-	public static boolean removeItem(@Nonnull Player player, @Nonnull ItemStack item) {
-		boolean removed = false;
-		Inventory inventory = player.getInventory();
-		for (int i=0; i<inventory.getSize(); i++) {
-			if (item.isSimilar(inventory.getItem(i))) {
-				inventory.setItem(i, null);
-				removed = true;
-			}
-		}
-		return removed;
-	}
-
-	/**
-	 * Removes the specified item from the player's inventory.
-	 *
-	 * @param player the player
-	 * @param item the item to remove
-	 * @param amount the amount to remove
-	 * @return true if at least 1 item was removed
-	 */
-	public static boolean removeItem(@Nonnull Player player, @Nonnull ItemStack item, int amount) {
-		if (amount <= 0) {
-			return false;
-		}
-
-		boolean removed = false;
-		Inventory inventory = player.getInventory();
-		for (int i=0; i<inventory.getSize(); i++) {
-			ItemStack invItem = inventory.getItem(i);
-			if (invItem == null || !item.isSimilar(invItem)) {
-				continue;
-			}
-
-			int invAmount = invItem.getAmount();
-			if (invAmount <= amount) {
-				inventory.setItem(i, null);
-				amount -= invAmount;
-				removed = true;
-			} else {
-				invItem.setAmount(invAmount - amount);
-				return true;
-			}
-		}
-		return removed;
-	}
-
 	private Players() {
 		throw new UnsupportedOperationException("This class cannot be instantiated.");
 	}
