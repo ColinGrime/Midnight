@@ -194,7 +194,7 @@ public final class Items {
 	public static class Builder {
 
 		private final Placeholders placeholders = Placeholders.create();
-		private final Map<String, String> nbt = new HashMap<>();
+		private final Map<String, Object> nbt = new HashMap<>();
 		private final Material defMaterial;
 		private final ItemStack baseItem;
 
@@ -399,7 +399,7 @@ public final class Items {
 		 * @return the item builder object
 		 */
 		@Nonnull
-		public Builder nbt(@Nonnull String key, @Nonnull String value) {
+		public Builder nbt(@Nonnull String key, @Nonnull Object value) {
 			nbt.put(key, value);
 			return this;
 		}
