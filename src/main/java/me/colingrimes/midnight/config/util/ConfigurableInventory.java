@@ -75,7 +75,7 @@ public class ConfigurableInventory {
 
         // Parse each slot.
         for (String slot : slots.getKeys(false)) {
-            itemStacks[Integer.parseInt(slot)] = Items.config(slots.getConfigurationSection(slot));
+            itemStacks[Integer.parseInt(slot)] = Items.create().config(slots.getConfigurationSection(slot)).build();
         }
 
         return itemStacks;

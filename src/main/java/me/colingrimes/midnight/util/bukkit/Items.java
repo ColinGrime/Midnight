@@ -3,12 +3,9 @@ package me.colingrimes.midnight.util.bukkit;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import me.colingrimes.midnight.message.Placeholders;
-import me.colingrimes.midnight.util.text.Text;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -56,117 +53,6 @@ public final class Items {
 	@Nonnull
 	public static Builder of(@Nonnull ItemStack item) {
 		return new Builder(item);
-	}
-
-	/**
-	 * Renames an item.
-	 *
-	 * @param item the item to rename
-	 * @param name the new name of the item
-	 * @return the renamed item
-	 */
-	@Nonnull
-	public static ItemStack rename(@Nonnull ItemStack item, @Nonnull String name) {
-		ItemMeta meta = item.getItemMeta();
-		if (meta == null) {
-			return item;
-		}
-
-		meta.setDisplayName(Text.color(name));
-		item.setItemMeta(meta);
-		return item;
-	}
-
-	/**
-	 * Sets the lore of an item.
-	 *
-	 * @param item the item to set the lore of
-	 * @param lore the new lore of the item
-	 * @return the item with the new lore
-	 */
-	@Nonnull
-	public static ItemStack lore(@Nonnull ItemStack item, @Nonnull List<String> lore) {
-		ItemMeta meta = item.getItemMeta();
-		if (meta == null) {
-			return item;
-		}
-
-		meta.setLore(Text.color(lore));
-		item.setItemMeta(meta);
-		return item;
-	}
-
-	/**
-	 * Sets the lore of an item.
-	 *
-	 * @param item the item to set the lore of
-	 * @param lore the new lore of the item
-	 * @return the item with the new lore
-	 */
-	@Nonnull
-	public static ItemStack lore(@Nonnull ItemStack item, @Nonnull String... lore) {
-		return lore(item, List.of(lore));
-	}
-
-	/**
-	 * Parses a {@link ConfigurationSection} and checks for the following:
-	 * - A "type" or "material" key for materials.
-	 * - A "name" key for the name of the item.
-	 * - A "lore" key for the lore of the item.
-	 * - A "glowing" key for whether the item should be glowing or not.
-	 *
-	 * @param sec the section of the configuration file
-	 * @return the item builder object
-	 */
-	@Nonnull
-	public static ItemStack config(@Nullable ConfigurationSection sec) {
-		return create().config(sec).build();
-	}
-
-	/**
-	 * Finds the slot number of the first occurrence of the specified item.
-	 *
-	 * @param player the player to check
-	 * @param item   the item to search for
-	 * @return the first slot that contains the item
-	 */
-	@Nonnull
-	public static Optional<Integer> findSlot(@Nullable Player player, @Nullable ItemStack item) {
-		return player == null ? Optional.empty() : findSlot(player.getInventory(), item);
-	}
-
-	/**
-	 * Finds the slot number of the first occurrence of the specified item.
-	 *
-	 * @param inv  the inventory to check
-	 * @param item the item to search for
-	 * @return the first slot that contains the item
-	 */
-	@Nonnull
-	public static Optional<Integer> findSlot(@Nullable Inventory inv, @Nullable ItemStack item) {
-		return inv == null ? Optional.empty() : findSlot(inv.getContents(), item);
-	}
-
-	/**
-	 * Finds the slot number of the first occurrence of the specified item.
-	 *
-	 * @param items the items to check
-	 * @param item  the item to search for
-	 * @return the first slot that contains the item
-	 */
-	@Nonnull
-	public static Optional<Integer> findSlot(@Nullable ItemStack[] items, @Nullable ItemStack item) {
-		if (items == null || item == null) {
-			return Optional.empty();
-		}
-
-		for (int i=0; i<items.length; i++) {
-			if (item.equals(items[i])) {
-				return Optional.of(i);
-			}
-		}
-
-		return Optional.empty();
 	}
 
 	/**

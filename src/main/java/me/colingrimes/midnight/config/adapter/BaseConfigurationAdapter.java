@@ -65,7 +65,7 @@ abstract class BaseConfigurationAdapter implements ConfigurationAdapter {
 	@Nonnull
 	@Override
 	public Optional<ItemStack> getItemStack(@Nonnull String path) {
-		return Optional.of(Items.config(config.getConfigurationSection(path)));
+		return Optional.of(Items.create().config(config.getConfigurationSection(path)).build());
 	}
 
 	@Nonnull
