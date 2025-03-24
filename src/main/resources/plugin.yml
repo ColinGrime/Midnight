@@ -1,6 +1,7 @@
 name: Midnight
 main: me.colingrimes.midnight.plugin.LoadingPlugin
 version: ${version}
+api-version: 1.21
 author: Scill
 load: STARTUP
 softdepend: [PlaceholderAPI]
