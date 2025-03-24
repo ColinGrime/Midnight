@@ -7,7 +7,7 @@ import me.colingrimes.midnight.event.util.SimpleAction;
 import me.colingrimes.midnight.listener.util.ArmorType;
 import me.colingrimes.midnight.scheduler.Scheduler;
 import me.colingrimes.midnight.util.Common;
-import me.colingrimes.midnight.util.bukkit.Players;
+import me.colingrimes.midnight.util.bukkit.Entities;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -181,7 +181,7 @@ public class ArmorEquipListeners implements Listener {
 	@EventHandler
 	public void onBlockDispense(BlockDispenseEvent event) {
 		ArmorType armorType = ArmorType.fromItem(event.getItem()).orElse(null);
-		Player player = Players.find(event.getBlock().getLocation(), 1).orElse(null);
+		Player player = Entities.find(Player.class, event.getBlock().getLocation(), 1).orElse(null);
 
 		// Player doesn't have the armor type equipped yet.
 		if (armorType == null || player == null || armorType.getFrom(player).isEmpty()) {

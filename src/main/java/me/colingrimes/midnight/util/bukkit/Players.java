@@ -1,12 +1,12 @@
 package me.colingrimes.midnight.util.bukkit;
 
 import me.colingrimes.midnight.util.Common;
-import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -115,26 +115,56 @@ public final class Players {
 	}
 
 	/**
-	 * Finds the closest player to the given location within 100 blocks.
+	 * Removes all the specified item from the player's inventory.
 	 *
-	 * @param location the location
-	 * @return the closest player
+	 * @param player the player
+	 * @param item the item to remove
+	 * @return true if at least 1 item was removed
 	 */
-	@Nonnull
-	public static Optional<Player> find(@Nullable Location location) {
-		return find(location, 100);
+	public static boolean removeItem(@Nonnull Player player, @Nonnull ItemStack item) {
+		boolean removed = false;
+		Inventory inventory = player.getInventory();
+		for (int i=0; i<inventory.getSize(); i++) {
+			if (item.isSimilar(inventory.getItem(i))) {
+				inventory.setItem(i, null);
+				removed = true;
+			}
+		}
+		return removed;
 	}
 
 	/**
-	 * Finds the closest player to the given location within the given number of blocks.
+	 * Removes the specified item from the player's inventory.
 	 *
-	 * @param location the location
-	 * @param blocks   the number of blocks
-	 * @return the closest player
+	 * @param player the player
+	 * @param item the item to remove
+	 * @param amount the amount to remove
+	 * @return true if at least 1 item was removed
 	 */
-	@Nonnull
-	public static Optional<Player> find(@Nullable Location location, int blocks) {
-		return Entities.find(Player.class, location, blocks);
+	public static boolean removeItem(@Nonnull Player player, @Nonnull ItemStack item, int amount) {
+		if (amount <= 0) {
+			return false;
+		}
+
+		boolean removed = false;
+		Inventory inventory = player.getInventory();
+		for (int i=0; i<inventory.getSize(); i++) {
+			ItemStack invItem = inventory.getItem(i);
+			if (invItem == null || !item.isSimilar(invItem)) {
+				continue;
+			}
+
+			int invAmount = invItem.getAmount();
+			if (invAmount <= amount) {
+				inventory.setItem(i, null);
+				amount -= invAmount;
+				removed = true;
+			} else {
+				invItem.setAmount(invAmount - amount);
+				return true;
+			}
+		}
+		return removed;
 	}
 
 	private Players() {
