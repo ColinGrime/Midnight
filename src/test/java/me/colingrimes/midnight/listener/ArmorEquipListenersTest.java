@@ -18,8 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ArmorEquipListenersTest extends MockSetup {
@@ -97,11 +96,11 @@ class ArmorEquipListenersTest extends MockSetup {
 
 		when(simpleClickEvent.getPlayer()).thenReturn(bukkit.player2);
 		armorEquipListeners.onSimpleClick(simpleClickEvent);
-		common.verify(() -> Common.call(new ArmorEquipEvent(bukkit.player2, EquipAction.EQUIP, mockClicked, null)));
+		common.verify(() -> Common.call(new ArmorEquipEvent(bukkit.player2, EquipAction.EQUIP, mockClicked, null)), times(1));
 
 		when(simpleClickEvent.getPlayer()).thenReturn(bukkit.player);
 		armorEquipListeners.onSimpleClick(simpleClickEvent);
-		common.verifyNoMoreInteractions();
+		common.verify(() -> Common.call(any()), times(1));
 	}
 
 	/**

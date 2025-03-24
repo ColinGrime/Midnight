@@ -1,5 +1,7 @@
 package me.colingrimes.midnight;
 
+import me.colingrimes.midnight.plugin.LoadingPlugin;
+import me.colingrimes.midnight.plugin.MidnightPlugin;
 import me.colingrimes.midnight.scheduler.Scheduler;
 import me.colingrimes.midnight.scheduler.implementation.AsyncScheduler;
 import me.colingrimes.midnight.scheduler.implementation.SyncScheduler;
@@ -9,13 +11,11 @@ import org.bukkit.Server;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.io.TempDir;
+import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.annotation.Nonnull;
-import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Optional;
@@ -34,27 +34,27 @@ public abstract class MockSetup {
 	protected static final Instant INSTANT_3 = Instant.now().plus(Duration.ofSeconds(10));
 
 	// Common mocks for all tests.
+	protected Server server;
+	protected Midnight plugin;
 	protected BukkitMocks bukkit;
-	@Mock protected Midnight plugin;
-	@Mock protected Server server;
 	@Mock protected SyncScheduler syncScheduler;
 	@Mock protected AsyncScheduler asyncScheduler;
 
 	// Common static mocks for all tests.
+	@Mock protected MockedStatic<MidnightPlugin> midnight;
 	@Mock protected MockedStatic<Common> common;
 	@Mock protected MockedStatic<Players> players;
 	@Mock protected MockedStatic<Scheduler> scheduler;
 	protected MockedStatic<Instant> instant;
 
 	@BeforeEach
-	void setUp(@Nonnull @TempDir Path tempDir) {
+	void setUp() {
+		server = MockBukkit.mock();
+		plugin = MockBukkit.load(LoadingPlugin.class);
 		bukkit = new BukkitMocks();
 
-		// For testing file-related operations (config, storage, etc).
-		lenient().when(plugin.getDataFolder()).thenReturn(tempDir.toFile());
-
-		// For testing the server-related operations.
-		lenient().when(server.getPluginCommand(any())).thenReturn(null);
+		// Mock the MidnightPlugin.get() call.
+		midnight.when(MidnightPlugin::get).thenReturn(plugin);
 
 		// Mock the Common.server(), Common.plugin(), and Common.logger() calls.
 		common.when(Common::server).thenReturn(server);
@@ -82,6 +82,7 @@ public abstract class MockSetup {
 
 	@AfterEach
 	void tearDown() throws Exception {
+		MockBukkit.unmock();
 		bukkit.close();
 		instant.close();
 	}
