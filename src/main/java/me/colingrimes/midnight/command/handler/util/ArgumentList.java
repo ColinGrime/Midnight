@@ -27,6 +27,17 @@ public class ArgumentList extends ArrayList<String> {
 	}
 
 	/**
+	 * Checks whether the given string is equal to the value at the specified index.
+	 *
+	 * @param index the index of the argument to compare
+	 * @param str the string to compare
+	 * @return true if the string is equal to the value at the index
+	 */
+	public boolean isEqual(int index, @Nonnull String str) {
+		return !isIndexOutOfBounds(index) && str.equalsIgnoreCase(get(index));
+	}
+
+	/**
 	 * Gets the argument at the specified index as an {@link Optional} of {@link String}.
 	 *
 	 * @param index the index of the argument to retrieve
