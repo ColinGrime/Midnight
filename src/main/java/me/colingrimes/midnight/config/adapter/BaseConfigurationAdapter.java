@@ -53,7 +53,12 @@ abstract class BaseConfigurationAdapter implements ConfigurationAdapter {
 	@Nonnull
 	@Override
 	public Optional<Double> getDouble(@Nonnull String path) {
-		return Optional.ofNullable(config.getObject(path, Double.class));
+		Object decimal = config.get(path);
+		if (decimal instanceof Number number) {
+			return Optional.of(number.doubleValue());
+		} else {
+			return Optional.empty();
+		}
 	}
 
 	@Nonnull
