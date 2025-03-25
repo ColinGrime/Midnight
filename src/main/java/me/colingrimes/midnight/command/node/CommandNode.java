@@ -84,7 +84,11 @@ public final class CommandNode implements TabExecutor {
 
         // Tab complete with the child command nodes if nothing else is found.
         if (args.length == 1) {
-            List<String> found = children.keySet().stream().filter(c -> c.startsWith(args[0].toLowerCase())).toList();
+            List<String> found = children.entrySet().stream()
+                    .filter(e -> e.getKey().startsWith(args[0].toLowerCase()))
+                    .filter(e -> e.getValue().commandHandler == null || e.getValue().commandHandler.getProperties().getPermission() == null || sender.hasPermission(e.getValue().commandHandler.getProperties().getPermission()))
+                    .map(Map.Entry::getKey)
+                    .toList();
             return found.isEmpty() ? null : found;
         }
 

@@ -70,6 +70,9 @@ public class StandardCommandHandler<T extends Midnight> implements CommandHandle
 	@Nullable
 	@Override
 	public List<String> onTabComplete(@Nonnull CommandSender sender, @Nonnull org.bukkit.command.Command cmd, @Nonnull String label, @Nonnull String[] args) {
+		if (properties.getPermission() != null && !sender.hasPermission(properties.getPermission())) {
+			return null;
+		}
 		return command.tabComplete(plugin, new Sender(sender), new ArgumentList(args));
 	}
 
@@ -79,12 +82,8 @@ public class StandardCommandHandler<T extends Midnight> implements CommandHandle
 		return properties.getUsage();
 	}
 
-	/**
-	 * Gets the {@link CommandProperties} for this command.
-	 *
-	 * @return the command properties
-	 */
 	@Nonnull
+	@Override
 	public CommandProperties getProperties() {
 		return properties;
 	}

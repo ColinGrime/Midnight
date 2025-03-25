@@ -1,6 +1,7 @@
 package me.colingrimes.midnight.command.handler;
 
 import me.colingrimes.midnight.Midnight;
+import me.colingrimes.midnight.command.handler.util.CommandProperties;
 import me.colingrimes.midnight.message.Message;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -50,4 +51,12 @@ public interface CommandHandler extends TabExecutor {
 	 */
 	@Nullable
 	Message<?> getUsage();
+
+	/**
+	 * Gets the {@link CommandProperties} for this command.
+	 *
+	 * @return the command properties
+	 */
+	@Nonnull
+	CommandProperties getProperties();
 }
