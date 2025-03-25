@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.util.text;
 
+import org.bukkit.*;
 import org.bukkit.Color;
-import org.bukkit.Particle;
 import org.bukkit.util.Vector;
 
 import javax.annotation.Nonnull;
@@ -70,7 +70,11 @@ public final class Parser {
      * @return the duration represented by the text
      */
     @Nullable
-    public static Duration parseDuration(@Nonnull String value) {
+    public static Duration parseDuration(@Nullable String value) {
+        if (value == null || value.isEmpty()) {
+            return null;
+        }
+
         Matcher matcher = DURATION_PATTERN.matcher(value);
         if (!matcher.matches()) {
             return null;
@@ -110,7 +114,11 @@ public final class Parser {
      * @return the parsed vector
      */
     @Nullable
-    public static Vector parseVector(String value) {
+    public static Vector parseVector(@Nullable String value) {
+        if (value == null || value.isEmpty()) {
+            return null;
+        }
+
         String[] parts = value.split(",", 3);
         if (parts.length != 3) {
             return null;
@@ -133,7 +141,11 @@ public final class Parser {
      * @return the parsed color
      */
     @Nullable
-    public static Color parseColor(String value) {
+    public static Color parseColor(@Nullable String value) {
+        if (value == null || value.isEmpty()) {
+            return null;
+        }
+
         String[] parts = value.split(",", 3);
         if (parts.length != 3) {
             return null;
@@ -150,6 +162,22 @@ public final class Parser {
         } catch (NumberFormatException ignored) {}
 
         return null;
+    }
+
+    /**
+     * Parses a sound from a string.
+     *
+     * @param value the string to parse
+     * @return the parsed sound
+     */
+    @Nullable
+    public static Sound parseSound(@Nullable String value) {
+        if (value == null || value.isEmpty()) {
+            return null;
+        }
+
+        NamespacedKey key = NamespacedKey.fromString(value.toLowerCase());
+        return key != null ? Registry.SOUNDS.get(key) : null;
     }
 
     /**
