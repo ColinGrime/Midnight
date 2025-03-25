@@ -51,7 +51,8 @@ class CommandHandlerTest extends MockSetup {
 	@Test
 	void testOnTabComplete() {
 		CommandHandler handler = CommandHandler.create(plugin, new TestCommand());
-		assertEquals(List.of("test", "testing", "tested"), handler.onTabComplete(sender, cmd, label, new String[] { "arg1" }));
+		assertEquals(List.of("test", "testing", "tested"), handler.onTabComplete(bukkit.player, cmd, label, new String[] { "arg1" }));
+		assertNull(handler.onTabComplete(sender, cmd, label, new String[] { "arg1" }));
 		assertNull(handler.onTabComplete(sender, cmd, label, args));
 	}
 
