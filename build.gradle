@@ -3,7 +3,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'com.gradleup.shadow' version '8.3.6'
 }
 
 group 'me.colingrimes.midnight'
@@ -27,6 +27,7 @@ dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT'
     implementation 'me.clip:placeholderapi:2.11.6'
     implementation 'com.github.MilkBowl:VaultAPI:1.7.1'
+    implementation 'org.bstats:bstats-bukkit:3.0.2'
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
     // Databases:
@@ -54,11 +55,14 @@ processResources {
 
 shadowJar {
     archiveFileName = "Midnight-${project.version}.jar"
+    relocate 'org.bstats', 'me.colingrimes.midnight.libs.bstats'
     dependencies {
-        include dependency('org.flywaydb:flyway-core:9.8.3')
-        include dependency('com.zaxxer:HikariCP:5.0.1')
-        include dependency('org.postgresql:postgresql:42.3.8')
-        include dependency('org.xerial:sqlite-jdbc:3.41.2.1')
+        include dependency('org.bstats:bstats-bukkit')
+        include dependency('org.bstats:bstats-base')
+        include dependency('org.flywaydb:flyway-core')
+        include dependency('com.zaxxer:HikariCP')
+        include dependency('org.postgresql:postgresql')
+        include dependency('org.xerial:sqlite-jdbc')
     }
 }
 

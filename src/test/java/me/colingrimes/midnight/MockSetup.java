@@ -49,6 +49,7 @@ public abstract class MockSetup {
 
 	@BeforeEach
 	void setUp() {
+		System.setProperty("bstats.relocatecheck", "false");
 		server = MockBukkit.mock();
 		plugin = MockBukkit.load(LoadingPlugin.class);
 		bukkit = new BukkitMocks();
