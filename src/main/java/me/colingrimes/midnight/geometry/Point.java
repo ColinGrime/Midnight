@@ -5,7 +5,6 @@ import me.colingrimes.midnight.serialize.Serializable;
 import me.colingrimes.midnight.util.misc.Validator;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -19,19 +18,6 @@ public class Point<T extends Direction> implements Serializable {
 	private final T direction;
 
 	/**
-	 * Constructs a new {@link Point} with the given {@link Player} and {@link Direction}.
-	 *
-	 * @param player    the player
-	 * @param direction the direction
-	 * @return the point
-	 * @param <T> the type of direction
-	 */
-	@Nonnull
-	public static <T extends Direction> Point<T> of(@Nonnull Player player, @Nonnull T direction) {
-		return Point.of(player.getLocation(), direction);
-	}
-
-	/**
 	 * Constructs a new {@link Point} with the given {@link Location} and {@link Direction}.
 	 *
 	 * @param location  the location
@@ -42,23 +28,7 @@ public class Point<T extends Direction> implements Serializable {
 	@Nonnull
 	public static <T extends Direction> Point<T> of(@Nonnull Location location, @Nonnull T direction) {
 		Preconditions.checkArgument(location.getWorld() != null, "Location must have a world.");
-		return Point.of(Position.of(location.getWorld(), location.getX(), location.getY(), location.getZ()), direction);
-	}
-
-	/**
-	 * Constructs a new {@link Point} with the given coordinates and {@link Direction}.
-	 *
-	 * @param world     the world
-	 * @param x         the x-coordinate
-	 * @param y         the y-coordinate
-	 * @param z         the z-coordinate
-	 * @param direction the direction
-	 * @return the point
-	 * @param <T> the type of direction
-	 */
-	@Nonnull
-	public static <T extends Direction> Point<T> of(@Nonnull World world, double x, double y, double z, @Nonnull T direction) {
-		return Point.of(Position.of(world, x, y, z), direction);
+		return Point.of(Position.of(location), direction);
 	}
 
 	/**
