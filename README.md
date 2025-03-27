@@ -11,18 +11,18 @@
 </div>
 
 ## Features
-* [`Channels`](https://github.com/ColinGrime/Midnight/wiki/Midnight-Channels)
-* [`Commands`](https://github.com/ColinGrime/Midnight/wiki/Package-Commands)
-* `Configuration`
 * `Cooldown`
+* `Command`
+* `Config`
 * `Display`
-* `Expiring`
+* `Event`
 * `Geometry`
-* `GUI`
+* `Menu`
 * `Message`
-* `Particles`
-* `Scheduling`
+* `Scheduler`
+* `Serialize`
 * `Storage`
+* `Util`
 
 ## Dependency
 ```groovy
