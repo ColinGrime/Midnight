@@ -6,6 +6,9 @@
     <a href="https://github.com/ColinGrime/Midnight/actions">
         <img src="https://github.com/ColinGrime/Midnight/workflows/Main/badge.svg"/>
     </a>
+    <a href="https://jitpack.io/#ColinGrime/Midnight">
+        <img src="https://jitpack.io/v/ColinGrime/Midnight.svg"/>
+    </a>
     <h3>Midnight Library</h3>
     <p>Simplifies the creation and management of various plugin features.</p>
 </div>
