@@ -4,6 +4,7 @@ import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.util.Common;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.logging.Level;
 
 /**
@@ -56,7 +57,7 @@ public final class Logger {
 	 * @param msg    the severe message to log
 	 */
 	public static void severe(@Nonnull Midnight plugin, @Nonnull String msg) {
-		severe("[" + plugin.getName() + "] " + msg);
+		severe(plugin, msg, null);
 	}
 
 	/**
@@ -65,7 +66,32 @@ public final class Logger {
 	 * @param msg the severe message to log
 	 */
 	public static void severe(@Nonnull String msg) {
-		Common.logger().log(Level.SEVERE, msg);
+		severe(msg, null);
+	}
+
+	/**
+	 * Logs a severe message.
+	 *
+	 * @param plugin the plugin to log for
+	 * @param msg    the severe message to log
+	 * @param thrown throwable associated with log message
+	 */
+	public static void severe(@Nonnull Midnight plugin, @Nonnull String msg, @Nullable Throwable thrown) {
+		severe("[" + plugin.getName() + "] " + msg, thrown);
+	}
+
+	/**
+	 * Logs a severe message.
+	 *
+	 * @param msg the severe message to log
+	 * @param thrown throwable associated with log message
+	 */
+	public static void severe(@Nonnull String msg, @Nullable Throwable thrown) {
+		if (thrown == null) {
+			Common.logger().log(Level.SEVERE, msg);
+		} else {
+			Common.logger().log(Level.SEVERE, msg, thrown);
+		}
 	}
 
 	/**
