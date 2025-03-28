@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -97,6 +98,34 @@ public final class Text {
 		}
 
 		return builder.toString();
+	}
+
+	/**
+	 * Formats the specified Duration into a "m:ss" time format.
+	 *
+	 * @param duration the duration
+	 * @return formatted time
+	 */
+	@Nonnull
+	public static String formatTime(@Nullable Duration duration) {
+		if (duration == null) {
+			return "";
+		}
+
+		long minutes = duration.toMinutes();
+		long seconds = duration.minusMinutes(minutes).getSeconds();
+		return String.format("%d:%02d", minutes, seconds);
+	}
+
+	/**
+	 * Strips the specified message.
+	 *
+	 * @param message the message
+	 * @return new message with spaces, dashes, and colons removed
+	 */
+	@Nonnull
+	public static String strip(@Nullable String message) {
+		return message == null ? "" : message.replace("\\s+", "").replace("-", "").replace(":", "");
 	}
 
 	private Text() {
