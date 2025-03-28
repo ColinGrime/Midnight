@@ -187,7 +187,7 @@ public class Placeholders {
 		}
 
 		component.setText(Text.color(PlaceholderAPI.setPlaceholders(player, component.getText().replaceAll("\\{(.+?)}", "%$1%"))));
-		component.setText(component.getText().replaceAll("%(.+?)%", "{$1}"));
+		component.setText(component.getText().replaceAll("(?<![0-9])%(.+?)%", "{$1}"));
 
 		// Replace the placeholder in the hover event.
 		if (component.getHoverEvent() != null) {

@@ -43,7 +43,8 @@ public class ClassFileVisitor extends BaseFileVisitor<Class<?>> {
         try {
             getList().add(Class.forName(className, true, classLoader));
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Class could not be found: " + className, e);
+            Logger.severe("[Midnight] Class '" + className + "' could not be found:", e);
+            throw new RuntimeException(e);
         }
     }
 }

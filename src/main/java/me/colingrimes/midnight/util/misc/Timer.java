@@ -1,5 +1,6 @@
 package me.colingrimes.midnight.util.misc;
 
+import me.colingrimes.midnight.scheduler.functional.Execution;
 import me.colingrimes.midnight.util.io.Logger;
 import org.bukkit.plugin.Plugin;
 
@@ -14,9 +15,9 @@ public final class Timer {
      * @param method  the method to time
      * @param message the message to log
      */
-    public static <T extends Plugin> void time(@Nonnull T plugin, @Nonnull String message, @Nonnull Runnable method) {
+    public static <T extends Plugin> void time(@Nonnull T plugin, @Nonnull String message, @Nonnull Execution method) throws Exception {
         long startTime = System.nanoTime();
-        method.run();
+        method.execute();
         long endTime = System.nanoTime();
 
         long elapsedTimeMillis = TimeUnit.NANOSECONDS.toMillis(endTime - startTime);

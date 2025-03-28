@@ -61,7 +61,7 @@ public class CommandPackageScanner {
         String[] aliases = new String[]{};
         if (classes.size() == 1) {
             Logger.debug("Registering command path: %s", newCommandPath);
-            aliases = registerCommand(plugin, newCommandPath, classes.get(0));
+            aliases = registerCommand(plugin, newCommandPath, classes.getFirst());
         } else if (!packageName.equals(plugin.getRootPackage() + ".command")) {
             Logger.debug("No command class found. Registering handlerless command path: %s", newCommandPath);
             commandRegistry.register(newCommandPath.split(" "), null);
@@ -124,8 +124,7 @@ public class CommandPackageScanner {
             command = clazz.getDeclaredConstructor().newInstance();
         } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
                  IllegalAccessException e) {
-            Logger.severe("Failed to register command: " + commandClass.getSimpleName());
-            e.printStackTrace();
+            Logger.severe("[Midnight] CommandPackageScanner has failed to register command '" + commandClass.getSimpleName() + "':", e);
         }
 
         // If the command was never found, then no aliases can be found.

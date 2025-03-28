@@ -90,6 +90,7 @@ public final class Introspector {
 				}
 			} catch (InstantiationException | IllegalAccessException | InvocationTargetException |
 					 NoSuchMethodException e) {
+				Logger.severe("[Midnight] Introspector has failed to instantiate a class:", e);
 				throw new RuntimeException(e);
 			}
 		}
@@ -128,7 +129,8 @@ public final class Introspector {
 			Path startingPath = fileSystem.getPath(packagePath);
 			return walkFileSystem(classLoader, packageName, recursive, fileVisitorType, startingPath);
 		} catch (IOException e) {
-			throw new RuntimeException("Error creating the JAR file system.", e);
+			Logger.severe("[Midnight] Introspector has failed to walk the JAR file system:", e);
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -157,6 +159,7 @@ public final class Introspector {
 			Files.walkFileTree(startingPath, Set.of(FileVisitOption.FOLLOW_LINKS), maxDepth, fileVisitor);
 			return fileVisitor.getList();
 		} catch (IOException e) {
+			Logger.severe("[Midnight] Introspector has failed to walk the file system:", e);
 			throw new RuntimeException(e);
 		}
 	}

@@ -51,8 +51,8 @@ public final class Filer {
 			try {
 				Files.copy(source.toPath(), targetPath);
 				return true;
-			} catch (IOException ex) {
-				Logger.warn("Failed to duplicate file: " + source.getAbsolutePath());
+			} catch (IOException e) {
+				Logger.severe("[Midnight] Filer has failed to duplicate file '" + source.getAbsolutePath() + "':", e);
 				return false;
 			}
 		}
@@ -95,11 +95,11 @@ public final class Filer {
 					}
 					zos.closeEntry();
 				} catch (IOException e) {
-					Logger.warn("Failed to zip file: " + path);
+					Logger.severe("[Midnight] Filer has failed to zip file '" + path + "':", e);
 				}
 			});
 		} catch (IOException e) {
-			Logger.warn("Failed to zip file: " + source.getAbsolutePath());
+			Logger.severe("[Midnight] Filer has failed to zip file '" + source.getAbsolutePath() + "':", e);
 			return false;
 		}
 

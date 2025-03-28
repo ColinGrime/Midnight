@@ -4,6 +4,7 @@ import me.colingrimes.midnight.command.handler.CommandHandler;
 import me.colingrimes.midnight.command.node.CommandNode;
 import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.util.Common;
+import me.colingrimes.midnight.util.io.Logger;
 import org.bukkit.command.*;
 
 import javax.annotation.Nonnull;
@@ -109,7 +110,7 @@ public class CommandRegistry {
 			CommandMap commandMap = (CommandMap) commandMapField.get(Common.server());
 			commandMap.register(plugin.getName(), new CustomCommand(name, node, node));
 		} catch (NoSuchFieldException | IllegalAccessException e) {
-			e.printStackTrace();
+			Logger.severe("[Midnight] CommandRegistry has failed to register command '" + name + "':", e);
 		}
 	}
 

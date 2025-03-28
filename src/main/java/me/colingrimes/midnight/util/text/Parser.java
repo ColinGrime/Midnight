@@ -47,7 +47,7 @@ public final class Parser {
      */
     @Nonnull
     public static <E extends Enum<E>> Optional<E> parse(@Nonnull Class<E> enumType, @Nullable String value) {
-        return Arrays.stream(enumType.getEnumConstants()).filter(e -> e.name().equalsIgnoreCase(value)).findFirst();
+        return Arrays.stream(enumType.getEnumConstants()).filter(e -> Text.strip(e.name()).equalsIgnoreCase(Text.strip(value))).findFirst();
     }
 
     /**

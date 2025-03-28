@@ -3,8 +3,6 @@ package me.colingrimes.midnight.util.bukkit;
 import me.colingrimes.midnight.util.Common;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -100,7 +98,7 @@ public final class Players {
 	 * @param command the command
 	 */
 	public static void command(@Nonnull Player player, @Nonnull String command) {
-		command = command.startsWith("/") ? command.substring(1) : command;
+		command = command.contains("/") ? command.substring(command.indexOf("/") + 1) : command;
 		player.performCommand(command);
 	}
 

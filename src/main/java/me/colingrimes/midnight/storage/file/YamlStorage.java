@@ -141,8 +141,7 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
                 T deserialized = Serializable.deserialize(serialized, deserializationFunction);
                 convertedMap.put(entry.getKey(), deserialized);
             } catch (RuntimeException e) {
-                Logger.warn("Error during deserialization of key: " + entry.getKey());
-                e.printStackTrace();
+                Logger.severe("YamlStorage key '" + entry.getKey() + "' has failed to deserialize:", e);
             }
         }
 

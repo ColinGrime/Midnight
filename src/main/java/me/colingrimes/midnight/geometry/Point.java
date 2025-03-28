@@ -91,6 +91,19 @@ public class Point<T extends Direction> implements Serializable {
 	}
 
 	/**
+	 * Converts this point into a {@link Location}.
+	 *
+	 * @return a new Location object representing this point
+	 */
+	@Nonnull
+	public Location toLocation() {
+		Location location = position.toLocation();
+		location.setYaw((float) direction.getYaw());
+		location.setPitch((float) direction.getPitch());
+		return location;
+	}
+
+	/**
 	 * Gets the world of the point.
 	 *
 	 * @return the world of the point

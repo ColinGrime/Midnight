@@ -20,7 +20,6 @@ public class Position implements Serializable {
     private final double x;
     private final double y;
     private final double z;
-    private Location location;
 
     /**
      * Constructs a new Position with the given location.
@@ -49,19 +48,6 @@ public class Position implements Serializable {
         this.x = x;
         this.y = y;
         this.z = z;
-    }
-
-    /**
-     * Converts this Position into a Bukkit Location.
-     *
-     * @return a new Location object representing this Position
-     */
-    @Nonnull
-    public Location toLocation() {
-        if (location == null) {
-            location = new Location(world, x, y, z);
-        }
-        return location;
     }
 
     /**
@@ -158,6 +144,16 @@ public class Position implements Serializable {
             }
         }
         return result;
+    }
+
+    /**
+     * Converts this position into a {@link Location}.
+     *
+     * @return a new Location object representing this position
+     */
+    @Nonnull
+    public Location toLocation() {
+        return new Location(world, x, y, z);
     }
 
     /**
