@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'me.colingrimes.midnight'
-version '1.2.3'
+version '1.2.4'
 
 java {
     sourceCompatibility JavaVersion.VERSION_21
