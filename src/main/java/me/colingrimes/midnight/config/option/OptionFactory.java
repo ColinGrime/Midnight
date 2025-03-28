@@ -2,6 +2,8 @@ package me.colingrimes.midnight.config.option;
 
 import me.colingrimes.midnight.config.adapter.ConfigurationAdapter;
 import me.colingrimes.midnight.config.util.ConfigurableInventory;
+import me.colingrimes.midnight.storage.sql.DatabaseCredentials;
+import me.colingrimes.midnight.util.bukkit.Items;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
@@ -23,6 +25,7 @@ public interface OptionFactory<T> {
 	OptionFactory<Boolean> BOOL = ConfigurationAdapter::getBoolean;
 	OptionFactory<ItemStack> ITEM_STACK = ConfigurationAdapter::getItemStack;
 	OptionFactory<ConfigurableInventory> INVENTORY = ConfigurationAdapter::getInventory;
+	OptionFactory<DatabaseCredentials> DATABASE = ConfigurationAdapter::getDatabaseCredentials;
 
 	/**
 	 * Creates a {@link ConfigurationSection} option.
@@ -120,15 +123,20 @@ public interface OptionFactory<T> {
 	}
 
 	/**
-	 * Creates a {@link ConfigurableInventory} option.
+	 * Creates a custom option using the provided deserializer function.
 	 *
-	 * @param path the path to the inventory
-	 * @param def the default value
-	 * @return the option for the inventory
+	 * @param path the configuration path
+	 * @param extractor a function that extracts the custom option
+	 * @param <T> the type of the option
+	 * @return the custom option
 	 */
 	@Nonnull
-	static Option<ConfigurableInventory> option(@Nonnull String path, @Nonnull ConfigurableInventory def) {
-		return Option.of(new Bound<>(INVENTORY, path, def));
+	static <T> Option<T> option(@Nonnull String path, @Nonnull Function<ConfigurationSection, T> extractor) {
+		OptionFactory<T> factory = (adapter, p) -> {
+			ConfigurationSection section = adapter.getSection(p).orElse(null);
+			return section != null ? Optional.ofNullable(extractor.apply(section)) : Optional.empty();
+		};
+		return Option.of(new Bound<>(factory, path, null));
 	}
 
 	/**
@@ -165,6 +173,39 @@ public interface OptionFactory<T> {
 	@Nonnull
 	static MessageOption<List<String>> message(@Nonnull String path, @Nonnull String...def) {
 		return new MessageOption<>(new Bound<>(STRING_LIST, path, List.of(def)));
+	}
+
+	/**
+	 * Creates an {@link ItemStack} option.
+	 *
+	 * @param path the path to the item stack
+	 * @return the option for the item stack
+	 */
+	@Nonnull
+	static Option<ItemStack> item(@Nonnull String path) {
+		return Option.of(new Bound<>(ITEM_STACK, path, Items.create().build()));
+	}
+
+	/**
+	 * Creates a {@link ConfigurableInventory} option.
+	 *
+	 * @param path the path to the inventory
+	 * @return the option for the inventory
+	 */
+	@Nonnull
+	static Option<ConfigurableInventory> inventory(@Nonnull String path) {
+		return Option.of(new Bound<>(INVENTORY, path, null));
+	}
+
+	/**
+	 * Creates a {@link DatabaseCredentials} option.
+	 *
+	 * @param path the path to the credentials
+	 * @return the option for the credentials
+	 */
+	@Nonnull
+	static Option<DatabaseCredentials> database(@Nonnull String path) {
+		return Option.of(new Bound<>(DATABASE, path, null));
 	}
 
 	/**
