@@ -2,6 +2,7 @@ package me.colingrimes.midnight.config.adapter;
 
 import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.config.util.ConfigurableInventory;
+import me.colingrimes.midnight.storage.sql.DatabaseCredentials;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
@@ -107,4 +108,13 @@ public interface ConfigurationAdapter {
 	 */
 	@Nonnull
 	Optional<ConfigurableInventory> getInventory(@Nonnull String path);
+
+	/**
+	 * Gets database credentials from the database.
+	 *
+	 * @param path the path to the database credentials
+	 * @return the database credentials, if present
+	 */
+	@Nonnull
+	Optional<DatabaseCredentials> getDatabaseCredentials(@Nonnull String path);
 }

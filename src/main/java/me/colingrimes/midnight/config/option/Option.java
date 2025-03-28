@@ -2,6 +2,7 @@ package me.colingrimes.midnight.config.option;
 
 import me.colingrimes.midnight.config.adapter.ConfigurationAdapter;
 import me.colingrimes.midnight.message.Message;
+import me.colingrimes.midnight.util.io.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -50,8 +51,9 @@ public interface Option<T> {
 			if (Modifier.isStatic(field.getModifiers()) && (Option.class.equals(field.getType()) || Message.class.equals(field.getType()))) {
 				try {
 					options.add((Option<?>) field.get(null));
-				} catch (IllegalAccessException ex) {
-					throw new RuntimeException(ex);
+				} catch (IllegalAccessException e) {
+					Logger.severe("[Midnight] Option has failed to initialize an option:", e);
+					throw new RuntimeException(e);
 				}
 			}
 		}

@@ -1,6 +1,7 @@
 package me.colingrimes.midnight.config.adapter;
 
 import me.colingrimes.midnight.config.util.ConfigurableInventory;
+import me.colingrimes.midnight.storage.sql.DatabaseCredentials;
 import me.colingrimes.midnight.util.bukkit.Items;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -77,5 +78,11 @@ abstract class BaseConfigurationAdapter implements ConfigurationAdapter {
 	@Override
 	public Optional<ConfigurableInventory> getInventory(@Nonnull String path) {
 		return ConfigurableInventory.of(config.getConfigurationSection(path));
+	}
+
+	@Nonnull
+	@Override
+	public Optional<DatabaseCredentials> getDatabaseCredentials(@Nonnull String path) {
+		return Optional.ofNullable(DatabaseCredentials.fromConfig(config.getConfigurationSection(path)));
 	}
 }
