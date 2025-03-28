@@ -1,11 +1,13 @@
 package me.colingrimes.midnight.util.bukkit;
 
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
+import java.util.Collection;
 
 public class Inventories {
 
@@ -32,6 +34,39 @@ public class Inventories {
 			return true;
 		}
 		return Arrays.stream(inventory.getContents()).anyMatch(i -> i != null && i.getAmount() < i.getMaxStackSize() && i.isSimilar(item));
+	}
+
+	/**
+	 * Attempts to give the player the item.
+	 * If the player's inventory has no room, no item will be given and this method will return false.
+	 *
+	 * @param player the player
+	 * @param item the item to give to the player
+	 * @return true if there was room in the player's inventory, false if there was no room
+	 */
+	public static boolean give(@Nonnull Player player, @Nonnull ItemStack item) {
+		return give(player, item, false);
+	}
+
+	/**
+	 * Attempts to give the player the item.
+	 * If the player's inventory has no room, and {@code dropOnGround} is true, the remaining items will drop on the ground.
+	 * If the player's inventory has no room, and {@code dropOnGround} is false, no items will be given.
+	 *
+	 * @param player the player
+	 * @param item the item to give to the player
+	 * @return true if there was room in the player's inventory, false if there was no room
+	 */
+	public static boolean give(@Nonnull Player player, @Nonnull ItemStack item, boolean dropOnGround) {
+		if (!canFit(player.getInventory(), item) && !dropOnGround) {
+			return false;
+		}
+
+		Collection<ItemStack> remaining = player.getInventory().addItem(item).values();
+		for (ItemStack itemDrop : remaining) {
+			player.getWorld().dropItemNaturally(player.getLocation(), itemDrop);
+		}
+		return !remaining.isEmpty();
 	}
 
 	/**
