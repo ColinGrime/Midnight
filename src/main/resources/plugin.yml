@@ -5,3 +5,8 @@ api-version: 1.21
 author: Scill
 load: STARTUP
 softdepend: [PlaceholderAPI]
+libraries:
+  - org.flywaydb:flyway-core:11.4.1
+  - com.zaxxer:HikariCP:5.0.1
+  - org.postgresql:postgresql:42.7.2
+  - org.xerial:sqlite-jdbc:3.41.2.2

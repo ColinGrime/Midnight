@@ -59,10 +59,6 @@ shadowJar {
     dependencies {
         include dependency('org.bstats:bstats-bukkit')
         include dependency('org.bstats:bstats-base')
-        include dependency('org.flywaydb:flyway-core')
-        include dependency('com.zaxxer:HikariCP')
-        include dependency('org.postgresql:postgresql')
-        include dependency('org.xerial:sqlite-jdbc')
     }
 }
 
