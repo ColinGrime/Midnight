@@ -100,8 +100,8 @@ public final class Items {
 			Preconditions.checkNotNull(base.getItemMeta(), "Item meta is null.");
 			this.defMaterial = null;
 			this.baseItem = base;
-			this.name = base.getItemMeta().getDisplayName();
-			this.lore = base.getItemMeta().getLore();
+			this.name = base.getItemMeta().hasDisplayName() ? base.getItemMeta().getDisplayName() : null;
+			this.lore = base.getItemMeta().hasLore() ? base.getItemMeta().getLore() : null;
 		}
 
 		/**
