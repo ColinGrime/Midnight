@@ -33,7 +33,7 @@ public class Inventories {
 		if (!isFull(inventory)) {
 			return true;
 		}
-		return Arrays.stream(inventory.getContents()).anyMatch(i -> i != null && i.getAmount() < i.getMaxStackSize() && i.isSimilar(item));
+		return Arrays.stream(inventory.getContents()).anyMatch(i -> i != null && (i.getAmount() + item.getAmount()) <= i.getMaxStackSize() && i.isSimilar(item));
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class Inventories {
 		for (ItemStack itemDrop : remaining) {
 			player.getWorld().dropItemNaturally(player.getLocation(), itemDrop);
 		}
-		return !remaining.isEmpty();
+		return remaining.isEmpty();
 	}
 
 	/**

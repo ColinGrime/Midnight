@@ -6,23 +6,31 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.Test;
+import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import org.mockbukkit.mockbukkit.inventory.InventoryMock;
 import org.mockbukkit.mockbukkit.inventory.ItemStackMock;
+import org.mockbukkit.mockbukkit.world.WorldMock;
 
 import java.util.Arrays;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 class InventoriesTest extends MockSetup {
 
 	@Test
 	void testisFullAndCanFit() {
 		Inventory inventory = new InventoryMock(null, InventoryType.PLAYER);
+
+		// Test empty inventory.
 		assertFalse(Inventories.isFull(inventory));
 		assertTrue(Inventories.canFit(inventory, new ItemStackMock(Material.DIRT)));
 		assertTrue(Inventories.canFit(inventory, new ItemStackMock(Material.STONE)));
 
+		// Test full inventory of stacks 1.
 		for (int i=0; i<inventory.getSize(); i++) {
 			inventory.setItem(i, new ItemStackMock(Material.DIRT));
 		}
@@ -30,12 +38,65 @@ class InventoriesTest extends MockSetup {
 		assertTrue(Inventories.canFit(inventory, new ItemStackMock(Material.DIRT)));
 		assertFalse(Inventories.canFit(inventory, new ItemStackMock(Material.STONE)));
 
+		// Full completely full inventory.
 		for (int i=0; i<inventory.getSize(); i++) {
 			inventory.setItem(i, new ItemStackMock(Material.DIRT, 64));
 		}
 		assertTrue(Inventories.isFull(inventory));
 		assertFalse(Inventories.canFit(inventory, new ItemStackMock(Material.DIRT)));
 		assertFalse(Inventories.canFit(inventory, new ItemStackMock(Material.STONE)));
+
+		// Test partial inventory.
+		inventory.setItem(0, new ItemStackMock(Material.DIRT, 32));
+		assertTrue(Inventories.isFull(inventory));
+		assertTrue(Inventories.canFit(inventory, new ItemStackMock(Material.DIRT)));
+		assertTrue(Inventories.canFit(inventory, new ItemStackMock(Material.DIRT, 32)));
+		assertFalse(Inventories.canFit(inventory, new ItemStackMock(Material.DIRT, 33)));
+	}
+
+	@Test
+	void testGive() {
+		PlayerMock player = spy(server.addPlayer());
+		assertTrue(Inventories.give(player, new ItemStackMock(Material.DIRT, 1)));
+		for (int i=0; i<player.getInventory().getSize(); i++) {
+			player.getInventory().setItem(i, new ItemStackMock(Material.DIRT, 64));
+		}
+
+		// Mock world to verify item drops.
+		WorldMock world = mock(WorldMock.class);
+		when(player.getWorld()).thenReturn(world);
+
+		// Test giving items with full inventory.
+		assertFalse(Inventories.give(player, new ItemStackMock(Material.DIRT)));
+		assertFalse(Inventories.give(player, new ItemStackMock(Material.DIRT), true));
+		verify(player.getWorld(), times(1)).dropItemNaturally(eq(player.getLocation()), eq(new ItemStackMock(Material.DIRT)));
+		assertFalse(Inventories.give(player, new ItemStackMock(Material.DIRT), false));
+		verify(player.getWorld(), times(1)).dropItemNaturally(eq(player.getLocation()), any(ItemStack.class));
+		assertFalse(Inventories.give(player, new ItemStackMock(Material.DIRT)));
+		verify(player.getWorld(), times(1)).dropItemNaturally(eq(player.getLocation()), any(ItemStack.class));
+
+		// Test giving items with almost full inventory.
+		player.getInventory().setItem(0, new ItemStackMock(Material.DIRT, 32));
+		assertTrue(Inventories.give(player, new ItemStackMock(Material.DIRT)));
+		verify(player.getWorld(), times(1)).dropItemNaturally(eq(player.getLocation()), any(ItemStack.class));
+		assertFalse(Inventories.give(player, new ItemStackMock(Material.DIRT, 64)));
+		verify(player.getWorld(), times(1)).dropItemNaturally(eq(player.getLocation()), any(ItemStack.class));
+		assertFalse(Inventories.give(player, new ItemStackMock(Material.DIRT, 64), true));
+		verify(player.getWorld(), times(2)).dropItemNaturally(eq(player.getLocation()), any(ItemStack.class));
+		verify(player.getWorld(), times(1)).dropItemNaturally(eq(player.getLocation()), eq(new ItemStackMock(Material.DIRT, 33)));
+
+		// More tests.
+		player.getInventory().setItem(0, new ItemStackMock(Material.DIRT, 32));
+		assertTrue(Inventories.give(player, new ItemStackMock(Material.DIRT, 32)));
+		verify(player.getWorld(), times(2)).dropItemNaturally(eq(player.getLocation()), any(ItemStack.class));
+		player.getInventory().setItem(0, new ItemStackMock(Material.DIRT, 32));
+		assertTrue(Inventories.give(player, new ItemStackMock(Material.DIRT, 32), true));
+		verify(player.getWorld(), times(2)).dropItemNaturally(eq(player.getLocation()), any(ItemStack.class));
+		assertFalse(Inventories.give(player, new ItemStackMock(Material.DIRT)));
+		verify(player.getWorld(), times(2)).dropItemNaturally(eq(player.getLocation()), any(ItemStack.class));
+		assertFalse(Inventories.give(player, new ItemStackMock(Material.DIRT), true));
+		verify(player.getWorld(), times(3)).dropItemNaturally(eq(player.getLocation()), any(ItemStack.class));
+		verify(player.getWorld(), times(2)).dropItemNaturally(eq(player.getLocation()), eq(new ItemStackMock(Material.DIRT)));
 	}
 
 	@Test

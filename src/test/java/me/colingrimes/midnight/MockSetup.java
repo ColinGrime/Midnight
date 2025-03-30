@@ -7,11 +7,11 @@ import me.colingrimes.midnight.scheduler.implementation.AsyncScheduler;
 import me.colingrimes.midnight.scheduler.implementation.SyncScheduler;
 import me.colingrimes.midnight.util.Common;
 import me.colingrimes.midnight.util.bukkit.Players;
-import org.bukkit.Server;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockbukkit.mockbukkit.MockBukkit;
+import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -34,7 +34,7 @@ public abstract class MockSetup {
 	protected static final Instant INSTANT_3 = Instant.now().plus(Duration.ofSeconds(10));
 
 	// Common mocks for all tests.
-	protected Server server;
+	protected ServerMock server;
 	protected Midnight plugin;
 	protected BukkitMocks bukkit;
 	@Mock protected SyncScheduler syncScheduler;
