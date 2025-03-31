@@ -8,6 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nonnull;
@@ -64,6 +65,39 @@ public final class Items {
 	 */
 	public static boolean isSameType(@Nullable ItemStack item1, @Nullable ItemStack item2) {
 		return item1 != null && item2 != null && item1.getType().equals(item2.getType());
+	}
+
+	/**
+	 * Damages the specified item by 1 durability.
+	 *
+	 * @param item the item to damage
+	 * @return true if the item was broken
+	 */
+	public static boolean damage(@Nullable ItemStack item) {
+		return damage(item, 1);
+	}
+
+	/**
+	 * Damages the specified item.
+	 *
+	 * @param item the item to damage
+	 * @param amount the amount to damage the item
+	 * @return true if the item was broken
+	 */
+	public static boolean damage(@Nullable ItemStack item, int amount) {
+		if (item == null || !(item.getItemMeta() instanceof Damageable damageable)) {
+			return false;
+		}
+
+		int damage = damageable.getDamage() + amount;
+		if (damage >= item.getType().getMaxDurability()) {
+			item.setAmount(item.getAmount() - 1);
+			return true;
+		} else {
+			damageable.setDamage(damage);
+			item.setItemMeta(damageable);
+			return false;
+		}
 	}
 
 	/**
