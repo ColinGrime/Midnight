@@ -3,6 +3,7 @@ package me.colingrimes.midnight.event;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -26,6 +27,7 @@ public class PlayerInteractBlockEvent extends Event implements Cancellable {
     private final Player player;
     private final ItemStack item;
     private final Block block;
+    private final BlockFace blockFace;
     private final Action action;
 
     /**
@@ -38,6 +40,7 @@ public class PlayerInteractBlockEvent extends Event implements Cancellable {
         this.player = event.getPlayer();
         this.item = event.getItem() != null ? event.getItem() : player.getInventory().getItemInMainHand();
         this.block = event.getClickedBlock();
+        this.blockFace = event.getBlockFace();
         this.action = event.getAction();
     }
 
@@ -100,6 +103,17 @@ public class PlayerInteractBlockEvent extends Event implements Cancellable {
     public Material getBlockType() {
         return block.getType();
     }
+
+    /**
+     * Gets the face of the block that was clicked.
+     *
+     * @return the clicked block face
+     */
+    @Nonnull
+    public BlockFace getBlockFace() {
+        return blockFace;
+    }
+
 
     /**
      * Gets the clicked block location.
