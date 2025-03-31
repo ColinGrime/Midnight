@@ -108,12 +108,12 @@ class InventoriesTest extends MockSetup {
 
 		// Test removing a single item.
 		assertTrue(Inventories.isFull(inventory));
-		assertEquals(1, Inventories.removeSingle(inventory, new ItemStackMock(Material.DIRT)));
+		assertTrue(Inventories.removeSingle(inventory, new ItemStackMock(Material.DIRT)));
 		assertFalse(Inventories.isFull(inventory));
-		assertEquals(0, Inventories.removeSingle(inventory, new ItemStackMock(Material.DIAMOND)));
+		assertFalse(Inventories.removeSingle(inventory, new ItemStackMock(Material.DIAMOND)));
 		inventory.setItem(0, new ItemStackMock(Material.DIAMOND));
 		assertTrue(inventory.contains(new ItemStackMock(Material.DIAMOND)));
-		assertEquals(1, Inventories.removeSingle(inventory, new ItemStackMock(Material.DIAMOND)));
+		assertTrue(Inventories.removeSingle(inventory, new ItemStackMock(Material.DIAMOND)));
 		assertFalse(inventory.contains(new ItemStackMock(Material.DIAMOND)));
 
 		// Test removing the full stack of items.

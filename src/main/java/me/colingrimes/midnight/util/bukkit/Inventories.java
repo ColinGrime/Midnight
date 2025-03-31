@@ -73,10 +73,10 @@ public class Inventories {
 	 * Removes a single instance of the specified item from the inventory.
 	 *
 	 * @param item the item to remove
-	 * @return the amount of items removed
+	 * @return true if the item was successfully removed
 	 */
-	public static int removeSingle(@Nonnull Inventory inventory, @Nonnull ItemStack item) {
-		return remove(inventory, item, 1);
+	public static boolean removeSingle(@Nonnull Inventory inventory, @Nonnull ItemStack item) {
+		return remove(inventory, item, 1) == 1;
 	}
 
 	/**
