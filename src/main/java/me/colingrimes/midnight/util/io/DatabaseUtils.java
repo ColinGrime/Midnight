@@ -1,10 +1,19 @@
 package me.colingrimes.midnight.util.io;
 
+import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.storage.sql.DatabaseType;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.sql.*;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -13,6 +22,32 @@ import javax.annotation.Nullable;
  * Utility class for database operations.
  */
 public final class DatabaseUtils {
+
+	/**
+	 * Gets all queries for a specific {@link DatabaseType}.
+	 *
+	 * @param plugin the plugin to load the resource from
+	 * @param type the database type to get the queries from
+	 * @return the list of queries to run
+	 */
+	@Nonnull
+	public static List<String> getQueries(@Nonnull Midnight plugin, @Nonnull DatabaseType type) {
+		String path = "schema/" + type.getName().toLowerCase() + ".sql";
+		URL url = plugin.getClass().getClassLoader().getResource(path);
+		if (url == null) {
+			throw new RuntimeException("Schema file not found (" + path + ")");
+		}
+
+		try (InputStream inputStream = url.openStream()) {
+			try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+				String queries = reader.lines().collect(Collectors.joining("\n"));
+				return Arrays.stream(queries.split(";")).map(String::trim).filter(q -> !q.isEmpty()).toList();
+			}
+		} catch (IOException e) {
+			Logger.severe(plugin, "DatabaseUtils has failed to load schema queries:", e);
+			throw new RuntimeException(e);
+		}
+	}
 
 	/**
 	 * Get a timestamp from a ResultSet in a way that works for all database types.
