@@ -6,7 +6,7 @@ author: Scill
 load: STARTUP
 softdepend: [PlaceholderAPI]
 libraries:
-  - org.flywaydb:flyway-core:11.4.1
-  - com.zaxxer:HikariCP:5.0.1
-  - org.postgresql:postgresql:42.7.2
-  - org.xerial:sqlite-jdbc:3.41.2.2
+  - com.zaxxer:HikariCP:6.3.0
+  - org.postgresql:postgresql:42.7.5
+  - com.mysql:mysql-connector-j:9.2.0
+  - org.xerial:sqlite-jdbc:3.49.1.0

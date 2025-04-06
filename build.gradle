@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'me.colingrimes.midnight'
-version '1.2.5'
+version '1.2.6'
 
 java {
     sourceCompatibility JavaVersion.VERSION_21
@@ -31,10 +31,10 @@ dependencies {
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
     // Databases:
-    implementation 'org.flywaydb:flyway-core:11.4.1'
-    implementation 'com.zaxxer:HikariCP:5.0.1'
-    implementation 'org.postgresql:postgresql:42.7.2'
-    implementation 'org.xerial:sqlite-jdbc:3.41.2.2'
+    implementation 'com.zaxxer:HikariCP:6.3.0'
+    implementation 'org.postgresql:postgresql:42.7.5'
+    implementation 'com.mysql:mysql-connector-j:9.2.0'
+    implementation 'org.xerial:sqlite-jdbc:3.49.1.0'
 
     // Testing:
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
