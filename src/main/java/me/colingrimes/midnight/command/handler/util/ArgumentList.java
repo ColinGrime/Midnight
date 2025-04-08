@@ -38,6 +38,17 @@ public class ArgumentList extends ArrayList<String> {
 	}
 
 	/**
+	 * Gets the argument at the specified index in lowercase.
+	 *
+	 * @param index the index of the argument to retrieve
+	 * @return the argument in lowercase
+	 */
+	@Nonnull
+	public String getLowercase(int index) {
+		return get(index).toLowerCase();
+	}
+
+	/**
 	 * Gets the argument at the specified index as an {@link Optional} of {@link String}.
 	 *
 	 * @param index the index of the argument to retrieve
@@ -54,14 +65,16 @@ public class ArgumentList extends ArrayList<String> {
 	}
 
 	/**
-	 * Gets the argument at the specified index in lowercase.
+	 * Gets the argument at the specified index as a string
+	 * or returns the default value if the argument cannot be parsed as a string.
 	 *
-	 * @param index the index of the argument to retrieve
-	 * @return the argument in lowercase
+	 * @param index        the index of the argument to retrieve
+	 * @param defaultValue the default value to return if the argument cannot be parsed as a string
+	 * @return the parsed string, or the default value
 	 */
 	@Nonnull
-	public String getLowercase(int index) {
-		return get(index).toLowerCase();
+	public String getOrDefault(int index, @Nonnull String defaultValue) {
+		return getOptional(index).orElse(defaultValue);
 	}
 
 	/**
