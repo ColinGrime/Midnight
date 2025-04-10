@@ -1,12 +1,13 @@
 package me.colingrimes.midnight.geometry;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import me.colingrimes.midnight.serialize.Json;
 import me.colingrimes.midnight.serialize.Serializable;
 import me.colingrimes.midnight.util.misc.Validator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -85,19 +86,16 @@ public class Direction implements Serializable {
 
     @Nonnull
     @Override
-    public Map<String, Object> serialize() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("yaw", yaw);
-        map.put("pitch", pitch);
-        return map;
+    public JsonElement serialize() {
+        return Json.create()
+                .add("yaw", yaw)
+                .add("pitch", pitch)
+                .build();
     }
 
     @Nonnull
-    public static Direction deserialize(@Nonnull Map<String, Object> map) {
-        Validator.checkMap(map, "yaw", "pitch");
-        return of(
-                (double) map.get("yaw"),
-                (double) map.get("pitch")
-        );
+    public static Direction deserialize(@Nonnull JsonElement element) {
+        JsonObject object = Validator.checkJson(element, "yaw", "pitch");
+        return of(object.get("yaw").getAsDouble(), object.get("pitch").getAsDouble());
     }
 }

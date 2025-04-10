@@ -1,6 +1,9 @@
 package me.colingrimes.midnight.geometry;
 
 import com.google.common.base.Preconditions;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import me.colingrimes.midnight.serialize.Json;
 import me.colingrimes.midnight.serialize.Serializable;
 import me.colingrimes.midnight.util.bukkit.Worlds;
 import me.colingrimes.midnight.util.misc.Validator;
@@ -9,7 +12,8 @@ import org.bukkit.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Represents a 3D position in the form of x, y, and z coordinates.
@@ -167,30 +171,57 @@ public class Position implements Serializable {
     }
 
     /**
-     * Gets the x coordinate.
+     * Gets the x-coordinate.
      *
-     * @return the x coordinate
+     * @return the x-coordinate
      */
     public double getX() {
         return x;
     }
 
     /**
-     * Gets the y coordinate.
+     * Gets the x-coordinate as an int.
      *
-     * @return the y coordinate
+     * @return the x-coordinate as an int
+     */
+    public int getBlockX() {
+        return (int) Math.floor(x);
+    }
+
+    /**
+     * Gets the y-coordinate.
+     *
+     * @return the y-coordinate
      */
     public double getY() {
         return y;
     }
 
     /**
-     * Gets the z coordinate.
+     * Gets the y-coordinate as an int.
      *
-     * @return the z coordinate
+     * @return the y-coordinate as an int
+     */
+    public int getBlockY() {
+        return (int) Math.floor(y);
+    }
+
+    /**
+     * Gets the z-coordinate.
+     *
+     * @return the z-coordinate
      */
     public double getZ() {
         return z;
+    }
+
+    /**
+     * Gets the z-coordinate as an int.
+     *
+     * @return the z-coordinate as an int
+     */
+    public int getBlockZ() {
+        return (int) Math.floor(z);
     }
 
     @Override
@@ -219,25 +250,24 @@ public class Position implements Serializable {
 
     @Nonnull
     @Override
-    public Map<String, Object> serialize() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("world", world.getName());
-        map.put("x", x);
-        map.put("y", y);
-        map.put("z", z);
-        return map;
+    public JsonElement serialize() {
+        return Json.create()
+                .add("world", world.getName())
+                .add("x", x)
+                .add("y", y)
+                .add("z", z)
+                .build();
     }
 
     @Nonnull
-    public static Position deserialize(@Nonnull Map<String, Object> map) {
-        Validator.checkMap(map, "world", "x", "y", "z");
-
-        Optional<World> world = Worlds.get((String) map.get("world"));
+    public static Position deserialize(@Nonnull JsonElement element) {
+        JsonObject object = Validator.checkJson(element, "world", "x", "y", "z");
+        Optional<World> world = Worlds.get(object.get("world").getAsString());
         Preconditions.checkArgument(world.isPresent());
 
-        double x = (double) map.get("x");
-        double y = (double) map.get("y");
-        double z = (double) map.get("z");
+        double x = object.get("x").getAsDouble();
+        double y = object.get("y").getAsDouble();
+        double z = object.get("z").getAsDouble();
         return of(world.get(), x, y, z);
     }
 }

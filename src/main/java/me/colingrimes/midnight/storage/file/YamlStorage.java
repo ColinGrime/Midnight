@@ -1,6 +1,7 @@
 package me.colingrimes.midnight.storage.file;
 
 import me.colingrimes.midnight.Midnight;
+import me.colingrimes.midnight.serialize.Json;
 import me.colingrimes.midnight.serialize.Serializable;
 import me.colingrimes.midnight.storage.file.composite.Identifier;
 import me.colingrimes.midnight.storage.file.exception.FileNotSpecifiedException;
@@ -11,15 +12,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 
 public abstract class YamlStorage<T extends Serializable> extends FileStorage<T> {
 
-    public YamlStorage(@Nonnull Midnight plugin) {
-        super(plugin);
+    public YamlStorage(@Nonnull Midnight plugin, @Nonnull Class<T> clazz) {
+        super(plugin, clazz);
     }
 
     @Override
@@ -37,8 +35,12 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
         }
 
         // Process the default file.
-        Map<String, Object> rawData = convertToRawData(sec);
-        convertMap(rawData).values().forEach(this::process);
+        for (String key : sec.getKeys(false)) {
+            String json = sec.getString(key);
+            if (json != null) {
+                process(Serializable.deserialize(clazz, Json.toElement(json)));
+            }
+        }
     }
 
     @Override
@@ -49,14 +51,13 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
         }
 
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        ConfigurationSection sec = config.getConfigurationSection(identifier.getInternalPath());
-        if (sec == null) {
+        String json = config.getString(identifier.getInternalPath());
+        if (json == null) {
             return;
         }
 
         // Process the file of the specified identifier.
-        Map<String, Object> rawData = convertToRawData(sec);
-        process(getDeserializationFunction().apply(rawData));
+        process(Serializable.deserialize(clazz, Json.toElement(json)));
     }
 
     @Override
@@ -70,10 +71,7 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
 
         // Serialize the data.
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        for (Map.Entry<String, Object> serialized : data.serialize().entrySet()) {
-            config.set(path + serialized.getKey(), serialized.getValue());
-        }
-
+        config.set(path, Json.toString(data));
         config.save(file);
     }
 
@@ -95,57 +93,6 @@ public abstract class YamlStorage<T extends Serializable> extends FileStorage<T>
         YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
         yamlConfiguration.set(path, null);
         yamlConfiguration.save(file);
-    }
-
-    /**
-     * Recursively converts a memory section to a map.
-     * @param section the memory section
-     * @return the map
-     */
-    private Map<String, Object> convertToRawData(@Nonnull ConfigurationSection section) {
-        Map<String, Object> map = new HashMap<>();
-        for (String key : section.getKeys(false)) {
-            Object value = section.get(key);
-            if (value instanceof ConfigurationSection) {
-                map.put(key, convertToRawData((ConfigurationSection) value));
-            } else {
-                map.put(key, value);
-            }
-        }
-        return map;
-    }
-
-    /**
-     * Converts a raw data map from the YAML configuration to a data map with the appropriate
-     * types by calling the {@link YamlStorage#getDeserializationFunction()} method.
-     *
-     * @param map the raw data map from the YAML configuration
-     * @return the converted data map with appropriate types
-     */
-    @Nonnull
-    private Map<String, T> convertMap(@Nonnull Map<String, Object> map) {
-        Map<String, T> convertedMap = new HashMap<>();
-        Function<Map<String, Object>, T> deserializationFunction = getDeserializationFunction();
-
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            // Only deserialize maps (there should only be maps in the data map).
-            if (!(entry.getValue() instanceof Map)) {
-                Logger.warn("Invalid data type for key: " + entry.getKey());
-                continue;
-            }
-
-            @SuppressWarnings("unchecked")
-            Map<String, Object> serialized = (Map<String, Object>) entry.getValue();
-
-            try {
-                T deserialized = Serializable.deserialize(serialized, deserializationFunction);
-                convertedMap.put(entry.getKey(), deserialized);
-            } catch (RuntimeException e) {
-                Logger.severe("YamlStorage key '" + entry.getKey() + "' has failed to deserialize:", e);
-            }
-        }
-
-        return convertedMap;
     }
 
     /**

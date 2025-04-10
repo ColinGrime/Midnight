@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 
 /**
  * An abstract class representing a file-based storage.
@@ -22,10 +21,12 @@ import java.util.function.Function;
 public abstract class FileStorage<T extends Serializable> implements Storage<T> {
 
     protected final Midnight plugin;
-    protected Map<String, File> fileMap;
+    protected final Class<T> clazz;
+    protected final Map<String, File> fileMap;
 
-    public FileStorage(@Nonnull Midnight plugin) {
+    public FileStorage(@Nonnull Midnight plugin, @Nonnull Class<T> clazz) {
         this.plugin = plugin;
+        this.clazz = clazz;
         this.fileMap = new HashMap<>();
     }
 
@@ -80,14 +81,6 @@ public abstract class FileStorage<T extends Serializable> implements Storage<T> 
      * @param data the data for which the identifier is required
      */
     protected abstract void configureIdentifier(@Nonnull Identifier identifier, @Nonnull T data);
-
-    /**
-     * Returns the deserialization function for the specific data type.
-     *
-     * @return the deserialization function
-     */
-    @Nonnull
-    protected abstract Function<Map<String, Object>, T> getDeserializationFunction();
 
     /**
      * Gets the default file if one exists.

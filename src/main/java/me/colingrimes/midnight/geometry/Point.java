@@ -1,6 +1,9 @@
 package me.colingrimes.midnight.geometry;
 
 import com.google.common.base.Preconditions;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import me.colingrimes.midnight.serialize.Json;
 import me.colingrimes.midnight.serialize.Serializable;
 import me.colingrimes.midnight.util.misc.Validator;
 import org.bukkit.Location;
@@ -8,8 +11,6 @@ import org.bukkit.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class Point<T extends Direction> implements Serializable {
@@ -123,6 +124,15 @@ public class Point<T extends Direction> implements Serializable {
 	}
 
 	/**
+	 * Gets the x-coordinate as an int.
+	 *
+	 * @return the x-coordinate as an int
+	 */
+	public int getBlockX() {
+		return position.getBlockX();
+	}
+
+	/**
 	 * Gets the y-coordinate of the point.
 	 *
 	 * @return the y-coordinate of the point
@@ -132,12 +142,30 @@ public class Point<T extends Direction> implements Serializable {
 	}
 
 	/**
+	 * Gets the y-coordinate as an int.
+	 *
+	 * @return the y-coordinate as an int
+	 */
+	public int getBlockY() {
+		return position.getBlockY();
+	}
+
+	/**
 	 * Gets the z-coordinate of the point.
 	 *
 	 * @return the z-coordinate of the point
 	 */
 	public double getZ() {
 		return position.getZ();
+	}
+
+	/**
+	 * Gets the z-coordinate as an int.
+	 *
+	 * @return the z-coordinate as an int
+	 */
+	public int getBlockZ() {
+		return position.getBlockZ();
 	}
 
 	@Override
@@ -163,22 +191,21 @@ public class Point<T extends Direction> implements Serializable {
 
 	@Nonnull
 	@Override
-	public Map<String, Object> serialize() {
-		Map<String, Object> map = new HashMap<>();
-		map.put("position", position.serialize());
-		map.put("direction", direction.serialize());
-		return map;
+	public JsonElement serialize() {
+		return Json.create()
+				.add("position", position.serialize())
+				.add("direction", direction.serialize())
+				.build();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Nonnull
-	public static <T extends Direction> Point<T> deserialize(@Nonnull Map<String, Object> map) {
-		Validator.checkMap(map, "position", "direction");
+	public static <T extends Direction> Point<T> deserialize(@Nonnull JsonElement element) {
+		JsonObject object = Validator.checkJson(element, "position", "direction");
+		Position position = Position.deserialize(object.get("position"));
+		JsonObject direction = (JsonObject) object.get("direction");
 
-		Position position = Position.deserialize((Map<String, Object>) map.get("position"));
-		Map<String, Object> direction = (Map<String, Object>) map.get("direction");
-
-		if (direction.containsKey("roll")) {
+		if (direction.has("pitch")) {
 			return of(position, (T) Rotation.deserialize(direction));
 		} else {
 			return of(position, (T) Direction.deserialize(direction));

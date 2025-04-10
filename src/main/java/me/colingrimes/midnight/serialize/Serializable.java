@@ -1,34 +1,50 @@
 package me.colingrimes.midnight.serialize;
 
+import com.google.gson.JsonElement;
+
 import javax.annotation.Nonnull;
-import java.util.Map;
-import java.util.function.Function;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 /**
  * An interface for custom serialization and deserialization of objects.
- * Classes implementing this interface should provide methods to convert
- * the object's state to a Map and reconstruct the object from a Map.
+ * <p>
+ * Classes implementing this interface should provide methods to convert the
+ * object's state to a json element and reconstruct the object from a json element.
  */
 public interface Serializable {
 
 	/**
-	 * Serializes the object's state to a Map.
+	 * Serializes the object's state to a json element.
 	 *
-	 * @return a map containing the serialized state of the object
+	 * @return the json element containing the serialized state of the object
 	 */
 	@Nonnull
-	Map<String, Object> serialize();
+	JsonElement serialize();
 
 	/**
-	 * Deserializes the object's state from a Map and creates a new instance of the object.
+	 * Deserializes the object's state from a json element and creates a new instance of the object.
 	 *
-	 * @param serialized              a Map containing the serialized state of the object
-	 * @param deserializationFunction a function that takes a Map and returns a new instance of the object
-	 * @param <T>                     the type of the object to be deserialized
-	 * @return a new instance of the object with its state set from the Map
+	 * @param clazz the class of the object to deserialize
+	 * @param element the json element containing the serialized state of the object
+	 * @param <T> the type of the object to be deserialized
+	 * @return the deserialized object
 	 */
+	@SuppressWarnings("unchecked")
 	@Nonnull
-	static <T> T deserialize(@Nonnull Map<String, Object> serialized, @Nonnull Function<Map<String, Object>, T> deserializationFunction) {
-		return deserializationFunction.apply(serialized);
+	static <T extends Serializable> T deserialize(@Nonnull Class<T> clazz, @Nonnull JsonElement element) {
+		try {
+			Method deserialize = clazz.getDeclaredMethod("deserialize", JsonElement.class);
+			if (!clazz.isAssignableFrom(deserialize.getReturnType())) {
+				throw new IllegalStateException("Deserialize method return type mismatch.");
+			}
+			if (!Modifier.isStatic(deserialize.getModifiers())) {
+				throw new IllegalStateException("Deserialize method is not static.");
+			}
+			return (T) deserialize.invoke(null, element);
+		} catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+			throw new IllegalStateException("Failed to deserialize '" + clazz.getName() + "' class:", e);
+		}
 	}
 }

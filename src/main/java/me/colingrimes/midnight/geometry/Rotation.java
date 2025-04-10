@@ -1,11 +1,13 @@
 package me.colingrimes.midnight.geometry;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import me.colingrimes.midnight.serialize.Json;
 import me.colingrimes.midnight.serialize.Serializable;
 import me.colingrimes.midnight.util.misc.Validator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -77,19 +79,13 @@ public class Rotation extends Direction implements Serializable {
 
     @Nonnull
     @Override
-    public Map<String, Object> serialize() {
-        Map<String, Object> map = super.serialize();
-        map.put("roll", getRoll());
-        return map;
+    public JsonElement serialize() {
+        return Json.of(super.serialize()).add("roll", roll).build();
     }
 
     @Nonnull
-    public static Rotation deserialize(@Nonnull Map<String, Object> map) {
-        Validator.checkMap(map, "yaw", "pitch", "roll");
-        return of(
-                (double) map.get("yaw"),
-                (double) map.get("pitch"),
-                (double) map.get("roll")
-        );
+    public static Rotation deserialize(@Nonnull JsonElement element) {
+        JsonObject object = Validator.checkJson(element, "yaw", "pitch", "roll");
+        return of(object.get("yaw").getAsDouble(), object.get("pitch").getAsDouble(), object.get("roll").getAsDouble());
     }
 }
