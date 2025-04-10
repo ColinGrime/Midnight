@@ -11,9 +11,39 @@ import java.util.stream.Collectors;
 public final class Types {
 
     /**
+     * Gets whether the specified string could be parsed into an integer.
+     *
+     * @param str the string to check
+     * @return true if the string is an integer
+     */
+    public static boolean isInteger(@Nonnull String str) {
+        return str.matches("\\d+");
+    }
+
+    /**
+     * Gets whether the specified string could be parsed into a double.
+     *
+     * @param str the string to check
+     * @return true if the string is a double
+     */
+    public static boolean isDouble(@Nonnull String str) {
+        return str.matches("\\d+(\\.\\d+)?");
+    }
+
+    /**
+     * Gets whether the specificed object could be parsed into a string list.
+     *
+     * @param candidateList the object to check
+     * @return true if the object is a string list
+     */
+    public static boolean isStringList(@Nonnull Object candidateList) {
+        return candidateList instanceof List<?> list && !list.isEmpty() && list.stream().allMatch(item -> item instanceof String);
+    }
+
+    /**
      * Gets the object as a string list if the conversion is possible.
      *
-     * @param candidateList the object to check for a list of strings
+     * @param candidateList the object to check
      * @return an optional containing a list of strings if available
      */
     @SuppressWarnings("unchecked")
@@ -38,7 +68,7 @@ public final class Types {
             return Collections.emptySet();
         }
         return section.getKeys(false).stream()
-                .filter(key -> key.matches("\\d+"))
+                .filter(Types::isInteger)
                 .map(Integer::parseInt)
                 .collect(Collectors.toSet());
     }
@@ -61,7 +91,7 @@ public final class Types {
 
         Map<Integer, T> result = new HashMap<>();
         for (String key : section.getKeys(false)) {
-            if (key.matches("\\d+")) {
+            if (Types.isInteger(key)) {
                 T value = valueMapper.apply(key);
                 result.put(Integer.parseInt(key), value);
             }
@@ -87,7 +117,7 @@ public final class Types {
 
         Map<Integer, T> result = new HashMap<>();
         for (String key : section.getKeys(false)) {
-            if (key.matches("\\d+")) {
+            if (Types.isInteger(key)) {
                 T value = valueMapper.apply(key);
                 result.put(Integer.parseInt(key)-1, value);
             }
