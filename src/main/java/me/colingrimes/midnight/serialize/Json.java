@@ -34,6 +34,17 @@ public final class Json {
     }
 
     /**
+     * Converts a {@link JsonElement} object to a JSON string.
+     *
+     * @param element the json element
+     * @return the converted json string
+     */
+    @Nonnull
+    public static String toString(@Nonnull JsonElement element) {
+        return gson.toJson(element);
+    }
+
+    /**
      * Converts a {@link Serializable} object to a JSON string.
      *
      * @param serializable the serializable object
@@ -41,7 +52,18 @@ public final class Json {
      */
     @Nonnull
     public static String toString(@Nonnull Serializable serializable) {
-        return gson.toJson(serializable.serialize());
+        return toString(serializable.serialize());
+    }
+
+    /**
+     * Converts a {@link JsonElement} object to a pretty formatted JSON string.
+     *
+     * @param element the json element
+     * @return the converted json string
+     */
+    @Nonnull
+    public static String toStringPretty(@Nonnull JsonElement element) {
+        return gsonPretty.toJson(element);
     }
 
     /**
@@ -52,7 +74,7 @@ public final class Json {
      */
     @Nonnull
     public static String toStringPretty(@Nonnull Serializable serializable) {
-        return gsonPretty.toJson(serializable.serialize());
+        return toStringPretty(serializable.serialize());
     }
 
     /**
