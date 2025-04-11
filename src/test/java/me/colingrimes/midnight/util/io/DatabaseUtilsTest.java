@@ -32,11 +32,11 @@ class DatabaseUtilsTest {
 		when(resultSet.getTimestamp("timestamp")).thenReturn(timestamp);
 
 		// SQLite Test
-		Instant result1 = DatabaseUtils.getTimestamp(resultSet, "timestamp", DatabaseType.SQLITE);
+		Instant result1 = DatabaseUtils.getTimestamp(DatabaseType.SQLITE, resultSet, "timestamp");
 		assertEquals(Instant.parse(stringTime), result1);
 
 		// PostgreSQL Test
-		Instant result2 = DatabaseUtils.getTimestamp(resultSet, "timestamp", DatabaseType.POSTGRESQL);
+		Instant result2 = DatabaseUtils.getTimestamp(DatabaseType.POSTGRESQL, resultSet, "timestamp");
 		assertEquals(timestamp.toInstant(), result2);
 	}
 
@@ -45,11 +45,11 @@ class DatabaseUtilsTest {
 		Instant dateTime = Instant.now();
 
 		// SQLite Test
-		DatabaseUtils.setTimestamp(preparedStatement, 1, dateTime, DatabaseType.SQLITE);
+		DatabaseUtils.setTimestamp(DatabaseType.SQLITE, preparedStatement, 1, dateTime);
 		verify(preparedStatement, times(1)).setString(eq(1), anyString());
 
 		// PostgreSQL Test
-		DatabaseUtils.setTimestamp(preparedStatement, 1, dateTime, DatabaseType.POSTGRESQL);
+		DatabaseUtils.setTimestamp(DatabaseType.POSTGRESQL, preparedStatement, 1, dateTime);
 		verify(preparedStatement, times(1)).setTimestamp(eq(1), any());
 	}
 
@@ -59,12 +59,12 @@ class DatabaseUtilsTest {
 
 		// SQLite Test
 		when(resultSet.getString("uuid")).thenReturn(expectedUUID.toString());
-		UUID result1 = DatabaseUtils.getUUID(resultSet, "uuid", DatabaseType.SQLITE);
+		UUID result1 = DatabaseUtils.getUUID(DatabaseType.SQLITE, resultSet, "uuid");
 		assertEquals(expectedUUID, result1);
 
 		// PostgreSQL Test
-		when(resultSet.getObject("uuid")).thenReturn(expectedUUID);
-		UUID result2 = DatabaseUtils.getUUID(resultSet, "uuid", DatabaseType.POSTGRESQL);
+		when(resultSet.getObject("uuid", UUID.class)).thenReturn(expectedUUID);
+		UUID result2 = DatabaseUtils.getUUID(DatabaseType.POSTGRESQL, resultSet, "uuid");
 		assertEquals(expectedUUID, result2);
 	}
 
@@ -73,36 +73,36 @@ class DatabaseUtilsTest {
 		UUID uuid = UUID.randomUUID();
 
 		// SQLite Test
-		DatabaseUtils.setUUID(preparedStatement, 1, uuid, DatabaseType.SQLITE);
+		DatabaseUtils.setUUID(DatabaseType.SQLITE, preparedStatement, 1, uuid);
 		verify(preparedStatement, times(1)).setString(1, uuid.toString());
 
 		// PostgreSQL Test
-		DatabaseUtils.setUUID(preparedStatement, 1, uuid, DatabaseType.POSTGRESQL);
+		DatabaseUtils.setUUID(DatabaseType.POSTGRESQL, preparedStatement, 1, uuid);
 		verify(preparedStatement, times(1)).setObject(1, uuid);
 	}
 
 	@Test
 	void testNullsAreHandled() throws SQLException {
 		// Setting nulls for SQLite.
-		DatabaseUtils.setTimestamp(preparedStatement, 1, null, DatabaseType.SQLITE);
-		DatabaseUtils.setUUID(preparedStatement, 1, null, DatabaseType.SQLITE);
+		DatabaseUtils.setTimestamp(DatabaseType.SQLITE, preparedStatement, 1, null);
+		DatabaseUtils.setUUID(DatabaseType.SQLITE, preparedStatement, 1, null);
 		verify(preparedStatement, times(2)).setString(eq(1), eq(null));
 
 		// Setting nulls for PostgreSQL.
-		DatabaseUtils.setTimestamp(preparedStatement, 1, null, DatabaseType.POSTGRESQL);
-		DatabaseUtils.setUUID(preparedStatement, 1, null, DatabaseType.POSTGRESQL);
+		DatabaseUtils.setTimestamp(DatabaseType.POSTGRESQL, preparedStatement, 1, null);
+		DatabaseUtils.setUUID(DatabaseType.POSTGRESQL, preparedStatement, 1, null);
 		verify(preparedStatement, times(1)).setNull(eq(1), eq(java.sql.Types.TIMESTAMP));
 		verify(preparedStatement, times(1)).setNull(eq(1), eq(java.sql.Types.OTHER));
 
 		// Checking that nulls are handled in retrieval for SQLite.
 		when(resultSet.getString(anyString())).thenReturn(null);
-		assertNull(DatabaseUtils.getTimestamp(resultSet, "timestamp", DatabaseType.SQLITE));
-		assertNull(DatabaseUtils.getUUID(resultSet, "uuid", DatabaseType.SQLITE));
+		assertNull(DatabaseUtils.getTimestamp(DatabaseType.SQLITE, resultSet, "timestamp"));
+		assertNull(DatabaseUtils.getUUID(DatabaseType.SQLITE, resultSet, "uuid"));
 
 		// Checking that nulls are handled in retrieval for PostgreSQL.
 		when(resultSet.getTimestamp(anyString())).thenReturn(null);
-		when(resultSet.getObject(anyString())).thenReturn(null);
-		assertNull(DatabaseUtils.getTimestamp(resultSet, "timestamp", DatabaseType.POSTGRESQL));
-		assertNull(DatabaseUtils.getUUID(resultSet, "uuid", DatabaseType.POSTGRESQL));
+		when(resultSet.getObject(anyString(), eq(UUID.class))).thenReturn(null);
+		assertNull(DatabaseUtils.getTimestamp(DatabaseType.POSTGRESQL, resultSet, "timestamp"));
+		assertNull(DatabaseUtils.getUUID(DatabaseType.POSTGRESQL, resultSet, "uuid"));
 	}
 }
