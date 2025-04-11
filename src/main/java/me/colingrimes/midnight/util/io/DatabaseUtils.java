@@ -1,6 +1,9 @@
 package me.colingrimes.midnight.util.io;
 
+import com.google.gson.JsonElement;
 import me.colingrimes.midnight.Midnight;
+import me.colingrimes.midnight.serialize.Json;
+import me.colingrimes.midnight.serialize.Serializable;
 import me.colingrimes.midnight.storage.sql.DatabaseType;
 
 import java.io.BufferedReader;
@@ -50,87 +53,154 @@ public final class DatabaseUtils {
 	}
 
 	/**
-	 * Get a timestamp from a ResultSet in a way that works for all database types.
+	 * Gets a UUID from a {@link ResultSet} in a way that works for all database types.
 	 *
-	 * @param resultSet  the ResultSet from which to get the timestamp
-	 * @param columnName the name of the column from which to get the timestamp
-	 * @param type       the type of the database
-	 * @return the Instant represented by the timestamp, may be null
-	 * @throws SQLException if a database access error occurs.
+	 * @param type the database type
+	 * @param rs the result set
+	 * @param column the column name
+	 * @return the UUID represented by the string or object
 	 */
 	@Nullable
-	public static Instant getTimestamp(@Nonnull ResultSet resultSet, @Nonnull String columnName, @Nonnull DatabaseType type) throws SQLException {
-		if (type == DatabaseType.SQLITE) {
-			String dateTimeStr = resultSet.getString(columnName);
-			return dateTimeStr != null ? Instant.parse(dateTimeStr) : null;
+	public static UUID getUUID(@Nonnull DatabaseType type, @Nonnull ResultSet rs, @Nonnull String column) throws SQLException {
+		if (type == DatabaseType.POSTGRESQL) {
+			return rs.getObject(column, UUID.class);
 		} else {
-			Timestamp timestamp = resultSet.getTimestamp(columnName);
+			String uuid = rs.getString(column);
+			return uuid != null ? UUID.fromString(uuid) : null;
+		}
+	}
+
+	/**
+	 * Sets a UUID in a {@link PreparedStatement} in a way that works for all database types.
+	 *
+	 * @param type the database type
+	 * @param ps the statement
+	 * @param index the parameter index
+	 * @param uuid the uuid
+	 */
+	public static void setUUID(@Nonnull DatabaseType type, @Nonnull PreparedStatement ps, int index, @Nullable UUID uuid) throws SQLException {
+		if (uuid == null) {
+			setNullPostgres(type, ps, index);
+		} else if (type == DatabaseType.POSTGRESQL) {
+			ps.setObject(index, uuid);
+		} else {
+			ps.setString(index, uuid.toString());
+		}
+	}
+
+	/**
+	 * Gets a timestamp from a {@link ResultSet} in a way that works for all database types.
+	 *
+	 * @param type the database type
+	 * @param rs the result set
+	 * @param column the column name
+	 * @return the timestamp represented by the string or object
+	 */
+	@Nullable
+	public static Instant getTimestamp(@Nonnull DatabaseType type, @Nonnull ResultSet rs, @Nonnull String column) throws SQLException {
+		if (type == DatabaseType.SQLITE) {
+			String timestamp = rs.getString(column);
+			return timestamp != null ? Instant.parse(timestamp) : null;
+		} else {
+			Timestamp timestamp = rs.getTimestamp(column);
 			return timestamp != null ? timestamp.toInstant() : null;
 		}
 	}
 
 	/**
-	 * Set a timestamp in a PreparedStatement in a way that works for all database types.
+	 * Sets a timestamp in a {@link PreparedStatement} in a way that works for all database types.
 	 *
-	 * @param ps             the preparedStatement in which to set the timestamp
-	 * @param parameterIndex the index in the PreparedStatement at which to set the timestamp
-	 * @param dateTime       the Instant to set, may be null
-	 * @param type           the type of the database
-	 * @throws SQLException if a database access error occurs.
+	 * @param type the database type
+	 * @param ps the statement
+	 * @param index the parameter index
+	 * @param timestamp the timestamp
 	 */
-	public static void setTimestamp(@Nonnull PreparedStatement ps, int parameterIndex, @Nullable Instant dateTime, @Nonnull DatabaseType type) throws SQLException {
-		if (dateTime == null) {
+	public static void setTimestamp(@Nonnull DatabaseType type, @Nonnull PreparedStatement ps, int index, @Nullable Instant timestamp) throws SQLException {
+		if (timestamp == null) {
 			if (type == DatabaseType.SQLITE) {
-				ps.setString(parameterIndex, null);
+				ps.setString(index, null);
 			} else {
-				ps.setNull(parameterIndex, java.sql.Types.TIMESTAMP);
+				ps.setNull(index, Types.TIMESTAMP);
 			}
 		} else if (type == DatabaseType.SQLITE) {
-			ps.setString(parameterIndex, dateTime.toString());
+			ps.setString(index, timestamp.toString());
 		} else {
-			ps.setTimestamp(parameterIndex, Timestamp.from(dateTime));
+			ps.setTimestamp(index, Timestamp.from(timestamp));
 		}
 	}
 
 	/**
-	 * Get a UUID from a ResultSet in a way that works for all database types.
+	 * Gets JSON from a {@link ResultSet} in a way that works for all database types.
 	 *
-	 * @param resultSet  the ResultSet from which to get the UUID
-	 * @param columnName the name of the column from which to get the UUID
-	 * @param type       the type of the database
-	 * @return the UUID represented by the string or object, may be null
-	 * @throws SQLException if a database access error occurs.
+	 * @param type the database type
+	 * @param rs the result set
+	 * @param column the column name
+	 * @return the json represented by the string or object
 	 */
 	@Nullable
-	public static UUID getUUID(@Nonnull ResultSet resultSet, @Nonnull String columnName, @Nonnull DatabaseType type) throws SQLException {
-		if (type == DatabaseType.POSTGRESQL) {
-			return (UUID) resultSet.getObject(columnName);
+	public static JsonElement getJson(@Nonnull DatabaseType type, @Nonnull ResultSet rs, @Nonnull String column) throws SQLException {
+		String json = rs.getString(column);
+		return json != null ? Json.toElement(json) : null;
+	}
+
+	/**
+	 * Gets the converted class that comes from the JSON in a way that works for all database types.
+	 *
+	 * @param type the database type
+	 * @param rs the result set
+	 * @param column the column name
+	 * @param clazz the class to convert the json to
+	 * @return the json converted to the specified class
+	 */
+	@Nullable
+	public static <T extends Serializable> T getJson(@Nonnull DatabaseType type, @Nonnull ResultSet rs, @Nonnull String column, @Nonnull Class<T> clazz) throws SQLException {
+		JsonElement element = getJson(type, rs, column);
+		return element != null ? Serializable.deserialize(clazz, element) : null;
+	}
+
+	/**
+	 * Sets JSON in a {@link PreparedStatement} in a way that works for all database types.
+	 *
+	 * @param type the database type
+	 * @param ps the statement
+	 * @param index the parameter index
+	 * @param element the json element
+	 */
+	public static void setJson(@Nonnull DatabaseType type, @Nonnull PreparedStatement ps, int index, @Nullable JsonElement element) throws SQLException {
+		String json = (element == null || element.isJsonNull()) ? null : Json.toString(element);
+		if (json == null) {
+			setNullPostgres(type, ps, index);
+		} else if (type == DatabaseType.POSTGRESQL) {
+			ps.setObject(index, json, Types.OTHER);
 		} else {
-			String uuidStr = resultSet.getString(columnName);
-			return uuidStr != null ? UUID.fromString(uuidStr) : null;
+			ps.setString(index, json);
 		}
 	}
 
 	/**
-	 * Set a UUID in a PreparedStatement in a way that works for all database types.
+	 * Sets JSON in a {@link PreparedStatement} in a way that works for all database types.
 	 *
-	 * @param ps             the preparedStatement in which to set the UUID
-	 * @param parameterIndex the index in the PreparedStatement at which to set the UUID
-	 * @param uuid           the UUID to set, may be null
-	 * @param type           the type of the database
-	 * @throws SQLException if a database access error occurs.
+	 * @param type the database type
+	 * @param ps the statement
+	 * @param index the parameter index
+	 * @param serializable the serializable object
 	 */
-	public static void setUUID(@Nonnull PreparedStatement ps, int parameterIndex, @Nullable UUID uuid, @Nonnull DatabaseType type) throws SQLException {
-		if (uuid == null) {
-			if (type == DatabaseType.SQLITE) {
-				ps.setString(parameterIndex, null);
-			} else {
-				ps.setNull(parameterIndex, java.sql.Types.OTHER);
-			}
-		} else if (type == DatabaseType.POSTGRESQL) {
-			ps.setObject(parameterIndex, uuid);
+	public static void setJson(@Nonnull DatabaseType type, @Nonnull PreparedStatement ps, int index, @Nullable Serializable serializable) throws SQLException {
+		setJson(type, ps, index, serializable == null ? null : serializable.serialize());
+	}
+
+	/**
+	 * Sets a null value in a {@link PreparedStatement} in a way that works for all database types.
+	 *
+	 * @param type the database type
+	 * @param ps the statement
+	 * @param index the parameter index
+	 */
+	private static void setNullPostgres(@Nonnull DatabaseType type, @Nonnull PreparedStatement ps, int index) throws SQLException {
+		if (type == DatabaseType.POSTGRESQL) {
+			ps.setNull(index, Types.OTHER);
 		} else {
-			ps.setString(parameterIndex, uuid.toString());
+			ps.setString(index, null);
 		}
 	}
 
