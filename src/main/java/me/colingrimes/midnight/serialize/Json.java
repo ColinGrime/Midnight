@@ -89,6 +89,21 @@ public final class Json {
     }
 
     /**
+     * Checks if a string is valid json.
+     *
+     * @param str the string to validate
+     * @return true if valid json
+     */
+    public static boolean isJson(@Nonnull String str) {
+        try {
+            toElement(str);
+            return true;
+        } catch (JsonSyntaxException e) {
+            return false;
+        }
+    }
+
+    /**
      * Provides a simple way to build {@link com.google.gson.JsonObject} objects.
      */
     public static final class Builder {
