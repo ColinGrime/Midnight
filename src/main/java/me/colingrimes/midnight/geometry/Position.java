@@ -24,6 +24,7 @@ public class Position implements Serializable {
     private final double x;
     private final double y;
     private final double z;
+    private Location location;
 
     /**
      * Constructs a new Position with the given location.
@@ -60,7 +61,7 @@ public class Position implements Serializable {
      * @param x the x value to add
      * @param y the y value to add
      * @param z the z value to add
-     * @return a new Position with the updated coordinates
+     * @return a new position with the updated coordinates
      */
     @Nonnull
     public Position add(double x, double y, double z) {
@@ -73,7 +74,7 @@ public class Position implements Serializable {
      * @param x the x value to subtract
      * @param y the y value to subtract
      * @param z the z value to subtract
-     * @return a new Position with the updated coordinates
+     * @return a new position with the updated coordinates
      */
     @Nonnull
     public Position subtract(double x, double y, double z) {
@@ -81,83 +82,16 @@ public class Position implements Serializable {
     }
 
     /**
-     * Rotates the position using the specified rotation's pitch, yaw, and roll angles.
-     *
-     * @param rotation the rotation to use
-     * @return a new position rotated by the pitch, yaw, and roll angles
-     */
-    @Nonnull
-    public Position rotate(@Nonnull Rotation rotation) {
-        // Convert angles to radians.
-        double yawRadians = Math.toRadians(rotation.getYaw());
-        double pitchRadians = Math.toRadians(rotation.getPitch());
-        double rollRadians = Math.toRadians(rotation.getRoll());
-
-        // Calculate sin and cos values for each angle
-        double sinYaw = Math.sin(yawRadians);
-        double cosYaw = Math.cos(yawRadians);
-        double sinPitch = Math.sin(pitchRadians);
-        double cosPitch = Math.cos(pitchRadians);
-        double sinRoll = Math.sin(rollRadians);
-        double cosRoll = Math.cos(rollRadians);
-
-        // Calculate the rotation matrices for yaw, pitch, and roll.
-        double[][] yawMatrix = {
-                {cosYaw, 0, -sinYaw},
-                {0, 1, 0},
-                {sinYaw, 0, cosYaw}
-        };
-
-        double[][] pitchMatrix = {
-                {1, 0, 0},
-                {0, cosPitch, sinPitch},
-                {0, -sinPitch, cosPitch}
-        };
-
-        double[][] rollMatrix = {
-                {cosRoll, sinRoll, 0},
-                {-sinRoll, cosRoll, 0},
-                {0, 0, 1}
-        };
-
-        // Multiply pitch, yaw, and roll matrices to get the final rotation matrix.
-        double[][] combinedMatrix = multiplyMatrices(multiplyMatrices(yawMatrix, pitchMatrix), rollMatrix);
-
-        // Apply the rotation matrix to the input position vector.
-        double newX = combinedMatrix[0][0] * x + combinedMatrix[0][1] * y + combinedMatrix[0][2] * z;
-        double newY = combinedMatrix[1][0] * x + combinedMatrix[1][1] * y + combinedMatrix[1][2] * z;
-        double newZ = combinedMatrix[2][0] * x + combinedMatrix[2][1] * y + combinedMatrix[2][2] * z;
-
-        return Position.of(world, newX, newY, newZ);
-    }
-
-    /**
-     * Multiplies two 3x3 matrices.
-     *
-     * @param matrix1 the first matrix
-     * @param matrix2 the second matrix
-     * @return the product of the two matrices
-     */
-    private double[][] multiplyMatrices(@Nonnull double[][] matrix1, @Nonnull double[][] matrix2) {
-        double[][] result = new double[3][3];
-        for (int i=0; i<3; i++) {
-            for (int j=0; j<3; j++) {
-                for (int k=0; k<3; k++) {
-                    result[i][j] += matrix1[i][k] * matrix2[k][j];
-                }
-            }
-        }
-        return result;
-    }
-
-    /**
      * Converts this position into a {@link Location}.
      *
-     * @return a new Location object representing this position
+     * @return the location that this position represents
      */
     @Nonnull
     public Location toLocation() {
-        return new Location(world, x, y, z);
+        if (location == null) {
+            location = new Location(world, x, y, z);
+        }
+        return location;
     }
 
     /**

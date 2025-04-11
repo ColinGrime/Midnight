@@ -127,7 +127,7 @@ public class Size implements Serializable {
     }
 
     @Override
-    public boolean equals(@Nonnull Object o) {
+    public boolean equals(@Nullable Object o) {
         if (!(o instanceof Size size)) return false;
 		return getLength() == size.getLength() && getHeight() == size.getHeight() && getWidth() == size.getWidth();
     }

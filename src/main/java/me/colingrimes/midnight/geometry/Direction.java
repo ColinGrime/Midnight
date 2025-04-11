@@ -5,13 +5,14 @@ import com.google.gson.JsonObject;
 import me.colingrimes.midnight.serialize.Json;
 import me.colingrimes.midnight.serialize.Serializable;
 import me.colingrimes.midnight.util.misc.Validator;
+import org.bukkit.Location;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
 /**
- * Represents a 3D direction in the form of yaw and pitch angles.
+ * Represents a direction in the form of yaw and pitch angles.
  */
 public class Direction implements Serializable {
 
@@ -19,20 +20,32 @@ public class Direction implements Serializable {
     private final double pitch;
 
     /**
-     * Constructs a new Direction with default angles.
+     * Constructs a new {@link Direction} with default angles.
      *
      * @return the direction
      */
     @Nonnull
     public static Direction create() {
-        return new Direction(0, 0);
+        return of(0, 0);
     }
 
     /**
-     * Constructs a new Direction with the given yaw and pitch angles.
+     * Constructs a new {@link Direction} from the location's yaw and pitch values.
      *
-     * @param yaw   the yaw angle
+     * @param location the location
+     * @return the direction
+     */
+    @Nonnull
+    public static Direction of(@Nonnull Location location) {
+        return of(location.getYaw(), location.getPitch());
+    }
+
+    /**
+     * Constructs a new {@link Direction} with the given yaw and pitch angles.
+     *
+     * @param yaw the yaw angle
      * @param pitch the pitch angle
+     * @return the direction
      */
     @Nonnull
     public static Direction of(double yaw, double pitch) {
