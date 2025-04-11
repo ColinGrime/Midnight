@@ -104,7 +104,7 @@ public class Size implements Serializable {
      *
      * @return the length
      */
-    public double getLength() {
+    public int getLength() {
         return length;
     }
 
@@ -113,7 +113,7 @@ public class Size implements Serializable {
      *
      * @return the height
      */
-    public double getHeight() {
+    public int getHeight() {
         return height;
     }
 
@@ -122,7 +122,7 @@ public class Size implements Serializable {
      *
      * @return the width.
      */
-    public double getWidth() {
+    public int getWidth() {
         return width;
     }
 
