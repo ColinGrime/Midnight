@@ -2,6 +2,7 @@ package me.colingrimes.midnight.util.io;
 
 import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.util.Common;
+import org.bukkit.plugin.Plugin;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -18,7 +19,7 @@ public final class Logger {
 	 * @param plugin the plugin to log for
 	 * @param msg    the info message to log
 	 */
-	public static void log(@Nonnull Midnight plugin, @Nonnull String msg) {
+	public static void log(@Nonnull Plugin plugin, @Nonnull String msg) {
 		log("[" + plugin.getName() + "] " + msg);
 	}
 
@@ -37,7 +38,7 @@ public final class Logger {
 	 * @param plugin the plugin to log for
 	 * @param msg    the warning message to log
 	 */
-	public static void warn(@Nonnull Midnight plugin, @Nonnull String msg) {
+	public static void warn(@Nonnull Plugin plugin, @Nonnull String msg) {
 		warn("[" + plugin.getName() + "] " + msg);
 	}
 
@@ -56,7 +57,7 @@ public final class Logger {
 	 * @param plugin the plugin to log for
 	 * @param msg    the severe message to log
 	 */
-	public static void severe(@Nonnull Midnight plugin, @Nonnull String msg) {
+	public static void severe(@Nonnull Plugin plugin, @Nonnull String msg) {
 		severe(plugin, msg, null);
 	}
 
@@ -76,7 +77,7 @@ public final class Logger {
 	 * @param msg    the severe message to log
 	 * @param thrown throwable associated with log message
 	 */
-	public static void severe(@Nonnull Midnight plugin, @Nonnull String msg, @Nullable Throwable thrown) {
+	public static void severe(@Nonnull Plugin plugin, @Nonnull String msg, @Nullable Throwable thrown) {
 		severe("[" + plugin.getName() + "] " + msg, thrown);
 	}
 
