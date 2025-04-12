@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.util.misc;
 
-import me.colingrimes.midnight.scheduler.functional.Execution;
+import me.colingrimes.midnight.functional.Execution;
 import me.colingrimes.midnight.util.io.Logger;
 import org.bukkit.plugin.Plugin;
 
