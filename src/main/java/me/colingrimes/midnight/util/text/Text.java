@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.text.DecimalFormat;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,8 @@ import java.util.stream.Collectors;
 public final class Text {
 
 	private static final Pattern SPECIAL_CHARACTERS = Pattern.compile("\\s+|:+|-+|_+");
+	private static final DecimalFormat INT_FORMAT = new DecimalFormat("#,###");
+	private static final DecimalFormat DOUBLE_FORMAT = new DecimalFormat("#,###.##");
 
 	/**
 	 * Turns the string into a color-coded string.
@@ -75,6 +78,81 @@ public final class Text {
 	}
 
 	/**
+	 * Formats the specified Number with thousands separators.
+	 * If a decimal, shows up to two decimal places only if present.
+	 *
+	 * <p>Examples:</p>
+	 * <ul>
+	 *   <li> 100000 -> "100,000" </li>
+	 * 	 <li> 1200000.0 -> "1,200,000" </li>
+	 * 	 <li> 123456.789 -> "123,456.79" </li>
+	 * </ul>
+	 *
+	 * @param number the number to format
+	 * @return formatted number
+	 */
+	@Nonnull
+	public static String format(@Nullable Number number) {
+		if (number instanceof Integer || number instanceof Long) {
+			return INT_FORMAT.format(number);
+		} else if (number instanceof Double || number instanceof Float) {
+			return DOUBLE_FORMAT.format(number);
+		} else {
+			return "";
+		}
+	}
+
+	/**
+	 * Formats the specified Duration into a "m:ss" time format.
+	 *
+	 * @param duration the duration to format
+	 * @return formatted time
+	 */
+	@Nonnull
+	public static String format(@Nullable Duration duration) {
+		if (duration == null) {
+			return "";
+		}
+
+		long minutes = duration.toMinutes();
+		long seconds = duration.minusMinutes(minutes).getSeconds();
+		return String.format("%d:%02d", minutes, seconds);
+	}
+
+	/**
+	 * Formats the duration using minutes and seconds, showing fractional minutes if needed.
+	 *
+	 * <p>Examples:</p>
+	 * <ul>
+	 *   <li>Duration.ofMinutes(5) -> "5 minutes"</li>
+	 *   <li>Duration.ofSeconds(30) -> "30 seconds"</li>
+	 *   <li>Duration.ofSeconds(330) -> "5.5 minutes"</li>
+	 * </ul>
+	 *
+	 * @param duration the duration to format
+	 * @return formatted time
+	 */
+	@Nonnull
+	public static String formatApprox(@Nullable Duration duration) {
+		if (duration == null || duration.isZero()) {
+			return "0 seconds";
+		}
+
+		long seconds = duration.getSeconds();
+		if (seconds < 60) {
+			return seconds + " second" + (seconds == 1 ? "" : "s");
+		}
+
+		double minutes = seconds / 60.0;
+		if (minutes % 1 == 0) {
+			long wholeMinutes = (long) minutes;
+			return wholeMinutes + " minute" + (wholeMinutes == 1 ? "" : "s");
+		}
+
+		return String.format("%.1f minutes", minutes);
+	}
+
+	/**
 	 * Unformats a String object.
 	 * In doing so, all capital letters become lowercase with an underscore behind them.
 	 *
@@ -101,23 +179,6 @@ public final class Text {
 	}
 
 	/**
-	 * Formats the specified Duration into a "m:ss" time format.
-	 *
-	 * @param duration the duration
-	 * @return formatted time
-	 */
-	@Nonnull
-	public static String formatTime(@Nullable Duration duration) {
-		if (duration == null) {
-			return "";
-		}
-
-		long minutes = duration.toMinutes();
-		long seconds = duration.minusMinutes(minutes).getSeconds();
-		return String.format("%d:%02d", minutes, seconds);
-	}
-
-	/**
 	 * Strips the specified message.
 	 *
 	 * @param message the message
@@ -126,6 +187,15 @@ public final class Text {
 	@Nonnull
 	public static String strip(@Nullable String message) {
 		return message == null ? "" : message.replace("\\s+", "").replace("-", "").replace(":", "");
+	}
+
+	/**
+	 * Use {@link Text#format(Duration)} instead.
+	 */
+	@Deprecated
+	@Nonnull
+	public static String formatTime(@Nullable Duration duration) {
+		return format(duration);
 	}
 
 	private Text() {
