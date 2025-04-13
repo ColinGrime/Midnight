@@ -3,7 +3,6 @@ package me.colingrimes.midnight.config.util;
 import com.google.common.base.Preconditions;
 import me.colingrimes.midnight.menu.configurable.ConfigurableGui;
 import me.colingrimes.midnight.util.bukkit.Items;
-import me.colingrimes.midnight.util.misc.Types;
 import me.colingrimes.midnight.util.text.Text;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -26,39 +25,39 @@ public class ConfigurableInventory {
     /**
      * Creates a configurable inventory.
      *
-     * @param config the configuration section to parse
+     * @param section the configuration section to parse
      * @return the configurable inventory
      */
     @Nonnull
-    public static Optional<ConfigurableInventory> of(@Nullable ConfigurationSection config) {
-        if (config == null) {
+    public static Optional<ConfigurableInventory> of(@Nullable ConfigurationSection section) {
+        if (section == null) {
             return Optional.empty();
         }
 
-        Preconditions.checkArgument(config.getString("title") != null || config.getString("name") != null, "Title is not set.");
-        Preconditions.checkArgument(config.getString("rows") != null, "Rows are not set.");
-        return Optional.of(new ConfigurableInventory(config));
+        Preconditions.checkArgument(section.getString("title") != null || section.getString("name") != null, "Title is not set.");
+        Preconditions.checkArgument(section.getString("rows") != null, "Rows are not set.");
+        return Optional.of(new ConfigurableInventory(section));
     }
 
-    private ConfigurableInventory(@Nonnull ConfigurationSection sec) {
-        this.title = sec.getString("title") != null ? Text.color(sec.getString("title")) : Text.color(sec.getString("name"));
-        this.rows = sec.getInt("rows");
-        this.items = getItems(Objects.requireNonNull(sec.getConfigurationSection("slots")));
-        this.commands = getCommands(Objects.requireNonNull(sec.getConfigurationSection("slots")));
-        this.fillEmptySlots(sec);
+    private ConfigurableInventory(@Nonnull ConfigurationSection section) {
+        this.title = section.getString("title") != null ? Text.color(section.getString("title")) : Text.color(section.getString("name"));
+        this.rows = section.getInt("rows");
+        this.items = getItems(Objects.requireNonNull(section.getConfigurationSection("slots")));
+        this.commands = getCommands(Objects.requireNonNull(section.getConfigurationSection("slots")));
+        this.fillEmptySlots(section);
     }
 
     /**
      * Gets the item stacks for each slot from the configuration section.
      *
-     * @param sec the configuration section to parse
+     * @param section the configuration section to parse
      * @return the item stack mapping
      */
     @Nonnull
-    private Map<Integer, ItemStack> getItems(@Nonnull ConfigurationSection sec) {
-        return Types.mapSlotKeys(sec, slot -> {
-            if (sec.getString(slot + ".type") != null || sec.getString(slot + ".material") != null) {
-                return Items.create().config(sec.getConfigurationSection(slot)).build();
+    private Map<Integer, ItemStack> getItems(@Nonnull ConfigurationSection section) {
+        return Configs.mapSlotKeys(section, sec -> {
+            if (sec.getString("type") != null || section.getString("material") != null) {
+                return Items.create().config(sec).build();
             } else {
                 return Items.create().build();
             }
@@ -68,13 +67,13 @@ public class ConfigurableInventory {
     /**
      * Gets the commands for each slot from the configuration section.
      *
-     * @param sec the configuration section to parse
+     * @param section the configuration section to parse
      * @return the command mapping
      */
     @Nonnull
-    private Map<Integer, String> getCommands(@Nonnull ConfigurationSection sec) {
-        return Types.mapSlotKeys(sec, slot -> {
-            String command = sec.getString(slot + ".command");
+    private Map<Integer, String> getCommands(@Nonnull ConfigurationSection section) {
+        return Configs.mapSlotKeys(section, sec -> {
+            String command = sec.getString("command");
             return command != null ? command : "";
         });
     }
@@ -82,15 +81,15 @@ public class ConfigurableInventory {
     /**
      * Fills empty slots in the inventory with the specified material.
      *
-     * @param sec the configuration section to parse
+     * @param section the configuration section to parse
      */
-    private void fillEmptySlots(@Nonnull ConfigurationSection sec) {
-        if (sec.getString("fill") == null) {
+    private void fillEmptySlots(@Nonnull ConfigurationSection section) {
+        if (section.getString("fill") == null) {
             return;
         }
 
         ItemStack item = Items.create()
-                .material(sec.getString("fill"))
+                .material(section.getString("fill"))
                 .name("")
                 .hide()
                 .build();

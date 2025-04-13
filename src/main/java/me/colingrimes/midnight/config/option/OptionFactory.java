@@ -1,6 +1,7 @@
 package me.colingrimes.midnight.config.option;
 
 import me.colingrimes.midnight.config.adapter.ConfigurationAdapter;
+import me.colingrimes.midnight.config.util.Configs;
 import me.colingrimes.midnight.config.util.ConfigurableInventory;
 import me.colingrimes.midnight.storage.sql.DatabaseCredentials;
 import me.colingrimes.midnight.util.bukkit.Items;
@@ -10,7 +11,9 @@ import org.bukkit.inventory.ItemStack;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 @FunctionalInterface
@@ -123,7 +126,7 @@ public interface OptionFactory<T> {
 	}
 
 	/**
-	 * Creates a custom option using the provided deserializer function.
+	 * Creates a custom option using the provided extractor function.
 	 *
 	 * @param path the configuration path
 	 * @param extractor a function that extracts the custom option
@@ -136,6 +139,76 @@ public interface OptionFactory<T> {
 			ConfigurationSection section = adapter.getSection(p).orElse(null);
 			return section != null ? Optional.ofNullable(extractor.apply(section)) : Optional.empty();
 		};
+		return Option.of(new Bound<>(factory, path, null));
+	}
+
+	/**
+	 * Creates a map option by mapping each key in the section to a value using the extractor.
+	 *
+	 * @param path the configuration path
+	 * @param extractor a function that extracts values from subsections
+	 * @param <T> the value type
+	 * @return the map option
+	 */
+	@Nonnull
+	static <T> Option<Map<String, T>> keys(@Nonnull String path, @Nonnull Function<ConfigurationSection, T> extractor) {
+		OptionFactory<Map<String, T>> factory = (adapter, p) -> Optional.of(Configs.mapKeys(adapter.getSection(p).orElse(null), extractor));
+		return Option.of(new Bound<>(factory, path, null));
+	}
+
+	/**
+	 * Creates a map option by mapping each key in the section to a value using the extractor.
+	 *
+	 * @param path the configuration path
+	 * @param extractor a function that extracts values from subsections
+	 * @param <T> the value type
+	 * @return the map option
+	 */
+	@Nonnull
+	static <T> Option<Map<String, T>> keys(@Nonnull String path, @Nonnull BiFunction<ConfigurationSection, String, T> extractor) {
+		OptionFactory<Map<String, T>> factory = (adapter, p) -> Optional.of(Configs.mapKeys(adapter.getSection(p).orElse(null), extractor));
+		return Option.of(new Bound<>(factory, path, null));
+	}
+
+	/**
+	 * Creates a map option by mapping each key in the section to a value using the extractor.
+	 *
+	 * @param path the configuration path
+	 * @param extractor a function that extracts values from subsections
+	 * @param <T> the value type
+	 * @return the map option
+	 */
+	@Nonnull
+	static <T> Option<Map<Integer, T>> integerKeys(@Nonnull String path, @Nonnull Function<ConfigurationSection, T> extractor) {
+		OptionFactory<Map<Integer, T>> factory = (adapter, p) -> Optional.of(Configs.mapIntegerKeys(adapter.getSection(p).orElse(null), extractor));
+		return Option.of(new Bound<>(factory, path, null));
+	}
+
+	/**
+	 * Creates a map option by mapping each key in the section to a value using the extractor.
+	 *
+	 * @param path the configuration path
+	 * @param extractor a function that extracts values from subsections
+	 * @param <T> the value type
+	 * @return the map option
+	 */
+	@Nonnull
+	static <T> Option<Map<Integer, T>> integerKeys(@Nonnull String path, @Nonnull BiFunction<ConfigurationSection, String, T> extractor) {
+		OptionFactory<Map<Integer, T>> factory = (adapter, p) -> Optional.of(Configs.mapIntegerKeys(adapter.getSection(p).orElse(null), extractor));
+		return Option.of(new Bound<>(factory, path, null));
+	}
+
+	/**
+	 * Creates a map option by mapping each key in the section to a value using the extractor.
+	 *
+	 * @param path the configuration path
+	 * @param extractor a function that extracts values from subsections
+	 * @param <T> the value type
+	 * @return the map option
+	 */
+	@Nonnull
+	static <T> Option<Map<Integer, T>> slots(@Nonnull String path, @Nonnull Function<ConfigurationSection, T> extractor) {
+		OptionFactory<Map<Integer, T>> factory = (adapter, p) -> Optional.of(Configs.mapSlotKeys(adapter.getSection(p).orElse(null), extractor));
 		return Option.of(new Bound<>(factory, path, null));
 	}
 
