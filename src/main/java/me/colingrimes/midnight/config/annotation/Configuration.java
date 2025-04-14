@@ -17,4 +17,16 @@ public @interface Configuration {
 	 */
 	@Nonnull
 	String value() default "config.yml";
+
+	/**
+	 * Optional dependent configuration classes.
+	 * <p>
+	 * Must also be annotated with {@code @Configuration}.
+	 * Guaranteed to be loaded first if present.
+	 * If any are missing, this configuration will not be loaded.
+	 *
+	 * @return array of dependent classes
+	 */
+	@Nonnull
+	Class<?>[] depend() default {};
 }
