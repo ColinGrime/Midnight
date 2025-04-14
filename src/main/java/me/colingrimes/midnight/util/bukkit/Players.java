@@ -1,6 +1,7 @@
 package me.colingrimes.midnight.util.bukkit;
 
 import me.colingrimes.midnight.util.Common;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
@@ -36,7 +37,32 @@ public final class Players {
 	 */
 	@Nonnull
 	public static Optional<Player> get(@Nonnull String name) {
-		return Optional.ofNullable(Common.server().getPlayer(name));
+		return Optional.ofNullable(Common.server().getPlayerExact(name));
+	}
+
+	/**
+	 * Returns the offline player with the given UUID.
+	 *
+	 * @param uuid the UUID of the player
+	 * @return the offline player
+	 */
+	@Nonnull
+	public static OfflinePlayer getOffline(@Nonnull UUID uuid) {
+		return Common.server().getOfflinePlayer(uuid);
+	}
+
+	/**
+	 * Returns the player's name with the given UUID.
+	 * <p>
+	 * If no name is found, it will return "Unknown".
+	 *
+	 * @param uuid the UUID of the player
+	 * @return the player name or "Unknown" if not found
+	 */
+	@Nonnull
+	public static String getName(@Nonnull UUID uuid) {
+		OfflinePlayer player = getOffline(uuid);
+		return player.getName() != null ? player.getName() : "Unknown";
 	}
 
 	/**
