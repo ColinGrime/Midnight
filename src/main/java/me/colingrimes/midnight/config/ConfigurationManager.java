@@ -1,7 +1,9 @@
 package me.colingrimes.midnight.config;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,6 +16,7 @@ import java.util.Map;
 public class ConfigurationManager {
 
 	private final Map<String, ConfigurationState> configurations = new HashMap<>();
+	private final List<ConfigurationState> orderedConfigurations = new ArrayList<>();
 
 	/**
 	 * Adds a configuration to the manager.
@@ -23,13 +26,14 @@ public class ConfigurationManager {
 	 */
 	public void addConfiguration(@Nonnull String name, @Nonnull ConfigurationState state) {
 		configurations.put(name, state);
+		orderedConfigurations.add(state);
 	}
 
 	/**
-	 * Reloads all configurations.
+	 * Reloads all configurations in the correct order (to account for any dependencies).
 	 */
 	public void reload() {
-		configurations.values().forEach(ConfigurationState::reload);
+		orderedConfigurations.forEach(ConfigurationState::reload);
 	}
 
 	/**
