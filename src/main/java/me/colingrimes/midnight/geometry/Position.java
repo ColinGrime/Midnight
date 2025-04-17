@@ -9,6 +9,7 @@ import me.colingrimes.midnight.util.bukkit.Worlds;
 import me.colingrimes.midnight.util.misc.Validator;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -92,6 +93,16 @@ public class Position implements Serializable {
             location = new Location(world, x, y, z);
         }
         return location;
+    }
+
+    /**
+     * Converts this position into a {@link Block}.
+     *
+     * @return the block that this position represents
+     */
+    @Nonnull
+    public Block toBlock() {
+        return toLocation().getBlock();
     }
 
     /**
