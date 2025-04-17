@@ -1,10 +1,10 @@
-package me.colingrimes.midnight.util.io;
+package me.colingrimes.midnight.storage.database;
 
 import com.google.gson.JsonElement;
 import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.serialize.Json;
 import me.colingrimes.midnight.serialize.Serializable;
-import me.colingrimes.midnight.storage.sql.DatabaseType;
+import me.colingrimes.midnight.util.io.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -50,6 +50,25 @@ public final class DatabaseUtils {
 			Logger.severe(plugin, "DatabaseUtils has failed to load schema queries:", e);
 			throw new RuntimeException(e);
 		}
+	}
+
+	/**
+	 * Checks if the specified {@code tableName} exists in the database.
+	 *
+	 * @param connection the database connection
+	 * @param tableName the table name to check
+	 * @return true if the table exists
+	 */
+	public static boolean tableExists(@Nonnull Connection connection, @Nonnull String tableName) throws SQLException {
+		try (ResultSet rs = connection.getMetaData().getTables(null, null, "%", new String[] { "TABLE" })) {
+			while (rs.next()) {
+				String table = rs.getString("TABLE_NAME");
+				if (table != null && table.equalsIgnoreCase(tableName)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	/**
