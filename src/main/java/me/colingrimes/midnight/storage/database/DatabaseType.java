@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.storage.sql;
+package me.colingrimes.midnight.storage.database;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

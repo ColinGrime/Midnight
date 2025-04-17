@@ -1,6 +1,6 @@
 package me.colingrimes.midnight.storage.sql.connection;
 
-import me.colingrimes.midnight.storage.sql.DatabaseType;
+import me.colingrimes.midnight.storage.database.DatabaseType;
 
 import javax.annotation.Nonnull;
 import javax.sql.DataSource;

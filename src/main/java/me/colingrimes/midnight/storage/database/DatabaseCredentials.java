@@ -1,4 +1,4 @@
-package me.colingrimes.midnight.storage.sql;
+package me.colingrimes.midnight.storage.database;
 
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -6,8 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * StorageCredentials is a simple class that holds the necessary information
- * for connecting to a data storage system, such as a database.
+ * DatabaseCredentials is a simple class that holds the necessary information for connecting to a database.
  */
 public class DatabaseCredentials {
 
@@ -19,15 +18,15 @@ public class DatabaseCredentials {
     private final String password;
 
     /**
-     * Creates a new instance of StorageCredentials with the given connection information.
+     * Creates a new instance of {@link DatabaseCredentials} with the given connection information.
      *
      * @param type     the type of database to connect to
-     * @param host     the host address of the storage system
-     * @param port     the port number of the storage system
+     * @param host     the host address of the database
+     * @param port     the port number of the database
      * @param database the name of the database to connect to
      * @param user     the username to use for authentication
      * @param password the password to use for authentication
-     * @return a new instance of StorageCredentials
+     * @return the database credentials
      */
     @Nonnull
     public static DatabaseCredentials of(@Nonnull DatabaseType type, @Nonnull String host, int port, @Nonnull String database, @Nonnull String user, @Nonnull String password) {
@@ -35,10 +34,10 @@ public class DatabaseCredentials {
     }
 
     /**
-     * Creates a new instance of StorageCredentials with the given connection information.
+     * Creates a new instance of {@link DatabaseCredentials} with the given connection information.
      *
      * @param config the configuration section to read from
-     * @return a new instance of StorageCredentials
+     * @return the database credentials
      */
     @Nullable
     public static DatabaseCredentials fromConfig(@Nullable ConfigurationSection config) {
@@ -76,7 +75,7 @@ public class DatabaseCredentials {
     }
 
     /**
-     * Gets the host address of the storage system.
+     * Gets the host address of the database.
      *
      * @return the host address
      */
@@ -86,7 +85,7 @@ public class DatabaseCredentials {
     }
 
     /**
-     * Gets the port number of the storage system.
+     * Gets the port number of the database.
      *
      * @return the port number
      */
@@ -122,22 +121,5 @@ public class DatabaseCredentials {
     @Nonnull
     public String getPassword() {
         return password;
-    }
-
-    /**
-     * Returns a string representation of the StorageCredentials object.
-     *
-     * @return a string representation of this object
-     */
-    @Nonnull
-    @Override
-    public String toString() {
-        return "StorageCredentials{" +
-                "host='" + host + '\'' +
-                ", port=" + port +
-                ", database='" + database + '\'' +
-                ", user='" + user + '\'' +
-                ", password='" + password + '\'' +
-                '}';
     }
 }

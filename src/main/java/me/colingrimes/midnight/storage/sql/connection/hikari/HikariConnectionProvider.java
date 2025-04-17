@@ -2,7 +2,7 @@ package me.colingrimes.midnight.storage.sql.connection.hikari;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import me.colingrimes.midnight.storage.sql.DatabaseCredentials;
+import me.colingrimes.midnight.storage.database.DatabaseCredentials;
 import me.colingrimes.midnight.storage.sql.connection.ConnectionProvider;
 
 import javax.annotation.Nonnull;

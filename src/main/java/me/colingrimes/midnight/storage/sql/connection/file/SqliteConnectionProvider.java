@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.storage.sql.connection.file;
 
 import me.colingrimes.midnight.Midnight;
-import me.colingrimes.midnight.storage.sql.DatabaseType;
+import me.colingrimes.midnight.storage.database.DatabaseType;
 import me.colingrimes.midnight.storage.sql.connection.ConnectionProvider;
 import org.sqlite.SQLiteDataSource;
 

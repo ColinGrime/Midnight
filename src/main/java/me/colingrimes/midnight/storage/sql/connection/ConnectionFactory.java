@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.storage.sql.connection;
 
 import me.colingrimes.midnight.Midnight;
-import me.colingrimes.midnight.storage.sql.DatabaseCredentials;
+import me.colingrimes.midnight.storage.database.DatabaseCredentials;
 import me.colingrimes.midnight.storage.sql.connection.file.SqliteConnectionProvider;
 import me.colingrimes.midnight.storage.sql.connection.hikari.MySqlConnectionProvider;
 import me.colingrimes.midnight.storage.sql.connection.hikari.PostgreSqlConnectionProvider;

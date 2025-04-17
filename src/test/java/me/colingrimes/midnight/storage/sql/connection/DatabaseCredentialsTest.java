@@ -1,7 +1,7 @@
 package me.colingrimes.midnight.storage.sql.connection;
 
-import me.colingrimes.midnight.storage.sql.DatabaseCredentials;
-import me.colingrimes.midnight.storage.sql.DatabaseType;
+import me.colingrimes.midnight.storage.database.DatabaseCredentials;
+import me.colingrimes.midnight.storage.database.DatabaseType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,31 +58,5 @@ class DatabaseCredentialsTest {
 		assertEquals("test_db", credentials.getDatabase());
 		assertEquals("test_user", credentials.getUser());
 		assertEquals("test_password", credentials.getPassword());
-	}
-
-	@Test
-	void testToString() {
-		DatabaseCredentials credentials = DatabaseCredentials.of(
-				DatabaseType.MYSQL,
-				"example.com",
-				1234,
-				"test_db",
-				"test_user",
-				"test_password"
-		);
-
-		String expectedString = "StorageCredentials{" +
-				"host='example.com'" +
-				", " +
-				"port=1234" +
-				", " +
-				"database='test_db'" +
-				", " +
-				"user='test_user'" +
-				", " +
-				"password='test_password'" +
-		"}";
-
-		assertEquals(expectedString, credentials.toString());
 	}
 }

@@ -1,6 +1,5 @@
-package me.colingrimes.midnight.util.io;
+package me.colingrimes.midnight.storage.database;
 
-import me.colingrimes.midnight.storage.sql.DatabaseType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

@@ -2,7 +2,7 @@ package me.colingrimes.midnight.config.adapter;
 
 import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.config.util.ConfigurableInventory;
-import me.colingrimes.midnight.storage.sql.DatabaseCredentials;
+import me.colingrimes.midnight.storage.database.DatabaseCredentials;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
