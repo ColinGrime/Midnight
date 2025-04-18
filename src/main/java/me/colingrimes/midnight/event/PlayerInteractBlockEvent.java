@@ -135,12 +135,30 @@ public class PlayerInteractBlockEvent extends Event implements Cancellable {
     }
 
     /**
+     * Checks if the player shift-left-clicked the block.
+     *
+     * @return true if the player shift-left-clicked the block
+     */
+    public boolean isShiftLeftClick() {
+        return isLeftClick() && player.isSneaking();
+    }
+
+    /**
      * Checks if the player right-clicked the block.
      *
      * @return true if the player right-clicked the block
      */
     public boolean isRightClick() {
         return action == Action.RIGHT_CLICK_BLOCK;
+    }
+
+    /**
+     * Checks if the player shift-right-clicked the block.
+     *
+     * @return true if the player shift-right-clicked the block
+     */
+    public boolean isShiftRightClick() {
+        return isRightClick() && player.isSneaking();
     }
 
     /**
