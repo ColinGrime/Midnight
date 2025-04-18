@@ -52,4 +52,12 @@ public class DeferredBlock {
 	public void apply() {
 		block.setType(type);
 	}
+
+	/**
+	 * Sets the block to the stored material type.
+	 * Does not apply physics to the block.
+	 */
+	public void applyNoPhysics() {
+		block.setType(type, false);
+	}
 }
