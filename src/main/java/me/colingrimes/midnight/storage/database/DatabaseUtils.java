@@ -72,6 +72,26 @@ public final class DatabaseUtils {
 	}
 
 	/**
+	 * Checks if the specified {@code columnName} exists in the given {@code tableName}.
+	 *
+	 * @param connection the database connection
+	 * @param tableName the table name to check
+	 * @param columnName the column name to check
+	 * @return true if the column exists
+	 */
+	public static boolean columnExists(@Nonnull Connection connection, @Nonnull String tableName, @Nonnull String columnName) throws SQLException {
+		try (ResultSet rs = connection.getMetaData().getColumns(null, null, tableName, "%")) {
+			while (rs.next()) {
+				String col = rs.getString("COLUMN_NAME");
+				if (col != null && col.equalsIgnoreCase(columnName)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Gets a UUID from a {@link ResultSet} in a way that works for all database types.
 	 *
 	 * @param type the database type
