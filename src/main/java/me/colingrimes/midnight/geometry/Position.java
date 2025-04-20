@@ -134,6 +134,17 @@ public class Position implements Serializable {
     }
 
     /**
+     * Sets the given x-coordinate to this position.
+     *
+     * @param x the x value to set
+     * @return a new position with the updated coordinates
+     */
+    @Nonnull
+    public Position setX(double x) {
+        return new Position(this.world, x, this.y, this.z);
+    }
+
+    /**
      * Gets the y-coordinate.
      *
      * @return the y-coordinate
@@ -152,6 +163,17 @@ public class Position implements Serializable {
     }
 
     /**
+     * Sets the given y-coordinate to this position.
+     *
+     * @param y the y value to set
+     * @return a new position with the updated coordinates
+     */
+    @Nonnull
+    public Position setY(double y) {
+        return new Position(this.world, this.x, y, this.z);
+    }
+
+    /**
      * Gets the z-coordinate.
      *
      * @return the z-coordinate
@@ -167,6 +189,17 @@ public class Position implements Serializable {
      */
     public int getBlockZ() {
         return (int) Math.floor(z);
+    }
+
+    /**
+     * Sets the given z-coordinate to this position.
+     *
+     * @param z the z value to set
+     * @return a new position with the updated coordinates
+     */
+    @Nonnull
+    public Position setZ(double z) {
+        return new Position(this.world, this.x, this.y, z);
     }
 
     @Override
