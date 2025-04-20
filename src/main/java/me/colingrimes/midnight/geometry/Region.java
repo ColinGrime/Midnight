@@ -8,19 +8,24 @@ import me.colingrimes.midnight.serialize.Json;
 import me.colingrimes.midnight.serialize.Serializable;
 import me.colingrimes.midnight.util.misc.Validator;
 import org.bukkit.World;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.util.BoundingBox;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * Represents a region with a minimum and maximum {@link Position}.
- * You can also retrieve the region's {@link Size}.
+ * You can also retrieve the region's middle {@link Position} and {@link Size}.
  */
 public class Region implements Serializable {
 
 	protected final Position min;
 	protected final Position max;
+	protected final Position mid;
 	protected final Size size;
 
 	/**
@@ -40,6 +45,7 @@ public class Region implements Serializable {
 		int x2 = pos2.getBlockX(), y2 = pos2.getBlockY(), z2 = pos2.getBlockZ();
 		this.min = Position.of(pos1.getWorld(), Math.min(x1, x2), Math.min(y1, y2), Math.min(z1, z2));
 		this.max = Position.of(pos1.getWorld(), Math.max(x1, x2), Math.max(y1, y2), Math.max(z1, z2));
+		this.mid = Position.of(min.getWorld(), (min.getX() + max.getX()) / 2, (min.getY() + max.getY()) / 2, (min.getZ() + max.getZ()) / 2);
 		this.size = Size.of(max.getBlockX() - min.getBlockX() + 1, max.getBlockY() - min.getBlockY() + 1, max.getBlockZ() - min.getBlockZ() + 1);
 	}
 
@@ -64,6 +70,16 @@ public class Region implements Serializable {
 	}
 
 	/**
+	 * Gets the middle position of the region.
+	 *
+	 * @return the middle position
+	 */
+	@Nonnull
+	public Position getMid() {
+		return mid;
+	}
+
+	/**
 	 * Gets the size of the region.
 	 *
 	 * @return the region size
@@ -81,6 +97,34 @@ public class Region implements Serializable {
 	@Nonnull
 	public World getWorld() {
 		return min.getWorld();
+	}
+
+	/**
+	 * Gets all living entities that are inside the region.
+	 *
+	 * @return the list of entities inside the region
+	 */
+	@Nonnull
+	public List<LivingEntity> getEntities() {
+		BoundingBox box = new BoundingBox(
+				min.getX(), min.getY(), min.getZ(),
+				max.getX(), max.getY(), max.getZ()
+		);
+		return getWorld().getNearbyEntities(box, e -> e instanceof LivingEntity).stream().map(e -> (LivingEntity) e).toList();
+	}
+
+	/**
+	 * Gets all players that are inside the region.
+	 *
+	 * @return the list of players inside the region
+	 */
+	@Nonnull
+	public List<Player> getPlayers() {
+		BoundingBox box = new BoundingBox(
+				min.getX(), min.getY(), min.getZ(),
+				max.getX(), max.getY(), max.getZ()
+		);
+		return getWorld().getNearbyEntities(box, e -> e instanceof Player).stream().map(e -> (Player) e).toList();
 	}
 
 	/**
