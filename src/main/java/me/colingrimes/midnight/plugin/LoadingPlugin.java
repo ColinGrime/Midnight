@@ -3,11 +3,13 @@ package me.colingrimes.midnight.plugin;
 import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.hologram.Hologram;
 import me.colingrimes.midnight.listener.*;
+import me.colingrimes.midnight.menu.Gui;
 import me.colingrimes.midnight.util.Common;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -20,13 +22,14 @@ public class LoadingPlugin extends Midnight {
         Common.register(this, new PlayerListeners());
         Common.register(this, new InventoryListener());
         Common.register(this, new ArmorEquipListeners());
-        Common.register(this, new MenuListeners(this));
+        Common.register(this, new MenuListeners());
         setupMetrics();
     }
 
     @Override
     protected void disable() {
-        Hologram.SPAWNED_HOLOGRAMS.forEach(Hologram::remove);
+        new HashSet<>(Gui.players.values()).forEach(Gui::invalidate);
+        new HashSet<>(Hologram.SPAWNED_HOLOGRAMS).forEach(Hologram::remove);
     }
 
     /**

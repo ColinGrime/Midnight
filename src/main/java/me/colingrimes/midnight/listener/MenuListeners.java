@@ -1,6 +1,5 @@
 package me.colingrimes.midnight.listener;
 
-import me.colingrimes.midnight.Midnight;
 import me.colingrimes.midnight.menu.Gui;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -11,18 +10,11 @@ import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.Inventory;
 
 import javax.annotation.Nonnull;
 
 public class MenuListeners implements Listener {
-
-    private final Midnight plugin;
-
-    public MenuListeners(@Nonnull Midnight plugin) {
-        this.plugin = plugin;
-    }
 
     @EventHandler
     public void onInventoryClick(@Nonnull InventoryClickEvent event) {
@@ -84,13 +76,6 @@ public class MenuListeners implements Listener {
     @EventHandler
     public void onPlayerTeleport(@Nonnull PlayerTeleportEvent event) {
         invalidate(event.getPlayer());
-    }
-
-    @EventHandler
-    public void onPluginDisable(@Nonnull PluginDisableEvent event) {
-        if (event.getPlugin().equals(plugin)) {
-            Gui.players.values().forEach(Gui::invalidate);
-        }
     }
 
     /**
