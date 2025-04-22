@@ -36,9 +36,7 @@ public abstract class SqlStorage<T> implements Storage<T> {
 
     @Override
     public final void init() throws Exception {
-        if (provider.isInitialized()) {
-            return;
-        } else {
+        if (!provider.isInitialized()) {
             provider.init();
         }
 
