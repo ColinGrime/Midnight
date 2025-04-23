@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 /**
  * A versatile and generic message interface that can be used in various contexts.
@@ -20,12 +21,16 @@ import javax.annotation.Nonnull;
 public interface Message<T> {
 
     /**
-     * Factory method that generates a Message of type T.
+     * Constructs a new {@link Message} object. Must be either:
+     * <ul>
+     *     <li>A string for {@link TextMessage}'s.</li>
+     *     <li>A list of strings for {@link ListMessage}'s.</li>
+     *     <li>A text component for {@link ComponentMessage}'s.</li>
+     * </ul>
      *
-     * @param content the content for the Message, must be of type String or TextComponent.
-     * @param <T>     the type of the content. Supported types are String and TextComponent.
-     * @return a new Message of type T.
-     * @throws IllegalArgumentException if the content is not of a supported type.
+     * @param content the content of the message
+     * @return the new message if supported
+     * @throws IllegalArgumentException if the content is not of a supported type
      */
     @SuppressWarnings("unchecked")
     static <T> Message<T> of(@Nonnull T content) {
@@ -66,6 +71,17 @@ public interface Message<T> {
         } else {
             return "";
         }
+    }
+
+    /**
+     * Converts the message content to a list of text.
+     * Supports color codes.
+     *
+     * @return the list of text of the message content
+     */
+    @Nonnull
+    default List<String> toTextList() {
+        return List.of(toText().split("\n"));
     }
 
     /**
