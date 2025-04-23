@@ -182,7 +182,7 @@ public class Placeholders {
 	 * @param component the component to apply placeholders to
 	 */
 	private void applyPlaceholderAPI(@Nonnull TextComponent component) {
-		if (Common.plugin("PlaceholderAPI") == null) {
+		if (player == null || Common.plugin("PlaceholderAPI") == null) {
 			return;
 		}
 
