@@ -45,8 +45,8 @@ public class Region implements Serializable {
 		int x2 = pos2.getBlockX(), y2 = pos2.getBlockY(), z2 = pos2.getBlockZ();
 		this.min = Position.of(pos1.getWorld(), Math.min(x1, x2), Math.min(y1, y2), Math.min(z1, z2));
 		this.max = Position.of(pos1.getWorld(), Math.max(x1, x2), Math.max(y1, y2), Math.max(z1, z2));
-		this.mid = Position.of(min.getWorld(), (min.getX() + max.getX()) / 2, (min.getY() + max.getY()) / 2, (min.getZ() + max.getZ()) / 2);
 		this.size = Size.of(max.getBlockX() - min.getBlockX() + 1, max.getBlockY() - min.getBlockY() + 1, max.getBlockZ() - min.getBlockZ() + 1);
+		this.mid = Position.of(min.getWorld(), min.getBlockX() + (size.getLength() / 2.0), min.getBlockY() + (size.getHeight() / 2.0), min.getBlockZ() + (size.getWidth()  / 2.0));
 	}
 
 	/**
