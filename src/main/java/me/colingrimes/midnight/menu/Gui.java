@@ -21,10 +21,10 @@ public abstract class Gui {
 	/**
 	 * Players currently viewing a {@link Gui} instance.
 	 */
-	public static Map<Player, Gui> players = new HashMap<>();
+	public static final Map<Player, Gui> players = new HashMap<>();
 
-	private final Player player;
-	private final Inventory inventory;
+	protected final Player player;
+	protected final Inventory inventory;
 	private final Map<Integer, Slot> slots = new HashMap<>();
 	private boolean valid = true;
 
