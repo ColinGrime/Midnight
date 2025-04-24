@@ -36,9 +36,15 @@ public abstract class SqlStorage<T> implements Storage<T> {
 
     @Override
     public final void init() throws Exception {
-        if (!provider.isInitialized()) {
-            provider.init();
+        if (provider.isInitialized()) {
+            // Runs any migrations the storage might have.
+            try (Connection c = provider.getConnection()) {
+                migrate(c, getVersion(c));
+            }
+            return;
         }
+
+        provider.init();
 
         // Runs schema corresponding to the database type.
         try (Connection c = provider.getConnection()) {
@@ -98,8 +104,9 @@ public abstract class SqlStorage<T> implements Storage<T> {
      *
      * @param connection the database connection
      * @param version the new database version
+     * @return the new version
      */
-    protected void setVersion(@Nonnull Connection connection, int version) throws SQLException {
+    protected int setVersion(@Nonnull Connection connection, int version) throws SQLException {
         String versionDelete = String.format("DELETE FROM '%s'", versionTable);
         String versionSet = String.format("INSERT INTO '%s' (version) VALUES (?)", versionTable);
 
@@ -113,6 +120,8 @@ public abstract class SqlStorage<T> implements Storage<T> {
             ps.setInt(1, version);
             ps.executeUpdate();
         }
+
+        return version;
     }
 
     /**
