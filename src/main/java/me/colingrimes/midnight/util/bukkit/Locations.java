@@ -1,5 +1,7 @@
 package me.colingrimes.midnight.util.bukkit;
 
+import me.colingrimes.midnight.geometry.Position;
+import me.colingrimes.midnight.geometry.Region;
 import me.colingrimes.midnight.util.misc.Random;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -60,18 +62,10 @@ public final class Locations {
 	 */
 	@Nonnull
 	public static List<Location> between(@Nonnull Location corner1, @Nonnull Location corner2) {
-		double lowX = Math.min(corner1.getX(), corner2.getX());
-		double lowY = Math.min(corner1.getY(), corner2.getY());
-		double lowZ = Math.min(corner1.getZ(), corner2.getZ());
-
 		List<Location> locations = new ArrayList<>();
-		for (int blockY = Math.abs(corner1.getBlockY() - corner2.getBlockY()); blockY >= 0; blockY--) {
-			for (int blockX = 0; blockX < Math.abs(corner1.getBlockX() - corner2.getBlockX()); blockX++) {
-				for (int blockZ = 0; blockZ < Math.abs(corner1.getBlockZ() - corner2.getBlockZ()); blockZ++) {
-					locations.add(new Location(corner1.getWorld(), lowX + blockX, lowY + blockY, lowZ + blockZ));
-				}
-			}
-		}
+		Region.of(Position.of(corner1), Position.of(corner2)).handler((x, y, z) -> {
+			locations.add(new Location(corner1.getWorld(), x, y, z));
+		});
 		return locations;
 	}
 
