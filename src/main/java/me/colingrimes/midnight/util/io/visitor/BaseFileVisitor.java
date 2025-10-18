@@ -1,11 +1,11 @@
 package me.colingrimes.midnight.util.io.visitor;
 
-import javax.annotation.Nonnull;
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nonnull;
 
 public abstract class BaseFileVisitor<T> extends SimpleFileVisitor<Path> {
 
@@ -14,7 +14,9 @@ public abstract class BaseFileVisitor<T> extends SimpleFileVisitor<Path> {
     private final String packageName;
 
     public BaseFileVisitor(@Nonnull Path startingPath, @Nonnull String packageName) {
-        if (!startingPath.toString().endsWith(packageName.replace(".", File.separator))) {
+        String normalizedPath = startingPath.toString().replace("\\", "/");
+        String normalizedPackage = packageName.replace(".", "/");
+        if (!normalizedPath.endsWith(normalizedPackage)) {
             throw new IllegalArgumentException("Path " + startingPath + " does not end with " + packageName);
         }
 
@@ -49,8 +51,14 @@ public abstract class BaseFileVisitor<T> extends SimpleFileVisitor<Path> {
         }
 
         String name = path.toString();
-        name = name.substring(startingPath.toString().length() + 1);
+        int startLength = startingPath.toString().length();
+        if (startLength < name.length() && (name.charAt(startLength) == '/' || name.charAt(startLength) == '\\')) {
+            startLength++;
+        }
+        
+        name = name.substring(startLength);
         name = name.replace(".class", "");
-        return packageName + "." + name.replace(File.separator, ".");
+        name = name.replace("\\", ".").replace("/", ".");
+        return packageName + "." + name;
     }
 }
