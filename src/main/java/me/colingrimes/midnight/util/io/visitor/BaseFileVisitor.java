@@ -14,10 +14,8 @@ public abstract class BaseFileVisitor<T> extends SimpleFileVisitor<Path> {
     private final String packageName;
 
     public BaseFileVisitor(@Nonnull Path startingPath, @Nonnull String packageName) {
-        // Normalize paths for comparison - convert both to URI format to handle Windows/Linux differences
-        String normalizedPath = normalizePath(startingPath.toString());
+        String normalizedPath = startingPath.toString().replace("\\", "/");
         String normalizedPackage = packageName.replace(".", "/");
-        
         if (!normalizedPath.endsWith(normalizedPackage)) {
             throw new IllegalArgumentException("Path " + startingPath + " does not end with " + packageName);
         }
@@ -48,15 +46,11 @@ public abstract class BaseFileVisitor<T> extends SimpleFileVisitor<Path> {
      */
     @Nonnull
     String toQualifiedName(@Nonnull Path path) {
-        // Normalize both paths using URI format for consistent comparison
-        String normalizedPath = normalizePath(path.toString());
-        String normalizedStarting = normalizePath(startingPath.toString());
-        
-        if (!normalizedPath.startsWith(normalizedStarting)) {
+        if (!path.normalize().toUri().toString().startsWith(startingPath.normalize().toUri().toString())) {
             throw new IllegalArgumentException("Path " + path + " is not a child of " + startingPath);
         }
 
-        String name = path.toString();        
+        String name = path.toString();
         int startLength = startingPath.toString().length();
         if (startLength < name.length() && (name.charAt(startLength) == '/' || name.charAt(startLength) == '\\')) {
             startLength++;
@@ -64,21 +58,7 @@ public abstract class BaseFileVisitor<T> extends SimpleFileVisitor<Path> {
         
         name = name.substring(startLength);
         name = name.replace(".class", "");
-        
-        // Normalize all separators to dots, handling both Windows and Unix separators
         name = name.replace("\\", ".").replace("/", ".");
-        
         return packageName + "." + name;
-    }
-
-    /**
-     * Normalizes a path string by converting all separators to forward slashes.
-     * This ensures consistent path comparison across different operating systems.
-     *
-     * @param path the path to normalize
-     * @return the normalized path
-     */
-    private String normalizePath(String path) {
-        return path.replace("\\", "/");
     }
 }

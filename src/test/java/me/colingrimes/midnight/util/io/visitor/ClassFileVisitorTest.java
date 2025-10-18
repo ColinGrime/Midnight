@@ -31,9 +31,9 @@ class ClassFileVisitorTest extends MockSetup {
 
 		classFileVisitor.visitFile(invalidPath, null);
 		assertThrows(RuntimeException.class, () -> classFileVisitor.visitFile(invalidPath2, null));
-		assertThrows(RuntimeException.class, () -> classFileVisitor.visitFile(invalidPath3, null));
-		assertThrows(RuntimeException.class, () -> classFileVisitor.visitFile(invalidPath4, null));
-		assertThrows(RuntimeException.class, () -> classFileVisitor.visitFile(invalidPath5, null));
+		assertThrows(IllegalArgumentException.class, () -> classFileVisitor.visitFile(invalidPath3, null));
+		assertThrows(IllegalArgumentException.class, () -> classFileVisitor.visitFile(invalidPath4, null));
+		assertThrows(IllegalArgumentException.class, () -> classFileVisitor.visitFile(invalidPath5, null));
 		classFileVisitor.visitFile(invalidPath6, null);
 		assertEquals(0, classFileVisitor.getList().size());
 
